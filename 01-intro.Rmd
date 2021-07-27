@@ -1,21 +1,36 @@
 # Introduction {#intro}
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+The microeco package has several advantages compared to other packages in R.
+The main goal of developing this package is to help users analyse communtiy ecology data fast.
+So a series of commonly-used approaches are implemented.
+Some new methods are still in active development.
+To accelerate the data mining, the whole structure of microeco package are modularized to
+make users conveniently remember, search and use.
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
-```
+## Main Features
+  + R6 Class; fast, flexible and modularized
+  + Taxa abundance plotting
+  + Venn diagram
+  + Alpha diversity
+  + Beta diversity
+  + Differential abundance analysis
+  + Environmental data analysis
+  + Null model analysis
+  + Network analysis
+  + Functional analysis
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
+## R6 Class
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+All the classes in microeco package depend on the R6 class. 
+R6 uses the encapsulated object-oriented programming paradigm, 
+which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions. 
+If you are interested in the class feature, read more from 'Advanced R' book.
+
+  + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
+This influences how we think about naming. The methods belong to objects, not generics, and you call them like object$method().
+
+  + R6’s reference semantics allow methods to simultaneously return a value and modify an object.
+  
+  + Every R6 object has an S3 class that reflects its hierarchy of R6 class.
