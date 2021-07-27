@@ -267,11 +267,13 @@ Another ITS sequencing dataset is also stored in the example data of the package
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
 \CommentTok{\# load the example data; 16S rRNA gene amplicon sequencing dataset}
 \FunctionTok{data}\NormalTok{(sample\_info\_16S)}
 \FunctionTok{data}\NormalTok{(otu\_table\_16S)}
 \FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
 \FunctionTok{data}\NormalTok{(phylo\_tree\_16S)}
+\CommentTok{\# load the environmental data which is detached from sample table}
 \FunctionTok{data}\NormalTok{(env\_data\_16S)}
 \CommentTok{\# use pipe operator in magrittr package}
 \FunctionTok{library}\NormalTok{(magrittr)}
@@ -562,7 +564,7 @@ Then we use sample\_sums() to check the sequence numbers in each sample.
 ## [1] 10316 37087
 \end{verbatim}
 
-Sometimes, in order to reduce the effects of species number on the diversity measurements,
+Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 we need to perform the resampling to make the sequence number equal for each sample.
 The function rarefy\_samples can invoke the function tidy\_dataset automatically before and after the rarefying.
 
@@ -590,6 +592,9 @@ The function rarefy\_samples can invoke the function tidy\_dataset automatically
 Then, we calculate the taxa abundance at each taxonomic rank using cal\_abund().
 This function return a list called taxa\_abund containing several data frame of the abundance information at each taxonomic rank.
 The list is stored in the microtable object automatically.
+It's worth noting that the cal\_abund() function can be used to solve some complex cases,
+such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
+Those have been shown in README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -621,7 +626,7 @@ If you want to save the taxa abundance file to a local place, use save\_abund().
 \end{Highlighting}
 \end{Shaded}
 
-Then, we calculate the alpha diversity.
+Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 As an example, we do not calculate phylogenetic diversity.
 

@@ -126,11 +126,13 @@ Another ITS sequencing dataset is also stored in the example data of the package
 
 
 ```{r, echo = TRUE}
+library(microeco)
 # load the example data; 16S rRNA gene amplicon sequencing dataset
 data(sample_info_16S)
 data(otu_table_16S)
 data(taxonomy_table_16S)
 data(phylo_tree_16S)
+# load the environmental data which is detached from sample table
 data(env_data_16S)
 # use pipe operator in magrittr package
 library(magrittr)
@@ -254,7 +256,7 @@ Then we use sample_sums() to check the sequence numbers in each sample.
 dataset$sample_sums() %>% range
 ```
 
-Sometimes, in order to reduce the effects of species number on the diversity measurements, 
+Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 we need to perform the resampling to make the sequence number equal for each sample.
 The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.
 
@@ -267,6 +269,9 @@ dataset$sample_sums() %>% range
 Then, we calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function return a list called taxa_abund containing several data frame of the abundance information at each taxonomic rank.
 The list is stored in the microtable object automatically.
+It's worth noting that the cal_abund() function can be used to solve some complex cases,
+such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
+Those have been shown in README of file2meco package (https://github.com/ChiLiubio/file2meco).
 
 ```{r, echo = TRUE}
 dataset$cal_abund()
@@ -281,7 +286,7 @@ dir.create("taxa_abund")
 dataset$save_abund(dirpath = "taxa_abund")
 ```
 
-Then, we calculate the alpha diversity.
+Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 As an example, we do not calculate phylogenetic diversity.
 
@@ -299,7 +304,7 @@ We also calculate the distance matrix of beta diversity using function cal_betad
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
 ```{r, echo = FALSE, eval = TRUE}
-dataset$cal_betadiv(unifrac = FALSE)
+invisible(dataset$cal_betadiv(unifrac = FALSE))
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
