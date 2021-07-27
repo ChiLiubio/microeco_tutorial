@@ -225,10 +225,464 @@ and click the link of the function.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+\hypertarget{basic-class}{%
+\chapter{basic class}\label{basic-class}}
 
-Here is a review of existing methods.
+\hypertarget{microtable}{%
+\section{microtable}\label{microtable}}
+
+　Many tools can be used for the bioinformatic analysis, such as QIIME\citep{Caporaso_QIIME_2010}, usearch(\url{https://www.drive5.com/usearch/}),
+mothur\citep{Schloss_Introducing_2009}, and RDP(\url{http://rdp.cme.msu.edu/}).
+Although the format of results may be different from various tools, the main files can be classified into the following parts:
+(1) OTU or ASV table, i.e.~the species-sample abundance table;
+(2) taxonomy table, the taxonomy assignments information table;
+(3) phylogenetic tree;
+(4) representative sequences.
+(5) Generally, it is useful to create a detailed sample information table to store all the sample information,
+including the environmental data and the missing values (NA).
+
+　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
+At least, the OTU table (i.e.~species-sample abundance table) should be provided to create microtable object.
+Thus, the microtable class can recognize the sample information table is missing and create a default sample table according to
+the sample names of otu\_table.
+To make the file reading more convenient,
+we also build another R package file2meco (\url{https://github.com/ChiLiubio/file2meco}) to read the output files of some tools into microtable object.
+Currently, those tools/softwares include not only commonly-used QIIME \citep{Caporaso_QIIME_2010} and QIIME2\citep{Bolyen_Reproducible_2019},
+but also some metagenomic tools, such as HUMAnN \citep{Franzosa_Species_2018}.
+In this tutorial, we use the data inside the package microeco to show some operations.
+
+　The 16S rRNA sequencing results in the example data of the package is used to show the main part of the tutorial.
+This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al.\citep{An_Soil_2019},
+who surveyed soil bacterial communities in Chinese inland wetlands (IW),
+coastal wetland (CW) and Tibet plateau wetlands (TW) using 16S rRNA gene amplicon sequencing method.
+These wetlands include both saline and non-saline samples.
+The sample information table have 4 columns: ``SampleID'', ``Group'', ``Type'' and ``Saline''.
+The column ``SampleID'' is same with the rownames.
+The column ``Group'' represents the IW, CW and TW.
+The column ``Type'' represents the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
+middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP).
+The column ``Saline'' represents the saline soils and non-saline soils.
+In this dataset, the environmental factor table is separated from the sample information table.
+Another ITS sequencing dataset is also stored in the example data of the package\citep{Gao_Strong_2019}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# load the example data; 16S rRNA gene amplicon sequencing dataset}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
+\FunctionTok{data}\NormalTok{(phylo\_tree\_16S)}
+\FunctionTok{data}\NormalTok{(env\_data\_16S)}
+\CommentTok{\# use pipe operator in magrittr package}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\CommentTok{\# set.seed is used to fix the random number generation to make the results repeatable}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\CommentTok{\# make the plotting background same with the tutorial}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+Make sure that the data types of sample\_table, otu\_table and tax\_table are all data.frame as the following part shows.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(otu\_table\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{otu\_table\_16S[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.21}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.08}}@{}}
+\toprule
+~ & S1 & S2 & S3 & S4 & S5 \\
+\midrule
+\endhead
+\textbf{OTU\_4272} & 1 & 0 & 1 & 1 & 0 \\
+\textbf{OTU\_236} & 1 & 4 & 0 & 2 & 35 \\
+\textbf{OTU\_399} & 9 & 2 & 2 & 4 & 4 \\
+\textbf{OTU\_1556} & 5 & 18 & 7 & 3 & 2 \\
+\textbf{OTU\_32} & 83 & 9 & 19 & 8 & 102 \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(taxonomy\_table\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{taxonomy\_table\_16S[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.20}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.18}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.30}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.32}}@{}}
+\toprule
+~ & Kingdom & Phylum & Class \\
+\midrule
+\endhead
+\textbf{OTU\_4272} & k\_\_Bacteria & p\_\_Firmicutes & c\_\_Bacilli \\
+\textbf{OTU\_236} & k\_\_Bacteria & p\_\_Chloroflexi & c\_\_ \\
+\textbf{OTU\_399} & k\_\_Bacteria & p\_\_Proteobacteria & c\_\_Betaproteobacteria \\
+\textbf{OTU\_1556} & k\_\_Bacteria & p\_\_Acidobacteria & c\_\_Acidobacteria \\
+\textbf{OTU\_32} & k\_\_Archaea & p\_\_Miscellaneous
+Crenarchaeotic Group & c\_\_ \\
+\bottomrule
+\end{longtable}
+
+Sometimes, your taxonomic table may have some chaotic information, such NA, unidentified and unknown.
+These information can influence the following taxonomic abundance calculation.
+So it is necessary to clean this file using the following code.
+Another important part of this operation is to unify the taxonomic prefix,
+e.g.~transforming D\_1\_\_ to p\_\_ for phylum level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# make the taxonomic information unified, important}
+\NormalTok{taxonomy\_table\_16S }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ tidy\_taxonomy}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(sample\_info\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample\_info\_16S[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.10}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.25}}@{}}
+\toprule
+~ & SampleID & Group & Type & Saline \\
+\midrule
+\endhead
+\textbf{S1} & S1 & IW & NE & Non-saline soil \\
+\textbf{S2} & S2 & IW & NE & Non-saline soil \\
+\textbf{S3} & S3 & IW & NE & Non-saline soil \\
+\textbf{S4} & S4 & IW & NE & Non-saline soil \\
+\textbf{S5} & S5 & IW & NE & Non-saline soil \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(env\_data\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.16}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.19}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.22}}@{}}
+\toprule
+~ & Latitude & Longitude & Altitude & Temperature & Precipitation \\
+\midrule
+\endhead
+\textbf{S1} & 52.96 & 122.6 & 432 & -4.2 & 445 \\
+\textbf{S2} & 52.95 & 122.6 & 445 & -4.3 & 449 \\
+\textbf{S3} & 52.95 & 122.6 & 430 & -4.3 & 449 \\
+\textbf{S4} & 52.95 & 122.6 & 430 & -4.3 & 449 \\
+\textbf{S5} & 52.95 & 122.6 & 429 & -4.3 & 449 \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(phylo\_tree\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "phylo"
+\end{verbatim}
+
+Then, we create an object of microtable class.
+This operation is very similar with the package phyloseq\citep{Mcmurdie_phyloseq_2013}, but microeco is more brief and simpler.
+The otu\_table in the microtable class must be the species-sample format: rownames must be OTU names, colnames must be sample names.
+The required sample names must be same in rownames of sample\_table and colnames of otu\_table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# In R6 class, \textquotesingle{}$new\textquotesingle{} is the original method used to create a new object of class}
+\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_tree\_16S)}
+\FunctionTok{class}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "microtable" "R6"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 4 columns
+## otu_table have 13628 rows and 90 columns
+## tax_table have 13628 rows and 7 columns
+## phylo_tree have 14096 tips
+\end{verbatim}
+
+To make the species and sample information consistent across different files in the dataset object, we can use function tidy\_dataset() to trim the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\FunctionTok{print}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 4 columns
+## otu_table have 13628 rows and 90 columns
+## tax_table have 13628 rows and 7 columns
+## phylo_tree have 13628 tips
+\end{verbatim}
+
+Then, we remove OTUs which are not assigned in the Kingdom "k\_\_Archaea" or "k\_\_Bacteria".
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ base}\SpecialCharTok{::}\FunctionTok{subset}\NormalTok{(Kingdom }\SpecialCharTok{==} \StringTok{"k\_\_Archaea"} \SpecialCharTok{|}\NormalTok{ Kingdom }\SpecialCharTok{==} \StringTok{"k\_\_Bacteria"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 4 columns
+## otu_table have 13628 rows and 90 columns
+## tax_table have 13330 rows and 7 columns
+## phylo_tree have 13628 tips
+\end{verbatim}
+
+We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chloroplast''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax\_table.}
+\CommentTok{\# So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation.}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{filter\_pollution}\NormalTok{(}\AttributeTok{taxa =} \FunctionTok{c}\NormalTok{(}\StringTok{"mitochondria"}\NormalTok{, }\StringTok{"chloroplast"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Total 34 taxa are removed!
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 4 columns
+## otu_table have 13628 rows and 90 columns
+## tax_table have 13296 rows and 7 columns
+## phylo_tree have 13628 tips
+\end{verbatim}
+
+Then, to make the OTUs same in otu\_table, tax\_table and phylo\_tree, we use tidy\_dataset() again.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\FunctionTok{print}\NormalTok{(dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 4 columns
+## otu_table have 13296 rows and 90 columns
+## tax_table have 13296 rows and 7 columns
+## phylo_tree have 13296 tips
+\end{verbatim}
+
+Then we use sample\_sums() to check the sequence numbers in each sample.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10316 37087
+\end{verbatim}
+
+Sometimes, in order to reduce the effects of species number on the diversity measurements,
+we need to perform the resampling to make the sequence number equal for each sample.
+The function rarefy\_samples can invoke the function tidy\_dataset automatically before and after the rarefying.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# As an example, we use 10000 sequences in each sample}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 530 OTUs were removed because they are no longer present in any sample after random subsampling
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10000 10000
+\end{verbatim}
+
+Then, we calculate the taxa abundance at each taxonomic rank using cal\_abund().
+This function return a list called taxa\_abund containing several data frame of the abundance information at each taxonomic rank.
+The list is stored in the microtable object automatically.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The result is stored in object$taxa_abund
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# return dataset$taxa\_abund}
+\FunctionTok{class}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+
+If you want to save the taxa abundance file to a local place, use save\_abund().
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dir.create}\NormalTok{(}\StringTok{"taxa\_abund"}\NormalTok{)}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"taxa\_abund"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then, we calculate the alpha diversity.
+The result is also stored in the object microtable automatically.
+As an example, we do not calculate phylogenetic diversity.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If you want to add Faith\textquotesingle{}s phylogenetic diversity, use PD = TRUE, this will be a little slow}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_alphadiv}\NormalTok{(}\AttributeTok{PD =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The result is stored in object$alpha_diversity.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# return dataset$alpha\_diversity}
+\FunctionTok{class}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# save dataset$alpha\_diversity to a directory}
+\FunctionTok{dir.create}\NormalTok{(}\StringTok{"alpha\_diversity"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in dir.create("alpha_diversity"): 'alpha_diversity'已存在
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_alphadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"alpha\_diversity"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We also calculate the distance matrix of beta diversity using function cal\_betadiv().
+We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
+
+\begin{verbatim}
+## The result is stored in object$beta_diversity.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If you do not want to calculate unifrac metrics, use unifrac = FALSE}
+\CommentTok{\# require GUniFrac package}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{unifrac =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# return dataset$beta\_diversity}
+\FunctionTok{class}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity)}
+\CommentTok{\# save dataset$beta\_diversity to a directory}
+\FunctionTok{dir.create}\NormalTok{(}\StringTok{"beta\_diversity"}\NormalTok{)}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_betadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"beta\_diversity"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}
