@@ -2396,6 +2396,65 @@ the selection of relative/absolute abundance.
 ## The result is stored in object$taxa_abund
 \end{verbatim}
 
+\hypertarget{group-order}{%
+\section{group order}\label{group-order}}
+
+If you want to reorder the groups, assign the factors may be the most simplest way.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(dataset)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The ordination result is stored in object$res_ordination !
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_group\_ellipse =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-179-1.pdf}
+
+Then we assign factors to the `Group' in sample\_table of dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Group }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{))}
+\FunctionTok{str}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    90 obs. of  4 variables:
+##  $ SampleID: chr  "S1" "S2" "S3" "S4" ...
+##  $ Group   : Factor w/ 3 levels "IW","TW","CW": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Type    : chr  "NE" "NE" "NE" "NE" ...
+##  $ Saline  : chr  "Non-saline soil" "Non-saline soil" "Non-saline soil" "Non-saline soil" ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The ordination result is stored in object$res_ordination !
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_group\_ellipse =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-180-1.pdf}
+
 \hypertarget{other-examples}{%
 \chapter{Other examples}\label{other-examples}}
 
