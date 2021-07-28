@@ -1,6 +1,6 @@
 # basic class
 
-## microtable
+## microtable class
 
 　Many tools can be used for the bioinformatic analysis, such as QIIME[@Caporaso_QIIME_2010], usearch(https://www.drive5.com/usearch/), 
 mothur[@Schloss_Introducing_2009], and RDP(http://rdp.cme.msu.edu/).
@@ -207,6 +207,9 @@ As an example, we do not calculate phylogenetic diversity.
 dataset$cal_alphadiv(PD = FALSE)
 # return dataset$alpha_diversity
 class(dataset$alpha_diversity)
+```
+
+```{r, echo = TRUE, eval = FALSE}
 # save dataset$alpha_diversity to a directory
 dir.create("alpha_diversity")
 dataset$save_alphadiv(dirpath = "alpha_diversity")
@@ -215,7 +218,7 @@ dataset$save_alphadiv(dirpath = "alpha_diversity")
 We also calculate the distance matrix of beta diversity using function cal_betadiv().
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE, message = FALSE}
 invisible(dataset$cal_betadiv(unifrac = FALSE))
 ```
 

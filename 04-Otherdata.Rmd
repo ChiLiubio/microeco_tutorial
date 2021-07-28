@@ -1,0 +1,53 @@
+# Other data
+
+## Fungi data
+
+The above examples are shown with the prokaryotic data.
+Now, we use the ITS amplicon sequencing dataset as an example to show the use of FUNGuild database[@Nguyen_FUNGuild_2016].
+FungalTraits [@Polme_FungalTraits_2020] database is also available for identifying fungal traits.
+
+
+```{r, echo = TRUE, eval = FALSE}
+# load ITS data
+data(sample_info_ITS)
+data(otu_table_ITS)
+data(taxonomy_table_ITS)
+# create microtable object
+dataset <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
+# remove the taxa not assigned in the Kingdom "k__Fungi"
+dataset$tax_table %<>% base::subset(Kingdom == "k__Fungi")
+# use tidy_dataset() to make OTUs and samples information consistent across files
+dataset$tidy_dataset()
+# create trans_network object
+t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
+# create correlation network 
+t1$cal_network(p_thres = 0.05, COR_cut = 0.6)
+# add modules
+t1$cal_module()
+# calculate node topological properties
+t1$cal_node_type()
+node_type_table <- t1$res_node_type
+# create trans_func object
+t2 <- trans_func$new(dataset)
+# identify species traits, automatically select database for prokaryotes or fungi
+# fungi_database = "FungalTraits" for the FungalTraits database
+t2$cal_spe_func(fungi_database = "FUNGuild")
+# calculate abundance-unweighted functional redundancy of each trait for each network module
+t2$cal_spe_func_perc(use_community = FALSE, node_type_table = node_type_table)
+# plot the functional redundancy of network modules
+t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_func_perc_module_fungi.png")
+```
+
+## Metagenomic data
+
+Many methods in microeco package can be used not only for the traditional community abundance data, i.e. species-sample table,
+but also for other data, such as metagenomic and metabolomic data.
+In the README of file2meco package (https://github.com/ChiLiubio/file2meco),
+we show some examples of metagenomic data from HUMAnN and Ncyc.
+
+
+
