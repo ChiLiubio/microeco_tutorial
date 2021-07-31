@@ -937,6 +937,7 @@ In addition, it is also important to obtain the functions for each taxa or OTU, 
 But it is hard to know exact functions of each OTU.
 FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to identify the traits of prokaryotes on biogeochemical roles.
+The NJC19 database[@Lim_Large_2020] is also available for animal associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild [@Nguyen_FUNGuild_2016] and FungalTraits [@Polme_FungalTraits_2020] databases to identify the fungal traits.
 
 ```{r, echo = TRUE}
@@ -944,7 +945,8 @@ We also implement the FUNGuild [@Nguyen_FUNGuild_2016] and FungalTraits [@Polme_
 # create object of trans_func
 t2 <- trans_func$new(dataset)
 # mapping the taxonomy to the database
-# the function can recognize prokaryotes or fungi automatically.
+# this can recognize prokaryotes or fungi automatically.
+# default database for prokaryotes is FAPROTAX database
 t2$cal_spe_func()
 # return t2$res_spe_func, 1 represent function exists, 0 represent no or cannot confirmed.
 ```
@@ -956,7 +958,6 @@ t2$res_spe_func[1:5, 1:2]
 ```{r, echo = FALSE}
 pander::pander(t2$res_spe_func[1:5, 1:2])
 ```
-
 
 The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community or the module in the network.
 

@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Minjie Yao" />
 
 
-<meta name="date" content="2021-07-28" />
+<meta name="date" content="2021-07-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -196,7 +196,10 @@ div.csl-indent {
 <li class="chapter" data-level="6.5" data-path="notes.html"><a href="notes.html#customized-taxonomic-table"><i class="fa fa-check"></i><b>6.5</b> customized taxonomic table</a></li>
 <li class="chapter" data-level="6.6" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>6.6</b> group order</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>7</b> Other examples</a></li>
+<li class="chapter" data-level="7" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>7</b> Other examples</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>7.1</b> Custom taxa order in bar plot</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -1393,13 +1396,15 @@ In addition, it is also important to obtain the functions for each taxa or OTU, 
 But it is hard to know exact functions of each OTU.
 FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to identify the traits of prokaryotes on biogeochemical roles.
+The NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span> is also available for animal associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span> and FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> databases to identify the fungal traits.</p>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="extended-class.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify microbial traits</span></span>
 <span id="cb144-2"><a href="extended-class.html#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
 <span id="cb144-3"><a href="extended-class.html#cb144-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
 <span id="cb144-4"><a href="extended-class.html#cb144-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mapping the taxonomy to the database</span></span>
-<span id="cb144-5"><a href="extended-class.html#cb144-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the function can recognize prokaryotes or fungi automatically.</span></span>
-<span id="cb144-6"><a href="extended-class.html#cb144-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>()</span></code></pre></div>
+<span id="cb144-5"><a href="extended-class.html#cb144-5" aria-hidden="true" tabindex="-1"></a><span class="co"># this can recognize prokaryotes or fungi automatically.</span></span>
+<span id="cb144-6"><a href="extended-class.html#cb144-6" aria-hidden="true" tabindex="-1"></a><span class="co"># default database for prokaryotes is FAPROTAX database</span></span>
+<span id="cb144-7"><a href="extended-class.html#cb144-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>()</span></code></pre></div>
 <pre><code>## This database is developed based on the recent FAPROTAX database. Please also cite the original FAPROTAX paper: Louca et al. (2016). Decoupling function and taxonomy in the global ocean microbiome. Science, 353(6305), 1272.</code></pre>
 <pre><code>## The functional table is stored in object$res_spe_func ...</code></pre>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="extended-class.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return t2$res_spe_func, 1 represent function exists, 0 represent no or cannot confirmed.</span></span></code></pre></div>
@@ -1665,6 +1670,9 @@ Kurtz, Z. D., C. L. Muller, E. R. Miraldi, D. R. Littman, M. J. Blaser, and R. A
 </div>
 <div id="ref-Langille_Predictive_2013" class="csl-entry">
 Langille, M. G., J. Zaneveld, J. G. Caporaso, D. McDonald, D. Knights, J. A. Reyes, J. C. Clemente, et al. 2013. <span>“Predictive Functional Profiling of Microbial Communities Using 16s rRNA Marker Gene Sequences.”</span> Journal Article. <em>Nature Biotechnology</em> 31 (9): 814–21. <a href="https://doi.org/10.1038/nbt.2676">https://doi.org/10.1038/nbt.2676</a>.
+</div>
+<div id="ref-Lim_Large_2020" class="csl-entry">
+Lim, Roktaek, Josephine Jill T. Cabatbat, Thomas L. P. Martin, Haneul Kim, Seunghyeon Kim, Jaeyun Sung, Cheol-Min Ghim, and Pan-Jun Kim. 2020. <span>“Large-Scale Metabolic Interaction Network of the Mouse and Human Gut Microbiota.”</span> Journal Article. <em>Scientific Data</em> 7 (1). <a href="https://doi.org/10.1038/s41597-020-0516-5">https://doi.org/10.1038/s41597-020-0516-5</a>.
 </div>
 <div id="ref-Liu_Long_term_2017" class="csl-entry">
 Liu, Chi, Minjie Yao, James C Stegen, Junpeng Rui, Jiabao Li, and Xiangzhen Li. 2017. <span>“Long-Term Nitrogen Addition Affects the Phylogenetic Turnover of Soil Microbial Community Responding to Moisture Pulse.”</span> Journal Article. <em>Scientific Reports</em> 7 (1): 17492.

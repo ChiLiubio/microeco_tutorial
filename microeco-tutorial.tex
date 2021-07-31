@@ -124,7 +124,7 @@
 
 \title{microeco: an R package for data mining in microbial community ecology}
 \author{Chi Liu, Minjie Yao}
-\date{2021-07-28}
+\date{2021-07-31}
 
 \begin{document}
 \maketitle
@@ -1943,6 +1943,7 @@ In addition, it is also important to obtain the functions for each taxa or OTU, 
 But it is hard to know exact functions of each OTU.
 FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to identify the traits of prokaryotes on biogeochemical roles.
+The NJC19 database\citep{Lim_Large_2020} is also available for animal associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to identify the fungal traits.
 
 \begin{Shaded}
@@ -1951,7 +1952,8 @@ We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \ci
 \CommentTok{\# create object of trans\_func}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
 \CommentTok{\# mapping the taxonomy to the database}
-\CommentTok{\# the function can recognize prokaryotes or fungi automatically.}
+\CommentTok{\# this can recognize prokaryotes or fungi automatically.}
+\CommentTok{\# default database for prokaryotes is FAPROTAX database}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -2459,6 +2461,12 @@ Then we assign factors to the `Group' in sample\_table of dataset.
 \chapter{Other examples}\label{other-examples}}
 
 We encourage users to contribute some unique, special and helpful examples inspired by the microeco and file2meco package.
+
+\hypertarget{custom-taxa-order-in-bar-plot}{%
+\section{Custom taxa order in bar plot}\label{custom-taxa-order-in-bar-plot}}
+
+Jarrod J. Scott contribute a cool answer to the question that how to use custom taxa and the order in bar plot.
+This is a discussion topic in microeco Discussions part. Here is the link (\url{https://github.com/ChiLiubio/microeco/discussions/45}).
 
   \bibliography{book.bib,packages.bib}
 
