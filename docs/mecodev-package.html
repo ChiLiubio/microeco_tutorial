@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Other data | microeco: an R package for data mining in microbial community ecology</title>
+  <title>Chapter 8 mecodev package | microeco: an R package for data mining in microbial community ecology</title>
   <meta name="description" content="The tutorial for microeco package" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Other data | microeco: an R package for data mining in microbial community ecology" />
+  <meta property="og:title" content="Chapter 8 mecodev package | microeco: an R package for data mining in microbial community ecology" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Other data | microeco: an R package for data mining in microbial community ecology" />
+  <meta name="twitter:title" content="Chapter 8 mecodev package | microeco: an R package for data mining in microbial community ecology" />
   
   <meta name="twitter:description" content="The tutorial for microeco package" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="extended-class.html"/>
-<link rel="next" href="notes.html"/>
+<link rel="prev" href="other-examples.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -228,59 +228,14 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="other-data" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Other data</h1>
-<div id="fungi-data" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Fungi data</h2>
-<p>The above examples are shown with the prokaryotic data.
-Now, we use the ITS amplicon sequencing dataset as an example to show the use of FUNGuild database<span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span>.
-FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> database is also available for identifying fungal traits.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="other-data.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ITS data</span></span>
-<span id="cb173-2"><a href="other-data.html#cb173-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_ITS)</span>
-<span id="cb173-3"><a href="other-data.html#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_ITS)</span>
-<span id="cb173-4"><a href="other-data.html#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_ITS)</span>
-<span id="cb173-5"><a href="other-data.html#cb173-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create microtable object</span></span>
-<span id="cb173-6"><a href="other-data.html#cb173-6" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_ITS, <span class="at">otu_table =</span> otu_table_ITS, <span class="at">tax_table =</span> taxonomy_table_ITS)</span>
-<span id="cb173-7"><a href="other-data.html#cb173-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the taxa not assigned in the Kingdom &quot;k__Fungi&quot;</span></span>
-<span id="cb173-8"><a href="other-data.html#cb173-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Fungi&quot;</span>)</span>
-<span id="cb173-9"><a href="other-data.html#cb173-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use tidy_dataset() to make OTUs and samples information consistent across files</span></span>
-<span id="cb173-10"><a href="other-data.html#cb173-10" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb173-11"><a href="other-data.html#cb173-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_network object</span></span>
-<span id="cb173-12"><a href="other-data.html#cb173-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.000001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb173-13"><a href="other-data.html#cb173-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create correlation network </span></span>
-<span id="cb173-14"><a href="other-data.html#cb173-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
-<span id="cb173-15"><a href="other-data.html#cb173-15" aria-hidden="true" tabindex="-1"></a><span class="co"># add modules</span></span>
-<span id="cb173-16"><a href="other-data.html#cb173-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>()</span>
-<span id="cb173-17"><a href="other-data.html#cb173-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate node topological properties</span></span>
-<span id="cb173-18"><a href="other-data.html#cb173-18" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_node_type</span>()</span>
-<span id="cb173-19"><a href="other-data.html#cb173-19" aria-hidden="true" tabindex="-1"></a>node_type_table <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_node_type</span>
-<span id="cb173-20"><a href="other-data.html#cb173-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_func object</span></span>
-<span id="cb173-21"><a href="other-data.html#cb173-21" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb173-22"><a href="other-data.html#cb173-22" aria-hidden="true" tabindex="-1"></a><span class="co"># identify species traits, automatically select database for prokaryotes or fungi</span></span>
-<span id="cb173-23"><a href="other-data.html#cb173-23" aria-hidden="true" tabindex="-1"></a><span class="co"># fungi_database = &quot;FungalTraits&quot; for the FungalTraits database</span></span>
-<span id="cb173-24"><a href="other-data.html#cb173-24" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">fungi_database =</span> <span class="st">&quot;FUNGuild&quot;</span>)</span>
-<span id="cb173-25"><a href="other-data.html#cb173-25" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance-unweighted functional redundancy of each trait for each network module</span></span>
-<span id="cb173-26"><a href="other-data.html#cb173-26" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">FALSE</span>, <span class="at">node_type_table =</span> node_type_table)</span>
-<span id="cb173-27"><a href="other-data.html#cb173-27" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the functional redundancy of network modules</span></span>
-<span id="cb173-28"><a href="other-data.html#cb173-28" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_spe_func_perc</span>(<span class="at">select_samples =</span> <span class="fu">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
-<p><img src="Images/plot_func_perc_module_fungi.png" width="700px" style="display: block; margin: auto;" /></p>
-</div>
-<div id="metagenomic-data" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Metagenomic data</h2>
-<p>Many methods in microeco package can be used not only for the traditional community abundance data, i.e. species-sample table,
-but also for other data, such as metagenomic and metabolomic data.
-In the README of file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>),
-we show several examples of metagenomic data from HUMAnN and Ncyc.</p>
+<div id="mecodev-package" class="section level1" number="8">
+<h1><span class="header-section-number">Chapter 8</span> mecodev package</h1>
+<p>The mecodev package (<a href="https://github.com/ChiLiubio/mecodev/" class="uri">https://github.com/ChiLiubio/mecodev/</a>) is designed to develop more classes for the data analysis.</p>
+<div id="trans_rarefy" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> trans_rarefy</h2>
+<p>The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
+the sequencing depth is enough to cover all the so-called species in the microbial community.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Nguyen_FUNGuild_2016" class="csl-entry">
-Nguyen, Nhu H., Zewei Song, Scott T. Bates, Sara Branco, Leho Tedersoo, Jon Menke, Jonathan S. Schilling, and Peter G. Kennedy. 2016. <span>“FUNGuild: An Open Annotation Tool for Parsing Fungal Community Datasets by Ecological Guild.”</span> Journal Article. <em>Fungal Ecology</em> 20 (1): 241–48.
-</div>
-<div id="ref-Polme_FungalTraits_2020" class="csl-entry">
-Põlme, Sergei, Kessy Abarenkov, R. Henrik Nilsson, Björn D. Lindahl, Karina Engelbrecht Clemmensen, Havard Kauserud, Nhu Nguyen, et al. 2020. <span>“FungalTraits: A User-Friendly Traits Database of Fungi and Fungus-Like Stramenopiles.”</span> Journal Article. <em>Fungal Diversity</em> 105 (1): 1–16. <a href="https://doi.org/10.1007/s13225-020-00466-2">https://doi.org/10.1007/s13225-020-00466-2</a>.
 </div>
 </div>
             </section>
@@ -288,8 +243,8 @@ Põlme, Sergei, Kessy Abarenkov, R. Henrik Nilsson, Björn D. Lindahl, Karina En
           </div>
         </div>
       </div>
-<a href="extended-class.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="notes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="other-examples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -321,7 +276,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-Otherdata.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07-mecodev.Rmd",
 "text": "Edit"
 },
 "history": {

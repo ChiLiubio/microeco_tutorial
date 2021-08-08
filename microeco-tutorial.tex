@@ -124,7 +124,7 @@
 
 \title{microeco: an R package for data mining in microbial community ecology}
 \author{Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao}
-\date{2021-08-06}
+\date{2021-08-08}
 
 \begin{document}
 \maketitle
@@ -518,7 +518,7 @@ We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chlorop
 \end{Shaded}
 
 \begin{verbatim}
-## Total 34 taxa are removed from tax_table !
+## Total 34 taxa are removed from tax_table ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -576,7 +576,7 @@ The function rarefy\_samples can invoke the function tidy\_dataset automatically
 \end{Shaded}
 
 \begin{verbatim}
-## 530 OTUs were removed because they are no longer present in any sample after random subsampling
+## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -872,11 +872,11 @@ The trans\_alpha object have two data frame: alpha\_data and alpha\_stat.
 \end{Shaded}
 
 \begin{verbatim}
-## The group statistics are stored in object$alpha_stat !
+## The group statistics are stored in object$alpha_stat ...
 \end{verbatim}
 
 \begin{verbatim}
-## The transformed diversity data is stored in object$alpha_data !
+## The transformed diversity data is stored in object$alpha_data ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1500,6 +1500,8 @@ If you are concerned with the relationship between environmental factors and alp
 \end{Shaded}
 
 \begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
+
+The function plot\_scatterfit() in trans\_env class is designed for the scatter plot and adding the fitted line.
 
 \hypertarget{trans_nullmodel-class}{%
 \section{trans\_nullmodel class}\label{trans_nullmodel-class}}
@@ -2284,7 +2286,7 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 Many methods in microeco package can be used not only for the traditional community abundance data, i.e.~species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}),
-we show some examples of metagenomic data from HUMAnN and Ncyc.
+we show several examples of metagenomic data from HUMAnN and Ncyc.
 
 \hypertarget{notes}{%
 \chapter{Notes}\label{notes}}
@@ -2487,6 +2489,17 @@ The taxonomic classification with standard prefix is very important for many ana
 e.g.~taxonomic abundance plotting and biomarker finding.
 The tidy\_taxonomy function is designed to make the taxa having standard prefix.
 See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}) and (\url{https://github.com/ChiLiubio/microeco/issues/22}).
+
+\hypertarget{mecodev-package}{%
+\chapter{mecodev package}\label{mecodev-package}}
+
+The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed to develop more classes for the data analysis.
+
+\hypertarget{trans_rarefy}{%
+\section{trans\_rarefy}\label{trans_rarefy}}
+
+The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
+the sequencing depth is enough to cover all the so-called species in the microbial community.
 
   \bibliography{book.bib,packages.bib}
 

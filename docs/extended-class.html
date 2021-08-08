@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-06" />
+<meta name="date" content="2021-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -203,6 +203,10 @@ div.csl-indent {
 <li class="chapter" data-level="7.3" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>7.3</b> The use of phylogenetic tree</a></li>
 <li class="chapter" data-level="7.4" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>7.4</b> The importance of tidy_taxonomy function</a></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>8</b> mecodev package</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>8.1</b> trans_rarefy</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -318,8 +322,8 @@ The trans_alpha object have two data frame: alpha_data and alpha_stat.</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="extended-class.html#cb64-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb64-2"><a href="extended-class.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$alpha_stat</span></span>
 <span id="cb64-3"><a href="extended-class.html#cb64-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>alpha_stat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span></code></pre></div>
-<pre><code>## The group statistics are stored in object$alpha_stat !</code></pre>
-<pre><code>## The transformed diversity data is stored in object$alpha_data !</code></pre>
+<pre><code>## The group statistics are stored in object$alpha_stat ...</code></pre>
+<pre><code>## The transformed diversity data is stored in object$alpha_data ...</code></pre>
 <table style="width:75%;">
 <colgroup>
 <col width="11%" />
@@ -992,6 +996,7 @@ Then we use those taxa to perform correlation analysis.</p>
 <span id="cb115-3"><a href="extended-class.html#cb115-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> dataset<span class="sc">$</span>alpha_diversity)</span>
 <span id="cb115-4"><a href="extended-class.html#cb115-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_corr</span>()</span></code></pre></div>
 <p><img src="Images/plot_corr_alpha_diversity.png" width="600px" style="display: block; margin: auto;" /></p>
+<p>The function plot_scatterfit() in trans_env class is designed for the scatter plot and adding the fitted line.</p>
 </div>
 <div id="trans_nullmodel-class" class="section level2" number="4.7">
 <h2><span class="header-section-number">4.7</span> trans_nullmodel class</h2>
