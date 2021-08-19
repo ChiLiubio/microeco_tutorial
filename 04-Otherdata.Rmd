@@ -44,10 +44,57 @@ knitr::include_graphics("Images/plot_func_perc_module_fungi.png")
 
 ## Metagenomic data
 
-Many methods in microeco package can be used not only for the traditional community abundance data, i.e. species-sample table,
+Many methods in microeco package can be used not only for the traditional community abundance table, i.e. species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the README of file2meco package (https://github.com/ChiLiubio/file2meco),
 we show several examples of metagenomic data from HUMAnN and Ncyc.
+
+## Animal data
+
+We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database[@Lim_Large_2020].
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(file2meco)
+# use data files inside the file2meco package.
+abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
+sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
+taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
+# construct microtable object
+data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+data1$tidy_dataset()
+# We correct the species names in tax_table
+select_rows <- data1$tax_table$Species != "s__"
+data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
+# taxonomic abundance
+data1$cal_abund()
+
+# create object of trans_func
+data2 <- trans_func$new(data1)
+# Select NJC19 database
+data2$cal_spe_func(prok_database = "NJC19")
+# get the trait percentage data
+data2$cal_spe_func_perc(use_community = TRUE)
+
+# inset the trait percentage result into taxa_abund of microtable object
+data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
+# use trans_abund to plot
+t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
+t1$plot_box(group = "donor_status") + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
+```
+
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_mouse_NJC19.png")
+```
+
+
+
+
+
+
+
+
+
 
 
 

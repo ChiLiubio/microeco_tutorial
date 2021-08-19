@@ -25,6 +25,8 @@ ampvis2 (https://madsalbertsen.github.io/ampvis2/reference/index.html), Microbio
 theseus[@Price_theseus_2018], rANOMALY[@Theil_rANOMALY_2021] and so on.
 However, we lack a flexible, comprehensive and modularized R package to analyze and manage the data.
 So we create the microeco R package[@Liu_microeco_2021] for this goal (https://github.com/ChiLiubio/microeco).
+Besides, we also develop the file2meco package (https://github.com/ChiLiubio/file2meco) for the data input from other tools easily
+and mecodev package (https://github.com/ChiLiubio/mecodev) for some extending approaches in the area.
 
 <!--chapter:end:index.Rmd-->
 
@@ -1472,10 +1474,57 @@ knitr::include_graphics("Images/plot_func_perc_module_fungi.png")
 
 ## Metagenomic data
 
-Many methods in microeco package can be used not only for the traditional community abundance data, i.e. species-sample table,
+Many methods in microeco package can be used not only for the traditional community abundance table, i.e. species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the README of file2meco package (https://github.com/ChiLiubio/file2meco),
 we show several examples of metagenomic data from HUMAnN and Ncyc.
+
+## Animal data
+
+We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database[@Lim_Large_2020].
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(file2meco)
+# use data files inside the file2meco package.
+abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
+sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
+taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
+# construct microtable object
+data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+data1$tidy_dataset()
+# We correct the species names in tax_table
+select_rows <- data1$tax_table$Species != "s__"
+data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
+# taxonomic abundance
+data1$cal_abund()
+
+# create object of trans_func
+data2 <- trans_func$new(data1)
+# Select NJC19 database
+data2$cal_spe_func(prok_database = "NJC19")
+# get the trait percentage data
+data2$cal_spe_func_perc(use_community = TRUE)
+
+# inset the trait percentage result into taxa_abund of microtable object
+data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
+# use trans_abund to plot
+t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
+t1$plot_box(group = "donor_status") + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
+```
+
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_mouse_NJC19.png")
+```
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1586,9 +1635,24 @@ t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellips
 
 <!--chapter:end:05-Notes.Rmd-->
 
+# mecodev package
+The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed to develop more classes for data analysis based on the microeco package.
+
+## trans_rarefy
+The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether 
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+
+## trans_convert
+The class trans_convert provide several data transformation approaches for the microtable object.
+The output will also be a microtable object.
+
+
+
+<!--chapter:end:06-mecodev.Rmd-->
+
 # Other examples
 
-We encourage users to contribute some unique, special and helpful examples inspired by the microeco and file2meco package.
+We encourage users to contribute some unique, special and helpful examples inspired by the microeco, file2meco and mecodev package.
 
 
 ## Custom taxa order in bar plot
@@ -1614,20 +1678,7 @@ The tidy_taxonomy function is designed to make the taxa having standard prefix.
 See those Issues for the detailed examples: (https://github.com/ChiLiubio/microeco/issues/32) and (https://github.com/ChiLiubio/microeco/issues/22).
 
 
-
-<!--chapter:end:06-Other_examples.Rmd-->
-
-# mecodev package
-The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed to develop more classes for the data analysis.
-
-## trans_rarefy
-The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether 
-the sequencing depth is enough to cover all the so-called species in the microbial community.
-
-
-
-
-<!--chapter:end:07-mecodev.Rmd-->
+<!--chapter:end:07-Other_examples.Rmd-->
 
 `r if (knitr:::is_html_output()) '
 # References {-}

@@ -124,7 +124,7 @@
 
 \title{microeco: an R package for data mining in microbial community ecology}
 \author{Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao}
-\date{2021-08-08}
+\date{2021-08-19}
 
 \begin{document}
 \maketitle
@@ -147,6 +147,8 @@ ampvis2 (\url{https://madsalbertsen.github.io/ampvis2/reference/index.html}), Mi
 theseus\citep{Price_theseus_2018}, rANOMALY\citep{Theil_rANOMALY_2021} and so on.
 However, we lack a flexible, comprehensive and modularized R package to analyze and manage the data.
 So we create the microeco R package\citep{Liu_microeco_2021} for this goal (\url{https://github.com/ChiLiubio/microeco}).
+Besides, we also develop the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from other tools easily
+and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extending approaches in the area.
 
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
@@ -815,7 +817,7 @@ For this goal, we first transform the results of venn plot to the traditional sp
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$venn_table and object$venn_count_abund.
+## The result is stored in object$venn_table and object$venn_count_abund ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -2283,10 +2285,49 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \hypertarget{metagenomic-data}{%
 \section{Metagenomic data}\label{metagenomic-data}}
 
-Many methods in microeco package can be used not only for the traditional community abundance data, i.e.~species-sample table,
+Many methods in microeco package can be used not only for the traditional community abundance table, i.e.~species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}),
 we show several examples of metagenomic data from HUMAnN and Ncyc.
+
+\hypertarget{animal-data}{%
+\section{Animal data}\label{animal-data}}
+
+We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database\citep{Lim_Large_2020}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(file2meco)}
+\CommentTok{\# use data files inside the file2meco package.}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# construct microtable object}
+\NormalTok{data1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\NormalTok{data1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# We correct the species names in tax\_table}
+\NormalTok{select\_rows }\OtherTok{\textless{}{-}}\NormalTok{ data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species }\SpecialCharTok{!=} \StringTok{"s\_\_"}
+\NormalTok{data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species[select\_rows] }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"s\_\_"}\NormalTok{, }\FunctionTok{gsub}\NormalTok{(}\StringTok{"g\_\_"}\NormalTok{, }\StringTok{""}\NormalTok{, data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Genus[select\_rows]), }\StringTok{" "}\NormalTok{, }\FunctionTok{gsub}\NormalTok{(}\StringTok{"s\_\_"}\NormalTok{, }\StringTok{""}\NormalTok{, data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species[select\_rows]))}
+\CommentTok{\# taxonomic abundance}
+\NormalTok{data1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+
+\CommentTok{\# create object of trans\_func}
+\NormalTok{data2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(data1)}
+\CommentTok{\# Select NJC19 database}
+\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"NJC19"}\NormalTok{)}
+\CommentTok{\# get the trait percentage data}
+\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{use\_community =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# inset the trait percentage result into taxa\_abund of microtable object}
+\NormalTok{data1}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Trait }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(data2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc))}
+\CommentTok{\# use trans\_abund to plot}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ data1, }\AttributeTok{taxrank =} \StringTok{"Trait"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"donor\_status"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative population abundance (\%)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{13}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/plot_mouse_NJC19} \end{center}
 
 \hypertarget{notes}{%
 \chapter{Notes}\label{notes}}
@@ -2422,7 +2463,7 @@ If you want to reorder the groups, assign the factors may be the most simplest w
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-179-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-181-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 
@@ -2457,12 +2498,29 @@ Then we assign factors to the `Group' in sample\_table of dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-180-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-182-1.pdf}
+
+\hypertarget{mecodev-package}{%
+\chapter{mecodev package}\label{mecodev-package}}
+
+The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed to develop more classes for data analysis based on the microeco package.
+
+\hypertarget{trans_rarefy}{%
+\section{trans\_rarefy}\label{trans_rarefy}}
+
+The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+
+\hypertarget{trans_convert}{%
+\section{trans\_convert}\label{trans_convert}}
+
+The class trans\_convert provide several data transformation approaches for the microtable object.
+The output will also be a microtable object.
 
 \hypertarget{other-examples}{%
 \chapter{Other examples}\label{other-examples}}
 
-We encourage users to contribute some unique, special and helpful examples inspired by the microeco and file2meco package.
+We encourage users to contribute some unique, special and helpful examples inspired by the microeco, file2meco and mecodev package.
 
 \hypertarget{custom-taxa-order-in-bar-plot}{%
 \section{Custom taxa order in bar plot}\label{custom-taxa-order-in-bar-plot}}
@@ -2489,17 +2547,6 @@ The taxonomic classification with standard prefix is very important for many ana
 e.g.~taxonomic abundance plotting and biomarker finding.
 The tidy\_taxonomy function is designed to make the taxa having standard prefix.
 See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}) and (\url{https://github.com/ChiLiubio/microeco/issues/22}).
-
-\hypertarget{mecodev-package}{%
-\chapter{mecodev package}\label{mecodev-package}}
-
-The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed to develop more classes for the data analysis.
-
-\hypertarget{trans_rarefy}{%
-\section{trans\_rarefy}\label{trans_rarefy}}
-
-The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
-the sequencing depth is enough to cover all the so-called species in the microbial community.
 
   \bibliography{book.bib,packages.bib}
 

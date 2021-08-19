@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-08" />
+<meta name="date" content="2021-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -186,6 +186,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="5.1" data-path="other-data.html"><a href="other-data.html#fungi-data"><i class="fa fa-check"></i><b>5.1</b> Fungi data</a></li>
 <li class="chapter" data-level="5.2" data-path="other-data.html"><a href="other-data.html#metagenomic-data"><i class="fa fa-check"></i><b>5.2</b> Metagenomic data</a></li>
+<li class="chapter" data-level="5.3" data-path="other-data.html"><a href="other-data.html#animal-data"><i class="fa fa-check"></i><b>5.3</b> Animal data</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>6</b> Notes</a>
 <ul>
@@ -196,16 +197,17 @@ div.csl-indent {
 <li class="chapter" data-level="6.5" data-path="notes.html"><a href="notes.html#customized-taxonomic-table"><i class="fa fa-check"></i><b>6.5</b> customized taxonomic table</a></li>
 <li class="chapter" data-level="6.6" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>6.6</b> group order</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>7</b> Other examples</a>
+<li class="chapter" data-level="7" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>7</b> mecodev package</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>7.1</b> Custom taxa order in bar plot</a></li>
-<li class="chapter" data-level="7.2" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>7.2</b> Question of prefix in the taxa</a></li>
-<li class="chapter" data-level="7.3" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>7.3</b> The use of phylogenetic tree</a></li>
-<li class="chapter" data-level="7.4" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>7.4</b> The importance of tidy_taxonomy function</a></li>
+<li class="chapter" data-level="7.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>7.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="7.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>7.2</b> trans_convert</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>8</b> mecodev package</a>
+<li class="chapter" data-level="8" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>8</b> Other examples</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>8.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="8.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>8.1</b> Custom taxa order in bar plot</a></li>
+<li class="chapter" data-level="8.2" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>8.2</b> Question of prefix in the taxa</a></li>
+<li class="chapter" data-level="8.3" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>8.3</b> The use of phylogenetic tree</a></li>
+<li class="chapter" data-level="8.4" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>8.4</b> The importance of tidy_taxonomy function</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -296,7 +298,7 @@ the composition of the unique or shared species may account for the different an
 For this goal, we first transform the results of venn plot to the traditional species-sample table, that is, another object of microtable class.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="extended-class.html#cb58-1" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb58-2"><a href="extended-class.html#cb58-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span></code></pre></div>
-<pre><code>## The result is stored in object$venn_table and object$venn_count_abund.</code></pre>
+<pre><code>## The result is stored in object$venn_table and object$venn_count_abund ...</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="extended-class.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transform venn results to the sample-species table, here do not consider abundance, only use presence/absence information.</span></span>
 <span id="cb60-2"><a href="extended-class.html#cb60-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_venn_com</span>(<span class="at">use_OTUs_frequency =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb60-3"><a href="extended-class.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 is a new microtable class, each part is considered as a sample</span></span>
