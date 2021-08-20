@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-19" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,6 +201,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>7.1</b> trans_rarefy</a></li>
 <li class="chapter" data-level="7.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>7.2</b> trans_convert</a></li>
+<li class="chapter" data-level="7.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>7.3</b> trans_netchord</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>8</b> Other examples</a>
 <ul>
@@ -237,11 +238,44 @@ div.csl-indent {
 <h2><span class="header-section-number">7.1</span> trans_rarefy</h2>
 <p>The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
 the sequencing depth is enough to cover all the so-called species in the microbial community.</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="mecodev-package.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
+<span id="cb191-2"><a href="mecodev-package.html#cb191-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb191-3"><a href="mecodev-package.html#cb191-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb191-4"><a href="mecodev-package.html#cb191-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb191-5"><a href="mecodev-package.html#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
+<span id="cb191-6"><a href="mecodev-package.html#cb191-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb191-7"><a href="mecodev-package.html#cb191-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
+<span id="cb191-8"><a href="mecodev-package.html#cb191-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb191-9"><a href="mecodev-package.html#cb191-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_rarefy class</span></span>
+<span id="cb191-10"><a href="mecodev-package.html#cb191-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
+<span id="cb191-11"><a href="mecodev-package.html#cb191-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">100</span>), <span class="at">show_point =</span> <span class="cn">TRUE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>, <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Images/plot_trans_rarefy.png" width="700px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_convert" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> trans_convert</h2>
 <p>The class trans_convert provide several data transformation approaches for the microtable object.
 The output will also be a microtable object.</p>
+</div>
+<div id="trans_netchord" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> trans_netchord</h2>
+<p>The class trans_netchord is developed to sum and plot the links number from one taxa to another or in the same taxa in the network.
+The input dataset must be a trans_network object.
+Creating the trans_netchord object can sum the links (edge) number from one taxa to another or in the same taxa.
+The function plot_sum_links() is used to show the result from the function cal_sum_links().
+This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
+In terms of “Phylum” level in the tutorial,
+the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
+So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
+For example, in terms of Proteobacteria,
+there are roughly total 900 edges associated with the OTUs in Proteobacteria,
+in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="mecodev-package.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s first create a network</span></span>
+<span id="cb192-2"><a href="mecodev-package.html#cb192-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb192-3"><a href="mecodev-package.html#cb192-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
+<span id="cb192-4"><a href="mecodev-package.html#cb192-4" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_netchord</span></span>
+<span id="cb192-5"><a href="mecodev-package.html#cb192-5" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_netchord<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
+<span id="cb192-6"><a href="mecodev-package.html#cb192-6" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

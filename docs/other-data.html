@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-19" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,6 +201,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>7.1</b> trans_rarefy</a></li>
 <li class="chapter" data-level="7.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>7.2</b> trans_convert</a></li>
+<li class="chapter" data-level="7.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>7.3</b> trans_netchord</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>8</b> Other examples</a>
 <ul>
@@ -237,34 +238,34 @@ div.csl-indent {
 <p>The above examples are shown with the prokaryotic data.
 Now, we use the ITS amplicon sequencing dataset as an example to show the use of FUNGuild database<span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span>.
 FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> database is also available for identifying fungal traits.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="other-data.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ITS data</span></span>
-<span id="cb173-2"><a href="other-data.html#cb173-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_ITS)</span>
-<span id="cb173-3"><a href="other-data.html#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_ITS)</span>
-<span id="cb173-4"><a href="other-data.html#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_ITS)</span>
-<span id="cb173-5"><a href="other-data.html#cb173-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create microtable object</span></span>
-<span id="cb173-6"><a href="other-data.html#cb173-6" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_ITS, <span class="at">otu_table =</span> otu_table_ITS, <span class="at">tax_table =</span> taxonomy_table_ITS)</span>
-<span id="cb173-7"><a href="other-data.html#cb173-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the taxa not assigned in the Kingdom &quot;k__Fungi&quot;</span></span>
-<span id="cb173-8"><a href="other-data.html#cb173-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Fungi&quot;</span>)</span>
-<span id="cb173-9"><a href="other-data.html#cb173-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use tidy_dataset() to make OTUs and samples information consistent across files</span></span>
-<span id="cb173-10"><a href="other-data.html#cb173-10" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb173-11"><a href="other-data.html#cb173-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_network object</span></span>
-<span id="cb173-12"><a href="other-data.html#cb173-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.000001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb173-13"><a href="other-data.html#cb173-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create correlation network </span></span>
-<span id="cb173-14"><a href="other-data.html#cb173-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
-<span id="cb173-15"><a href="other-data.html#cb173-15" aria-hidden="true" tabindex="-1"></a><span class="co"># add modules</span></span>
-<span id="cb173-16"><a href="other-data.html#cb173-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>()</span>
-<span id="cb173-17"><a href="other-data.html#cb173-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate node topological properties</span></span>
-<span id="cb173-18"><a href="other-data.html#cb173-18" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_node_type</span>()</span>
-<span id="cb173-19"><a href="other-data.html#cb173-19" aria-hidden="true" tabindex="-1"></a>node_type_table <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_node_type</span>
-<span id="cb173-20"><a href="other-data.html#cb173-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_func object</span></span>
-<span id="cb173-21"><a href="other-data.html#cb173-21" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb173-22"><a href="other-data.html#cb173-22" aria-hidden="true" tabindex="-1"></a><span class="co"># identify species traits, automatically select database for prokaryotes or fungi</span></span>
-<span id="cb173-23"><a href="other-data.html#cb173-23" aria-hidden="true" tabindex="-1"></a><span class="co"># fungi_database = &quot;FungalTraits&quot; for the FungalTraits database</span></span>
-<span id="cb173-24"><a href="other-data.html#cb173-24" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">fungi_database =</span> <span class="st">&quot;FUNGuild&quot;</span>)</span>
-<span id="cb173-25"><a href="other-data.html#cb173-25" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance-unweighted functional redundancy of each trait for each network module</span></span>
-<span id="cb173-26"><a href="other-data.html#cb173-26" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">FALSE</span>, <span class="at">node_type_table =</span> node_type_table)</span>
-<span id="cb173-27"><a href="other-data.html#cb173-27" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the functional redundancy of network modules</span></span>
-<span id="cb173-28"><a href="other-data.html#cb173-28" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_spe_func_perc</span>(<span class="at">select_samples =</span> <span class="fu">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="other-data.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load ITS data</span></span>
+<span id="cb172-2"><a href="other-data.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_ITS)</span>
+<span id="cb172-3"><a href="other-data.html#cb172-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_ITS)</span>
+<span id="cb172-4"><a href="other-data.html#cb172-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_ITS)</span>
+<span id="cb172-5"><a href="other-data.html#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create microtable object</span></span>
+<span id="cb172-6"><a href="other-data.html#cb172-6" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_ITS, <span class="at">otu_table =</span> otu_table_ITS, <span class="at">tax_table =</span> taxonomy_table_ITS)</span>
+<span id="cb172-7"><a href="other-data.html#cb172-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the taxa not assigned in the Kingdom &quot;k__Fungi&quot;</span></span>
+<span id="cb172-8"><a href="other-data.html#cb172-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Fungi&quot;</span>)</span>
+<span id="cb172-9"><a href="other-data.html#cb172-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use tidy_dataset() to make OTUs and samples information consistent across files</span></span>
+<span id="cb172-10"><a href="other-data.html#cb172-10" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb172-11"><a href="other-data.html#cb172-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_network object</span></span>
+<span id="cb172-12"><a href="other-data.html#cb172-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.000001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb172-13"><a href="other-data.html#cb172-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create correlation network </span></span>
+<span id="cb172-14"><a href="other-data.html#cb172-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
+<span id="cb172-15"><a href="other-data.html#cb172-15" aria-hidden="true" tabindex="-1"></a><span class="co"># add modules</span></span>
+<span id="cb172-16"><a href="other-data.html#cb172-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>()</span>
+<span id="cb172-17"><a href="other-data.html#cb172-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate node topological properties</span></span>
+<span id="cb172-18"><a href="other-data.html#cb172-18" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_node_type</span>()</span>
+<span id="cb172-19"><a href="other-data.html#cb172-19" aria-hidden="true" tabindex="-1"></a>node_type_table <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_node_type</span>
+<span id="cb172-20"><a href="other-data.html#cb172-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_func object</span></span>
+<span id="cb172-21"><a href="other-data.html#cb172-21" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
+<span id="cb172-22"><a href="other-data.html#cb172-22" aria-hidden="true" tabindex="-1"></a><span class="co"># identify species traits, automatically select database for prokaryotes or fungi</span></span>
+<span id="cb172-23"><a href="other-data.html#cb172-23" aria-hidden="true" tabindex="-1"></a><span class="co"># fungi_database = &quot;FungalTraits&quot; for the FungalTraits database</span></span>
+<span id="cb172-24"><a href="other-data.html#cb172-24" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">fungi_database =</span> <span class="st">&quot;FUNGuild&quot;</span>)</span>
+<span id="cb172-25"><a href="other-data.html#cb172-25" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance-unweighted functional redundancy of each trait for each network module</span></span>
+<span id="cb172-26"><a href="other-data.html#cb172-26" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">FALSE</span>, <span class="at">node_type_table =</span> node_type_table)</span>
+<span id="cb172-27"><a href="other-data.html#cb172-27" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the functional redundancy of network modules</span></span>
+<span id="cb172-28"><a href="other-data.html#cb172-28" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_spe_func_perc</span>(<span class="at">select_samples =</span> <span class="fu">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
 <p><img src="Images/plot_func_perc_module_fungi.png" width="700px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="metagenomic-data" class="section level2" number="5.2">
@@ -277,33 +278,33 @@ we show several examples of metagenomic data from HUMAnN and Ncyc.</p>
 <div id="animal-data" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Animal data</h2>
 <p>We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span>.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="other-data.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb174-2"><a href="other-data.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
-<span id="cb174-3"><a href="other-data.html#cb174-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the file2meco package.</span></span>
-<span id="cb174-4"><a href="other-data.html#cb174-4" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb174-5"><a href="other-data.html#cb174-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb174-6"><a href="other-data.html#cb174-6" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb174-7"><a href="other-data.html#cb174-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
-<span id="cb174-8"><a href="other-data.html#cb174-8" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
-<span id="cb174-9"><a href="other-data.html#cb174-9" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb174-10"><a href="other-data.html#cb174-10" aria-hidden="true" tabindex="-1"></a><span class="co"># We correct the species names in tax_table</span></span>
-<span id="cb174-11"><a href="other-data.html#cb174-11" aria-hidden="true" tabindex="-1"></a>select_rows <span class="ot">&lt;-</span> data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species <span class="sc">!=</span> <span class="st">&quot;s__&quot;</span></span>
-<span id="cb174-12"><a href="other-data.html#cb174-12" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;s__&quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;g__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Genus[select_rows]), <span class="st">&quot; &quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;s__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows]))</span>
-<span id="cb174-13"><a href="other-data.html#cb174-13" aria-hidden="true" tabindex="-1"></a><span class="co"># taxonomic abundance</span></span>
-<span id="cb174-14"><a href="other-data.html#cb174-14" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb174-15"><a href="other-data.html#cb174-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb174-16"><a href="other-data.html#cb174-16" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
-<span id="cb174-17"><a href="other-data.html#cb174-17" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(data1)</span>
-<span id="cb174-18"><a href="other-data.html#cb174-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Select NJC19 database</span></span>
-<span id="cb174-19"><a href="other-data.html#cb174-19" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;NJC19&quot;</span>)</span>
-<span id="cb174-20"><a href="other-data.html#cb174-20" aria-hidden="true" tabindex="-1"></a><span class="co"># get the trait percentage data</span></span>
-<span id="cb174-21"><a href="other-data.html#cb174-21" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb174-22"><a href="other-data.html#cb174-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb174-23"><a href="other-data.html#cb174-23" aria-hidden="true" tabindex="-1"></a><span class="co"># inset the trait percentage result into taxa_abund of microtable object</span></span>
-<span id="cb174-24"><a href="other-data.html#cb174-24" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>taxa_abund<span class="sc">$</span>Trait <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(data2<span class="sc">$</span>res_spe_func_perc))</span>
-<span id="cb174-25"><a href="other-data.html#cb174-25" aria-hidden="true" tabindex="-1"></a><span class="co"># use trans_abund to plot</span></span>
-<span id="cb174-26"><a href="other-data.html#cb174-26" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> data1, <span class="at">taxrank =</span> <span class="st">&quot;Trait&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb174-27"><a href="other-data.html#cb174-27" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_box</span>(<span class="at">group =</span> <span class="st">&quot;donor_status&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Relative population abundance (%)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="other-data.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb173-2"><a href="other-data.html#cb173-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb173-3"><a href="other-data.html#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the file2meco package.</span></span>
+<span id="cb173-4"><a href="other-data.html#cb173-4" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb173-5"><a href="other-data.html#cb173-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb173-6"><a href="other-data.html#cb173-6" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb173-7"><a href="other-data.html#cb173-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb173-8"><a href="other-data.html#cb173-8" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
+<span id="cb173-9"><a href="other-data.html#cb173-9" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb173-10"><a href="other-data.html#cb173-10" aria-hidden="true" tabindex="-1"></a><span class="co"># We correct the species names in tax_table</span></span>
+<span id="cb173-11"><a href="other-data.html#cb173-11" aria-hidden="true" tabindex="-1"></a>select_rows <span class="ot">&lt;-</span> data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species <span class="sc">!=</span> <span class="st">&quot;s__&quot;</span></span>
+<span id="cb173-12"><a href="other-data.html#cb173-12" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;s__&quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;g__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Genus[select_rows]), <span class="st">&quot; &quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;s__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows]))</span>
+<span id="cb173-13"><a href="other-data.html#cb173-13" aria-hidden="true" tabindex="-1"></a><span class="co"># taxonomic abundance</span></span>
+<span id="cb173-14"><a href="other-data.html#cb173-14" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb173-15"><a href="other-data.html#cb173-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb173-16"><a href="other-data.html#cb173-16" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
+<span id="cb173-17"><a href="other-data.html#cb173-17" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(data1)</span>
+<span id="cb173-18"><a href="other-data.html#cb173-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Select NJC19 database</span></span>
+<span id="cb173-19"><a href="other-data.html#cb173-19" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;NJC19&quot;</span>)</span>
+<span id="cb173-20"><a href="other-data.html#cb173-20" aria-hidden="true" tabindex="-1"></a><span class="co"># get the trait percentage data</span></span>
+<span id="cb173-21"><a href="other-data.html#cb173-21" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb173-22"><a href="other-data.html#cb173-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb173-23"><a href="other-data.html#cb173-23" aria-hidden="true" tabindex="-1"></a><span class="co"># inset the trait percentage result into taxa_abund of microtable object</span></span>
+<span id="cb173-24"><a href="other-data.html#cb173-24" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>taxa_abund<span class="sc">$</span>Trait <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(data2<span class="sc">$</span>res_spe_func_perc))</span>
+<span id="cb173-25"><a href="other-data.html#cb173-25" aria-hidden="true" tabindex="-1"></a><span class="co"># use trans_abund to plot</span></span>
+<span id="cb173-26"><a href="other-data.html#cb173-26" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> data1, <span class="at">taxrank =</span> <span class="st">&quot;Trait&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb173-27"><a href="other-data.html#cb173-27" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_box</span>(<span class="at">group =</span> <span class="st">&quot;donor_status&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Relative population abundance (%)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>))</span></code></pre></div>
 <p><img src="Images/plot_mouse_NJC19.png" width="800px" style="display: block; margin: auto;" /></p>
 
 </div>

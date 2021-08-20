@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-19" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,6 +201,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>7.1</b> trans_rarefy</a></li>
 <li class="chapter" data-level="7.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>7.2</b> trans_convert</a></li>
+<li class="chapter" data-level="7.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>7.3</b> trans_netchord</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>8</b> Other examples</a>
 <ul>
@@ -1357,43 +1358,28 @@ The eigengene of a module, i.e. the first principal component of PCA, represent
 <span id="cb139-5"><a href="extended-class.html#cb139-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the correlation heatmap</span></span>
 <span id="cb139-6"><a href="extended-class.html#cb139-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_corr</span>()</span></code></pre></div>
 <p><img src="Images/Env_module_eigen.png" width="600px" style="display: block; margin: auto;" /></p>
-<p>The function cal_sum_links() is used to sum the links (edge) number from one taxa to another or in the same taxa.
-The function plot_sum_links() is used to show the result from the function cal_sum_links().
-This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
-In terms of “Phylum” level in the tutorial,
-the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
-So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
-For example, in terms of Proteobacteria,
-there are roughly total 900 edges associated with the OTUs in Proteobacteria,
-in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="extended-class.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the links between or within taxonomic ranks</span></span>
-<span id="cb140-2"><a href="extended-class.html#cb140-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_sum_links</span>(<span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb140-3"><a href="extended-class.html#cb140-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_sum_links_pos and t1$res_sum_links_neg</span></span>
-<span id="cb140-4"><a href="extended-class.html#cb140-4" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package</span></span>
-<span id="cb140-5"><a href="extended-class.html#cb140-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
 <p>The subset_network() function can be used to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="extended-class.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a sub network that contains all nodes in module M1</span></span>
-<span id="cb141-2"><a href="extended-class.html#cb141-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> t1<span class="sc">$</span>res_node_type <span class="sc">%&gt;%</span> .[.<span class="sc">$</span>module <span class="sc">==</span> <span class="st">&quot;M1&quot;</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb141-3"><a href="extended-class.html#cb141-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return a new network with igraph class</span></span>
-<span id="cb141-4"><a href="extended-class.html#cb141-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract sub network in which all edge labels are &quot;+&quot;, i.e. positive edges</span></span>
-<span id="cb141-5"><a href="extended-class.html#cb141-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="extended-class.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a sub network that contains all nodes in module M1</span></span>
+<span id="cb140-2"><a href="extended-class.html#cb140-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> t1<span class="sc">$</span>res_node_type <span class="sc">%&gt;%</span> .[.<span class="sc">$</span>module <span class="sc">==</span> <span class="st">&quot;M1&quot;</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb140-3"><a href="extended-class.html#cb140-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return a new network with igraph class</span></span>
+<span id="cb140-4"><a href="extended-class.html#cb140-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract sub network in which all edge labels are &quot;+&quot;, i.e. positive edges</span></span>
+<span id="cb140-5"><a href="extended-class.html#cb140-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
 <p>Then we show the next implemented network construction approach:
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package <span class="citation">(<a href="#ref-Kurtz_Sparse_2015" role="doc-biblioref">Kurtz et al. 2015</a>)</span>.</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="extended-class.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
-<span id="cb142-2"><a href="extended-class.html#cb142-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb142-3"><a href="extended-class.html#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require SpiecEasi package  https://github.com/zdk123/SpiecEasi</span></span>
-<span id="cb142-4"><a href="extended-class.html#cb142-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span>
-<span id="cb142-5"><a href="extended-class.html#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="extended-class.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
+<span id="cb141-2"><a href="extended-class.html#cb141-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb141-3"><a href="extended-class.html#cb141-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require SpiecEasi package  https://github.com/zdk123/SpiecEasi</span></span>
+<span id="cb141-4"><a href="extended-class.html#cb141-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span>
+<span id="cb141-5"><a href="extended-class.html#cb141-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
 <p>We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave<span class="citation">(<a href="#ref-Tackmann_Rapid_2019" role="doc-biblioref">Tackmann, Matias Rodrigues, and Mering 2019</a>)</span>.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
 and add the julia in the computer path (see FlashWeave part in <a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="extended-class.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
-<span id="cb143-2"><a href="extended-class.html#cb143-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>)</span>
-<span id="cb143-3"><a href="extended-class.html#cb143-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require Julia in the computer path, and the package FlashWeave</span></span>
-<span id="cb143-4"><a href="extended-class.html#cb143-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;PGM&quot;</span>)</span>
-<span id="cb143-5"><a href="extended-class.html#cb143-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="extended-class.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
+<span id="cb142-2"><a href="extended-class.html#cb142-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>)</span>
+<span id="cb142-3"><a href="extended-class.html#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require Julia in the computer path, and the package FlashWeave</span></span>
+<span id="cb142-4"><a href="extended-class.html#cb142-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;PGM&quot;</span>)</span>
+<span id="cb142-5"><a href="extended-class.html#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
 </div>
 <div id="trans_func-class" class="section level2" number="4.9">
 <h2><span class="header-section-number">4.9</span> trans_func class</h2>
@@ -1408,17 +1394,17 @@ FAPROTAX database is a collection of the traits and characteristics of prokaryot
 We match the taxonomic information of prokaryotes against this database to identify the traits of prokaryotes on biogeochemical roles.
 The NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span> is also available for animal associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span> and FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> databases to identify the fungal traits.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="extended-class.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify microbial traits</span></span>
-<span id="cb144-2"><a href="extended-class.html#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
-<span id="cb144-3"><a href="extended-class.html#cb144-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb144-4"><a href="extended-class.html#cb144-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mapping the taxonomy to the database</span></span>
-<span id="cb144-5"><a href="extended-class.html#cb144-5" aria-hidden="true" tabindex="-1"></a><span class="co"># this can recognize prokaryotes or fungi automatically.</span></span>
-<span id="cb144-6"><a href="extended-class.html#cb144-6" aria-hidden="true" tabindex="-1"></a><span class="co"># default database for prokaryotes is FAPROTAX database</span></span>
-<span id="cb144-7"><a href="extended-class.html#cb144-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="extended-class.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify microbial traits</span></span>
+<span id="cb143-2"><a href="extended-class.html#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
+<span id="cb143-3"><a href="extended-class.html#cb143-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
+<span id="cb143-4"><a href="extended-class.html#cb143-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mapping the taxonomy to the database</span></span>
+<span id="cb143-5"><a href="extended-class.html#cb143-5" aria-hidden="true" tabindex="-1"></a><span class="co"># this can recognize prokaryotes or fungi automatically.</span></span>
+<span id="cb143-6"><a href="extended-class.html#cb143-6" aria-hidden="true" tabindex="-1"></a><span class="co"># default database for prokaryotes is FAPROTAX database</span></span>
+<span id="cb143-7"><a href="extended-class.html#cb143-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func</span>()</span></code></pre></div>
 <pre><code>## This database is developed based on the recent FAPROTAX database. Please also cite the original FAPROTAX paper: Louca et al. (2016). Decoupling function and taxonomy in the global ocean microbiome. Science, 353(6305), 1272.</code></pre>
 <pre><code>## The functional table is stored in object$res_spe_func ...</code></pre>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="extended-class.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return t2$res_spe_func, 1 represent function exists, 0 represent no or cannot confirmed.</span></span></code></pre></div>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="extended-class.html#cb148-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_spe_func[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="extended-class.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return t2$res_spe_func, 1 represent function exists, 0 represent no or cannot confirmed.</span></span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="extended-class.html#cb147-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_spe_func[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
 <table style="width:85%;">
 <colgroup>
 <col width="20%" />
@@ -1461,22 +1447,22 @@ We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNG
 </tbody>
 </table>
 <p>The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community or the module in the network.</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="extended-class.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the percentages of OTUs for each trait in each module of network</span></span>
-<span id="cb149-2"><a href="extended-class.html#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use_community = FALSE represent calculating module, not community, node_type_table provide the module information</span></span>
-<span id="cb149-3"><a href="extended-class.html#cb149-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">FALSE</span>, <span class="at">node_type_table =</span> network_node_type)</span>
-<span id="cb149-4"><a href="extended-class.html#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return t2$res_spe_func_perc</span></span>
-<span id="cb149-5"><a href="extended-class.html#cb149-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we only plot some important traits, so we use the default group list to filter and show the traits.</span></span>
-<span id="cb149-6"><a href="extended-class.html#cb149-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_spe_func_perc</span>(<span class="at">select_samples =</span> <span class="fu">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
-<span id="cb149-7"><a href="extended-class.html#cb149-7" aria-hidden="true" tabindex="-1"></a><span class="co"># M represents module, ordered by the nodes number from high to low</span></span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="extended-class.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the percentages of OTUs for each trait in each module of network</span></span>
+<span id="cb148-2"><a href="extended-class.html#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use_community = FALSE represent calculating module, not community, node_type_table provide the module information</span></span>
+<span id="cb148-3"><a href="extended-class.html#cb148-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">FALSE</span>, <span class="at">node_type_table =</span> network_node_type)</span>
+<span id="cb148-4"><a href="extended-class.html#cb148-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return t2$res_spe_func_perc</span></span>
+<span id="cb148-5"><a href="extended-class.html#cb148-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we only plot some important traits, so we use the default group list to filter and show the traits.</span></span>
+<span id="cb148-6"><a href="extended-class.html#cb148-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_spe_func_perc</span>(<span class="at">select_samples =</span> <span class="fu">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
+<span id="cb148-7"><a href="extended-class.html#cb148-7" aria-hidden="true" tabindex="-1"></a><span class="co"># M represents module, ordered by the nodes number from high to low</span></span></code></pre></div>
 <p><img src="Images/plot_func_perc.png" width="700px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="extended-class.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to change the group list, reset the list t2$func_group_list</span></span>
-<span id="cb150-2"><a href="extended-class.html#cb150-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>func_group_list</span>
-<span id="cb150-3"><a href="extended-class.html#cb150-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use show_prok_func to see the detailed information of prokaryotic traits</span></span>
-<span id="cb150-4"><a href="extended-class.html#cb150-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">show_prok_func</span>(<span class="st">&quot;methanotrophy&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="extended-class.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the percentages for communities</span></span>
-<span id="cb151-2"><a href="extended-class.html#cb151-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="extended-class.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to change the group list, reset the list t2$func_group_list</span></span>
+<span id="cb149-2"><a href="extended-class.html#cb149-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>func_group_list</span>
+<span id="cb149-3"><a href="extended-class.html#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use show_prok_func to see the detailed information of prokaryotic traits</span></span>
+<span id="cb149-4"><a href="extended-class.html#cb149-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">show_prok_func</span>(<span class="st">&quot;methanotrophy&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="extended-class.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the percentages for communities</span></span>
+<span id="cb150-2"><a href="extended-class.html#cb150-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## The result table is stored in object$res_spe_func_perc!</code></pre>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="extended-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t2$res_spe_func_perc[1:5, 1:2]</span></span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="extended-class.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t2$res_spe_func_perc[1:5, 1:2]</span></span></code></pre></div>
 <table style="width:76%;">
 <colgroup>
 <col width="12%" />
@@ -1518,17 +1504,17 @@ We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNG
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="extended-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># then we try to correlate the res_spe_func_perc of communities to environmental variables</span></span>
-<span id="cb154-2"><a href="extended-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
-<span id="cb154-3"><a href="extended-class.html#cb154-3" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t2<span class="sc">$</span>res_spe_func_perc, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb154-4"><a href="extended-class.html#cb154-4" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_corr</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="extended-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># then we try to correlate the res_spe_func_perc of communities to environmental variables</span></span>
+<span id="cb153-2"><a href="extended-class.html#cb153-2" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
+<span id="cb153-3"><a href="extended-class.html#cb153-3" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t2<span class="sc">$</span>res_spe_func_perc, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb153-4"><a href="extended-class.html#cb153-4" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_corr</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Images/plot_func_perc_corr.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun requires a strict input file demand on the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="extended-class.html#cb155-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb155-2"><a href="extended-class.html#cb155-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/</span></span>
-<span id="cb155-3"><a href="extended-class.html#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="co"># decompress SILVA123; provide path in folderReferenceData as you put</span></span>
-<span id="cb155-4"><a href="extended-class.html#cb155-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun</span>(<span class="at">folderReferenceData =</span> <span class="st">&quot;./SILVA123&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="extended-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
+<span id="cb154-2"><a href="extended-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/</span></span>
+<span id="cb154-3"><a href="extended-class.html#cb154-3" aria-hidden="true" tabindex="-1"></a><span class="co"># decompress SILVA123; provide path in folderReferenceData as you put</span></span>
+<span id="cb154-4"><a href="extended-class.html#cb154-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun</span>(<span class="at">folderReferenceData =</span> <span class="st">&quot;./SILVA123&quot;</span>)</span></code></pre></div>
 <pre><code>## 载入需要的程辑包：Tax4Fun</code></pre>
 <pre><code>## 载入需要的程辑包：Matrix</code></pre>
 <pre><code>## 载入需要的程辑包：qiimer</code></pre>
@@ -1537,8 +1523,8 @@ To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link 
 ## appending column names to file</code></pre>
 <pre><code>## The KO abundance result is stored in object$tax4fun_KO</code></pre>
 <pre><code>## The pathway abundance result is stored in object$tax4fun_path</code></pre>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="extended-class.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.</span></span>
-<span id="cb163-2"><a href="extended-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]</span></span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="extended-class.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.</span></span>
+<span id="cb162-2"><a href="extended-class.html#cb162-2" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]</span></span></code></pre></div>
 <table>
 <colgroup>
 <col width="12%" />
@@ -1583,63 +1569,63 @@ To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link 
 </tbody>
 </table>
 <p>Now, we use pathway file to analyze the abundance of pathway.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="extended-class.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="co"># must transpose to taxa row, sample column</span></span>
-<span id="cb164-2"><a href="extended-class.html#cb164-2" aria-hidden="true" tabindex="-1"></a>pathway_file <span class="ot">&lt;-</span> t1<span class="sc">$</span>tax4fun_path<span class="sc">$</span>Tax4FunProfile <span class="sc">%&gt;%</span> t <span class="sc">%&gt;%</span> as.data.frame</span>
-<span id="cb164-3"><a href="extended-class.html#cb164-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter rownames, only keep ko+number</span></span>
-<span id="cb164-4"><a href="extended-class.html#cb164-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pathway_file) <span class="sc">%&lt;&gt;%</span> <span class="fu">gsub</span>(<span class="st">&quot;(^.*);</span><span class="sc">\\</span><span class="st">s.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, .)</span>
-<span id="cb164-5"><a href="extended-class.html#cb164-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the pathway hierarchical metadata</span></span>
-<span id="cb164-6"><a href="extended-class.html#cb164-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ko_map)</span>
-<span id="cb164-7"><a href="extended-class.html#cb164-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object, familiar?</span></span>
-<span id="cb164-8"><a href="extended-class.html#cb164-8" aria-hidden="true" tabindex="-1"></a>func1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> pathway_file, <span class="at">tax_table =</span> ko_map, <span class="at">sample_table =</span> t1<span class="sc">$</span>sample_table)</span>
-<span id="cb164-9"><a href="extended-class.html#cb164-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="extended-class.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># must transpose to taxa row, sample column</span></span>
+<span id="cb163-2"><a href="extended-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a>pathway_file <span class="ot">&lt;-</span> t1<span class="sc">$</span>tax4fun_path<span class="sc">$</span>Tax4FunProfile <span class="sc">%&gt;%</span> t <span class="sc">%&gt;%</span> as.data.frame</span>
+<span id="cb163-3"><a href="extended-class.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter rownames, only keep ko+number</span></span>
+<span id="cb163-4"><a href="extended-class.html#cb163-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pathway_file) <span class="sc">%&lt;&gt;%</span> <span class="fu">gsub</span>(<span class="st">&quot;(^.*);</span><span class="sc">\\</span><span class="st">s.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, .)</span>
+<span id="cb163-5"><a href="extended-class.html#cb163-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the pathway hierarchical metadata</span></span>
+<span id="cb163-6"><a href="extended-class.html#cb163-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ko_map)</span>
+<span id="cb163-7"><a href="extended-class.html#cb163-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object, familiar?</span></span>
+<span id="cb163-8"><a href="extended-class.html#cb163-8" aria-hidden="true" tabindex="-1"></a>func1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> pathway_file, <span class="at">tax_table =</span> ko_map, <span class="at">sample_table =</span> t1<span class="sc">$</span>sample_table)</span>
+<span id="cb163-9"><a href="extended-class.html#cb163-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 284 rows and 90 columns
 ## tax_table have 341 rows and 3 columns</code></pre>
 <p>Now, we need to trim data and calculate abundance.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="extended-class.html#cb166-1" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb166-2"><a href="extended-class.html#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance automatically at three levels: level_1, level_2, level_3</span></span>
-<span id="cb166-3"><a href="extended-class.html#cb166-3" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="extended-class.html#cb165-1" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb165-2"><a href="extended-class.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance automatically at three levels: level_1, level_2, level_3</span></span>
+<span id="cb165-3"><a href="extended-class.html#cb165-3" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$taxa_abund ...</code></pre>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="extended-class.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="extended-class.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 284 rows and 90 columns
 ## tax_table have 284 rows and 3 columns
 ## Taxa abundance: calculated for level_1,level_2,level_3</code></pre>
 <p>Then, we can plot the abundance.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="extended-class.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bar plot at level_1</span></span>
-<span id="cb170-2"><a href="extended-class.html#cb170-2" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(func1, <span class="at">taxrank =</span> <span class="st">&quot;level_1&quot;</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb170-3"><a href="extended-class.html#cb170-3" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="extended-class.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bar plot at level_1</span></span>
+<span id="cb169-2"><a href="extended-class.html#cb169-2" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(func1, <span class="at">taxrank =</span> <span class="st">&quot;level_1&quot;</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb169-3"><a href="extended-class.html#cb169-3" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="Images/plot_bar_tax4fun1.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>We can also do something else. For example, we can use lefse to test the differences of the abundances and find the important enriched pathways across groups.</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="extended-class.html#cb171-1" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> func1, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lefse_subgroup =</span> <span class="cn">NULL</span>)</span>
-<span id="cb171-2"><a href="extended-class.html#cb171-2" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="extended-class.html#cb170-1" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> func1, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lefse_subgroup =</span> <span class="cn">NULL</span>)</span>
+<span id="cb170-2"><a href="extended-class.html#cb170-2" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.8</span>)</span></code></pre></div>
 <p><img src="Images/plot_lefse_bar_tax4fun.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun2 <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span> is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It can provides two indexes for the evaluation of functional gene redundancies.
 We provide two functions cal_tax4fun2() and cal_tax4fun2_FRI() in trans_func class for the Tax4Fun2 analysis.<br />
 If you want to use Tax4Fun2 method, you must add the fasta file to the microtable object.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="extended-class.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object with the fasta file</span></span>
-<span id="cb172-2"><a href="extended-class.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb172-3"><a href="extended-class.html#cb172-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb172-4"><a href="extended-class.html#cb172-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
-<span id="cb172-5"><a href="extended-class.html#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rep_fasta_16S)</span>
-<span id="cb172-6"><a href="extended-class.html#cb172-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-7"><a href="extended-class.html#cb172-7" aria-hidden="true" tabindex="-1"></a>use_dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">rep_fasta =</span> rep_fasta_16S)</span>
-<span id="cb172-8"><a href="extended-class.html#cb172-8" aria-hidden="true" tabindex="-1"></a>use_dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span>
-<span id="cb172-9"><a href="extended-class.html#cb172-9" aria-hidden="true" tabindex="-1"></a>use_dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb172-10"><a href="extended-class.html#cb172-10" aria-hidden="true" tabindex="-1"></a>use_dataset</span>
-<span id="cb172-11"><a href="extended-class.html#cb172-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-12"><a href="extended-class.html#cb172-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(use_dataset)</span>
-<span id="cb172-13"><a href="extended-class.html#cb172-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
-<span id="cb172-14"><a href="extended-class.html#cb172-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
-<span id="cb172-15"><a href="extended-class.html#cb172-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/microeco for downloading ncbi-blast and Ref99NR/Ref100NR</span></span>
-<span id="cb172-16"><a href="extended-class.html#cb172-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.11.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
-<span id="cb172-17"><a href="extended-class.html#cb172-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>, <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>)</span>
-<span id="cb172-18"><a href="extended-class.html#cb172-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-19"><a href="extended-class.html#cb172-19" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
-<span id="cb172-20"><a href="extended-class.html#cb172-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="extended-class.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object with the fasta file</span></span>
+<span id="cb171-2"><a href="extended-class.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb171-3"><a href="extended-class.html#cb171-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb171-4"><a href="extended-class.html#cb171-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb171-5"><a href="extended-class.html#cb171-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rep_fasta_16S)</span>
+<span id="cb171-6"><a href="extended-class.html#cb171-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-7"><a href="extended-class.html#cb171-7" aria-hidden="true" tabindex="-1"></a>use_dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">rep_fasta =</span> rep_fasta_16S)</span>
+<span id="cb171-8"><a href="extended-class.html#cb171-8" aria-hidden="true" tabindex="-1"></a>use_dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span>
+<span id="cb171-9"><a href="extended-class.html#cb171-9" aria-hidden="true" tabindex="-1"></a>use_dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb171-10"><a href="extended-class.html#cb171-10" aria-hidden="true" tabindex="-1"></a>use_dataset</span>
+<span id="cb171-11"><a href="extended-class.html#cb171-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-12"><a href="extended-class.html#cb171-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(use_dataset)</span>
+<span id="cb171-13"><a href="extended-class.html#cb171-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
+<span id="cb171-14"><a href="extended-class.html#cb171-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
+<span id="cb171-15"><a href="extended-class.html#cb171-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/microeco for downloading ncbi-blast and Ref99NR/Ref100NR</span></span>
+<span id="cb171-16"><a href="extended-class.html#cb171-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.11.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
+<span id="cb171-17"><a href="extended-class.html#cb171-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>, <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>)</span>
+<span id="cb171-18"><a href="extended-class.html#cb171-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-19"><a href="extended-class.html#cb171-19" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
+<span id="cb171-20"><a href="extended-class.html#cb171-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
 
 </div>
 </div>

@@ -866,30 +866,6 @@ knitr::include_graphics("Images/Env_module_eigen.png")
 ```
 
 
-
-The function cal_sum_links() is used to sum the links (edge) number from one taxa to another or in the same taxa.
-The function plot_sum_links() is used to show the result from the function cal_sum_links(). 
-This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
-In terms of "Phylum" level in the tutorial, 
-the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
-So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
-For example, in terms of Proteobacteria,
-there are roughly total 900 edges associated with the OTUs in Proteobacteria, 
-in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
-
-
-```{r, echo = TRUE, eval = FALSE}
-# calculate the links between or within taxonomic ranks
-t1$cal_sum_links(taxa_level = "Phylum")
-# return t1$res_sum_links_pos and t1$res_sum_links_neg
-# require chorddiag package
-t1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
-```
-
-```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_sum_links.png")
-```
-
 The subset_network() function can be used to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.
 
