@@ -233,14 +233,15 @@ We first show the ordination using PCoA.
 
 
 ```{r, echo = TRUE, eval = TRUE}
-# we first create an object and select PCoA for ordination
-# this operation invoke the distance matrix of bray in beta_diversity of dataset
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray", ordination = "PCoA")
-# t1$res_ordination is the ordination result list
-class(t1$res_ordination)
+# we first create an trans_beta object
+# this operation invoke the distance matrix of bray in dataset$beta_diversity
+t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
+t1$cal_ordination(ordination = "PCoA")
+# t1$res_ordination is the ordination result list
+class(t1$res_ordination)
 # plot the PCoA result
 t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellipse = TRUE)
 ```
@@ -521,7 +522,7 @@ Then, we can plot the correlation results using ggplot2 or pheatmap.
 
 ```{r, echo = TRUE, eval = FALSE}
 # default ggplot2 method
-t1$plot_corr()
+t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -530,7 +531,7 @@ knitr::include_graphics("Images/plot_corr_ggplot.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
-t1$plot_corr(pheatmap = TRUE)
+t1$plot_cor(pheatmap = TRUE)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -543,7 +544,7 @@ Sometimes, it is necessary to study the correlations between environmental varia
 # calculate correlations for different groups using parameter by_group
 t1$cal_cor(by_group = "Group", use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
 # return t1$res_cor
-t1$plot_corr()
+t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -557,7 +558,7 @@ If you are concerned with the relationship between environmental factors and alp
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
-t1$plot_corr()
+t1$plot_cor()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -858,7 +859,7 @@ t2 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # calculate correlations
 t2$cal_cor(add_abund_table = t1$res_eigen)
 # plot the correlation heatmap
-t2$plot_corr()
+t2$plot_cor()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -975,7 +976,7 @@ pander::pander(t2$res_spe_func_perc[1:5, 1:2])
 # then we try to correlate the res_spe_func_perc of communities to environmental variables
 t3 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
-t3$plot_corr(pheatmap = TRUE)
+t3$plot_cor(pheatmap = TRUE)
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}

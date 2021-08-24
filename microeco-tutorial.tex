@@ -37,7 +37,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={microeco: an R package for data mining in microbial community ecology},
-  pdfauthor={Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao},
+  pdfauthor={Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -123,8 +123,8 @@
 \bibliographystyle{apalike}
 
 \title{microeco: an R package for data mining in microbial community ecology}
-\author{Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao}
-\date{2021-08-20}
+\author{Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
+\date{2021-08-24}
 
 \begin{document}
 \maketitle
@@ -157,8 +157,12 @@ The microeco package has several advantages compared to other packages in R.
 The main goal of developing this package is to help users analyse communtiy ecology data fast.
 So a series of commonly-used approaches are implemented.
 Some new methods are in active development.
-To accelerate the data mining, the whole structure of microeco package are modularized to
+To facilitate the data mining, the whole structure of microeco package are modularized to
 make users conveniently remember, search and use.
+It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
+apply those files to other tools according to the format requirement.
+Main files stored in the objects of microeco package is the commonly used data.frame format.
+So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
 \hypertarget{features}{%
 \section{Features}\label{features}}
@@ -911,7 +915,7 @@ Then, we test the differences among groups using the KW rank sum test and anova 
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_alpha_diff !
+## The result is stored in object$res_alpha_diff ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -949,7 +953,7 @@ IW vs CW & Chao1 & KW & 0.002689 & ** \\
 \end{verbatim}
 
 \begin{verbatim}
-## The result is stored in object$res_alpha_diff !
+## The result is stored in object$res_alpha_diff ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1001,29 +1005,21 @@ We first show the ordination using PCoA.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# we first create an object and select PCoA for ordination}
-\CommentTok{\# this operation invoke the distance matrix of bray in beta\_diversity of dataset}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\CommentTok{\# we first create an trans\_beta object}
+\CommentTok{\# this operation invoke the distance matrix of bray in dataset$beta\_diversity}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## The ordination result is stored in object$res_ordination !
+## Please also cite the original paper: An et al. (2019). Soil bacterial community structure in Chinese wetlands. Geoderma, 337, 290-299.
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# t1$res\_ordination is the ordination result list}
 \FunctionTok{class}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "list"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{\# plot the PCoA result}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_group\_ellipse =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
@@ -1076,7 +1072,7 @@ perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_manova !
+## The result is stored in object$res_manova ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1111,7 +1107,7 @@ perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_manova !
+## The result is stored in object$res_manova ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1140,7 +1136,7 @@ CW vs TW & bray & 999 & 0.1556 & 0.001 & *** \\
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_manova !
+## The result is stored in object$res_manova ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1177,7 +1173,7 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_betadisper
+## The result is stored in object$res_betadisper ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -1387,7 +1383,7 @@ Mantel test can be used to check whether there is significant correlations betwe
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_mantel or object$res_mantel_partial !
+## The result is stored in object$res_mantel or object$res_mantel_partial ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1431,11 +1427,11 @@ Then we use those taxa to perform correlation analysis.
 \end{verbatim}
 
 \begin{verbatim}
-## The result is stored in object$res_rf !
+## The result is stored in object$res_rf ...
 \end{verbatim}
 
 \begin{verbatim}
-## The abundance is stored in object$res_abund !
+## The abundance is stored in object$res_abund ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -1448,7 +1444,7 @@ Then we use those taxa to perform correlation analysis.
 \end{Shaded}
 
 \begin{verbatim}
-## The correlation result is stored in object$res_cor !
+## The correlation result is stored in object$res_cor ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -1462,7 +1458,7 @@ Then, we can plot the correlation results using ggplot2 or pheatmap.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# default ggplot2 method}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1471,7 +1467,7 @@ Then, we can plot the correlation results using ggplot2 or pheatmap.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# clustering heatmap; require pheatmap package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1484,7 +1480,7 @@ Sometimes, it is necessary to study the correlations between environmental varia
 \CommentTok{\# calculate correlations for different groups using parameter by\_group}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
 \CommentTok{\# return t1$res\_cor}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1497,7 +1493,7 @@ If you are concerned with the relationship between environmental factors and alp
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \CommentTok{\# use add\_abund\_table parameter to add the extra data table}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1668,7 +1664,7 @@ The fraction of all pairwise comparisons with \textbar βNTI\textbar{} \textless
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_process
+## The result is stored in object$res_process ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -1867,7 +1863,7 @@ Then we perform correlation heatmap to show the relationships between eigengenes
 \CommentTok{\# calculate correlations}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_eigen)}
 \CommentTok{\# plot the correlation heatmap}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1941,7 +1937,11 @@ We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \ci
 \end{Shaded}
 
 \begin{verbatim}
-## This database is developed based on the recent FAPROTAX database. Please also cite the original FAPROTAX paper: Louca et al. (2016). Decoupling function and taxonomy in the global ocean microbiome. Science, 353(6305), 1272.
+## Please also cite the original FAPROTAX paper: Louca et al. (2016).
+\end{verbatim}
+
+\begin{verbatim}
+## Decoupling function and taxonomy in the global ocean microbiome. Science, 353(6305), 1272.
 \end{verbatim}
 
 \begin{verbatim}
@@ -2009,7 +2009,7 @@ The percentages of the OTUs having the same trait can reflect the functional red
 \end{Shaded}
 
 \begin{verbatim}
-## The result table is stored in object$res_spe_func_perc!
+## The result table is stored in object$res_spe_func_perc ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -2039,7 +2039,7 @@ The percentages of the OTUs having the same trait can reflect the functional red
 \CommentTok{\# then we try to correlate the res\_spe\_func\_perc of communities to environmental variables}
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_corr}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2079,11 +2079,11 @@ To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link 
 \end{verbatim}
 
 \begin{verbatim}
-## The KO abundance result is stored in object$tax4fun_KO
+## The KO abundance result is stored in object$tax4fun_KO ...
 \end{verbatim}
 
 \begin{verbatim}
-## The pathway abundance result is stored in object$tax4fun_path
+## The pathway abundance result is stored in object$tax4fun_path ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -2277,6 +2277,8 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{library}\NormalTok{(file2meco)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
 \CommentTok{\# use data files inside the file2meco package.}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
@@ -2345,25 +2347,6 @@ If you want to copy an object completely, you should use the function clone() in
 ## [1] TRUE
 \end{verbatim}
 
-\hypertarget{add-layers-to-plot}{%
-\section{add layers to plot}\label{add-layers-to-plot}}
-
-Most of the plots are generated by applying the ggplot2 package.
-The important parameters in the plotting functions are configured according to our experience.
-If the inner parameters can not enough, the user can add the layers to the plot like the following operation or
-make the plot using the data (generally data.frame class) stored in the object.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# The groupmean parameter can be used to obtain the group{-}mean barplot.}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{18}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
-
 \hypertarget{subset-of-samples}{%
 \section{subset of samples}\label{subset-of-samples}}
 
@@ -2401,24 +2384,6 @@ All the classes are set public, meaning that you can change, add or remove the o
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{customized-taxonomic-table}{%
-\section{customized taxonomic table}\label{customized-taxonomic-table}}
-
-To meet the analysis of complicated cases with mixed taxonomic levels,
-the cal\_abund() function in microtable class supports the customized analysis on the selected levels or columns in tax\_table and also
-the selection of relative/absolute abundance.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# see https://github.com/ChiLiubio/file2meco and help documents for more usages}
-\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## The result is stored in object$taxa_abund ...
-\end{verbatim}
-
 \hypertarget{group-order}{%
 \section{group order}\label{group-order}}
 
@@ -2427,12 +2392,22 @@ If you want to reorder the groups, assign the factors may be the most simplest w
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## The ordination result is stored in object$res_ordination !
+## Please also cite the original paper: An et al. (2019). Soil bacterial community structure in Chinese wetlands. Geoderma, 337, 290-299.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The ordination result is stored in object$res_ordination ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -2441,9 +2416,10 @@ If you want to reorder the groups, assign the factors may be the most simplest w
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-179-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-176-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
+We can find the changed group order in the legend and colors in the plot.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2462,12 +2438,22 @@ Then we assign factors to the `Group' in sample\_table of dataset.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## The ordination result is stored in object$res_ordination !
+## Please also cite the original paper: An et al. (2019). Soil bacterial community structure in Chinese wetlands. Geoderma, 337, 290-299.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The ordination result is stored in object$res_ordination ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -2476,7 +2462,45 @@ Then we assign factors to the `Group' in sample\_table of dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-180-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-177-1.pdf}
+
+\hypertarget{add-layers-to-plot}{%
+\section{add layers to plot}\label{add-layers-to-plot}}
+
+Most of the plots are generated by applying the ggplot2 package.
+The important parameters in the plotting functions are configured according to our experience.
+If the inner parameters can not enough, the user can add the layers to the plot like the following operation or
+make the plot using the data (generally data.frame class) stored in the object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The groupmean parameter can be used to obtain the group{-}mean barplot.}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{18}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
+
+\hypertarget{add-layers-to-plot-1}{%
+\section{add layers to plot}\label{add-layers-to-plot-1}}
+
+Most of the plots are generated by applying the ggplot2 package.
+The important parameters in the plotting functions are configured according to our experience.
+If the inner parameters can not enough, the user can add the layers to the plot like the following operation or
+make the plot using the data (generally data.frame class) stored in the object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The groupmean parameter can be used to obtain the group{-}mean barplot.}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{18}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
 
 \hypertarget{mecodev-package}{%
 \chapter{mecodev package}\label{mecodev-package}}
@@ -2541,6 +2565,14 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 
 \begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
 
+\hypertarget{trans_gamma}{%
+\section{trans\_gamma}\label{trans_gamma}}
+
+The class trans\_gamma is developed to explore the relationship between beta diversity and gamma diversity based on the study:
+Zhang et al.~(2020). Local community assembly mechanisms shape soil bacterial β diversity patterns along a latitudinal gradient. Nat Commun 11, 5428 (2020);
+\url{doi:10.1038/s41467-020-19228-4}.
+The content includes the observed and simulated beta-gamma diversity relationships and the following plotting.
+
 \hypertarget{other-examples}{%
 \chapter{Other examples}\label{other-examples}}
 
@@ -2552,6 +2584,14 @@ We encourage users to contribute some unique, special and helpful examples inspi
 Jarrod J. Scott contribute a cool answer to the question that how to use custom taxa and the order in bar plot.
 This is a discussion topic in microeco Discussions part. Here is the link (\url{https://github.com/ChiLiubio/microeco/discussions/45}).
 
+\hypertarget{the-importance-of-tidy_taxonomy-function}{%
+\section{The importance of tidy\_taxonomy function}\label{the-importance-of-tidy_taxonomy-function}}
+
+The taxonomic classification with standard prefix is very important for some analysis methods,
+e.g.~taxonomic abundance plotting and biomarker finding.
+The tidy\_taxonomy function in microeco package is designed to make the taxa having standard prefix.
+See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}) and (\url{https://github.com/ChiLiubio/microeco/issues/22}).
+
 \hypertarget{question-of-prefix-in-the-taxa}{%
 \section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}}
 
@@ -2562,15 +2602,7 @@ and (\url{https://github.com/ChiLiubio/microeco/issues/15}).
 \hypertarget{the-use-of-phylogenetic-tree}{%
 \section{The use of phylogenetic tree}\label{the-use-of-phylogenetic-tree}}
 
-One of Issues referred to the basic use of phylogenetic tree (\url{https://github.com/ChiLiubio/microeco/issues/33}).
-
-\hypertarget{the-importance-of-tidy_taxonomy-function}{%
-\section{The importance of tidy\_taxonomy function}\label{the-importance-of-tidy_taxonomy-function}}
-
-The taxonomic classification with standard prefix is very important for many analysis,
-e.g.~taxonomic abundance plotting and biomarker finding.
-The tidy\_taxonomy function is designed to make the taxa having standard prefix.
-See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}) and (\url{https://github.com/ChiLiubio/microeco/issues/22}).
+One of Issues referred to the basic use of phylogenetic tree in the microeco package (\url{https://github.com/ChiLiubio/microeco/issues/33}).
 
   \bibliography{book.bib,packages.bib}
 
