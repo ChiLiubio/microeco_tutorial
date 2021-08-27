@@ -238,8 +238,8 @@ div.csl-indent {
 <h2><span class="header-section-number">7.1</span> trans_rarefy</h2>
 <p>The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
 the sequencing depth is enough to cover all the so-called species in the microbial community.</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="mecodev-package.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
-<span id="cb195-2"><a href="mecodev-package.html#cb195-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="mecodev-package.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb195-2"><a href="mecodev-package.html#cb195-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
 <span id="cb195-3"><a href="mecodev-package.html#cb195-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
 <span id="cb195-4"><a href="mecodev-package.html#cb195-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
 <span id="cb195-5"><a href="mecodev-package.html#cb195-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
@@ -249,12 +249,16 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 <span id="cb195-9"><a href="mecodev-package.html#cb195-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_rarefy class</span></span>
 <span id="cb195-10"><a href="mecodev-package.html#cb195-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
 <span id="cb195-11"><a href="mecodev-package.html#cb195-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">100</span>), <span class="at">show_point =</span> <span class="cn">TRUE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>, <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="Images/plot_trans_rarefy.png" width="700px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/plot_trans_rarefy.png" width="550px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_convert" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> trans_convert</h2>
 <p>The class trans_convert provide several data transformation approaches for the microtable object.
 The output will also be a microtable object.</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="mecodev-package.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb196-2"><a href="mecodev-package.html#cb196-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_convert<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset)</span>
+<span id="cb196-3"><a href="mecodev-package.html#cb196-3" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">convert</span>(<span class="at">method =</span> <span class="st">&quot;log&quot;</span>)</span>
+<span id="cb196-4"><a href="mecodev-package.html#cb196-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returned test2 is another microtable object</span></span></code></pre></div>
 </div>
 <div id="trans_netchord" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> trans_netchord</h2>
@@ -269,22 +273,53 @@ So the numbers along the outside of the circular plot represent how many edges o
 For example, in terms of Proteobacteria,
 there are roughly total 900 edges associated with the OTUs in Proteobacteria,
 in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="mecodev-package.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s first create a network</span></span>
-<span id="cb196-2"><a href="mecodev-package.html#cb196-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb196-3"><a href="mecodev-package.html#cb196-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
-<span id="cb196-4"><a href="mecodev-package.html#cb196-4" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_netchord</span></span>
-<span id="cb196-5"><a href="mecodev-package.html#cb196-5" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_netchord<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb196-6"><a href="mecodev-package.html#cb196-6" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="mecodev-package.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s first create a network</span></span>
+<span id="cb197-2"><a href="mecodev-package.html#cb197-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb197-3"><a href="mecodev-package.html#cb197-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb197-4"><a href="mecodev-package.html#cb197-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb197-5"><a href="mecodev-package.html#cb197-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S)</span>
+<span id="cb197-6"><a href="mecodev-package.html#cb197-6" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb197-7"><a href="mecodev-package.html#cb197-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb197-8"><a href="mecodev-package.html#cb197-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
+<span id="cb197-9"><a href="mecodev-package.html#cb197-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_netchord</span></span>
+<span id="cb197-10"><a href="mecodev-package.html#cb197-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_netchord<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
+<span id="cb197-11"><a href="mecodev-package.html#cb197-11" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_gamma" class="section level2" number="7.4">
 <h2><span class="header-section-number">7.4</span> trans_gamma</h2>
-<p>The class trans_gamma is developed to explore the relationship between beta diversity and gamma diversity
-based on the method of a biogeographic study<span class="citation">(<a href="#ref-Zhang_Local_2020" role="doc-biblioref">Zhang et al. 2020</a>)</span>.
-The contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
-The main aim of this class is to judge whether the observed gamma-beta diversity pattern are similar with the tendency of simulated
-gamma-beta diversity relationship. If so, species pool have overwhelming effect on the community assembly and
-should be first considered to explain community assembly patterns compared to other factors.</p>
+<p>The class trans_gamma is developed to explore the relationship between gamma diversity and beta diversity
+based on the methods from biogeographic studies<span class="citation">(<a href="#ref-Zhang_Local_2020" role="doc-biblioref">Zhang et al. 2020</a>)</span>.
+Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
+If the observed gamma diversity and beta diversity are significantly correlated,
+species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
+Thus, species pool should be first considered to explain beta diversity patterns.
+This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+We use the wetland data to show the observed beta-gamma diversity relationship.</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="mecodev-package.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb198-2"><a href="mecodev-package.html#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
+<span id="cb198-3"><a href="mecodev-package.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data</span></span>
+<span id="cb198-4"><a href="mecodev-package.html#cb198-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb198-5"><a href="mecodev-package.html#cb198-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb198-6"><a href="mecodev-package.html#cb198-6" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
+<span id="cb198-7"><a href="mecodev-package.html#cb198-7" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb198-8"><a href="mecodev-package.html#cb198-8" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span>
+<span id="cb198-9"><a href="mecodev-package.html#cb198-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then create trans_gamma object</span></span>
+<span id="cb198-10"><a href="mecodev-package.html#cb198-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> test, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb198-11"><a href="mecodev-package.html#cb198-11" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_observed</span>(<span class="at">sample_size =</span> <span class="cn">NULL</span>)</span>
+<span id="cb198-12"><a href="mecodev-package.html#cb198-12" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>res_observed</span>
+<span id="cb198-13"><a href="mecodev-package.html#cb198-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the result; default statistic: Spearman correlation</span></span>
+<span id="cb198-14"><a href="mecodev-package.html#cb198-14" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_observed</span>()</span></code></pre></div>
+<p><img src="Images/plot_gamma_obs.png" width="550px" style="display: block; margin: auto;" /></p>
+<p>Let’s simulate the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.</p>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="mecodev-package.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if you only run the simulation, dataset parameter is not necessary</span></span>
+<span id="cb199-2"><a href="mecodev-package.html#cb199-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb199-3"><a href="mecodev-package.html#cb199-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.</span></span>
+<span id="cb199-4"><a href="mecodev-package.html#cb199-4" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_simulation</span>(<span class="at">ncom =</span> <span class="dv">20</span>, <span class="at">ind_vect =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">2000</span>))</span>
+<span id="cb199-5"><a href="mecodev-package.html#cb199-5" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_simulation</span>(<span class="at">add_fitting =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Images/plot_gamma_simu.png" width="600px" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

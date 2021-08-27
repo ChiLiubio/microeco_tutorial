@@ -2575,8 +2575,8 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(mecodev)}
 \FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mecodev)}
 \FunctionTok{data}\NormalTok{(sample\_info\_16S)}
 \FunctionTok{data}\NormalTok{(otu\_table\_16S)}
 \CommentTok{\# set.seed is used to fix the random number generation to make the results repeatable}
@@ -2589,13 +2589,22 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_trans_rarefy} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/plot_trans_rarefy} \end{center}
 
 \hypertarget{trans_convert}{%
 \section{trans\_convert}\label{trans_convert}}
 
 The class trans\_convert provide several data transformation approaches for the microtable object.
 The output will also be a microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(dataset)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_convert}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
+\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{convert}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
+\CommentTok{\# returned test2 is another microtable object}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{trans_netchord}{%
 \section{trans\_netchord}\label{trans_netchord}}
@@ -2615,6 +2624,11 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Let\textquotesingle{}s first create a network}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
+\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S)}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
 \CommentTok{\# trans\_netchord}
@@ -2628,12 +2642,51 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \hypertarget{trans_gamma}{%
 \section{trans\_gamma}\label{trans_gamma}}
 
-The class trans\_gamma is developed to explore the relationship between beta diversity and gamma diversity
-based on the method of a biogeographic study\citep{Zhang_Local_2020}.
-The contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
-The main aim of this class is to judge whether the observed gamma-beta diversity pattern are similar with the tendency of simulated
-gamma-beta diversity relationship. If so, species pool have overwhelming effect on the community assembly and
-should be first considered to explain community assembly patterns compared to other factors.
+The class trans\_gamma is developed to explore the relationship between gamma diversity and beta diversity
+based on the methods from biogeographic studies\citep{Zhang_Local_2020}.
+Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
+If the observed gamma diversity and beta diversity are significantly correlated,
+species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
+Thus, species pool should be first considered to explain beta diversity patterns.
+This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+We use the wetland data to show the observed beta-gamma diversity relationship.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mecodev)}
+\CommentTok{\# load the example data}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
+\CommentTok{\# then create trans\_gamma object}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ test, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_observed}\NormalTok{(}\AttributeTok{sample\_size =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\NormalTok{res\_observed}
+\CommentTok{\# plot the result; default statistic: Spearman correlation}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_observed}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/plot_gamma_obs} \end{center}
+
+Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# if you only run the simulation, dataset parameter is not necessary}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_simulation}\NormalTok{(}\AttributeTok{ncom =} \DecValTok{20}\NormalTok{, }\AttributeTok{ind\_vect =} \FunctionTok{c}\NormalTok{(}\DecValTok{200}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{2000}\NormalTok{))}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_simulation}\NormalTok{(}\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_gamma_simu} \end{center}
 
 \hypertarget{other-examples}{%
 \chapter{Other examples}\label{other-examples}}
