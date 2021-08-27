@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="The tutorial for microeco package" />
   
 
-<meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
+<meta name="author" content="Chi Liu, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-24" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -406,6 +406,8 @@ Another important part of this operation is to unify the taxonomic prefix,
 e.g. transforming D_1__ to p__ for phylum level.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basic-class.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the taxonomic information unified, important</span></span>
 <span id="cb10-2"><a href="basic-class.html#cb10-2" aria-hidden="true" tabindex="-1"></a>taxonomy_table_16S <span class="sc">%&lt;&gt;%</span> tidy_taxonomy</span></code></pre></div>
+<p>The rownames of sample_table in microtable object (i.e. sample names) are used for selecting samples/groups in all the related operations in the package.
+Before you create microtable object, make sure that the rownames of sample information table are the correct sample names.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="basic-class.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(sample_info_16S)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="basic-class.html#cb13-1" aria-hidden="true" tabindex="-1"></a>sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span></code></pre></div>
@@ -464,6 +466,8 @@ e.g. transforming D_1__ to p__ for phylum level.</p>
 </tr>
 </tbody>
 </table>
+<p>In this example, the environmental data is stored in the env_data_16S alone.
+The user can also directly integrate those data into the sample information table.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="basic-class.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(env_data_16S)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <table style="width:100%;">
@@ -641,7 +645,7 @@ Bolyen, E., J. R. Rideout, M. R. Dillon, N. A. Bokulich, C. C. Abnet, G. A. Al-G
 Caporaso, J. Gregory, Justin Kuczynski, Jesse Stombaugh, Kyle Bittinger, Frederic D. Bushman, Elizabeth K. Costello, Noah Fierer, et al. 2010. <span>“QIIME Allows Analysis of High-Throughput Community Sequencing Data.”</span> Journal Article. <em>Nature Methods</em> 7 (5): 335–36. https://doi.org/<a href="http://www.nature.com/nmeth/journal/v7/n5/suppinfo/nmeth.f.303_S1.html">http://www.nature.com/nmeth/journal/v7/n5/suppinfo/nmeth.f.303_S1.html</a>.
 </div>
 <div id="ref-Franzosa_Species_2018" class="csl-entry">
-Franzosa, Eric A, Lauren J McIver, Gholamali Rahnavard, Luke R Thompson, Melanie Schirmer, George Weingart, Karen Schwarzberg Lipson, Rob Knight, J Gregory Caporaso, and Nicola Segata. 2018. <span>“Species-Level Functional Profiling of Metagenomes and Metatranscriptomes.”</span> Journal Article. <em>Nat. Methods</em> 15: 962–68.
+Franzosa, Eric A., Lauren J. McIver, Gholamali Rahnavard, Luke R. Thompson, Melanie Schirmer, George Weingart, Karen Schwarzberg Lipson, et al. 2018. <span>“Species-Level Functional Profiling of Metagenomes and Metatranscriptomes.”</span> Journal Article. <em>Nature Methods</em> 15 (11): 962–68. <a href="https://doi.org/10.1038/s41592-018-0176-y">https://doi.org/10.1038/s41592-018-0176-y</a>.
 </div>
 <div id="ref-Gao_Strong_2019" class="csl-entry">
 Gao, Cheng, Liliam Montoya, Ling Xu, Mary Madera, Joy Hollingsworth, Elizabeth Purdom, Robert B Hutmacher, Jeffery A Dahlberg, Devin Coleman-Derr, and Peggy G Lemaux. 2019. <span>“Strong Succession in Arbuscular Mycorrhizal Fungal Communities.”</span> Journal Article. <em>The ISME Journal</em> 13 (1): 214.

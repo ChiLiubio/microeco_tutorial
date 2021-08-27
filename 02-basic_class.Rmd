@@ -93,6 +93,11 @@ e.g. transforming D_1__ to p__ for phylum level.
 taxonomy_table_16S %<>% tidy_taxonomy
 ```
 
+
+The rownames of sample_table in microtable object (i.e. sample names) are used for selecting samples/groups in all the related operations in the package.
+Before you create microtable object, make sure that the rownames of sample information table are the correct sample names.
+
+
 ```{r, echo = TRUE}
 class(sample_info_16S)
 ```
@@ -105,6 +110,8 @@ sample_info_16S[1:5, ]
 pander::pander(sample_info_16S[1:5, ])
 ```
 
+In this example, the environmental data is stored in the env_data_16S alone. 
+The user can also directly integrate those data into the sample information table.
 
 ```{r, echo = TRUE}
 class(env_data_16S)

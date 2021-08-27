@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="The tutorial for microeco package" />
   
 
-<meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
+<meta name="author" content="Chi Liu, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-24" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1373,8 +1373,16 @@ SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Infe
 <span id="cb139-4"><a href="extended-class.html#cb139-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span>
 <span id="cb139-5"><a href="extended-class.html#cb139-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
 <p>We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave<span class="citation">(<a href="#ref-Tackmann_Rapid_2019" role="doc-biblioref">Tackmann, Matias Rodrigues, and Mering 2019</a>)</span>.
+It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e. OTU tables constructed from sequencing data)
+through statistical co-occurrence.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
-and add the julia in the computer path (see FlashWeave part in <a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).</p>
+and add the julia in the computer path.</p>
+<ol style="list-style-type: decimal">
+<li>download and install julia from <a href="https://julialang.org/downloads/" class="uri">https://julialang.org/downloads/</a><br />
+</li>
+<li>Put julia in the computer env PATH, such as your_directory_path</li>
+<li>Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in <a href="https://github.com/meringlab/FlashWeave.jl" class="uri">https://github.com/meringlab/FlashWeave.jl</a></li>
+</ol>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="extended-class.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
 <span id="cb140-2"><a href="extended-class.html#cb140-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>)</span>
 <span id="cb140-3"><a href="extended-class.html#cb140-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require Julia in the computer path, and the package FlashWeave</span></span>

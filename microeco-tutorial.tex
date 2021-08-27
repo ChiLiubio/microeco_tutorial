@@ -37,7 +37,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={microeco: an R package for data mining in microbial community ecology},
-  pdfauthor={Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
+  pdfauthor={Chi Liu, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Alane B. Vermelho, Xiangzhen Li, Minjie Yao},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -123,8 +123,8 @@
 \bibliographystyle{apalike}
 
 \title{microeco: an R package for data mining in microbial community ecology}
-\author{Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2021-08-24}
+\author{Chi Liu, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
+\date{2021-08-27}
 
 \begin{document}
 \maketitle
@@ -140,11 +140,14 @@
 In microbial community ecology field, many packages can be used for the data analysis,
 such as vegan\citep{Jari_vegan_2019}, ape\citep{Paradis_ape_2018} and picante\citep{Picante_Kembel_2010}.
 However, with the development of the high-throughput sequencing techniques,
-the increasing data amount and complexity make the data analysis a challenge.
-There have been some R packages created for the community data analysis in microbial ecology, such as phyloseq\citep{Mcmurdie_phyloseq_2013},
+the increasing data amount and complexity make the data mining a challenge.
+There have been some R packages created for the statistics and visualization in microbial community ecology, such as phyloseq\citep{Mcmurdie_phyloseq_2013},
 microbiome (\url{https://github.com/microbiome/microbiome}), microbiomeSeq (\url{http://www.github.com/umerijaz/microbiomeSeq}),
 ampvis2 (\url{https://madsalbertsen.github.io/ampvis2/reference/index.html}), MicrobiomeR(\url{https://github.com/vallenderlab/MicrobiomeR}),
-theseus\citep{Price_theseus_2018}, rANOMALY\citep{Theil_rANOMALY_2021} and so on.
+theseus\citep{Price_theseus_2018}, rANOMALY\citep{Theil_rANOMALY_2021},
+MicrobiomeExplorer\citep{Reeder_MicrobiomeExplorer_2021},
+tidyMicro\citep{Carpenter_tidyMicro_2021}
+and so on.
 However, we lack a flexible, comprehensive and modularized R package to analyze and manage the data.
 So we create the microeco R package\citep{Liu_microeco_2021} for this goal (\url{https://github.com/ChiLiubio/microeco}).
 Besides, we also develop the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from other tools easily
@@ -375,6 +378,9 @@ e.g.~transforming D\_1\_\_ to p\_\_ for phylum level.
 \end{Highlighting}
 \end{Shaded}
 
+The rownames of sample\_table in microtable object (i.e.~sample names) are used for selecting samples/groups in all the related operations in the package.
+Before you create microtable object, make sure that the rownames of sample information table are the correct sample names.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{class}\NormalTok{(sample\_info\_16S)}
@@ -408,6 +414,9 @@ e.g.~transforming D\_1\_\_ to p\_\_ for phylum level.
 \textbf{S5} & S5 & IW & NE & Non-saline soil \\
 \bottomrule
 \end{longtable}
+
+In this example, the environmental data is stored in the env\_data\_16S alone.
+The user can also directly integrate those data into the sample information table.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1896,8 +1905,21 @@ SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Infe
 \end{Shaded}
 
 We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave\citep{Tackmann_Rapid_2019}.
+It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e.~OTU tables constructed from sequencing data)
+through statistical co-occurrence.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
-and add the julia in the computer path (see FlashWeave part in \url{https://github.com/ChiLiubio/microeco}).
+and add the julia in the computer path.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  download and install julia from \url{https://julialang.org/downloads/}\\
+\item
+  Put julia in the computer env PATH, such as your\_directory\_path\Julia\bin  
+\item
+  Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in \url{https://github.com/meringlab/FlashWeave.jl}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2263,10 +2285,67 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \hypertarget{metagenomic-data}{%
 \section{Metagenomic data}\label{metagenomic-data}}
 
-Many methods in microeco package can be used not only for the traditional community abundance table, i.e.~species-sample table,
+Many methods in microeco package can be used not only for the traditional species abundance data, i.e.~species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
-In the README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}),
-we show several examples of metagenomic data from HUMAnN and Ncyc.
+In the file2meco package (\url{https://github.com/ChiLiubio/file2meco}),
+we provide several functions to transform the output files of some famous metagenomic tools (e.g.~HUMAnN) to
+the microtable object directly.
+HUMAnN\citep{Franzosa_Species_2018} is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
+Certainly, it can also be used for the whole community profile of metabolic pathways if you do not need something at species-level.
+The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
+Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pathway abundance file input.
+Here, we show the example of KEGG pathway results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(file2meco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\NormalTok{?humann2meco}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# use KEGG pathway based HUMAnN result}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_KEGG\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\CommentTok{\# remove the unclassified pathway in the top level}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(level1 }\SpecialCharTok{!=} \StringTok{"unclassified"}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# rel = FALSE donot use relative abundance, use the raw RPK}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"level2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{, }\AttributeTok{use\_colors =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/plot_HUMANN_KEGG_bar} \end{center}
+
+Then, we select both function and taxa to see which taxa the high abundant pathways come from.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# This operation is more flexible}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"level1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{level1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{, }\AttributeTok{use\_colors =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/plot_HUMANN_KEGG_bar_taxafunc} \end{center}
+
+Let's run LEfSe to find some functional biomarkers to differentiate two groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# functional biomarker}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_lefse\_bar}\NormalTok{(}\AttributeTok{LDA\_score =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_HUMANN_KEGG_lefse_bar} \end{center}
 
 \hypertarget{animal-data}{%
 \section{Animal data}\label{animal-data}}
@@ -2416,7 +2495,7 @@ If you want to reorder the groups, assign the factors may be the most simplest w
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-176-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-182-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -2462,7 +2541,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-177-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-183-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

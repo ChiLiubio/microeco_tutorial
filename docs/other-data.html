@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="The tutorial for microeco package" />
   
 
-<meta name="author" content="Chi Liu, Felipe Mansoldo, Jarrod J. Scott, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
+<meta name="author" content="Chi Liu, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-24" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -270,49 +270,89 @@ FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role
 </div>
 <div id="metagenomic-data" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Metagenomic data</h2>
-<p>Many methods in microeco package can be used not only for the traditional community abundance table, i.e. species-sample table,
+<p>Many methods in microeco package can be used not only for the traditional species abundance data, i.e. species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
-In the README of file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>),
-we show several examples of metagenomic data from HUMAnN and Ncyc.</p>
+In the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>),
+we provide several functions to transform the output files of some famous metagenomic tools (e.g. HUMAnN) to
+the microtable object directly.
+HUMAnN<span class="citation">(<a href="#ref-Franzosa_Species_2018" role="doc-biblioref">Franzosa et al. 2018</a>)</span> is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
+Certainly, it can also be used for the whole community profile of metabolic pathways if you do not need something at species-level.
+The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (<a href="https://huttenhower.sph.harvard.edu/humann" class="uri">https://huttenhower.sph.harvard.edu/humann</a>).
+Currently, it supports both the MetaCyc (<a href="https://metacyc.org/" class="uri">https://metacyc.org/</a>) and KEGG pathway abundance file input.
+Here, we show the example of KEGG pathway results.</p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="other-data.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb172-2"><a href="other-data.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb172-3"><a href="other-data.html#cb172-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb172-4"><a href="other-data.html#cb172-4" aria-hidden="true" tabindex="-1"></a>?humann2meco</span>
+<span id="cb172-5"><a href="other-data.html#cb172-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_sample_info.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb172-6"><a href="other-data.html#cb172-6" aria-hidden="true" tabindex="-1"></a>match_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_match_table.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb172-7"><a href="other-data.html#cb172-7" aria-hidden="true" tabindex="-1"></a><span class="co"># use KEGG pathway based HUMAnN result</span></span>
+<span id="cb172-8"><a href="other-data.html#cb172-8" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_HUMAnN_KEGG_abund.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb172-9"><a href="other-data.html#cb172-9" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb172-10"><a href="other-data.html#cb172-10" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the unclassified pathway in the top level</span></span>
+<span id="cb172-11"><a href="other-data.html#cb172-11" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(level1 <span class="sc">!=</span> <span class="st">&quot;unclassified&quot;</span>)</span>
+<span id="cb172-12"><a href="other-data.html#cb172-12" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb172-13"><a href="other-data.html#cb172-13" aria-hidden="true" tabindex="-1"></a><span class="co"># rel = FALSE donot use relative abundance, use the raw RPK</span></span>
+<span id="cb172-14"><a href="other-data.html#cb172-14" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb172-15"><a href="other-data.html#cb172-15" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;level2&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>)</span>
+<span id="cb172-16"><a href="other-data.html#cb172-16" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">ylab_title =</span> <span class="st">&quot;Abundance (RPK)&quot;</span>, <span class="at">use_colors =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">12</span>, <span class="st">&quot;Set3&quot;</span>))</span></code></pre></div>
+<p><img src="Images/plot_HUMANN_KEGG_bar.png" width="800px" style="display: block; margin: auto;" /></p>
+<p>Then, we select both function and taxa to see which taxa the high abundant pathways come from.</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="other-data.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This operation is more flexible</span></span>
+<span id="cb173-2"><a href="other-data.html#cb173-2" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="fu">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Genus&quot;</span>), <span class="at">rel =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb173-3"><a href="other-data.html#cb173-3" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>level1 <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb173-4"><a href="other-data.html#cb173-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Phylum <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb173-5"><a href="other-data.html#cb173-5" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">delete_part_prefix =</span> T)</span>
+<span id="cb173-6"><a href="other-data.html#cb173-6" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">ylab_title =</span> <span class="st">&quot;Abundance (RPK)&quot;</span>, <span class="at">use_colors =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">12</span>, <span class="st">&quot;Set3&quot;</span>))</span></code></pre></div>
+<p><img src="Images/plot_HUMANN_KEGG_bar_taxafunc.png" width="800px" style="display: block; margin: auto;" /></p>
+<p>Let’s run LEfSe to find some functional biomarkers to differentiate two groups.</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="other-data.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># functional biomarker</span></span>
+<span id="cb174-2"><a href="other-data.html#cb174-2" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb174-3"><a href="other-data.html#cb174-3" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb174-4"><a href="other-data.html#cb174-4" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="Images/plot_HUMANN_KEGG_lefse_bar.png" width="700px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="animal-data" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Animal data</h2>
 <p>We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span>.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="other-data.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb172-2"><a href="other-data.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
-<span id="cb172-3"><a href="other-data.html#cb172-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb172-4"><a href="other-data.html#cb172-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-5"><a href="other-data.html#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the file2meco package.</span></span>
-<span id="cb172-6"><a href="other-data.html#cb172-6" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb172-7"><a href="other-data.html#cb172-7" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb172-8"><a href="other-data.html#cb172-8" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb172-9"><a href="other-data.html#cb172-9" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
-<span id="cb172-10"><a href="other-data.html#cb172-10" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
-<span id="cb172-11"><a href="other-data.html#cb172-11" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb172-12"><a href="other-data.html#cb172-12" aria-hidden="true" tabindex="-1"></a><span class="co"># We correct the species names in tax_table</span></span>
-<span id="cb172-13"><a href="other-data.html#cb172-13" aria-hidden="true" tabindex="-1"></a>select_rows <span class="ot">&lt;-</span> data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species <span class="sc">!=</span> <span class="st">&quot;s__&quot;</span></span>
-<span id="cb172-14"><a href="other-data.html#cb172-14" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;s__&quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;g__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Genus[select_rows]), <span class="st">&quot; &quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;s__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows]))</span>
-<span id="cb172-15"><a href="other-data.html#cb172-15" aria-hidden="true" tabindex="-1"></a><span class="co"># taxonomic abundance</span></span>
-<span id="cb172-16"><a href="other-data.html#cb172-16" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb172-17"><a href="other-data.html#cb172-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-18"><a href="other-data.html#cb172-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
-<span id="cb172-19"><a href="other-data.html#cb172-19" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(data1)</span>
-<span id="cb172-20"><a href="other-data.html#cb172-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Select NJC19 database</span></span>
-<span id="cb172-21"><a href="other-data.html#cb172-21" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;NJC19&quot;</span>)</span>
-<span id="cb172-22"><a href="other-data.html#cb172-22" aria-hidden="true" tabindex="-1"></a><span class="co"># get the trait percentage data</span></span>
-<span id="cb172-23"><a href="other-data.html#cb172-23" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb172-24"><a href="other-data.html#cb172-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-25"><a href="other-data.html#cb172-25" aria-hidden="true" tabindex="-1"></a><span class="co"># inset the trait percentage result into taxa_abund of microtable object</span></span>
-<span id="cb172-26"><a href="other-data.html#cb172-26" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>taxa_abund<span class="sc">$</span>Trait <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(data2<span class="sc">$</span>res_spe_func_perc))</span>
-<span id="cb172-27"><a href="other-data.html#cb172-27" aria-hidden="true" tabindex="-1"></a><span class="co"># use trans_abund to plot</span></span>
-<span id="cb172-28"><a href="other-data.html#cb172-28" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> data1, <span class="at">taxrank =</span> <span class="st">&quot;Trait&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb172-29"><a href="other-data.html#cb172-29" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_box</span>(<span class="at">group =</span> <span class="st">&quot;donor_status&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Relative population abundance (%)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="other-data.html#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb175-2"><a href="other-data.html#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb175-3"><a href="other-data.html#cb175-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb175-4"><a href="other-data.html#cb175-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb175-5"><a href="other-data.html#cb175-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the file2meco package.</span></span>
+<span id="cb175-6"><a href="other-data.html#cb175-6" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb175-7"><a href="other-data.html#cb175-7" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb175-8"><a href="other-data.html#cb175-8" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb175-9"><a href="other-data.html#cb175-9" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb175-10"><a href="other-data.html#cb175-10" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
+<span id="cb175-11"><a href="other-data.html#cb175-11" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb175-12"><a href="other-data.html#cb175-12" aria-hidden="true" tabindex="-1"></a><span class="co"># We correct the species names in tax_table</span></span>
+<span id="cb175-13"><a href="other-data.html#cb175-13" aria-hidden="true" tabindex="-1"></a>select_rows <span class="ot">&lt;-</span> data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species <span class="sc">!=</span> <span class="st">&quot;s__&quot;</span></span>
+<span id="cb175-14"><a href="other-data.html#cb175-14" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;s__&quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;g__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Genus[select_rows]), <span class="st">&quot; &quot;</span>, <span class="fu">gsub</span>(<span class="st">&quot;s__&quot;</span>, <span class="st">&quot;&quot;</span>, data1<span class="sc">$</span>tax_table<span class="sc">$</span>Species[select_rows]))</span>
+<span id="cb175-15"><a href="other-data.html#cb175-15" aria-hidden="true" tabindex="-1"></a><span class="co"># taxonomic abundance</span></span>
+<span id="cb175-16"><a href="other-data.html#cb175-16" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb175-17"><a href="other-data.html#cb175-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb175-18"><a href="other-data.html#cb175-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
+<span id="cb175-19"><a href="other-data.html#cb175-19" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(data1)</span>
+<span id="cb175-20"><a href="other-data.html#cb175-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Select NJC19 database</span></span>
+<span id="cb175-21"><a href="other-data.html#cb175-21" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;NJC19&quot;</span>)</span>
+<span id="cb175-22"><a href="other-data.html#cb175-22" aria-hidden="true" tabindex="-1"></a><span class="co"># get the trait percentage data</span></span>
+<span id="cb175-23"><a href="other-data.html#cb175-23" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">use_community =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb175-24"><a href="other-data.html#cb175-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb175-25"><a href="other-data.html#cb175-25" aria-hidden="true" tabindex="-1"></a><span class="co"># inset the trait percentage result into taxa_abund of microtable object</span></span>
+<span id="cb175-26"><a href="other-data.html#cb175-26" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>taxa_abund<span class="sc">$</span>Trait <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(data2<span class="sc">$</span>res_spe_func_perc))</span>
+<span id="cb175-27"><a href="other-data.html#cb175-27" aria-hidden="true" tabindex="-1"></a><span class="co"># use trans_abund to plot</span></span>
+<span id="cb175-28"><a href="other-data.html#cb175-28" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> data1, <span class="at">taxrank =</span> <span class="st">&quot;Trait&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb175-29"><a href="other-data.html#cb175-29" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_box</span>(<span class="at">group =</span> <span class="st">&quot;donor_status&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Relative population abundance (%)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>))</span></code></pre></div>
 <p><img src="Images/plot_mouse_NJC19.png" width="800px" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Franzosa_Species_2018" class="csl-entry">
+Franzosa, Eric A., Lauren J. McIver, Gholamali Rahnavard, Luke R. Thompson, Melanie Schirmer, George Weingart, Karen Schwarzberg Lipson, et al. 2018. <span>“Species-Level Functional Profiling of Metagenomes and Metatranscriptomes.”</span> Journal Article. <em>Nature Methods</em> 15 (11): 962–68. <a href="https://doi.org/10.1038/s41592-018-0176-y">https://doi.org/10.1038/s41592-018-0176-y</a>.
+</div>
 <div id="ref-Lim_Large_2020" class="csl-entry">
 Lim, Roktaek, Josephine Jill T. Cabatbat, Thomas L. P. Martin, Haneul Kim, Seunghyeon Kim, Jaeyun Sung, Cheol-Min Ghim, and Pan-Jun Kim. 2020. <span>“Large-Scale Metabolic Interaction Network of the Mouse and Human Gut Microbiota.”</span> Journal Article. <em>Scientific Data</em> 7 (1). <a href="https://doi.org/10.1038/s41597-020-0516-5">https://doi.org/10.1038/s41597-020-0516-5</a>.
 </div>
