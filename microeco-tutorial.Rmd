@@ -231,9 +231,13 @@ The required sample names must be same in rownames of sample_table and colnames 
 
 ```{r, echo = TRUE}
 # In R6 class, '$new' is the original method used to create a new object of class
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
+dataset <- microtable$new(otu_table = otu_table_16S)
+# If you only provide abundance table, the class can help you create a sample info table
 class(dataset)
-print(dataset)
+dataset
+# Let's create a dataset microtable with more information
+dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
+dataset
 ```
 
 To make the species and sample information consistent across different files in the dataset object, we can use function tidy_dataset() to trim the dataset.
@@ -1784,8 +1788,8 @@ test$rarefy_samples(sample.size = 10000)
 test1 <- trans_gamma$new(dataset = test, group = "Type", method = "bray")
 test1$cal_observed(sample_size = NULL)
 test1$res_observed
-# plot the result; default statistic: Spearman correlation
-test1$plot_observed()
+# use Spearman correlation
+test1$plot_observed(cor_method = "spearman")
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}

@@ -539,60 +539,68 @@ This operation is very similar with the package phyloseq<span class="citation">(
 The otu_table in the microtable class must be the species-sample format: rownames must be OTU names, colnames must be sample names.
 The required sample names must be same in rownames of sample_table and colnames of otu_table.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="basic-class.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R6 class, &#39;$new&#39; is the original method used to create a new object of class</span></span>
-<span id="cb18-2"><a href="basic-class.html#cb18-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)</span>
-<span id="cb18-3"><a href="basic-class.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset)</span></code></pre></div>
+<span id="cb18-2"><a href="basic-class.html#cb18-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> otu_table_16S)</span></code></pre></div>
+<pre><code>## No sample_table provided, automatically use colnames in otu_table to create one ...</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="basic-class.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you only provide abundance table, the class can help you create a sample info table</span></span>
+<span id="cb20-2"><a href="basic-class.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset)</span></code></pre></div>
 <pre><code>## [1] &quot;microtable&quot; &quot;R6&quot;</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="basic-class.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="basic-class.html#cb22-1" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
+<pre><code>## microtable class:
+## sample_table have 90 rows and 2 columns
+## otu_table have 13628 rows and 90 columns</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="basic-class.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a dataset microtable with more information</span></span>
+<span id="cb24-2"><a href="basic-class.html#cb24-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)</span>
+<span id="cb24-3"><a href="basic-class.html#cb24-3" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13628 rows and 7 columns
 ## phylo_tree have 14096 tips</code></pre>
 <p>To make the species and sample information consistent across different files in the dataset object, we can use function tidy_dataset() to trim the dataset.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="basic-class.html#cb22-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb22-2"><a href="basic-class.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="basic-class.html#cb26-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb26-2"><a href="basic-class.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13628 rows and 7 columns
 ## phylo_tree have 13628 tips</code></pre>
 <p>Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria".</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="basic-class.html#cb24-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Archaea&quot;</span> <span class="sc">|</span> Kingdom <span class="sc">==</span> <span class="st">&quot;k__Bacteria&quot;</span>)</span>
-<span id="cb24-2"><a href="basic-class.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="basic-class.html#cb28-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Archaea&quot;</span> <span class="sc">|</span> Kingdom <span class="sc">==</span> <span class="st">&quot;k__Bacteria&quot;</span>)</span>
+<span id="cb28-2"><a href="basic-class.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13330 rows and 7 columns
 ## phylo_tree have 13628 tips</code></pre>
 <p>We also remove OTUs with the taxonomic assignments “mitochondria” or “chloroplast.”</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="basic-class.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax_table.</span></span>
-<span id="cb26-2"><a href="basic-class.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation.</span></span>
-<span id="cb26-3"><a href="basic-class.html#cb26-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="basic-class.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax_table.</span></span>
+<span id="cb30-2"><a href="basic-class.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation.</span></span>
+<span id="cb30-3"><a href="basic-class.html#cb30-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span></code></pre></div>
 <pre><code>## Total 34 taxa are removed from tax_table ...</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="basic-class.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="basic-class.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
 ## phylo_tree have 13628 tips</code></pre>
 <p>Then, to make the OTUs same in otu_table, tax_table and phylo_tree, we use tidy_dataset() again.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="basic-class.html#cb30-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb30-2"><a href="basic-class.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="basic-class.html#cb34-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb34-2"><a href="basic-class.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13296 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
 ## phylo_tree have 13296 tips</code></pre>
 <p>Then we use sample_sums() to check the sequence numbers in each sample.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="basic-class.html#cb32-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="basic-class.html#cb36-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10316 37087</code></pre>
 <p>Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 we need to perform the resampling to make the sequence number equal for each sample.
 The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="basic-class.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, we use 10000 sequences in each sample</span></span>
-<span id="cb34-2"><a href="basic-class.html#cb34-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, we use 10000 sequences in each sample</span></span>
+<span id="cb38-2"><a href="basic-class.html#cb38-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
 <pre><code>## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="basic-class.html#cb36-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basic-class.html#cb40-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10000 10000</code></pre>
 <p>Then, we calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function return a list called taxa_abund containing several data frame of the abundance information at each taxonomic rank.
@@ -600,36 +608,36 @@ The list is stored in the microtable object automatically.
 It’s worth noting that the cal_abund() function can be used to solve some complex cases,
 such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
 Those have been shown in README of file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>).</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="basic-class.html#cb42-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$taxa_abund ...</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basic-class.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$taxa_abund</span></span>
-<span id="cb40-2"><a href="basic-class.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>taxa_abund)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basic-class.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$taxa_abund</span></span>
+<span id="cb44-2"><a href="basic-class.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>taxa_abund)</span></code></pre></div>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <p>If you want to save the taxa abundance file to a local place, use save_abund().</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="basic-class.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;taxa_abund&quot;</span>)</span>
-<span id="cb42-2"><a href="basic-class.html#cb42-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="basic-class.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;taxa_abund&quot;</span>)</span>
+<span id="cb46-2"><a href="basic-class.html#cb46-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
 <p>Then, let’s calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 As an example, we do not calculate phylogenetic diversity.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="basic-class.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to add Faith&#39;s phylogenetic diversity, use PD = TRUE, this will be a little slow</span></span>
-<span id="cb43-2"><a href="basic-class.html#cb43-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_alphadiv</span>(<span class="at">PD =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basic-class.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to add Faith&#39;s phylogenetic diversity, use PD = TRUE, this will be a little slow</span></span>
+<span id="cb47-2"><a href="basic-class.html#cb47-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_alphadiv</span>(<span class="at">PD =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## The result is stored in object$alpha_diversity ...</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="basic-class.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$alpha_diversity</span></span>
-<span id="cb45-2"><a href="basic-class.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>alpha_diversity)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="basic-class.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$alpha_diversity</span></span>
+<span id="cb49-2"><a href="basic-class.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>alpha_diversity)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basic-class.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
-<span id="cb47-2"><a href="basic-class.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;alpha_diversity&quot;</span>)</span>
-<span id="cb47-3"><a href="basic-class.html#cb47-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="basic-class.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
+<span id="cb51-2"><a href="basic-class.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;alpha_diversity&quot;</span>)</span>
+<span id="cb51-3"><a href="basic-class.html#cb51-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
 <p>We also calculate the distance matrix of beta diversity using function cal_betadiv().
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="basic-class.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
-<span id="cb48-2"><a href="basic-class.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package</span></span>
-<span id="cb48-3"><a href="basic-class.html#cb48-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb48-4"><a href="basic-class.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$beta_diversity</span></span>
-<span id="cb48-5"><a href="basic-class.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>beta_diversity)</span>
-<span id="cb48-6"><a href="basic-class.html#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$beta_diversity to a directory</span></span>
-<span id="cb48-7"><a href="basic-class.html#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;beta_diversity&quot;</span>)</span>
-<span id="cb48-8"><a href="basic-class.html#cb48-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_betadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;beta_diversity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="basic-class.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
+<span id="cb52-2"><a href="basic-class.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package</span></span>
+<span id="cb52-3"><a href="basic-class.html#cb52-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-4"><a href="basic-class.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$beta_diversity</span></span>
+<span id="cb52-5"><a href="basic-class.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>beta_diversity)</span>
+<span id="cb52-6"><a href="basic-class.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$beta_diversity to a directory</span></span>
+<span id="cb52-7"><a href="basic-class.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;beta_diversity&quot;</span>)</span>
+<span id="cb52-8"><a href="basic-class.html#cb52-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_betadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;beta_diversity&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

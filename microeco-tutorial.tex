@@ -465,7 +465,17 @@ The required sample names must be same in rownames of sample\_table and colnames
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# In R6 class, \textquotesingle{}$new\textquotesingle{} is the original method used to create a new object of class}
-\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_tree\_16S)}
+\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No sample_table provided, automatically use colnames in otu_table to create one ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If you only provide abundance table, the class can help you create a sample info table}
 \FunctionTok{class}\NormalTok{(dataset)}
 \end{Highlighting}
 \end{Shaded}
@@ -476,7 +486,21 @@ The required sample names must be same in rownames of sample\_table and colnames
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(dataset)}
+\NormalTok{dataset}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 2 columns
+## otu_table have 13628 rows and 90 columns
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Let\textquotesingle{}s create a dataset microtable with more information}
+\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_tree\_16S)}
+\NormalTok{dataset}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2666,8 +2690,8 @@ We use the wetland data to show the observed beta-gamma diversity relationship.
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ test, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_observed}\NormalTok{(}\AttributeTok{sample\_size =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\NormalTok{res\_observed}
-\CommentTok{\# plot the result; default statistic: Spearman correlation}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_observed}\NormalTok{()}
+\CommentTok{\# use Spearman correlation}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_observed}\NormalTok{(}\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
