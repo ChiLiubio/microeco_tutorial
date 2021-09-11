@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.5.0)}
 \author{Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
-\date{2021-08-29}
+\date{2021-09-11}
 
 \begin{document}
 \maketitle
@@ -618,6 +618,10 @@ The function rarefy\_samples can invoke the function tidy\_dataset automatically
 ## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...
 \end{verbatim}
 
+\begin{verbatim}
+## 530 taxa are removed from the otu_table, as the abundance is 0 ...
+\end{verbatim}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
@@ -656,7 +660,7 @@ Those have been shown in README of file2meco package (\url{https://github.com/Ch
 ## [1] "list"
 \end{verbatim}
 
-If you want to save the taxa abundance file to a local place, use save\_abund().
+The function save\_abund() can be used to save the taxa abundance file to a local place.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2673,11 +2677,49 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
 \CommentTok{\# trans\_netchord}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_netchord}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
+\CommentTok{\# require chorddiag package (https://github.com/mattflor/chorddiag)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
+
+\hypertarget{trans_ts}{%
+\section{trans\_ts}\label{trans_ts}}
+
+The class trans\_ts is designed for the time series data analysis.
+A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
+gLV models are based on ordinary differential equations that model the logistic growth of species;
+naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
+More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
+against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species),
+and analyzing community stability (see \citep{Li_expectation_2019} and the references therein).
+Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package \citep{Li_expectation_2019}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# R package beem should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps}
+\FunctionTok{library}\NormalTok{(mecodev)}
+\CommentTok{\# load the example data in mecodev package; the input must be a microtable object}
+\CommentTok{\# There are several strict requirements on the sample\_table; see the document of the class.}
+\FunctionTok{data}\NormalTok{(}\StringTok{"gut\_microb\_ts"}\NormalTok{)}
+\CommentTok{\# generally, using filter\_thres to filter the taxa with low abundance is crutial}
+\CommentTok{\# there are only 22 taxa in the example data, we use 0}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_ts}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ gut\_microb\_ts, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
+\CommentTok{\# we use minimal 50 times for iteration}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_biomass}\NormalTok{(}\AttributeTok{min\_iter =} \DecValTok{50}\NormalTok{)}
+\CommentTok{\# return t1$res\_biomass and t1$res\_param}
+\CommentTok{\# generate the inferred biological network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{()}
+\CommentTok{\# Now let\textquotesingle{}s use trans\_network class to add the modules}
+\FunctionTok{library}\NormalTok{(microeco)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ gut\_microb\_ts, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\NormalTok{res\_network }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_network}
+\CommentTok{\# use cluster\_optimal; as the default cluster\_fast\_greedy can not be used for the directed network}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(t2}\SpecialCharTok{$}\NormalTok{res\_network)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{trans_gamma}{%
 \section{trans\_gamma}\label{trans_gamma}}

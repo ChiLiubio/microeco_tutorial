@@ -301,7 +301,7 @@ dataset$cal_abund()
 class(dataset$taxa_abund)
 ```
 
-If you want to save the taxa abundance file to a local place, use save_abund().
+The function save_abund() can be used to save the taxa abundance file to a local place.
 
 ```{r, echo = TRUE, eval = FALSE}
 dir.create("taxa_abund")
@@ -342,6 +342,9 @@ class(dataset$beta_diversity)
 dir.create("beta_diversity")
 dataset$save_betadiv(dirpath = "beta_diversity")
 ```
+
+
+
 
 
 <!--chapter:end:02-basic_class.Rmd-->
@@ -1770,12 +1773,50 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU"
 t1$cal_network(p_thres = 0.01, COR_cut = 0.7)
 # trans_netchord
 test1 <- trans_netchord$new(dataset = t1, taxa_level = "Phylum")
+# require chorddiag package (https://github.com/mattflor/chorddiag)
 test1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_sum_links.png")
 ```
+
+## trans_ts
+
+The class trans_ts is designed for the time series data analysis.
+A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
+gLV models are based on ordinary differential equations that model the logistic growth of species; 
+naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
+More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
+against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species), 
+and analyzing community stability (see [@Li_expectation_2019] and the references therein).
+Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package [@Li_expectation_2019].
+
+
+
+```{r, echo = TRUE, eval = FALSE}
+# R package beem should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps
+library(mecodev)
+# load the example data in mecodev package; the input must be a microtable object
+# There are several strict requirements on the sample_table; see the document of the class.
+data("gut_microb_ts")
+# generally, using filter_thres to filter the taxa with low abundance is crutial
+# there are only 22 taxa in the example data, we use 0
+t1 <- trans_ts$new(dataset = gut_microb_ts, filter_thres = 0)
+# we use minimal 50 times for iteration
+t1$cal_biomass(min_iter = 50)
+# return t1$res_biomass and t1$res_param
+# generate the inferred biological network
+t1$cal_network()
+# Now let's use trans_network class to add the modules
+library(microeco)
+t2 <- trans_network$new(dataset = gut_microb_ts, cal_cor = NA)
+t2$res_network <- t1$res_network
+# use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network
+t2$cal_module(method = "cluster_optimal")
+plot(t2$res_network)
+```
+
 
 
 ## trans_gamma

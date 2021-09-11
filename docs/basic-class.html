@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-08-29" />
+<meta name="date" content="2021-09-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,7 +201,8 @@ div.csl-indent {
 <li class="chapter" data-level="7.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>7.1</b> trans_rarefy</a></li>
 <li class="chapter" data-level="7.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>7.2</b> trans_convert</a></li>
 <li class="chapter" data-level="7.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>7.3</b> trans_netchord</a></li>
-<li class="chapter" data-level="7.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>7.4</b> trans_gamma</a></li>
+<li class="chapter" data-level="7.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>7.4</b> trans_ts</a></li>
+<li class="chapter" data-level="7.5" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>7.5</b> trans_gamma</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>8</b> Other examples</a>
 <ul>
@@ -600,7 +601,8 @@ The function rarefy_samples can invoke the function tidy_dataset automatically b
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, we use 10000 sequences in each sample</span></span>
 <span id="cb38-2"><a href="basic-class.html#cb38-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
 <pre><code>## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basic-class.html#cb40-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
+<pre><code>## 530 taxa are removed from the otu_table, as the abundance is 0 ...</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="basic-class.html#cb41-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10000 10000</code></pre>
 <p>Then, we calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function return a list called taxa_abund containing several data frame of the abundance information at each taxonomic rank.
@@ -608,36 +610,36 @@ The list is stored in the microtable object automatically.
 It’s worth noting that the cal_abund() function can be used to solve some complex cases,
 such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
 Those have been shown in README of file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>).</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="basic-class.html#cb42-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="basic-class.html#cb43-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$taxa_abund ...</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basic-class.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$taxa_abund</span></span>
-<span id="cb44-2"><a href="basic-class.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>taxa_abund)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="basic-class.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$taxa_abund</span></span>
+<span id="cb45-2"><a href="basic-class.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>taxa_abund)</span></code></pre></div>
 <pre><code>## [1] &quot;list&quot;</code></pre>
-<p>If you want to save the taxa abundance file to a local place, use save_abund().</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="basic-class.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;taxa_abund&quot;</span>)</span>
-<span id="cb46-2"><a href="basic-class.html#cb46-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
+<p>The function save_abund() can be used to save the taxa abundance file to a local place.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basic-class.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;taxa_abund&quot;</span>)</span>
+<span id="cb47-2"><a href="basic-class.html#cb47-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
 <p>Then, let’s calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 As an example, we do not calculate phylogenetic diversity.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basic-class.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to add Faith&#39;s phylogenetic diversity, use PD = TRUE, this will be a little slow</span></span>
-<span id="cb47-2"><a href="basic-class.html#cb47-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_alphadiv</span>(<span class="at">PD =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="basic-class.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to add Faith&#39;s phylogenetic diversity, use PD = TRUE, this will be a little slow</span></span>
+<span id="cb48-2"><a href="basic-class.html#cb48-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_alphadiv</span>(<span class="at">PD =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## The result is stored in object$alpha_diversity ...</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="basic-class.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$alpha_diversity</span></span>
-<span id="cb49-2"><a href="basic-class.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>alpha_diversity)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="basic-class.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$alpha_diversity</span></span>
+<span id="cb50-2"><a href="basic-class.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>alpha_diversity)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="basic-class.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
-<span id="cb51-2"><a href="basic-class.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;alpha_diversity&quot;</span>)</span>
-<span id="cb51-3"><a href="basic-class.html#cb51-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="basic-class.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
+<span id="cb52-2"><a href="basic-class.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;alpha_diversity&quot;</span>)</span>
+<span id="cb52-3"><a href="basic-class.html#cb52-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
 <p>We also calculate the distance matrix of beta diversity using function cal_betadiv().
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="basic-class.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
-<span id="cb52-2"><a href="basic-class.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package</span></span>
-<span id="cb52-3"><a href="basic-class.html#cb52-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb52-4"><a href="basic-class.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$beta_diversity</span></span>
-<span id="cb52-5"><a href="basic-class.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>beta_diversity)</span>
-<span id="cb52-6"><a href="basic-class.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$beta_diversity to a directory</span></span>
-<span id="cb52-7"><a href="basic-class.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;beta_diversity&quot;</span>)</span>
-<span id="cb52-8"><a href="basic-class.html#cb52-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_betadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;beta_diversity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="basic-class.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
+<span id="cb53-2"><a href="basic-class.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package</span></span>
+<span id="cb53-3"><a href="basic-class.html#cb53-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb53-4"><a href="basic-class.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$beta_diversity</span></span>
+<span id="cb53-5"><a href="basic-class.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset<span class="sc">$</span>beta_diversity)</span>
+<span id="cb53-6"><a href="basic-class.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$beta_diversity to a directory</span></span>
+<span id="cb53-7"><a href="basic-class.html#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;beta_diversity&quot;</span>)</span>
+<span id="cb53-8"><a href="basic-class.html#cb53-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_betadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;beta_diversity&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>
