@@ -49,19 +49,6 @@ Main files stored in the objects of microeco package is the commonly used data.f
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
 
-## Features
-  + R6 Class; fast, flexible and modularized
-  + Taxa abundance plotting
-  + Venn diagram
-  + Alpha diversity
-  + Beta diversity
-  + Differential abundance analysis
-  + Environmental data analysis
-  + Null model analysis
-  + Network analysis
-  + Functional analysis
-
-
 ## R6 Class
 
 All the classes in microeco package depend on the R6 class [@R6_Winston]. 
@@ -93,11 +80,156 @@ library(microeco)
 ?microtable
 ```
 
+## Dependence
+
+### Important packages
+To keep the start and use of microeco package simplified, 
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+data(dataset)
+t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.0005)
+t1$cal_network(network_method = "SpiecEasi")
+```
+
+```html
+Error in t1$cal_network(network_method = "SpiecEasi"): igraph package not installed ...
+```
+
+
+<br>
+The reason is that network construction require igraph package. We donot put the igraph and some other packages (e.g. SpiecEasi in github) on the "Imports" part of microeco package.
+
+The solutions:
+
+1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
+
+2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.
+
+We show several packages that are published in CRAN and not installed automatically.
+
+```{r, echo = FALSE, eval = TRUE}
+pre_pac <- read.delim("prerequite_packages.tsv")
+```
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::kable(pre_pac)
+```
+
+
+Then, if you want to install these packages or some of them, you can do like this:
+
+```{r, echo = TRUE, eval = FALSE}
+# If a package is not installed, it will be installed from CRAN.
+# First select the packages of interest
+packages <- c("reshape2", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial")
+# Now check or install
+lapply(packages, function(x) {
+	if(!require(x, character.only = TRUE)) {
+		install.packages(x, dependencies = TRUE)
+	}})
+```
+
+There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+or packages written by other languages.
+
+
+### ggtree
+Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
+```{r, echo = TRUE, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("ggtree")
+```
+
+### SpiecEasi
+
+The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
+The package can be installed from Github https://github.com/zdk123/SpiecEasi
+
+
+### Gephi
+Gephi is an excellent network visualization tool and used to open the saved network file, 
+i.e. network.gexf in the [tutorial](https://chiliubio.github.io/microeco_tutorial/extended-class.html#trans_network-class).
+You can download Gephi and learn how to use it from https://gephi.org/users/download/
+
+
+### WGCNA
+In the correlation-based network, when the species number is very large,
+the correlation algorithm in WGCNA is very fast compared to the 'cor' option in trans_network.
+
+```{r, echo = TRUE, eval = FALSE}
+install.packages("WGCNA", dependencies = TRUE)
+```
+
+
+### Tax4Fun
+Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.
+
+1. install Tax4Fun package
+```{r, echo = TRUE, eval = FALSE}
+install.packages("RJSONIO")
+install.packages(system.file("extdata", "biom_0.3.12.tar.gz", package="microeco"), repos = NULL, type = "source")
+install.packages(system.file("extdata", "qiimer_0.9.4.tar.gz", package="microeco"), repos = NULL, type = "source")
+install.packages(system.file("extdata", "Tax4Fun_0.3.1.tar.gz", package="microeco"), repos = NULL, type = "source")
+```
+
+2. download SILVA123 reference data from http://tax4fun.gobics.de/  
+　unzip SILVA123.zip , move it to a place that you can remember.
+
+
+### Tax4Fun2
+Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
+Using Tax4Fun2 approach require the representative fasta file.
+The user do not need to install Tax4Fun2 R package.
+The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+Downlaod blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
+Downlaod Ref99NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download"  or Ref100NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" .
+Uncompress all the folders. The final folders should be like these structures:
+
+blast tools:  
+　|-- ncbi-blast-2.11.0+  
+　　|---- bin  
+　　　|------ blastn.exe  
+　　　|------ makeblastdb.exe  
+　　　|------ ......  
+
+Ref99NR/Ref100NR:  
+　|-- Tax4Fun2_ReferenceData_v2  
+　　|---- Ref99NR  
+　　　|------ otu000001.tbl.gz  
+　　　|------ ......  
+　　　|------ Ref99NR.fasta  
+　　　|------ Ref99NR.tre  
+
+The path "ncbi-blast-2.11.0+/bin" and "Tax4Fun2_ReferenceData_v2" will be required in the trans_func$cal_tax4fun2() function.
+
+```{r, echo = TRUE, eval = FALSE}
+# seqinr should be installed for reading and writing fasta file
+install.packages("seqinr", dependencies = TRUE)
+# Now we show how to read the fasta file
+# see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco
+rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
+rep_fasta <- seqinr::read.fasta(rep_fasta_path)
+# then see the help document of microtable class about the rep_fasta in microtable$new().
+```
+
+## Plotting
+Most of the plotting in the package rely on the ggplot2 package system.
+We provide some parameters to change the corresponding plot.
+The user can also assign the output a name and use the ggplot2-style grammers to modify it.
+Each data table used for plotting is stored in the object and can be downloaded for the personalized analysis and plotting.
+Of course, the user can also directly modify the class and reload them to use.
+Any contribution of a modified class is also appreciated through github pushing or email (liuchi0426@126.com).
+
+
 
 
 <!--chapter:end:01-intro.Rmd-->
 
-# basic class
+# Basic class
 
 ## microtable class
 
@@ -310,6 +442,7 @@ dataset$save_abund(dirpath = "taxa_abund")
 
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
+For the definition of each alpha diversity index, please see http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html
 As an example, we do not calculate phylogenetic diversity.
 
 ```{r, echo = TRUE}
@@ -575,6 +708,18 @@ t1$plot_alpha(pair_compare = TRUE, measure = "Chao1", shape = "Group")
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_alpha.png")
 ```
+
+The multi-factor analysis of variance is also supported. It is notable that the result res_alpha_diff will be a list instead of a data.frame.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", anova_set = "Group+Type")
+# now the result t1$res_alpha_diff is a list
+# see the help document for the usage of anova_set
+```
+
+
+
 
 ## trans_beta class
 
@@ -856,29 +1001,47 @@ pander::pander(t1$res_mantel)
 ```
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-In this example, we first perform the differential abundance test and random forest analysis to obtain the important genera.
-Then we use those taxa to perform correlation analysis.
+Let's first perform a correlation heatmap using Genus level data.
 
 ```{r, echo = TRUE}
-# first create trans_diff object
+t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr")
+# return t1$res_cor
+```
+
+Then, we can plot the correlation results using plot_cor function.
+
+```{r, echo = TRUE, eval = FALSE}
+# default ggplot2 method with clustering
+t1$plot_cor()
+```
+
+There are too many genera.
+We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance < 0.001.
+
+```{r, echo = TRUE}
+# filter genera that do not have at least one ***
+t1$plot_cor(filter_feature = c("", "*", "**"))
+```
+
+Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
+we can use other_taxa parameter in cal_cor function.
+
+```{r, echo = TRUE}
+# first create trans_diff object as a demonstration
 t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_level = "Genus")
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
-# calculate correlation
+# use other_taxa to select taxa you need
 t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
-# return t1$res_cor 
-```
-
-Then, we can plot the correlation results using ggplot2 or pheatmap.
-
-```{r, echo = TRUE, eval = FALSE}
-# default ggplot2 method
 t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
+
+The pheatmap method is also available.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
@@ -889,7 +1052,8 @@ t1$plot_cor(pheatmap = TRUE)
 knitr::include_graphics("Images/plot_corr_pheatmap.png")
 ```
 
-Sometimes, it is necessary to study the correlations between environmental variables and taxa for different groups.
+Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+by_group parameter can be used for this goal.
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group
@@ -1791,7 +1955,7 @@ More importantly, from a practical perspective, gLV models have been used for a 
 against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species), 
 and analyzing community stability (see [@Li_expectation_2019] and the references therein).
 Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package [@Li_expectation_2019].
-
+The example data 'gut_microb_ts' comes from the article [@Gibbons_twodynamic_2017].
 
 
 ```{r, echo = TRUE, eval = FALSE}

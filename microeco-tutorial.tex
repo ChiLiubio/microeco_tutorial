@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.5.0)}
 \author{Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
-\date{2021-09-11}
+\date{2021-10-23}
 
 \begin{document}
 \maketitle
@@ -167,33 +167,6 @@ apply those files to other tools according to the format requirement.
 Main files stored in the objects of microeco package is the commonly used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
-\hypertarget{features}{%
-\section{Features}\label{features}}
-
-\begin{itemize}
-\tightlist
-\item
-  R6 Class; fast, flexible and modularized
-\item
-  Taxa abundance plotting
-\item
-  Venn diagram
-\item
-  Alpha diversity
-\item
-  Beta diversity
-\item
-  Differential abundance analysis
-\item
-  Environmental data analysis
-\item
-  Null model analysis
-\item
-  Network analysis
-\item
-  Functional analysis
-\end{itemize}
-
 \hypertarget{r6-class}{%
 \section{R6 Class}\label{r6-class}}
 
@@ -234,8 +207,219 @@ and click the link of the function.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{dependence}{%
+\section{Dependence}\label{dependence}}
+
+\hypertarget{important-packages}{%
+\subsection{Important packages}\label{important-packages}}
+
+To keep the start and use of microeco package simplified,
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Error in t1$cal\_network(network\_method = "SpiecEasi"): igraph package not installed ...}
+\end{Highlighting}
+\end{Shaded}
+
+The reason is that network construction require igraph package. We donot put the igraph and some other packages (e.g.~SpiecEasi in github) on the ``Imports'' part of microeco package.
+
+The solutions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
+\item
+  install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.
+\end{enumerate}
+
+We show several packages that are published in CRAN and not installed automatically.
+
+\begin{tabular}{l|l|l}
+\hline
+Package & where & description\\
+\hline
+reshape2 & microtable class & data transformation\\
+\hline
+MASS & trans\_diff class & linear discriminant analysis\\
+\hline
+GUniFrac & cal\_betadiv() & UniFrac distance matrix\\
+\hline
+ggpubr & plot\_alpha() & some plotting functions\\
+\hline
+randomForest & trans\_diff class & random forest analysis\\
+\hline
+ggdendro & plot\_clustering() & plotting clustering dendrogram\\
+\hline
+ggrepel & trans\_rda class & reduce the text overlap in the plot\\
+\hline
+agricolae & cal\_diff() & multiple comparisons in anova\\
+\hline
+gridExtra & trans\_diff class & merge plots\\
+\hline
+picante & cal\_alphadiv() & Faith’s phylogenetic alpha diversity\\
+\hline
+pheatmap & plot\_corr(pheatmap = TRUE) & correlation heatmap with clustering dendrogram\\
+\hline
+tidytree & trans\_diff class & plot the taxonomic tree\\
+\hline
+igraph & trans\_network class & network related operations\\
+\hline
+rgexf & save\_network() & save network with gexf style\\
+\hline
+ggalluvial & plot\_bar(use\_alluvium = TRUE) & alluvial plot\\
+\hline
+\end{tabular}
+
+Then, if you want to install these packages or some of them, you can do like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If a package is not installed, it will be installed from CRAN.}
+\CommentTok{\# First select the packages of interest}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"reshape2"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{)}
+\CommentTok{\# Now check or install}
+\FunctionTok{lapply}\NormalTok{(packages, }\ControlFlowTok{function}\NormalTok{(x) \{}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
+        \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    \}\})}
+\end{Highlighting}
+\end{Shaded}
+
+There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+or packages written by other languages.
+
+\hypertarget{ggtree}{%
+\subsection{ggtree}\label{ggtree}}
+
+Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (\url{https://bioconductor.org/packages/release/bioc/html/ggtree.html}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ggtree"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{spieceasi}{%
+\subsection{SpiecEasi}\label{spieceasi}}
+
+The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
+The package can be installed from Github \url{https://github.com/zdk123/SpiecEasi}
+
+\hypertarget{gephi}{%
+\subsection{Gephi}\label{gephi}}
+
+Gephi is an excellent network visualization tool and used to open the saved network file,
+i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/extended-class.html\#trans_network-class}{tutorial}.
+You can download Gephi and learn how to use it from \url{https://gephi.org/users/download/}
+
+\hypertarget{wgcna}{%
+\subsection{WGCNA}\label{wgcna}}
+
+In the correlation-based network, when the species number is very large,
+the correlation algorithm in WGCNA is very fast compared to the `cor' option in trans\_network.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{tax4fun}{%
+\subsection{Tax4Fun}\label{tax4fun}}
+
+Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  install Tax4Fun package
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"RJSONIO"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"biom\_0.3.12.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"qiimer\_0.9.4.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"Tax4Fun\_0.3.1.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  download SILVA123 reference data from \url{http://tax4fun.gobics.de/}\\
+  　unzip SILVA123.zip , move it to a place that you can remember.
+\end{enumerate}
+
+\hypertarget{tax4fun2}{%
+\subsection{Tax4Fun2}\label{tax4fun2}}
+
+Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
+Using Tax4Fun2 approach require the representative fasta file.
+The user do not need to install Tax4Fun2 R package.
+The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+Downlaod blast tools from ``\url{ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
+Downlaod Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}'' .
+Uncompress all the folders. The final folders should be like these structures:
+
+blast tools:\\
+　\textbar-- ncbi-blast-2.11.0+\\
+　　\textbar---- bin\\
+　　　\textbar------ blastn.exe\\
+　　　\textbar------ makeblastdb.exe\\
+　　　\textbar------ \ldots\ldots{}
+
+Ref99NR/Ref100NR:\\
+　\textbar-- Tax4Fun2\_ReferenceData\_v2\\
+　　\textbar---- Ref99NR\\
+　　　\textbar------ otu000001.tbl.gz\\
+　　　\textbar------ \ldots\ldots{}\\
+　　　\textbar------ Ref99NR.fasta\\
+　　　\textbar------ Ref99NR.tre
+
+The path ``ncbi-blast-2.11.0+/bin'' and ``Tax4Fun2\_ReferenceData\_v2'' will be required in the trans\_func\$cal\_tax4fun2() function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# seqinr should be installed for reading and writing fasta file}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"seqinr"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# Now we show how to read the fasta file}
+\CommentTok{\# see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco}
+\NormalTok{rep\_fasta\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"rep.fna"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{rep\_fasta }\OtherTok{\textless{}{-}}\NormalTok{ seqinr}\SpecialCharTok{::}\FunctionTok{read.fasta}\NormalTok{(rep\_fasta\_path)}
+\CommentTok{\# then see the help document of microtable class about the rep\_fasta in microtable$new().}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{plotting}{%
+\section{Plotting}\label{plotting}}
+
+Most of the plotting in the package rely on the ggplot2 package system.
+We provide some parameters to change the corresponding plot.
+The user can also assign the output a name and use the ggplot2-style grammers to modify it.
+Each data table used for plotting is stored in the object and can be downloaded for the personalized analysis and plotting.
+Of course, the user can also directly modify the class and reload them to use.
+Any contribution of a modified class is also appreciated through github pushing or email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
+
 \hypertarget{basic-class}{%
-\chapter{basic class}\label{basic-class}}
+\chapter{Basic class}\label{basic-class}}
 
 \hypertarget{microtable-class}{%
 \section{microtable class}\label{microtable-class}}
@@ -671,6 +855,7 @@ The function save\_abund() can be used to save the taxa abundance file to a loca
 
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
+For the definition of each alpha diversity index, please see \url{http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html}
 As an example, we do not calculate phylogenetic diversity.
 
 \begin{Shaded}
@@ -1032,6 +1217,17 @@ We can also use the boxplot to show the paired comparisons directly.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=600px]{Images/plot_alpha} \end{center}
+
+The multi-factor analysis of variance is also supported. It is notable that the result res\_alpha\_diff will be a list instead of a data.frame.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{anova\_set =} \StringTok{"Group+Type"}\NormalTok{)}
+\CommentTok{\# now the result t1$res\_alpha\_diff is a list}
+\CommentTok{\# see the help document for the usage of anova\_set}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{trans_beta-class}{%
 \section{trans\_beta class}\label{trans_beta-class}}
@@ -1445,12 +1641,52 @@ TN & pearson & 0.1321 & 0.002 & ** \\
 \end{longtable}
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-In this example, we first perform the differential abundance test and random forest analysis to obtain the important genera.
-Then we use those taxa to perform correlation analysis.
+Let's first perform a correlation heatmap using Genus level data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# first create trans\_diff object}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The correlation result is stored in object$res_cor ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# return t1$res\_cor}
+\end{Highlighting}
+\end{Shaded}
+
+Then, we can plot the correlation results using plot\_cor function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# default ggplot2 method with clustering}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+There are too many genera.
+We can use the filter\_feature parameter in plot\_cor to filter some taxa that do not have any significance \textless{} 0.001.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter genera that do not have at least one ***}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{filter\_feature =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{"**"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-110-1.pdf}
+
+Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
+we can use other\_taxa parameter in cal\_cor function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# first create trans\_diff object as a demonstration}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{rf\_taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1475,7 +1711,7 @@ Then we use those taxa to perform correlation analysis.
 \begin{Highlighting}[]
 \CommentTok{\# then create trans\_env object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\CommentTok{\# calculate correlation}
+\CommentTok{\# use other\_taxa to select taxa you need}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -1486,20 +1722,15 @@ Then we use those taxa to perform correlation analysis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# return t1$res\_cor }
-\end{Highlighting}
-\end{Shaded}
-
-Then, we can plot the correlation results using ggplot2 or pheatmap.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# default ggplot2 method}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-111-1.pdf}
+
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
+
+The pheatmap method is also available.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1510,7 +1741,8 @@ Then, we can plot the correlation results using ggplot2 or pheatmap.
 
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
 
-Sometimes, it is necessary to study the correlations between environmental variables and taxa for different groups.
+Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+by\_group parameter can be used for this goal.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2539,7 +2771,7 @@ If you want to reorder the groups, assign the factors may be the most simplest w
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-184-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-195-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -2585,7 +2817,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-185-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-196-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
@@ -2695,6 +2927,7 @@ More importantly, from a practical perspective, gLV models have been used for a 
 against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species),
 and analyzing community stability (see \citep{Li_expectation_2019} and the references therein).
 Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package \citep{Li_expectation_2019}.
+The example data `gut\_microb\_ts' comes from the article \citep{Gibbons_twodynamic_2017}.
 
 \begin{Shaded}
 \begin{Highlighting}[]

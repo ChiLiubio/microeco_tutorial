@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 prerequisite | Tutorial for R microeco package (v0.5.0)</title>
+  <meta name="description" content="The tutorial for microeco package" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 prerequisite | Tutorial for R microeco package (v0.5.0)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The tutorial for microeco package" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 prerequisite | Tutorial for R microeco package (v0.5.0)" />
+  
+  <meta name="twitter:description" content="The tutorial for microeco package" />
+  
+
+<meta name="author" content="Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
+
+
+<meta name="date" content="2021-10-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#prerequisite"><i class="fa fa-check"></i><b>2.3</b> Prerequisite</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> important packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree</a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi</a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi</a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA</a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun</a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="prerequisite-1.html"><a href="prerequisite-1.html"><i class="fa fa-check"></i><b>3</b> prerequisite</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="prerequisite-1.html"><a href="prerequisite-1.html#important-packages-1"><i class="fa fa-check"></i><b>3.1</b> important packages</a></li>
+<li class="chapter" data-level="3.2" data-path="prerequisite-1.html"><a href="prerequisite-1.html#ggtree-1"><i class="fa fa-check"></i><b>3.2</b> ggtree</a></li>
+<li class="chapter" data-level="3.3" data-path="prerequisite-1.html"><a href="prerequisite-1.html#spieceasi-1"><i class="fa fa-check"></i><b>3.3</b> SpiecEasi</a></li>
+<li class="chapter" data-level="3.4" data-path="prerequisite-1.html"><a href="prerequisite-1.html#gephi-1"><i class="fa fa-check"></i><b>3.4</b> Gephi</a></li>
+<li class="chapter" data-level="3.5" data-path="prerequisite-1.html"><a href="prerequisite-1.html#wgcna-1"><i class="fa fa-check"></i><b>3.5</b> WGCNA</a></li>
+<li class="chapter" data-level="3.6" data-path="prerequisite-1.html"><a href="prerequisite-1.html#tax4fun-1"><i class="fa fa-check"></i><b>3.6</b> Tax4Fun</a></li>
+<li class="chapter" data-level="3.7" data-path="prerequisite-1.html"><a href="prerequisite-1.html#tax4fun2-1"><i class="fa fa-check"></i><b>3.7</b> Tax4Fun2</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.5.0)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="prerequisite-1" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> prerequisite</h1>
+<div id="important-packages-1" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> important packages</h2>
+<p>To keep the start and use of microeco package simplified,
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+So the question is that you may encounter an error when using a class or function that invoke an additional package like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="prerequisite-1.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb10-2"><a href="prerequisite-1.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb10-3"><a href="prerequisite-1.html#cb10-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb10-4"><a href="prerequisite-1.html#cb10-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb11-1"><a href="prerequisite-1.html#cb11-1" aria-hidden="true" tabindex="-1"></a>Error in t1$cal_network(network_method = &quot;SpiecEasi&quot;): igraph package not installed ...</span></code></pre></div>
+<p><br>
+The reason is that network construction require igraph package. We donot put the igraph and some other packages (e.g. SpiecEasi in github) on the “Imports” part of microeco package.</p>
+<p>The solutions:</p>
+<ol style="list-style-type: decimal">
+<li><p>install the package when encounter such an error. Actually, it’s very easy to install the packages from CRAN or bioconductor. Just try it.</p></li>
+<li><p>install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.</p></li>
+</ol>
+<p>We show several packages that are published in CRAN and not installed automatically.</p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="33%" />
+<col width="52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Package</th>
+<th align="left">where</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">reshape2</td>
+<td align="left">microtable class</td>
+<td align="left">data transformation</td>
+</tr>
+<tr class="even">
+<td align="left">MASS</td>
+<td align="left">trans_diff class</td>
+<td align="left">linear discriminant analysis</td>
+</tr>
+<tr class="odd">
+<td align="left">GUniFrac</td>
+<td align="left">cal_betadiv()</td>
+<td align="left">UniFrac distance matrix</td>
+</tr>
+<tr class="even">
+<td align="left">ggpubr</td>
+<td align="left">plot_alpha()</td>
+<td align="left">some plotting functions</td>
+</tr>
+<tr class="odd">
+<td align="left">randomForest</td>
+<td align="left">trans_diff class</td>
+<td align="left">random forest analysis</td>
+</tr>
+<tr class="even">
+<td align="left">ggdendro</td>
+<td align="left">plot_clustering()</td>
+<td align="left">plotting clustering dendrogram</td>
+</tr>
+<tr class="odd">
+<td align="left">ggrepel</td>
+<td align="left">trans_rda class</td>
+<td align="left">reduce the text overlap in the plot</td>
+</tr>
+<tr class="even">
+<td align="left">agricolae</td>
+<td align="left">cal_diff()</td>
+<td align="left">multiple comparisons in anova</td>
+</tr>
+<tr class="odd">
+<td align="left">gridExtra</td>
+<td align="left">trans_diff class</td>
+<td align="left">merge plots</td>
+</tr>
+<tr class="even">
+<td align="left">picante</td>
+<td align="left">cal_alphadiv()</td>
+<td align="left">Faith’s phylogenetic alpha diversity</td>
+</tr>
+<tr class="odd">
+<td align="left">pheatmap</td>
+<td align="left">plot_corr(pheatmap = TRUE)</td>
+<td align="left">correlation heatmap with clustering dendrogram</td>
+</tr>
+<tr class="even">
+<td align="left">tidytree</td>
+<td align="left">trans_diff class</td>
+<td align="left">plot the taxonomic tree</td>
+</tr>
+<tr class="odd">
+<td align="left">igraph</td>
+<td align="left">trans_network class</td>
+<td align="left">network related operations</td>
+</tr>
+<tr class="even">
+<td align="left">rgexf</td>
+<td align="left">save_network()</td>
+<td align="left">save network with gexf style</td>
+</tr>
+<tr class="odd">
+<td align="left">ggalluvial</td>
+<td align="left">plot_bar(use_alluvium = TRUE)</td>
+<td align="left">alluvial plot</td>
+</tr>
+</tbody>
+</table>
+<p>Then, if you want to install these packages or some of them, you can do like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="prerequisite-1.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If a package is not installed, it will be installed from CRAN.</span></span>
+<span id="cb12-2"><a href="prerequisite-1.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First select the packages of interest</span></span>
+<span id="cb12-3"><a href="prerequisite-1.html#cb12-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;reshape2&quot;</span>, <span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;ggalluvial&quot;</span>)</span>
+<span id="cb12-4"><a href="prerequisite-1.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
+<span id="cb12-5"><a href="prerequisite-1.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, <span class="cf">function</span>(x) {</span>
+<span id="cb12-6"><a href="prerequisite-1.html#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb12-7"><a href="prerequisite-1.html#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-8"><a href="prerequisite-1.html#cb12-8" aria-hidden="true" tabindex="-1"></a>    }})</span></code></pre></div>
+<p>There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+or packages written by other languages.</p>
+</div>
+<div id="ggtree-1" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> ggtree</h2>
+<p>Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (<a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html" class="uri">https://bioconductor.org/packages/release/bioc/html/ggtree.html</a>).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="prerequisite-1.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb13-2"><a href="prerequisite-1.html#cb13-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;ggtree&quot;</span>)</span></code></pre></div>
+</div>
+<div id="spieceasi-1" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> SpiecEasi</h2>
+<p>The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
+The package can be installed from Github <a href="https://github.com/zdk123/SpiecEasi" class="uri">https://github.com/zdk123/SpiecEasi</a></p>
+</div>
+<div id="gephi-1" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Gephi</h2>
+<p>Gephi is an excellent network visualization tool and used to open the saved network file,
+i.e. network.gexf in the <a href="https://chiliubio.github.io/microeco_tutorial/extended-class.html#trans_network-class">tutorial</a>.
+You can download Gephi and learn how to use it from <a href="https://gephi.org/users/download/" class="uri">https://gephi.org/users/download/</a></p>
+</div>
+<div id="wgcna-1" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> WGCNA</h2>
+<p>In the correlation-based network, when the species number is very large,
+the correlation algorithm in WGCNA is very fast compared to the ‘cor’ option in trans_network.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="prerequisite-1.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="tax4fun-1" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Tax4Fun</h2>
+<p>Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.</p>
+<ol style="list-style-type: decimal">
+<li>install Tax4Fun package</li>
+</ol>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="prerequisite-1.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;RJSONIO&quot;</span>)</span>
+<span id="cb15-2"><a href="prerequisite-1.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;biom_0.3.12.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb15-3"><a href="prerequisite-1.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;qiimer_0.9.4.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb15-4"><a href="prerequisite-1.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Tax4Fun_0.3.1.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>download SILVA123 reference data from <a href="http://tax4fun.gobics.de/" class="uri">http://tax4fun.gobics.de/</a><br />
+　unzip SILVA123.zip , move it to a place that you can remember.</li>
+</ol>
+</div>
+<div id="tax4fun2-1" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Tax4Fun2</h2>
+<p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
+Using Tax4Fun2 approach require the representative fasta file.
+The user do not need to install Tax4Fun2 R package.
+The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+Downlaod blast tools from “<a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" class="uri">ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+</a>” ; e.g. ncbi-blast-****-x64-win64.tar.gz for windows system.
+Downlaod Ref99NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download</a>” or Ref100NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download</a>” .
+Uncompress all the folders. The final folders should be like these structures:</p>
+<p>blast tools:<br />
+　|– ncbi-blast-2.11.0+<br />
+　　|—- bin<br />
+　　　|—— blastn.exe<br />
+　　　|—— makeblastdb.exe<br />
+　　　|—— ……</p>
+<p>Ref99NR/Ref100NR:<br />
+　|– Tax4Fun2_ReferenceData_v2<br />
+　　|—- Ref99NR<br />
+　　　|—— otu000001.tbl.gz<br />
+　　　|—— ……<br />
+　　　|—— Ref99NR.fasta<br />
+　　　|—— Ref99NR.tre</p>
+<p>The path “ncbi-blast-2.11.0+/bin” and “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="prerequisite-1.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># seqinr should be installed for reading and writing fasta file</span></span>
+<span id="cb16-2"><a href="prerequisite-1.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="prerequisite-1.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
+<span id="cb16-4"><a href="prerequisite-1.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco</span></span>
+<span id="cb16-5"><a href="prerequisite-1.html#cb16-5" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb16-6"><a href="prerequisite-1.html#cb16-6" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
+<span id="cb16-7"><a href="prerequisite-1.html#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># then see the help document of microtable class about the rep_fasta in microtable$new().</span></span></code></pre></div>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Carpenter, C. M., D. N. Frank, K. Williamson, J. Arbet, B. D. Wagner, K. Kechris, and M. E. Kroehl. 2021. <span>“tidyMicro: A Pipeline for Microbiome Data Analysis and Visualization Using the Tidyverse in r.”</span> Journal Article. <em>BMC Bioinformatics</em> 22 (1): 41. <a href="https://doi.org/10.1186/s12859-021-03967-2">https://doi.org/10.1186/s12859-021-03967-2</a>.
+</div>
+<div class="csl-entry">
+Chang, Winston. 2020. <em>R6: Encapsulated Classes with Reference Semantics</em>. <a href="https://CRAN.R-project.org/package=R6">https://CRAN.R-project.org/package=R6</a>.
+</div>
+<div class="csl-entry">
+Kembel, S. W., P. D. Cowan, M. R. Helmus, W. K. Cornwell, H. Morlon, D. D. Ackerly, S. P. Blomberg, and C. O. Webb. 2010. <span>“Picante: <span>R</span> Tools for Integrating Phylogenies and Ecology.”</span> <em>Bioinformatics</em> 26: 1463–64.
+</div>
+<div class="csl-entry">
+Liu, Chi, Yaoming Cui, Xiangzhen Li, and Minjie Yao. 2021. <span>“<span class="nocase">microeco: An R package for data mining in microbial community ecology</span>.”</span> Journal Article. <em>FEMS Microbiol. Ecol.</em> 97 (2): fiaa255.
+</div>
+<div class="csl-entry">
+Mcmurdie, Paul J, and Susan Holmes. 2013. <span>“Phyloseq: An r Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.”</span> Journal Article. <em>Plos One</em> 8 (4): e61217.
+</div>
+<div class="csl-entry">
+Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt, Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2019. <em>Vegan: Community Ecology Package</em>. <a href="https://CRAN.R-project.org/package=vegan">https://CRAN.R-project.org/package=vegan</a>.
+</div>
+<div class="csl-entry">
+Paradis, E., and K. Schliep. 2018. <span>“Ape 5.0: An Environment for Modern Phylogenetics and Evolutionary Analyses in <span>R</span>.”</span> <em>Bioinformatics</em> 35: 526–28.
+</div>
+<div class="csl-entry">
+Price, Jacob R., Stephen Woloszynek, Gail Rosen, and Christopher M. Sales. 2018. <span>“Theseus - an r Package for the Analysis and Visualization.”</span> Journal Article. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/295675">https://doi.org/10.1101/295675</a>.
+</div>
+<div class="csl-entry">
+R Core Team. 2016. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div class="csl-entry">
+Reeder, J., M. Huang, J. S. Kaminker, and J. N. Paulson. 2021. <span>“MicrobiomeExplorer: An r Package for the Analysis and Visualization of Microbial Communities.”</span> Journal Article. <em>Bioinformatics</em> 37 (9): 1317–18. <a href="https://doi.org/10.1093/bioinformatics/btaa838">https://doi.org/10.1093/bioinformatics/btaa838</a>.
+</div>
+<div class="csl-entry">
+Theil, S., and E. Rifa. 2021. <span>“rANOMALY: AmplicoN wOrkflow for Microbial Community AnaLYsis.”</span> Journal Article. <em>F1000Res</em> 10: 7. <a href="https://doi.org/10.12688/f1000research.27268.1">https://doi.org/10.12688/f1000research.27268.1</a>.
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-prerequisite.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-09-11" />
+<meta name="date" content="2021-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,11 +162,21 @@ div.csl-indent {
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#features"><i class="fa fa-check"></i><b>2.1</b> Features</a></li>
-<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.2</b> R6 Class</a></li>
-<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.3</b> Help</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree</a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi</a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi</a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA</a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun</a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> basic class</a>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a></li>
 </ul></li>
@@ -239,27 +249,27 @@ div.csl-indent {
 <h2><span class="header-section-number">7.1</span> trans_rarefy</h2>
 <p>The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
 the sequencing depth is enough to cover all the so-called species in the microbial community.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="mecodev-package.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb201-2"><a href="mecodev-package.html#cb201-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
-<span id="cb201-3"><a href="mecodev-package.html#cb201-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb201-4"><a href="mecodev-package.html#cb201-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb201-5"><a href="mecodev-package.html#cb201-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
-<span id="cb201-6"><a href="mecodev-package.html#cb201-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb201-7"><a href="mecodev-package.html#cb201-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
-<span id="cb201-8"><a href="mecodev-package.html#cb201-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb201-9"><a href="mecodev-package.html#cb201-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_rarefy class</span></span>
-<span id="cb201-10"><a href="mecodev-package.html#cb201-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
-<span id="cb201-11"><a href="mecodev-package.html#cb201-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">100</span>), <span class="at">show_point =</span> <span class="cn">TRUE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>, <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="mecodev-package.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb213-2"><a href="mecodev-package.html#cb213-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
+<span id="cb213-3"><a href="mecodev-package.html#cb213-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb213-4"><a href="mecodev-package.html#cb213-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb213-5"><a href="mecodev-package.html#cb213-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
+<span id="cb213-6"><a href="mecodev-package.html#cb213-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb213-7"><a href="mecodev-package.html#cb213-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
+<span id="cb213-8"><a href="mecodev-package.html#cb213-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb213-9"><a href="mecodev-package.html#cb213-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_rarefy class</span></span>
+<span id="cb213-10"><a href="mecodev-package.html#cb213-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
+<span id="cb213-11"><a href="mecodev-package.html#cb213-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">100</span>), <span class="at">show_point =</span> <span class="cn">TRUE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>, <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="Images/plot_trans_rarefy.png" width="550px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_convert" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> trans_convert</h2>
 <p>The class trans_convert provide several data transformation approaches for the microtable object.
 The output will also be a microtable object.</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="mecodev-package.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb202-2"><a href="mecodev-package.html#cb202-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_convert<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset)</span>
-<span id="cb202-3"><a href="mecodev-package.html#cb202-3" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">convert</span>(<span class="at">method =</span> <span class="st">&quot;log&quot;</span>)</span>
-<span id="cb202-4"><a href="mecodev-package.html#cb202-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returned test2 is another microtable object</span></span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="mecodev-package.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb214-2"><a href="mecodev-package.html#cb214-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_convert<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset)</span>
+<span id="cb214-3"><a href="mecodev-package.html#cb214-3" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">convert</span>(<span class="at">method =</span> <span class="st">&quot;log&quot;</span>)</span>
+<span id="cb214-4"><a href="mecodev-package.html#cb214-4" aria-hidden="true" tabindex="-1"></a><span class="co"># returned test2 is another microtable object</span></span></code></pre></div>
 </div>
 <div id="trans_netchord" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> trans_netchord</h2>
@@ -274,18 +284,18 @@ So the numbers along the outside of the circular plot represent how many edges o
 For example, in terms of Proteobacteria,
 there are roughly total 900 edges associated with the OTUs in Proteobacteria,
 in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="mecodev-package.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s first create a network</span></span>
-<span id="cb203-2"><a href="mecodev-package.html#cb203-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb203-3"><a href="mecodev-package.html#cb203-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb203-4"><a href="mecodev-package.html#cb203-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
-<span id="cb203-5"><a href="mecodev-package.html#cb203-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S)</span>
-<span id="cb203-6"><a href="mecodev-package.html#cb203-6" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb203-7"><a href="mecodev-package.html#cb203-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb203-8"><a href="mecodev-package.html#cb203-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
-<span id="cb203-9"><a href="mecodev-package.html#cb203-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_netchord</span></span>
-<span id="cb203-10"><a href="mecodev-package.html#cb203-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_netchord<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb203-11"><a href="mecodev-package.html#cb203-11" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package (https://github.com/mattflor/chorddiag)</span></span>
-<span id="cb203-12"><a href="mecodev-package.html#cb203-12" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="mecodev-package.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s first create a network</span></span>
+<span id="cb215-2"><a href="mecodev-package.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb215-3"><a href="mecodev-package.html#cb215-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb215-4"><a href="mecodev-package.html#cb215-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb215-5"><a href="mecodev-package.html#cb215-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S)</span>
+<span id="cb215-6"><a href="mecodev-package.html#cb215-6" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb215-7"><a href="mecodev-package.html#cb215-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;WGCNA&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb215-8"><a href="mecodev-package.html#cb215-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
+<span id="cb215-9"><a href="mecodev-package.html#cb215-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_netchord</span></span>
+<span id="cb215-10"><a href="mecodev-package.html#cb215-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_netchord<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
+<span id="cb215-11"><a href="mecodev-package.html#cb215-11" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package (https://github.com/mattflor/chorddiag)</span></span>
+<span id="cb215-12"><a href="mecodev-package.html#cb215-12" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_ts" class="section level2" number="7.4">
@@ -297,27 +307,28 @@ naturally capture predator-prey, amensalistic, and competitive interactions; and
 More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
 against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species),
 and analyzing community stability (see <span class="citation">(<a href="#ref-Li_expectation_2019" role="doc-biblioref">Li et al. 2019</a>)</span> and the references therein).
-Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package <span class="citation">(<a href="#ref-Li_expectation_2019" role="doc-biblioref">Li et al. 2019</a>)</span>.</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="mecodev-package.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R package beem should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps</span></span>
-<span id="cb204-2"><a href="mecodev-package.html#cb204-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
-<span id="cb204-3"><a href="mecodev-package.html#cb204-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data in mecodev package; the input must be a microtable object</span></span>
-<span id="cb204-4"><a href="mecodev-package.html#cb204-4" aria-hidden="true" tabindex="-1"></a><span class="co"># There are several strict requirements on the sample_table; see the document of the class.</span></span>
-<span id="cb204-5"><a href="mecodev-package.html#cb204-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gut_microb_ts&quot;</span>)</span>
-<span id="cb204-6"><a href="mecodev-package.html#cb204-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generally, using filter_thres to filter the taxa with low abundance is crutial</span></span>
-<span id="cb204-7"><a href="mecodev-package.html#cb204-7" aria-hidden="true" tabindex="-1"></a><span class="co"># there are only 22 taxa in the example data, we use 0</span></span>
-<span id="cb204-8"><a href="mecodev-package.html#cb204-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_ts<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> gut_microb_ts, <span class="at">filter_thres =</span> <span class="dv">0</span>)</span>
-<span id="cb204-9"><a href="mecodev-package.html#cb204-9" aria-hidden="true" tabindex="-1"></a><span class="co"># we use minimal 50 times for iteration</span></span>
-<span id="cb204-10"><a href="mecodev-package.html#cb204-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_biomass</span>(<span class="at">min_iter =</span> <span class="dv">50</span>)</span>
-<span id="cb204-11"><a href="mecodev-package.html#cb204-11" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_biomass and t1$res_param</span></span>
-<span id="cb204-12"><a href="mecodev-package.html#cb204-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the inferred biological network</span></span>
-<span id="cb204-13"><a href="mecodev-package.html#cb204-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>()</span>
-<span id="cb204-14"><a href="mecodev-package.html#cb204-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Now let&#39;s use trans_network class to add the modules</span></span>
-<span id="cb204-15"><a href="mecodev-package.html#cb204-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb204-16"><a href="mecodev-package.html#cb204-16" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> gut_microb_ts, <span class="at">cal_cor =</span> <span class="cn">NA</span>)</span>
-<span id="cb204-17"><a href="mecodev-package.html#cb204-17" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_network <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_network</span>
-<span id="cb204-18"><a href="mecodev-package.html#cb204-18" aria-hidden="true" tabindex="-1"></a><span class="co"># use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network</span></span>
-<span id="cb204-19"><a href="mecodev-package.html#cb204-19" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_optimal&quot;</span>)</span>
-<span id="cb204-20"><a href="mecodev-package.html#cb204-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t2<span class="sc">$</span>res_network)</span></code></pre></div>
+Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package <span class="citation">(<a href="#ref-Li_expectation_2019" role="doc-biblioref">Li et al. 2019</a>)</span>.
+The example data ‘gut_microb_ts’ comes from the article <span class="citation">(<a href="#ref-Gibbons_twodynamic_2017" role="doc-biblioref">Gibbons et al. 2017</a>)</span>.</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="mecodev-package.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R package beem should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps</span></span>
+<span id="cb216-2"><a href="mecodev-package.html#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
+<span id="cb216-3"><a href="mecodev-package.html#cb216-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data in mecodev package; the input must be a microtable object</span></span>
+<span id="cb216-4"><a href="mecodev-package.html#cb216-4" aria-hidden="true" tabindex="-1"></a><span class="co"># There are several strict requirements on the sample_table; see the document of the class.</span></span>
+<span id="cb216-5"><a href="mecodev-package.html#cb216-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gut_microb_ts&quot;</span>)</span>
+<span id="cb216-6"><a href="mecodev-package.html#cb216-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generally, using filter_thres to filter the taxa with low abundance is crutial</span></span>
+<span id="cb216-7"><a href="mecodev-package.html#cb216-7" aria-hidden="true" tabindex="-1"></a><span class="co"># there are only 22 taxa in the example data, we use 0</span></span>
+<span id="cb216-8"><a href="mecodev-package.html#cb216-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_ts<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> gut_microb_ts, <span class="at">filter_thres =</span> <span class="dv">0</span>)</span>
+<span id="cb216-9"><a href="mecodev-package.html#cb216-9" aria-hidden="true" tabindex="-1"></a><span class="co"># we use minimal 50 times for iteration</span></span>
+<span id="cb216-10"><a href="mecodev-package.html#cb216-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_biomass</span>(<span class="at">min_iter =</span> <span class="dv">50</span>)</span>
+<span id="cb216-11"><a href="mecodev-package.html#cb216-11" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_biomass and t1$res_param</span></span>
+<span id="cb216-12"><a href="mecodev-package.html#cb216-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the inferred biological network</span></span>
+<span id="cb216-13"><a href="mecodev-package.html#cb216-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>()</span>
+<span id="cb216-14"><a href="mecodev-package.html#cb216-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Now let&#39;s use trans_network class to add the modules</span></span>
+<span id="cb216-15"><a href="mecodev-package.html#cb216-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb216-16"><a href="mecodev-package.html#cb216-16" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> gut_microb_ts, <span class="at">cal_cor =</span> <span class="cn">NA</span>)</span>
+<span id="cb216-17"><a href="mecodev-package.html#cb216-17" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_network <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_network</span>
+<span id="cb216-18"><a href="mecodev-package.html#cb216-18" aria-hidden="true" tabindex="-1"></a><span class="co"># use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network</span></span>
+<span id="cb216-19"><a href="mecodev-package.html#cb216-19" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_optimal&quot;</span>)</span>
+<span id="cb216-20"><a href="mecodev-package.html#cb216-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t2<span class="sc">$</span>res_network)</span></code></pre></div>
 </div>
 <div id="trans_gamma" class="section level2" number="7.5">
 <h2><span class="header-section-number">7.5</span> trans_gamma</h2>
@@ -330,34 +341,37 @@ Thus, species pool should be first considered to explain beta diversity patterns
 This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
 other than random sampling based on the species log-normal distribution.
 We use the wetland data to show the observed beta-gamma diversity relationship.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="mecodev-package.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb205-2"><a href="mecodev-package.html#cb205-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
-<span id="cb205-3"><a href="mecodev-package.html#cb205-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data</span></span>
-<span id="cb205-4"><a href="mecodev-package.html#cb205-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb205-5"><a href="mecodev-package.html#cb205-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb205-6"><a href="mecodev-package.html#cb205-6" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
-<span id="cb205-7"><a href="mecodev-package.html#cb205-7" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb205-8"><a href="mecodev-package.html#cb205-8" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span>
-<span id="cb205-9"><a href="mecodev-package.html#cb205-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then create trans_gamma object</span></span>
-<span id="cb205-10"><a href="mecodev-package.html#cb205-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> test, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
-<span id="cb205-11"><a href="mecodev-package.html#cb205-11" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_observed</span>(<span class="at">sample_size =</span> <span class="cn">NULL</span>)</span>
-<span id="cb205-12"><a href="mecodev-package.html#cb205-12" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>res_observed</span>
-<span id="cb205-13"><a href="mecodev-package.html#cb205-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use Spearman correlation</span></span>
-<span id="cb205-14"><a href="mecodev-package.html#cb205-14" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_observed</span>(<span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="mecodev-package.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb217-2"><a href="mecodev-package.html#cb217-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
+<span id="cb217-3"><a href="mecodev-package.html#cb217-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data</span></span>
+<span id="cb217-4"><a href="mecodev-package.html#cb217-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb217-5"><a href="mecodev-package.html#cb217-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb217-6"><a href="mecodev-package.html#cb217-6" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
+<span id="cb217-7"><a href="mecodev-package.html#cb217-7" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb217-8"><a href="mecodev-package.html#cb217-8" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span>
+<span id="cb217-9"><a href="mecodev-package.html#cb217-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then create trans_gamma object</span></span>
+<span id="cb217-10"><a href="mecodev-package.html#cb217-10" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> test, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb217-11"><a href="mecodev-package.html#cb217-11" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_observed</span>(<span class="at">sample_size =</span> <span class="cn">NULL</span>)</span>
+<span id="cb217-12"><a href="mecodev-package.html#cb217-12" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>res_observed</span>
+<span id="cb217-13"><a href="mecodev-package.html#cb217-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use Spearman correlation</span></span>
+<span id="cb217-14"><a href="mecodev-package.html#cb217-14" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_observed</span>(<span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_gamma_obs.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>Let’s simulate the relation between gamma diversity and beta diversity in the absence of any process
 other than random sampling based on the species log-normal distribution.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="mecodev-package.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if you only run the simulation, dataset parameter is not necessary</span></span>
-<span id="cb206-2"><a href="mecodev-package.html#cb206-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
-<span id="cb206-3"><a href="mecodev-package.html#cb206-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.</span></span>
-<span id="cb206-4"><a href="mecodev-package.html#cb206-4" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_simulation</span>(<span class="at">ncom =</span> <span class="dv">20</span>, <span class="at">ind_vect =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">2000</span>))</span>
-<span id="cb206-5"><a href="mecodev-package.html#cb206-5" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_simulation</span>(<span class="at">add_fitting =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="mecodev-package.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if you only run the simulation, dataset parameter is not necessary</span></span>
+<span id="cb218-2"><a href="mecodev-package.html#cb218-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_gamma<span class="sc">$</span><span class="fu">new</span>(<span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb218-3"><a href="mecodev-package.html#cb218-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.</span></span>
+<span id="cb218-4"><a href="mecodev-package.html#cb218-4" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">cal_simulation</span>(<span class="at">ncom =</span> <span class="dv">20</span>, <span class="at">ind_vect =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">2000</span>))</span>
+<span id="cb218-5"><a href="mecodev-package.html#cb218-5" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_simulation</span>(<span class="at">add_fitting =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="Images/plot_gamma_simu.png" width="600px" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Gibbons_twodynamic_2017" class="csl-entry">
+Gibbons, S. M., S. M. Kearney, C. S. Smillie, and E. J. Alm. 2017. <span>“Two Dynamic Regimes in the Human Gut Microbiome.”</span> Journal Article. <em>PLoS Comput Biol</em> 13 (2): e1005364. <a href="https://doi.org/10.1371/journal.pcbi.1005364">https://doi.org/10.1371/journal.pcbi.1005364</a>.
+</div>
 <div id="ref-Li_expectation_2019" class="csl-entry">
 Li, C., K. R. Chng, J. S. Kwah, T. V. Av-Shalom, L. Tucker-Kellogg, and N. Nagarajan. 2019. <span>“An Expectation-Maximization Algorithm Enables Accurate Ecological Modeling Using Longitudinal Microbiome Sequencing Data.”</span> Journal Article. <em>Microbiome</em> 7 (1): 118. <a href="https://doi.org/10.1186/s40168-019-0729-z">https://doi.org/10.1186/s40168-019-0729-z</a>.
 </div>

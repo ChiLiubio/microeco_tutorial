@@ -225,6 +225,18 @@ t1$plot_alpha(pair_compare = TRUE, measure = "Chao1", shape = "Group")
 knitr::include_graphics("Images/plot_alpha.png")
 ```
 
+The multi-factor analysis of variance is also supported. It is notable that the result res_alpha_diff will be a list instead of a data.frame.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", anova_set = "Group+Type")
+# now the result t1$res_alpha_diff is a list
+# see the help document for the usage of anova_set
+```
+
+
+
+
 ## trans_beta class
 
 　The distance matrix of beta diversity can be transformed and plotted using trans_beta class.
@@ -505,29 +517,47 @@ pander::pander(t1$res_mantel)
 ```
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-In this example, we first perform the differential abundance test and random forest analysis to obtain the important genera.
-Then we use those taxa to perform correlation analysis.
+Let's first perform a correlation heatmap using Genus level data.
 
 ```{r, echo = TRUE}
-# first create trans_diff object
+t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr")
+# return t1$res_cor
+```
+
+Then, we can plot the correlation results using plot_cor function.
+
+```{r, echo = TRUE, eval = FALSE}
+# default ggplot2 method with clustering
+t1$plot_cor()
+```
+
+There are too many genera.
+We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance < 0.001.
+
+```{r, echo = TRUE}
+# filter genera that do not have at least one ***
+t1$plot_cor(filter_feature = c("", "*", "**"))
+```
+
+Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
+we can use other_taxa parameter in cal_cor function.
+
+```{r, echo = TRUE}
+# first create trans_diff object as a demonstration
 t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_level = "Genus")
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
-# calculate correlation
+# use other_taxa to select taxa you need
 t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
-# return t1$res_cor 
-```
-
-Then, we can plot the correlation results using ggplot2 or pheatmap.
-
-```{r, echo = TRUE, eval = FALSE}
-# default ggplot2 method
 t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
+
+The pheatmap method is also available.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
@@ -538,7 +568,8 @@ t1$plot_cor(pheatmap = TRUE)
 knitr::include_graphics("Images/plot_corr_pheatmap.png")
 ```
 
-Sometimes, it is necessary to study the correlations between environmental variables and taxa for different groups.
+Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+by_group parameter can be used for this goal.
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group

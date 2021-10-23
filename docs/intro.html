@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-09-11" />
+<meta name="date" content="2021-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,11 +162,21 @@ div.csl-indent {
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#features"><i class="fa fa-check"></i><b>2.1</b> Features</a></li>
-<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.2</b> R6 Class</a></li>
-<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.3</b> Help</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree</a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi</a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi</a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA</a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun</a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> basic class</a>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a></li>
 </ul></li>
@@ -244,23 +254,8 @@ It is notable that, beside the demonstration in the tutorial, users can also sav
 apply those files to other tools according to the format requirement.
 Main files stored in the objects of microeco package is the commonly used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.</p>
-<div id="features" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Features</h2>
-<ul>
-<li>R6 Class; fast, flexible and modularized</li>
-<li>Taxa abundance plotting</li>
-<li>Venn diagram</li>
-<li>Alpha diversity</li>
-<li>Beta diversity</li>
-<li>Differential abundance analysis</li>
-<li>Environmental data analysis</li>
-<li>Null model analysis</li>
-<li>Network analysis</li>
-<li>Functional analysis</li>
-</ul>
-</div>
-<div id="r6-class" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> R6 Class</h2>
+<div id="r6-class" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> R6 Class</h2>
 <p>All the classes in microeco package depend on the R6 class <span class="citation">(<a href="#ref-R6_Winston" role="doc-biblioref">Chang 2020</a>)</span>.
 R6 uses the encapsulated object-oriented programming paradigm,
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions.
@@ -272,8 +267,8 @@ This influences how we think about naming. The methods belong to objects, not ge
 <li><p>Every R6 object has an S3 class that reflects its hierarchy of R6 class.</p></li>
 </ul>
 </div>
-<div id="help" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Help</h2>
+<div id="help" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Help</h2>
 <p>The use of help documents in the microeco package may be a little different from other packages we often used.
 If you wish to see one of help documents of functions, you should search the name of the class (not the name of the function)
 and click the link of the function.</p>
@@ -282,6 +277,209 @@ and click the link of the function.</p>
 <span id="cb1-3"><a href="intro.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this can show all the functions and the detailed descriptions in the microtable class</span></span>
 <span id="cb2-2"><a href="intro.html#cb2-2" aria-hidden="true" tabindex="-1"></a>?microtable</span></code></pre></div>
+</div>
+<div id="dependence" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Dependence</h2>
+<div id="important-packages" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Important packages</h3>
+<p>To keep the start and use of microeco package simplified,
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+So the question is that you may encounter an error when using a class or function that invoke an additional package like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="intro.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb3-2"><a href="intro.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb3-3"><a href="intro.html#cb3-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb3-4"><a href="intro.html#cb3-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="intro.html#cb4-1" aria-hidden="true" tabindex="-1"></a>Error in t1$cal_network(network_method = &quot;SpiecEasi&quot;): igraph package not installed ...</span></code></pre></div>
+<p><br>
+The reason is that network construction require igraph package. We donot put the igraph and some other packages (e.g. SpiecEasi in github) on the “Imports” part of microeco package.</p>
+<p>The solutions:</p>
+<ol style="list-style-type: decimal">
+<li><p>install the package when encounter such an error. Actually, it’s very easy to install the packages from CRAN or bioconductor. Just try it.</p></li>
+<li><p>install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.</p></li>
+</ol>
+<p>We show several packages that are published in CRAN and not installed automatically.</p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="33%" />
+<col width="52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Package</th>
+<th align="left">where</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">reshape2</td>
+<td align="left">microtable class</td>
+<td align="left">data transformation</td>
+</tr>
+<tr class="even">
+<td align="left">MASS</td>
+<td align="left">trans_diff class</td>
+<td align="left">linear discriminant analysis</td>
+</tr>
+<tr class="odd">
+<td align="left">GUniFrac</td>
+<td align="left">cal_betadiv()</td>
+<td align="left">UniFrac distance matrix</td>
+</tr>
+<tr class="even">
+<td align="left">ggpubr</td>
+<td align="left">plot_alpha()</td>
+<td align="left">some plotting functions</td>
+</tr>
+<tr class="odd">
+<td align="left">randomForest</td>
+<td align="left">trans_diff class</td>
+<td align="left">random forest analysis</td>
+</tr>
+<tr class="even">
+<td align="left">ggdendro</td>
+<td align="left">plot_clustering()</td>
+<td align="left">plotting clustering dendrogram</td>
+</tr>
+<tr class="odd">
+<td align="left">ggrepel</td>
+<td align="left">trans_rda class</td>
+<td align="left">reduce the text overlap in the plot</td>
+</tr>
+<tr class="even">
+<td align="left">agricolae</td>
+<td align="left">cal_diff()</td>
+<td align="left">multiple comparisons in anova</td>
+</tr>
+<tr class="odd">
+<td align="left">gridExtra</td>
+<td align="left">trans_diff class</td>
+<td align="left">merge plots</td>
+</tr>
+<tr class="even">
+<td align="left">picante</td>
+<td align="left">cal_alphadiv()</td>
+<td align="left">Faith’s phylogenetic alpha diversity</td>
+</tr>
+<tr class="odd">
+<td align="left">pheatmap</td>
+<td align="left">plot_corr(pheatmap = TRUE)</td>
+<td align="left">correlation heatmap with clustering dendrogram</td>
+</tr>
+<tr class="even">
+<td align="left">tidytree</td>
+<td align="left">trans_diff class</td>
+<td align="left">plot the taxonomic tree</td>
+</tr>
+<tr class="odd">
+<td align="left">igraph</td>
+<td align="left">trans_network class</td>
+<td align="left">network related operations</td>
+</tr>
+<tr class="even">
+<td align="left">rgexf</td>
+<td align="left">save_network()</td>
+<td align="left">save network with gexf style</td>
+</tr>
+<tr class="odd">
+<td align="left">ggalluvial</td>
+<td align="left">plot_bar(use_alluvium = TRUE)</td>
+<td align="left">alluvial plot</td>
+</tr>
+</tbody>
+</table>
+<p>Then, if you want to install these packages or some of them, you can do like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If a package is not installed, it will be installed from CRAN.</span></span>
+<span id="cb5-2"><a href="intro.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First select the packages of interest</span></span>
+<span id="cb5-3"><a href="intro.html#cb5-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;reshape2&quot;</span>, <span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;ggalluvial&quot;</span>)</span>
+<span id="cb5-4"><a href="intro.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
+<span id="cb5-5"><a href="intro.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, <span class="cf">function</span>(x) {</span>
+<span id="cb5-6"><a href="intro.html#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb5-7"><a href="intro.html#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-8"><a href="intro.html#cb5-8" aria-hidden="true" tabindex="-1"></a>    }})</span></code></pre></div>
+<p>There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+or packages written by other languages.</p>
+</div>
+<div id="ggtree" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> ggtree</h3>
+<p>Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (<a href="https://bioconductor.org/packages/release/bioc/html/ggtree.html" class="uri">https://bioconductor.org/packages/release/bioc/html/ggtree.html</a>).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="intro.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb6-2"><a href="intro.html#cb6-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;ggtree&quot;</span>)</span></code></pre></div>
+</div>
+<div id="spieceasi" class="section level3" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> SpiecEasi</h3>
+<p>The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
+The package can be installed from Github <a href="https://github.com/zdk123/SpiecEasi" class="uri">https://github.com/zdk123/SpiecEasi</a></p>
+</div>
+<div id="gephi" class="section level3" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Gephi</h3>
+<p>Gephi is an excellent network visualization tool and used to open the saved network file,
+i.e. network.gexf in the <a href="https://chiliubio.github.io/microeco_tutorial/extended-class.html#trans_network-class">tutorial</a>.
+You can download Gephi and learn how to use it from <a href="https://gephi.org/users/download/" class="uri">https://gephi.org/users/download/</a></p>
+</div>
+<div id="wgcna" class="section level3" number="2.3.5">
+<h3><span class="header-section-number">2.3.5</span> WGCNA</h3>
+<p>In the correlation-based network, when the species number is very large,
+the correlation algorithm in WGCNA is very fast compared to the ‘cor’ option in trans_network.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="tax4fun" class="section level3" number="2.3.6">
+<h3><span class="header-section-number">2.3.6</span> Tax4Fun</h3>
+<p>Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.</p>
+<ol style="list-style-type: decimal">
+<li>install Tax4Fun package</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;RJSONIO&quot;</span>)</span>
+<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;biom_0.3.12.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb8-3"><a href="intro.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;qiimer_0.9.4.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb8-4"><a href="intro.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Tax4Fun_0.3.1.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>download SILVA123 reference data from <a href="http://tax4fun.gobics.de/" class="uri">http://tax4fun.gobics.de/</a><br />
+　unzip SILVA123.zip , move it to a place that you can remember.</li>
+</ol>
+</div>
+<div id="tax4fun2" class="section level3" number="2.3.7">
+<h3><span class="header-section-number">2.3.7</span> Tax4Fun2</h3>
+<p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
+Using Tax4Fun2 approach require the representative fasta file.
+The user do not need to install Tax4Fun2 R package.
+The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+Downlaod blast tools from “<a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" class="uri">ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+</a>” ; e.g. ncbi-blast-****-x64-win64.tar.gz for windows system.
+Downlaod Ref99NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download</a>” or Ref100NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download</a>” .
+Uncompress all the folders. The final folders should be like these structures:</p>
+<p>blast tools:<br />
+　|– ncbi-blast-2.11.0+<br />
+　　|—- bin<br />
+　　　|—— blastn.exe<br />
+　　　|—— makeblastdb.exe<br />
+　　　|—— ……</p>
+<p>Ref99NR/Ref100NR:<br />
+　|– Tax4Fun2_ReferenceData_v2<br />
+　　|—- Ref99NR<br />
+　　　|—— otu000001.tbl.gz<br />
+　　　|—— ……<br />
+　　　|—— Ref99NR.fasta<br />
+　　　|—— Ref99NR.tre</p>
+<p>The path “ncbi-blast-2.11.0+/bin” and “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># seqinr should be installed for reading and writing fasta file</span></span>
+<span id="cb9-2"><a href="intro.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="intro.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
+<span id="cb9-4"><a href="intro.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco</span></span>
+<span id="cb9-5"><a href="intro.html#cb9-5" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb9-6"><a href="intro.html#cb9-6" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
+<span id="cb9-7"><a href="intro.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># then see the help document of microtable class about the rep_fasta in microtable$new().</span></span></code></pre></div>
+</div>
+</div>
+<div id="plotting" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Plotting</h2>
+<p>Most of the plotting in the package rely on the ggplot2 package system.
+We provide some parameters to change the corresponding plot.
+The user can also assign the output a name and use the ggplot2-style grammers to modify it.
+Each data table used for plotting is stored in the object and can be downloaded for the personalized analysis and plotting.
+Of course, the user can also directly modify the class and reload them to use.
+Any contribution of a modified class is also appreciated through github pushing or email (<a href="mailto:liuchi0426@126.com" class="email">liuchi0426@126.com</a>).</p>
 
 </div>
 </div>
