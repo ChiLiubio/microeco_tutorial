@@ -1,16 +1,20 @@
 # Basic class
+The microtable class is the basic class.
+All the other classes depend on the microtable class.
 
 ## microtable class
 
-　Many tools can be used for the bioinformatic analysis, such as QIIME[@Caporaso_QIIME_2010], usearch(https://www.drive5.com/usearch/), 
-mothur[@Schloss_Introducing_2009], and RDP(http://rdp.cme.msu.edu/).
-Although the format of results may be different from various tools, the main files can be classified into the following parts:
-(1) OTU or ASV table, i.e. the species-sample abundance table; 
-(2) taxonomy table, the taxonomy assignments information table;
-(3) phylogenetic tree;
-(4) representative sequences.
+　Many tools can be used for the bioinformatic analysis, such as QIIME [@Caporaso_QIIME_2010], QIIME2 [@Bolyen_Reproducible_2019], 
+usearch (https://www.drive5.com/usearch/), mothur [@Schloss_Introducing_2009], 
+SILVAngs (https://ngs.arb-silva.de/silvangs/), 
+and RDP (http://rdp.cme.msu.edu/).
+Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
+(1) OTU/ASV table, i.e. the species-sample abundance table; 
+(2) taxonomy table, the taxonomic assignment table;
+(3) representative sequences.
+(4) phylogenetic tree;
 (5) Generally, it is useful to create a detailed sample information table to store all the sample information, 
-including the environmental data and the missing values (NA).
+including the environmental data.
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
 At least, the OTU table (i.e. species-sample abundance table) should be provided to create microtable object.
@@ -22,10 +26,12 @@ Currently, those tools/softwares include not only commonly-used QIIME [@Caporaso
 but also some metagenomic tools, such as HUMAnN [@Franzosa_Species_2018].
 In this tutorial, we use the data inside the package microeco to show some operations.
 
-　The 16S rRNA sequencing results in the example data of the package is used to show the main part of the tutorial.
+### Example
+
+　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
 This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al.[@An_Soil_2019], 
 who surveyed soil bacterial communities in Chinese inland wetlands (IW), 
-coastal wetland (CW) and Tibet plateau wetlands (TW) using 16S rRNA gene amplicon sequencing method.
+coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples.
 The sample information table have 4 columns: "SampleID", "Group", "Type" and "Saline".
 The column "SampleID" is same with the rownames.
@@ -34,7 +40,7 @@ The column "Type" represents the sampling region: northeastern region (NE), nort
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP). 
 The column "Saline" represents the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-Another ITS sequencing dataset is also stored in the example data of the package[@Gao_Strong_2019].
+Another ITS sequencing dataset [@Gao_Strong_2019] is also stored in the example data of the package.
 
 
 ```{r, echo = TRUE}
@@ -43,6 +49,7 @@ library(microeco)
 data(sample_info_16S)
 data(otu_table_16S)
 data(taxonomy_table_16S)
+# we will use phylogenetic tree to calculate phylogeny-based alpha and beta metrics
 data(phylo_tree_16S)
 # load the environmental data which is detached from sample table
 data(env_data_16S)
@@ -81,21 +88,20 @@ taxonomy_table_16S[1:5, 1:3]
 pander::pander(taxonomy_table_16S[1:5, 1:3])
 ```
 
-Sometimes, your taxonomic table may have some chaotic information, such NA, unidentified and unknown.
-These information can influence the following taxonomic abundance calculation.
-So it is necessary to clean this file using the following code.
-Another important part of this operation is to unify the taxonomic prefix,
+Sometimes, your taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
+These information can largely influence the following taxonomic abundance calculation and other taxonomy-based analysis.
+So it is generally necessary to clean this file using the **tidy_taxonomy** function.
+Another very important part of this operation is to unify the taxonomic prefix,
 e.g. transforming D_1__ to p__ for phylum level.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# make the taxonomic information unified, important
+# make the taxonomic information unified, very important
 taxonomy_table_16S %<>% tidy_taxonomy
 ```
 
-
 The rownames of sample_table in microtable object (i.e. sample names) are used for selecting samples/groups in all the related operations in the package.
-Before you create microtable object, make sure that the rownames of sample information table are the correct sample names.
+**Before creating microtable object, make sure that the rownames of sample information table are sample names**.
 
 
 ```{r, echo = TRUE}
@@ -126,9 +132,11 @@ class(phylo_tree_16S)
 ```
 
 Then, we create an object of microtable class.
-This operation is very similar with the package phyloseq[@Mcmurdie_phyloseq_2013], but microeco is more brief and simpler.
-The otu_table in the microtable class must be the species-sample format: rownames must be OTU names, colnames must be sample names.
-The required sample names must be same in rownames of sample_table and colnames of otu_table.
+This operation is very similar with the package phyloseq[@Mcmurdie_phyloseq_2013], but microeco is more brief.
+The otu_table in the microtable class must be the species-sample format: rownames - OTU names; colnames - sample names.
+**The colnames in otu_table must be in accordance with rownames of sample_table**.
+Otherwise, the following check can filter all the samples of otu_table because of no overlap of sample names between otu_table and sample_table.
+
 
 ```{r, echo = TRUE}
 # In R6 class, '$new' is the original method used to create a new object of class
@@ -141,19 +149,10 @@ dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_
 dataset
 ```
 
-To make the species and sample information consistent across different files in the dataset object, we can use function tidy_dataset() to trim the dataset.
-
-
-```{r, echo = TRUE}
-dataset$tidy_dataset()
-print(dataset)
-```
-
-
 Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria". 
 ```{r, echo = TRUE}
 dataset$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
-print(dataset)
+dataset
 ```
 
 We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplast".
@@ -165,7 +164,8 @@ dataset$filter_pollution(taxa = c("mitochondria", "chloroplast"))
 print(dataset)
 ```
 
-Then, to make the OTUs same in otu_table, tax_table and phylo_tree, we use tidy_dataset() again.
+
+To make the OTU and sample information consistent across all files in the dataset object, we use function **tidy_dataset** to trim the dataset.
 
 ```{r, echo = TRUE}
 dataset$tidy_dataset()
@@ -179,6 +179,7 @@ Then we use sample_sums() to check the sequence numbers in each sample.
 dataset$sample_sums() %>% range
 ```
 
+
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 we need to perform the resampling to make the sequence number equal for each sample.
 The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.
@@ -190,22 +191,22 @@ dataset$sample_sums() %>% range
 ```
 
 Then, we calculate the taxa abundance at each taxonomic rank using cal_abund().
-This function return a list called taxa_abund containing several data frame of the abundance information at each taxonomic rank.
-The list is stored in the microtable object automatically.
-It's worth noting that the cal_abund() function can be used to solve some complex cases,
-such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
-Those have been shown in README of file2meco package (https://github.com/ChiLiubio/file2meco).
+This function **return a list called taxa_abund stored in the microtable object**. 
+This list contain several data frame of the abundance information at each taxonomic rank.
+It's worth noting that the cal_abund() function can be used to **solve more complex cases with special parameters**,
+such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
+Those have been shown in README of file2meco package (https://github.com/ChiLiubio/file2meco) with complex metagenomic dataset.
 
 ```{r, echo = TRUE}
+# use default parameters
 dataset$cal_abund()
 # return dataset$taxa_abund
 class(dataset$taxa_abund)
 ```
 
-The function save_abund() can be used to save the taxa abundance file to a local place.
+The function save_abund() can be used to save the taxa abundance file to a local place easily.
 
 ```{r, echo = TRUE, eval = FALSE}
-dir.create("taxa_abund")
 dataset$save_abund(dirpath = "taxa_abund")
 ```
 
@@ -223,11 +224,10 @@ class(dataset$alpha_diversity)
 
 ```{r, echo = TRUE, eval = FALSE}
 # save dataset$alpha_diversity to a directory
-dir.create("alpha_diversity")
 dataset$save_alphadiv(dirpath = "alpha_diversity")
 ```
 
-We also calculate the distance matrix of beta diversity using function cal_betadiv().
+Let's go on to beta diversity with function cal_betadiv().
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
 ```{r, echo = FALSE, eval = TRUE, message = FALSE}
@@ -236,14 +236,39 @@ invisible(dataset$cal_betadiv(unifrac = FALSE))
 
 ```{r, echo = TRUE, eval = FALSE}
 # If you do not want to calculate unifrac metrics, use unifrac = FALSE
-# require GUniFrac package
+# require GUniFrac package installed
 dataset$cal_betadiv(unifrac = TRUE)
 # return dataset$beta_diversity
 class(dataset$beta_diversity)
 # save dataset$beta_diversity to a directory
-dir.create("beta_diversity")
 dataset$save_betadiv(dirpath = "beta_diversity")
 ```
+
+
+### Key points
+
+  + sample_table: rownames of sample_table must be sample names used
+  + otu_table: rownames must be feature names; colnames must be sample names
+  + microtable class: creating microtable object requires at least one file input (otu_table)
+  + tidy_taxonomy(): necessary to make taxonomic table have unified format
+  + tidy_dataset(): necessary to clean files in microtable object
+  + cal_abund(): powerful and flexible to cope with complex cases in tax_table
+  + taxa_abund: taxa_abund is a list stored in microtable object and have several data frame
+  + beta_diversity: beta_diversity is also a list stored in microtable object and have several distance matrix
+
+
+### Other functions
+
+  + add_rownames2taxonomy(): add the rownames of tax_table as the last column of tax_table directly; very useful in some analysis, e.g. OTU/ASV biomarker finding.
+  + taxa_sums(): sum the abundance for each taxa; very useful for taxa abundance checking and filtering
+  + merge_samples(): merge samples according to a specific group of sample_table to generate a new microtable object
+  + merge_taxa(): merge taxa according to a specific taxonomic rank level of tax_table to generate a new microtable object
+  + rename_taxa(): rename the OTU/ASV names in all the files of microtable object
+  + sample_names(): output sample names in microtable object
+  + taxa_names(): output taxa names in microtable object
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-# Other data
+# Other dataset
 
 ## Fungi data
 
@@ -47,11 +47,11 @@ knitr::include_graphics("Images/plot_func_perc_module_fungi.png")
 Many methods in microeco package can be used not only for the traditional species abundance data, i.e. species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the file2meco package (https://github.com/ChiLiubio/file2meco),
-we provide several functions to transform the output files of some famous metagenomic tools (e.g. HUMAnN) to 
+we provide several functions to transform the output files of some famous metagenomic tools (e.g. HUMAnN and kraken) to 
 the microtable object directly.
 HUMAnN[@Franzosa_Species_2018] is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
 Certainly, it can also be used for the whole community profile of metabolic pathways if you do not need something at species-level.
-The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (https://huttenhower.sph.harvard.edu/humann). 
+The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN3 (https://huttenhower.sph.harvard.edu/humann). 
 Currently, it supports both the MetaCyc (https://metacyc.org/) and KEGG pathway abundance file input.
 Here, we show the example of KEGG pathway results.
 
@@ -107,7 +107,7 @@ knitr::include_graphics("Images/plot_HUMANN_KEGG_lefse_bar.png")
 ```
 
 
-## Animal data
+## Gut microbiome
 
 We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database[@Lim_Large_2020].
 
@@ -123,7 +123,7 @@ taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco"
 # construct microtable object
 data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
 data1$tidy_dataset()
-# We correct the species names in tax_table
+# revise the species names in tax_table
 select_rows <- data1$tax_table$Species != "s__"
 data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
 # taxonomic abundance
@@ -146,9 +146,6 @@ t1$plot_box(group = "donor_status") + ylab("Relative population abundance (%)") 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_mouse_NJC19.png")
 ```
-
-
-
 
 
 

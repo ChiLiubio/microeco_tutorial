@@ -3,7 +3,7 @@ We show some important things here.
 
 ## clone
 R6 class has a special copy mechanism which is different from S3 and S4.
-If you want to copy an object completely, you should use the function clone() instead of direct assignment.
+**If you want to copy an object completely, you should use the function clone() instead of direct assignment.**
 
 ```{r, echo = TRUE}
 # use clone to copy completely
@@ -22,7 +22,7 @@ identical(t2, t1)
 
 ## subset of samples
 We donnot provide the special function to filter samples in microtable class, as we think it is redundant.
-We recommend user to directly manipulate the sample_table in microtable object.
+**We recommend user to directly manipulate the sample_table in microtable object.**
 For example, if we want to analyze samples from 'CW' and 'IW', respectively, we can operate like this: 
 
 ```{r, echo = TRUE}
@@ -31,7 +31,7 @@ group1 <- clone(dataset)
 group1$sample_table <- subset(group1$sample_table, Group == "CW")
 # this is necessary to make files in group1 corresponding
 group1$tidy_dataset()
-
+group1
 # similar with obove operation
 group2 <- clone(dataset)
 group2$sample_table <- subset(group2$sample_table, Group == "IW")
@@ -40,7 +40,7 @@ group2$tidy_dataset()
 ```
 
 ## change object
-All the classes are set public, meaning that you can change, add or remove the objects stored in them as you want.
+All the classes are set public, meaning that you can **change, add or remove the objects stored in them as you want**.
 
 ```{r, echo = TRUE}
 # add a matrix you think useful
@@ -50,7 +50,7 @@ dataset$sample_table %<>% .[, -2]
 ```
 
 ## group order
-If you want to reorder the groups, assign the factors may be the most simplest way.
+If you want to reorder the groups, **assign the factors may be the most simplest way.**
 
 ```{r, echo = TRUE}
 data(dataset)
@@ -88,3 +88,29 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```{r, out.width = "400px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
+
+## save() function
+
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data save and communication.
+By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
+It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
+This is also the recommended way to send data for testing in 'Github Issues'.
+
+```{r, echo = TRUE, eval = FALSE}
+# save 'dataset' to local computer
+save(dataset, file = "dataset.RData")
+# load the data by others in their R project
+load("dataset.RData")
+```
+
+
+
+
+
+
+
+
+
+
+
+

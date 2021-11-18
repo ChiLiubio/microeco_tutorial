@@ -36,8 +36,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.5.0)},
-  pdfauthor={Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao},
+  pdftitle={Tutorial for R microeco package (v0.6.0)},
+  pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.5.0)}
-\author{Chi Liu, Umer Zeeshan Ijaz, Felipe Mansoldo, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
-\date{2021-10-23}
+\title{Tutorial for R microeco package (v0.6.0)}
+\author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
+\date{2021-11-18}
 
 \begin{document}
 \maketitle
@@ -137,21 +137,22 @@
 \chapter{Background}\label{background}}
 
 　R language \citep{R-base} and its packages ecosystem are wonderful tools for data analysis.
-In microbial community ecology field, many packages can be used for the data analysis,
+In the field of microbial community ecology, many packages can be used for the data analysis,
 such as vegan\citep{Jari_vegan_2019}, ape\citep{Paradis_ape_2018} and picante\citep{Picante_Kembel_2010}.
 However, with the development of the high-throughput sequencing techniques,
 the increasing data amount and complexity make the data mining a challenge.
-There have been some R packages created for the statistics and visualization in microbial community ecology, such as phyloseq\citep{Mcmurdie_phyloseq_2013},
+There have been some R packages created for the statistics and visualization in microbial community ecology,
+such as phyloseq\citep{Mcmurdie_phyloseq_2013},
 microbiome (\url{https://github.com/microbiome/microbiome}), microbiomeSeq (\url{http://www.github.com/umerijaz/microbiomeSeq}),
 ampvis2 (\url{https://madsalbertsen.github.io/ampvis2/reference/index.html}), MicrobiomeR(\url{https://github.com/vallenderlab/MicrobiomeR}),
 theseus\citep{Price_theseus_2018}, rANOMALY\citep{Theil_rANOMALY_2021},
 MicrobiomeExplorer\citep{Reeder_MicrobiomeExplorer_2021},
-tidyMicro\citep{Carpenter_tidyMicro_2021}
+tidyMicro\citep{Carpenter_tidyMicro_2021}, microbial (\url{https://github.com/guokai8/microbial}),
 and so on.
 However, we lack a flexible, comprehensive and modularized R package to analyze and manage the data.
 So we create the microeco R package\citep{Liu_microeco_2021} for this goal (\url{https://github.com/ChiLiubio/microeco}).
-Besides, we also develop the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from other tools easily
-and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extending approaches in the area.
+Besides, we also develop the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some tools easily
+and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extending approaches in this field.
 
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
@@ -159,7 +160,7 @@ and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extend
 The microeco package has several advantages compared to other packages in R.
 The main goal of developing this package is to help users analyse communtiy ecology data fast.
 So a series of commonly-used approaches are implemented.
-Some new methods are in active development.
+Some new methods are also in active development.
 To facilitate the data mining, the whole structure of microeco package are modularized to
 make users conveniently remember, search and use.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
@@ -173,12 +174,12 @@ So the intermediate and result files are easily saved, modified and used for oth
 All the classes in microeco package depend on the R6 class \citep{R6_Winston}.
 R6 uses the encapsulated object-oriented programming paradigm,
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions.
-If you are interested in the class feature, read more from `Advanced R' book.
+If you are interested in the class feature, read more from `Advanced R' book (\url{https://adv-r.hadley.nz/}).
 
 \begin{itemize}
 \item
   A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace.
-  This influences how we think about naming. The methods belong to objects, not generics, and you call them like object\$method().
+  This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object\$method().
 \item
   R6's reference semantics allow methods to simultaneously return a value and modify an object.
 \item
@@ -241,7 +242,7 @@ The solutions:
 \item
   install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
 \item
-  install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.
+  install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run all the examples in tutorial.
 \end{enumerate}
 
 We show several packages that are published in CRAN and not installed automatically.
@@ -249,8 +250,6 @@ We show several packages that are published in CRAN and not installed automatica
 \begin{tabular}{l|l|l}
 \hline
 Package & where & description\\
-\hline
-reshape2 & microtable class & data transformation\\
 \hline
 MASS & trans\_diff class & linear discriminant analysis\\
 \hline
@@ -288,7 +287,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \begin{Highlighting}[]
 \CommentTok{\# If a package is not installed, it will be installed from CRAN.}
 \CommentTok{\# First select the packages of interest}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"reshape2"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \FunctionTok{lapply}\NormalTok{(packages, }\ControlFlowTok{function}\NormalTok{(x) \{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -297,7 +296,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \end{Highlighting}
 \end{Shaded}
 
-There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
 or packages written by other languages.
 
 \hypertarget{ggtree}{%
@@ -414,25 +413,30 @@ The path ``ncbi-blast-2.11.0+/bin'' and ``Tax4Fun2\_ReferenceData\_v2'' will be 
 Most of the plotting in the package rely on the ggplot2 package system.
 We provide some parameters to change the corresponding plot.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
-Each data table used for plotting is stored in the object and can be downloaded for the personalized analysis and plotting.
+Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated through github pushing or email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
+Any contribution of a modified class is also appreciated via github pushing or email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
 
 \hypertarget{basic-class}{%
 \chapter{Basic class}\label{basic-class}}
 
+The microtable class is the basic class.
+All the other classes depend on the microtable class.
+
 \hypertarget{microtable-class}{%
 \section{microtable class}\label{microtable-class}}
 
-　Many tools can be used for the bioinformatic analysis, such as QIIME\citep{Caporaso_QIIME_2010}, usearch(\url{https://www.drive5.com/usearch/}),
-mothur\citep{Schloss_Introducing_2009}, and RDP(\url{http://rdp.cme.msu.edu/}).
-Although the format of results may be different from various tools, the main files can be classified into the following parts:
-(1) OTU or ASV table, i.e.~the species-sample abundance table;
-(2) taxonomy table, the taxonomy assignments information table;
-(3) phylogenetic tree;
-(4) representative sequences.
+　Many tools can be used for the bioinformatic analysis, such as QIIME \citep{Caporaso_QIIME_2010}, QIIME2 \citep{Bolyen_Reproducible_2019},
+usearch (\url{https://www.drive5.com/usearch/}), mothur \citep{Schloss_Introducing_2009},
+SILVAngs (\url{https://ngs.arb-silva.de/silvangs/}),
+and RDP (\url{http://rdp.cme.msu.edu/}).
+Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
+(1) OTU/ASV table, i.e.~the species-sample abundance table;
+(2) taxonomy table, the taxonomic assignment table;
+(3) representative sequences.
+(4) phylogenetic tree;
 (5) Generally, it is useful to create a detailed sample information table to store all the sample information,
-including the environmental data and the missing values (NA).
+including the environmental data.
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
 At least, the OTU table (i.e.~species-sample abundance table) should be provided to create microtable object.
@@ -444,10 +448,13 @@ Currently, those tools/softwares include not only commonly-used QIIME \citep{Cap
 but also some metagenomic tools, such as HUMAnN \citep{Franzosa_Species_2018}.
 In this tutorial, we use the data inside the package microeco to show some operations.
 
-　The 16S rRNA sequencing results in the example data of the package is used to show the main part of the tutorial.
+\hypertarget{example}{%
+\subsection{Example}\label{example}}
+
+　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
 This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al.\citep{An_Soil_2019},
 who surveyed soil bacterial communities in Chinese inland wetlands (IW),
-coastal wetland (CW) and Tibet plateau wetlands (TW) using 16S rRNA gene amplicon sequencing method.
+coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples.
 The sample information table have 4 columns: ``SampleID'', ``Group'', ``Type'' and ``Saline''.
 The column ``SampleID'' is same with the rownames.
@@ -456,7 +463,7 @@ The column ``Type'' represents the sampling region: northeastern region (NE), no
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP).
 The column ``Saline'' represents the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-Another ITS sequencing dataset is also stored in the example data of the package\citep{Gao_Strong_2019}.
+Another ITS sequencing dataset \citep{Gao_Strong_2019} is also stored in the example data of the package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -465,6 +472,7 @@ Another ITS sequencing dataset is also stored in the example data of the package
 \FunctionTok{data}\NormalTok{(sample\_info\_16S)}
 \FunctionTok{data}\NormalTok{(otu\_table\_16S)}
 \FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
+\CommentTok{\# we will use phylogenetic tree to calculate phylogeny{-}based alpha and beta metrics}
 \FunctionTok{data}\NormalTok{(phylo\_tree\_16S)}
 \CommentTok{\# load the environmental data which is detached from sample table}
 \FunctionTok{data}\NormalTok{(env\_data\_16S)}
@@ -549,21 +557,21 @@ Crenarchaeotic Group & c\_\_ \\
 \bottomrule
 \end{longtable}
 
-Sometimes, your taxonomic table may have some chaotic information, such NA, unidentified and unknown.
-These information can influence the following taxonomic abundance calculation.
-So it is necessary to clean this file using the following code.
-Another important part of this operation is to unify the taxonomic prefix,
+Sometimes, your taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
+These information can largely influence the following taxonomic abundance calculation and other taxonomy-based analysis.
+So it is generally necessary to clean this file using the \textbf{tidy\_taxonomy} function.
+Another very important part of this operation is to unify the taxonomic prefix,
 e.g.~transforming D\_1\_\_ to p\_\_ for phylum level.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# make the taxonomic information unified, important}
+\CommentTok{\# make the taxonomic information unified, very important}
 \NormalTok{taxonomy\_table\_16S }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ tidy\_taxonomy}
 \end{Highlighting}
 \end{Shaded}
 
 The rownames of sample\_table in microtable object (i.e.~sample names) are used for selecting samples/groups in all the related operations in the package.
-Before you create microtable object, make sure that the rownames of sample information table are the correct sample names.
+\textbf{Before creating microtable object, make sure that the rownames of sample information table are sample names}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -642,9 +650,10 @@ The user can also directly integrate those data into the sample information tabl
 \end{verbatim}
 
 Then, we create an object of microtable class.
-This operation is very similar with the package phyloseq\citep{Mcmurdie_phyloseq_2013}, but microeco is more brief and simpler.
-The otu\_table in the microtable class must be the species-sample format: rownames must be OTU names, colnames must be sample names.
-The required sample names must be same in rownames of sample\_table and colnames of otu\_table.
+This operation is very similar with the package phyloseq\citep{Mcmurdie_phyloseq_2013}, but microeco is more brief.
+The otu\_table in the microtable class must be the species-sample format: rownames - OTU names; colnames - sample names.
+\textbf{The colnames in otu\_table must be in accordance with rownames of sample\_table}.
+Otherwise, the following check can filter all the samples of otu\_table because of no overlap of sample names between otu\_table and sample\_table.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -696,29 +705,12 @@ The required sample names must be same in rownames of sample\_table and colnames
 ## phylo_tree have 14096 tips
 \end{verbatim}
 
-To make the species and sample information consistent across different files in the dataset object, we can use function tidy\_dataset() to trim the dataset.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\FunctionTok{print}\NormalTok{(dataset)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## microtable class:
-## sample_table have 90 rows and 4 columns
-## otu_table have 13628 rows and 90 columns
-## tax_table have 13628 rows and 7 columns
-## phylo_tree have 13628 tips
-\end{verbatim}
-
 Then, we remove OTUs which are not assigned in the Kingdom "k\_\_Archaea" or "k\_\_Bacteria".
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dataset}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ base}\SpecialCharTok{::}\FunctionTok{subset}\NormalTok{(Kingdom }\SpecialCharTok{==} \StringTok{"k\_\_Archaea"} \SpecialCharTok{|}\NormalTok{ Kingdom }\SpecialCharTok{==} \StringTok{"k\_\_Bacteria"}\NormalTok{)}
-\FunctionTok{print}\NormalTok{(dataset)}
+\NormalTok{dataset}
 \end{Highlighting}
 \end{Shaded}
 
@@ -727,7 +719,7 @@ Then, we remove OTUs which are not assigned in the Kingdom "k\_\_Archaea" or "k\
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13330 rows and 7 columns
-## phylo_tree have 13628 tips
+## phylo_tree have 14096 tips
 \end{verbatim}
 
 We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chloroplast''.
@@ -755,10 +747,10 @@ We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chlorop
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
-## phylo_tree have 13628 tips
+## phylo_tree have 14096 tips
 \end{verbatim}
 
-Then, to make the OTUs same in otu\_table, tax\_table and phylo\_tree, we use tidy\_dataset() again.
+To make the OTU and sample information consistent across all files in the dataset object, we use function \textbf{tidy\_dataset} to trim the dataset.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -817,14 +809,15 @@ The function rarefy\_samples can invoke the function tidy\_dataset automatically
 \end{verbatim}
 
 Then, we calculate the taxa abundance at each taxonomic rank using cal\_abund().
-This function return a list called taxa\_abund containing several data frame of the abundance information at each taxonomic rank.
-The list is stored in the microtable object automatically.
-It's worth noting that the cal\_abund() function can be used to solve some complex cases,
-such as supporting both the relative and absolute abundance calculation and selecting the partial taxonomic columns.
-Those have been shown in README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}).
+This function \textbf{return a list called taxa\_abund stored in the microtable object}.
+This list contain several data frame of the abundance information at each taxonomic rank.
+It's worth noting that the cal\_abund() function can be used to \textbf{solve more complex cases with special parameters},
+such as supporting both the relative and absolute abundance calculation and selecting the partial `taxonomic' columns.
+Those have been shown in README of file2meco package (\url{https://github.com/ChiLiubio/file2meco}) with complex metagenomic dataset.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# use default parameters}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -844,11 +837,10 @@ Those have been shown in README of file2meco package (\url{https://github.com/Ch
 ## [1] "list"
 \end{verbatim}
 
-The function save\_abund() can be used to save the taxa abundance file to a local place.
+The function save\_abund() can be used to save the taxa abundance file to a local place easily.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{dir.create}\NormalTok{(}\StringTok{"taxa\_abund"}\NormalTok{)}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"taxa\_abund"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -883,40 +875,85 @@ As an example, we do not calculate phylogenetic diversity.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# save dataset$alpha\_diversity to a directory}
-\FunctionTok{dir.create}\NormalTok{(}\StringTok{"alpha\_diversity"}\NormalTok{)}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_alphadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"alpha\_diversity"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-We also calculate the distance matrix of beta diversity using function cal\_betadiv().
+Let's go on to beta diversity with function cal\_betadiv().
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# If you do not want to calculate unifrac metrics, use unifrac = FALSE}
-\CommentTok{\# require GUniFrac package}
+\CommentTok{\# require GUniFrac package installed}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{unifrac =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return dataset$beta\_diversity}
 \FunctionTok{class}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity)}
 \CommentTok{\# save dataset$beta\_diversity to a directory}
-\FunctionTok{dir.create}\NormalTok{(}\StringTok{"beta\_diversity"}\NormalTok{)}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_betadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"beta\_diversity"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{extended-class}{%
-\chapter{Extended class}\label{extended-class}}
+\hypertarget{key-points}{%
+\subsection{Key points}\label{key-points}}
 
-All the extended classes depend on the microtable class.
-Generally, one class can work alone.
-In some cases, one function of a class may interact with the object from another class to complete a method.
+\begin{itemize}
+\tightlist
+\item
+  sample\_table: rownames of sample\_table must be sample names used
+\item
+  otu\_table: rownames must be feature names; colnames must be sample names
+\item
+  microtable class: creating microtable object requires at least one file input (otu\_table)
+\item
+  tidy\_taxonomy(): necessary to make taxonomic table have unified format
+\item
+  tidy\_dataset(): necessary to clean files in microtable object
+\item
+  cal\_abund(): powerful and flexible to cope with complex cases in tax\_table
+\item
+  taxa\_abund: taxa\_abund is a list stored in microtable object and have several data frame
+\item
+  beta\_diversity: beta\_diversity is also a list stored in microtable object and have several distance matrix
+\end{itemize}
+
+\hypertarget{other-functions}{%
+\subsection{Other functions}\label{other-functions}}
+
+\begin{itemize}
+\tightlist
+\item
+  add\_rownames2taxonomy(): add the rownames of tax\_table as the last column of tax\_table directly; very useful in some analysis, e.g.~OTU/ASV biomarker finding.
+\item
+  taxa\_sums(): sum the abundance for each taxa; very useful for taxa abundance checking and filtering
+\item
+  merge\_samples(): merge samples according to a specific group of sample\_table to generate a new microtable object
+\item
+  merge\_taxa(): merge taxa according to a specific taxonomic rank level of tax\_table to generate a new microtable object
+\item
+  rename\_taxa(): rename the OTU/ASV names in all the files of microtable object
+\item
+  sample\_names(): output sample names in microtable object
+\item
+  taxa\_names(): output taxa names in microtable object
+\end{itemize}
+
+\hypertarget{composition-based-class}{%
+\chapter{Composition-based class}\label{composition-based-class}}
+
+The trans\_abund class and trans\_venn class are grouped into `Composition-based class',
+as they mainly show the composition information of communities.
 
 \hypertarget{trans_abund-class}{%
 \section{trans\_abund class}\label{trans_abund-class}}
 
-　The trans\_abund class is used to transform taxonomic abundance data for plotting the taxa abundance with the ggplot2 package.
-As a premise, the taxa\_abund list in the object of microtable class must be first calculated.
-We first use this class for the bar plot.
+　The trans\_abund class is used to transform taxonomic abundance data for plotting taxa abundance with the ggplot2 package.
+As a premise, the \textbf{taxa\_abund list in the object of microtable class must be first calculated}.
+
+\hypertarget{example-1}{%
+\subsection{Example}\label{example-1}}
+
+We first show the bar plot example.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -927,7 +964,7 @@ We first use this class for the bar plot.
 \end{Highlighting}
 \end{Shaded}
 
-We remove the sample names in x axis and add the facet to show abundance according to groups.
+As the sample number is large, we do not show the sample names in x axis and add the facet to show abundance according to groups.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -948,7 +985,7 @@ We remove the sample names in x axis and add the facet to show abundance accordi
 
 \begin{center}\includegraphics[width=400px]{Images/plot_bar_mean} \end{center}
 
-Then alluvial plot is implemented in the plot\_bar function with the use\_alluvium parameter.
+The alluvial plot is also implemented in the plot\_bar function with use\_alluvium parameter.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -996,10 +1033,29 @@ Then, we show the pie chart with the group mean values.
 
 \begin{center}\includegraphics[width=600px]{Images/plot_pie} \end{center}
 
+\hypertarget{key-points-1}{%
+\subsection{Key points}\label{key-points-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  trans\_abund\$new: creating trans\_abund object can invoke taxa\_abund in microtable for transformation
+\item
+  use\_colors parameter: use\_colors parameter in each function is used for colors selection
+\item
+  input\_taxaname parameter: input\_taxaname parameter in trans\_abund\$new can be used to select interested customized taxa instead of abundance-based selection
+\item
+  use\_percentage parameter: use\_percentage parameter in trans\_abund\$new - whether show the abundance percentage
+\end{itemize}
+
 \hypertarget{trans_venn-class}{%
 \section{trans\_venn class}\label{trans_venn-class}}
 
 The trans\_venn class is used for venn analysis.
+
+\hypertarget{example-2}{%
+\subsection{Example}\label{example-2}}
+
 To analyze the unique and shared OTUs of groups,
 we first merge samples according to the ``Group'' column of sample\_table.
 
@@ -1008,10 +1064,10 @@ we first merge samples according to the ``Group'' column of sample\_table.
 \CommentTok{\# merge samples as one community for each group}
 \NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# dataset1 is a new microtable object}
-\CommentTok{\# create trans\_venn object}
+\CommentTok{\# create trans\_venn object, see other available options in ratio}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1, }\AttributeTok{ratio =} \StringTok{"seqratio"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{()}
-\CommentTok{\# The integer data is OTU number}
+\CommentTok{\# The integer is OTU number}
 \CommentTok{\# The percentage data is the sequence number/total sequence number}
 \end{Highlighting}
 \end{Shaded}
@@ -1025,13 +1081,13 @@ When the groups are too many to show with venn plot, we can use petal plot.
 \CommentTok{\# use "Type" column in sample\_table}
 \NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_center\_size =} \DecValTok{50}\NormalTok{, }\AttributeTok{petal\_r =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{petal\_a =} \DecValTok{3}\NormalTok{, }\AttributeTok{petal\_move\_xy =} \FloatTok{3.8}\NormalTok{, }\AttributeTok{petal\_color\_center =} \StringTok{"\#BEBADA"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics[width=500px]{Images/trans_venn_2} \end{center}
 
-Sometimes, we are interested in the unique and shared species. In another words,
+Sometimes, we are interested in the composition of unique and shared species. In another words,
 the composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups\citep{Mendes_Deciphering_2011}.
 For this goal, we first transform the results of venn plot to the traditional species-sample table, that is, another object of microtable class.
 
@@ -1048,9 +1104,9 @@ For this goal, we first transform the results of venn plot to the traditional sp
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# transform venn results to the sample{-}species table, here do not consider abundance, only use presence/absence information.}
+\CommentTok{\# transform venn results to the sample{-}species table, here do not consider abundance, only use presence/absence.}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{trans\_venn\_com}\NormalTok{(}\AttributeTok{use\_OTUs\_frequency =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# t2 is a new microtable class, each part is considered as a sample}
+\CommentTok{\# t2 is a new microtable class, each part is considered a sample}
 \FunctionTok{class}\NormalTok{(t2)}
 \end{Highlighting}
 \end{Shaded}
@@ -1084,11 +1140,32 @@ We also try to use pie chart to show the compositions at the Phylum level.
 
 \begin{center}\includegraphics[width=800px]{Images/trans_venn_pie} \end{center}
 
+\hypertarget{key-points-2}{%
+\subsection{Key points}\label{key-points-2}}
+
+\begin{itemize}
+\tightlist
+\item
+  ratio parameter: ratio parameter in trans\_abund\$new control whether and what content appear under the taxa number in venn plot
+\item
+  returned data: using trans\_venn\$new() return venn\_table and venn\_count\_abund stored in trans\_venn object for further ploting
+\end{itemize}
+
+\hypertarget{diversity-based-class}{%
+\chapter{Diversity-based class}\label{diversity-based-class}}
+
+Diversity is one of the core topics in community ecology.
+It refers to alpha diversity, beta diversity and gamma diversity.
+
 \hypertarget{trans_alpha-class}{%
 \section{trans\_alpha class}\label{trans_alpha-class}}
 
 　Alpha diversity can be transformed and plotted using trans\_alpha class.
-Creating the object of trans\_alpha class can invoke the alpha\_diversity data from the microtable object.
+Creating the object of trans\_alpha class can invoke the alpha\_diversity data stored in the microtable object.
+
+\hypertarget{example-3}{%
+\subsection{Example}\label{example-3}}
+
 The trans\_alpha object have two data frame: alpha\_data and alpha\_stat.
 
 \begin{Shaded}
@@ -1218,7 +1295,8 @@ We can also use the boxplot to show the paired comparisons directly.
 
 \begin{center}\includegraphics[width=600px]{Images/plot_alpha} \end{center}
 
-The multi-factor analysis of variance is also supported. It is notable that the result res\_alpha\_diff will be a list instead of a data.frame.
+The multi-factor analysis of variance is also supported.
+It is notable that the result res\_alpha\_diff will be a list instead of a data.frame.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1229,17 +1307,31 @@ The multi-factor analysis of variance is also supported. It is notable that the 
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{key-points-3}{%
+\subsection{Key points}\label{key-points-3}}
+
+\begin{itemize}
+\tightlist
+\item
+  trans\_alpha\$new: creating trans\_alpha object can invoke alpha\_diversity in microtable for transformation
+\end{itemize}
+
 \hypertarget{trans_beta-class}{%
 \section{trans\_beta class}\label{trans_beta-class}}
 
-　The distance matrix of beta diversity can be transformed and plotted using trans\_beta class.
+　The trans\_beta class is developed for the beta diversity analysis.
+When needed, the beta\_diversity in microtable table will be invoked for transformation and ploting using trans\_beta class.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
+
+\hypertarget{example-4}{%
+\subsection{Example}\label{example-4}}
+
 We first show the ordination using PCoA.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# we first create an trans\_beta object}
-\CommentTok{\# this operation invoke the distance matrix of bray in dataset$beta\_diversity}
+\CommentTok{\# measure parameter can invoke the distance matrix of bray in dataset$beta\_diversity}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1250,6 +1342,7 @@ We first show the ordination using PCoA.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# use PCoA as an example, PCA or NMDS is also available}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# t1$res\_ordination is the ordination result list}
 \FunctionTok{class}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination)}
@@ -1436,6 +1529,24 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 ## TW 0.0566190 0.0050319
 \end{verbatim}
 
+\hypertarget{key-points-4}{%
+\subsection{Key points}\label{key-points-4}}
+
+\begin{itemize}
+\tightlist
+\item
+  trans\_beta\$new: creating trans\_beta object with measure parameter can invoke beta\_diversity in microtable object for transformation
+\item
+  cal\_manova(): cal\_manova function can be used for paired comparisons, holistic test and multi-factor test
+\item
+  plot\_group\_distance(): pair\_compare\_filter\_select parameter in plot\_group\_distance can be used to select the significance label shown in the plot
+\end{itemize}
+
+\hypertarget{model-based-class}{%
+\chapter{Model-based class}\label{model-based-class}}
+
+We group all the classes with complex models into the type `Model-based class'.
+
 \hypertarget{trans_diff-class}{%
 \section{trans\_diff class}\label{trans_diff-class}}
 
@@ -1447,6 +1558,11 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 It is used for the comparisons of taxonomic abundance between two groups at any taxonomic level.
 LEfSe and random forest in this class is mainly used for the identification of biomarkers including all taxonomic level.
 metagenomeSeq method is implemented to find significant species between two groups at species level (OTU/ASV).
+
+\hypertarget{example-5}{%
+\subsection{Example}\label{example-5}}
+
+Let's first run metastat example.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1461,8 +1577,7 @@ metagenomeSeq method is implemented to find significant species between two grou
 
 \begin{center}\includegraphics[width=650px]{Images/plot_metastat_1} \end{center}
 
-LEfSe combines the non-parametric test and linear discriminant analysis.
-We implement this approach in this package instead of the python version.
+LEfSe combines the non-parametric test and linear discriminant analysis \citep{Segata_Metagenomic_2011}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1565,226 +1680,284 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 
 \begin{center}\includegraphics[width=800px]{Images/plot_diff_abund} \end{center}
 
-\hypertarget{trans_env-class}{%
-\section{trans\_env class}\label{trans_env-class}}
+\hypertarget{key-points-5}{%
+\subsection{Key points}\label{key-points-5}}
 
-　The environmental variables are very useful in analyzing microbial community structure and assembly mechanisms.
-We first show the RDA analysis (db-RDA and RDA).
+\begin{itemize}
+\tightlist
+\item
+  trans\_diff\$new: this class have a strict requirement on the taxonomic information, make sure tidy\_taxonomy() function has been performed before the analysis
+\item
+  trans\_diff\$new: creating this class will invoke taxa\_abund stored in microtable object
+\end{itemize}
+
+\hypertarget{trans_network-class}{%
+\section{trans\_network class}\label{trans_network-class}}
+
+　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology \citep{Deng_Molecular_2012, Faust_Microbial_2012, Coyte_Theecology_2015}.
+In this part, we describe all the core contents in the trans\_network class.
+The network construction approaches can be classified into two types: correlation-based and non correlation-based.
+Several approaches can be used to calculate correlations and significances.
+
+\hypertarget{example-6}{%
+\subsection{Example}\label{example-6}}
+
+We first introduce the correlation-based network. The parameter cal\_cor in trans\_network is used for selecting the correlation calculation method.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# add\_data is used to add the environmental data}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\CommentTok{\# Use R base cor.test, a little slow}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"base"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\CommentTok{\# return t1$res\_cor\_p list; one table: correlation; another: p value}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use bray{-}curtis distance to do dbrda}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_rda}\NormalTok{(}\AttributeTok{use\_dbrda =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
-\CommentTok{\# t1$res\_rda is the result list stored in the object}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_rda}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \DecValTok{10}\NormalTok{)}
-\CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rda}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# SparCC method, require SpiecEasi package}
+\CommentTok{\# SparCC is very slow, so consider filtering more species with low abundance}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{center}\includegraphics[width=650px]{Images/plot_rda_dbrda} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use Genus}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_rda}\NormalTok{(}\AttributeTok{use\_dbrda =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
-\CommentTok{\# As the main results of RDA are related with the projection and angles between different arrows,}
-\CommentTok{\# we adjust the length of the arrow to show them clearly using several parameters.}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_rda}\NormalTok{(}\AttributeTok{show\_taxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \DecValTok{1500}\NormalTok{, }\AttributeTok{max\_perc\_tax =} \DecValTok{3000}\NormalTok{, }\AttributeTok{min\_perc\_env =} \DecValTok{200}\NormalTok{, }\AttributeTok{min\_perc\_tax =} \DecValTok{300}\NormalTok{)}
-\CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rda}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# When the OTU number is large, use R WGCNA package to replace R base to calculate correlations}
+\CommentTok{\# require WGCNA package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_rda_genus} \end{center}
-
-Mantel test can be used to check whether there is significant correlations between environmental variables and distance matrix.
+The parameter COR\_cut can be used to select the correlation threshold.
+Furthermore, COR\_optimization = TRUE represent using RMT theory to find the optimized correlation threshold instead of the COR\_cut\citep{Deng_Molecular_2012}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
-\CommentTok{\# return t1$res\_mantel}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mantel}
+\CommentTok{\# construct network; require igraph package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_optimization =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# return t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## The result is stored in object$res_mantel or object$res_mantel_partial ...
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use arbitrary coefficient threshold to contruct network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# add modules in the network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# save network}
+\CommentTok{\# open the gexf file using Gephi(https://gephi.org/)}
+\CommentTok{\# require rgexf package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\AttributeTok{filepath =} \StringTok{"network.gexf"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We plot the network and present the node colors according to the calculated modules in Gephi.
+
+\begin{center}\includegraphics[width=550px]{Images/network1_spearman} \end{center}
+
+Now, we show the node colors with the Phylum information and the edges colors with the positive and negative correlations.
+All the data used has been stored in the network.gexf file, including modules classifications, Phylum information and edges classifications.
+
+\begin{center}\includegraphics[width=550px]{Images/network2_spearman} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# calculate network attributes}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network\_attr}\NormalTok{()}
+\CommentTok{\# return t1$res\_network\_attr}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.22}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.18}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.11}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.21}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.35}}
+  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.14}}@{}}
 \toprule
-variable\_name & cor\_method & corr\_res & p\_res & significance \\
+Property & Value \\
 \midrule
 \endhead
-Temperature & pearson & 0.452 & 0.001 & *** \\
-Precipitation & pearson & 0.2791 & 0.001 & *** \\
-TOC & pearson & 0.13 & 0.003 & ** \\
-NH4 & pearson & -0.05539 & 0.926 & \\
-NO3 & pearson & 0.06758 & 0.05 & * \\
-pH & pearson & 0.4085 & 0.001 & *** \\
-Conductivity & pearson & 0.2643 & 0.001 & *** \\
-TN & pearson & 0.1321 & 0.002 & ** \\
+Vertex & 407 \\
+Edge & 1989 \\
+Average\_degree & 9.774 \\
+Average\_path\_length & 3.878 \\
+Network\_diameter & 9 \\
+Clustering\_coefficient & 0.4698 \\
+Density & 0.02407 \\
+Heterogeneity & 1.194 \\
+Centralization & 0.09908 \\
 \bottomrule
 \end{longtable}
 
-The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-Let's first perform a correlation heatmap using Genus level data.
-
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{)}
+\CommentTok{\# classify the node; return t1$res\_node\_type}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_node\_type}\NormalTok{()}
+\CommentTok{\# return t1$res\_node\_type}
+\CommentTok{\# we retain the file for the following example in trans\_func part}
+\NormalTok{network\_node\_type }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## The correlation result is stored in object$res_cor ...
-\end{verbatim}
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.22}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.26}}@{}}
+\toprule
+~ & z & module & p & taxa\_roles \\
+\midrule
+\endhead
+\textbf{OTU\_50} & -1.305 & M2 & 0 & Peripheral nodes \\
+\textbf{OTU\_1} & -0.04067 & M2 & 0 & Peripheral nodes \\
+\textbf{OTU\_55} & -1.239 & M2 & 0 & Peripheral nodes \\
+\textbf{OTU\_13824} & -0.2403 & M2 & 0 & Peripheral nodes \\
+\textbf{OTU\_151} & -1.372 & M2 & 0.4444 & Peripheral nodes \\
+\bottomrule
+\end{longtable}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# return t1$res\_cor}
+\CommentTok{\# plot node roles in terms of the within{-}module connectivity and among{-}module connectivity}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Then, we can plot the correlation results using plot\_cor function.
+\begin{center}\includegraphics[width=700px]{Images/plot_taxa_roles} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# default ggplot2 method with clustering}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\CommentTok{\# plot node roles with phylum information}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-There are too many genera.
-We can use the filter\_feature parameter in plot\_cor to filter some taxa that do not have any significance \textless{} 0.001.
+\begin{center}\includegraphics[width=800px]{Images/plot_taxa_roles_2} \end{center}
+
+Now, we show the eigengene analysis of modules.
+The eigengene of a module, i.e.~the first principal component of PCA, represents the main variance of the abundance in the species of the module.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# filter genera that do not have at least one ***}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{filter\_feature =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{"**"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_eigen}\NormalTok{()}
+\CommentTok{\# return t1$res\_eigen}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-110-1.pdf}
-
-Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
-we can use other\_taxa parameter in cal\_cor function.
+Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# first create trans\_diff object as a demonstration}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{rf\_taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\CommentTok{\# create trans\_env object like the above operation}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\CommentTok{\# calculate correlations}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_eigen)}
+\CommentTok{\# plot the correlation heatmap}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## Start differential test for Group ...
-\end{verbatim}
+\begin{center}\includegraphics[width=600px]{Images/Env_module_eigen} \end{center}
 
-\begin{verbatim}
-## Total 432 biomarkers found ...
-\end{verbatim}
-
-\begin{verbatim}
-## The result is stored in object$res_rf ...
-\end{verbatim}
-
-\begin{verbatim}
-## The abundance is stored in object$res_abund ...
-\end{verbatim}
+The subset\_network() function can be used to extract a part of nodes and edges among these nodes from the network.
+In this function, you should provide the nodes you need using the node parameter.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# then create trans\_env object}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\CommentTok{\# use other\_taxa to select taxa you need}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\CommentTok{\# extract a sub network that contains all nodes in module M1}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{module }\SpecialCharTok{==} \StringTok{"M1"}\NormalTok{, ] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# return a new network with igraph class}
+\CommentTok{\# extract sub network in which all edge labels are "+", i.e. positive edges}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{edge =} \StringTok{"+"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## The correlation result is stored in object$res_cor ...
-\end{verbatim}
+\textbf{Then let's show how to extract sub-network for samples and the whole analysis flow.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\CommentTok{\# extract the sub{-}network of sample \textquotesingle{}S1\textquotesingle{}}
+\NormalTok{sub1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{otu\_table[, }\StringTok{"S1"}\NormalTok{, }\AttributeTok{drop =} \ConstantTok{FALSE}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.[, }\DecValTok{1}\NormalTok{] }\SpecialCharTok{!=}\DecValTok{0}\NormalTok{, , }\AttributeTok{drop =} \ConstantTok{FALSE}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(t1)}
+\NormalTok{t2}\SpecialCharTok{$}\NormalTok{res\_network }\OtherTok{\textless{}{-}}\NormalTok{ sub1}
+\CommentTok{\# then t2 have a network for \textquotesingle{}S1\textquotesingle{} and can be used for further analysis}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\StringTok{"S1.gexf"}\NormalTok{)}
+\CommentTok{\# use a loop for more samples}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-111-1.pdf}
-
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
-
-The pheatmap method is also available.
+Then we show the next implemented network construction approach:
+SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package \citep{Kurtz_Sparse_2015}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# clustering heatmap; require pheatmap package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# cal\_cor select NA}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\CommentTok{\# require SpiecEasi package  https://github.com/zdk123/SpiecEasi}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
+\CommentTok{\# see t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
+We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave\citep{Tackmann_Rapid_2019}.
+It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e.~OTU tables constructed from sequencing data)
+through statistical co-occurrence.
+If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
+and add the julia in the computer path.
 
-Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
-by\_group parameter can be used for this goal.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  download and install julia from \url{https://julialang.org/downloads/}\\
+\item
+  Put julia in the computer env PATH, such as your\_directory\_path\Julia\bin  
+\item
+  Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in \url{https://github.com/meringlab/FlashWeave.jl}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# calculate correlations for different groups using parameter by\_group}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
-\CommentTok{\# return t1$res\_cor}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\CommentTok{\# cal\_cor select NA}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
+\CommentTok{\# require Julia in the computer path, and the package FlashWeave}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"PGM"}\NormalTok{)}
+\CommentTok{\# see t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot_groups} \end{center}
+\hypertarget{key-points-6}{%
+\subsection{Key points}\label{key-points-6}}
 
-If you are concerned with the relationship between environmental factors and alpha diversity, you can also use this function.
+\begin{itemize}
+\tightlist
+\item
+  subset\_network(): this function can extract any sub-network according to the input nodes, e.g.~sub-network for modules or samples
+\end{itemize}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\CommentTok{\# use add\_abund\_table parameter to add the extra data table}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+\hypertarget{other-functions-1}{%
+\subsection{Other functions}\label{other-functions-1}}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
-
-The function plot\_scatterfit() in trans\_env class is designed for the scatter plot, adding the fitted line and statistics.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# use pH and bray{-}curtis distance}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}
-    \AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }
-    \AttributeTok{y =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{env\_data), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{env\_data)], }
-    \AttributeTok{alpha =}\NormalTok{ .}\DecValTok{1}\NormalTok{,}
-    \AttributeTok{x\_axis\_title =} \StringTok{"Euclidean distance of pH"}\NormalTok{, }
-    \AttributeTok{y\_axis\_title =} \StringTok{"Bray{-}Curtis distance"}\NormalTok{, }
-    \AttributeTok{text\_x\_pos =} \DecValTok{4}\NormalTok{, }
-    \AttributeTok{text\_y\_pos =}\NormalTok{ .}\DecValTok{4}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_pHbray} \end{center}
+\begin{itemize}
+\tightlist
+\item
+  get\_edge\_table(): get the table of edges, including connected nodes, labels and weight.
+\item
+  cal\_powerlaw\_p(): perform a bootstrapping hypothesis test to determine whether degrees follows a power law distribution
+\item
+  cal\_powerlaw\_p(): fit degrees to a power law distribution.
+\end{itemize}
 
 \hypertarget{trans_nullmodel-class}{%
 \section{trans\_nullmodel class}\label{trans_nullmodel-class}}
@@ -1801,6 +1974,10 @@ The algorithms of betaMNTD and betaMPD have been optimized to be faster than tho
 The combinations between RCbray and betaNTI (or betaNRI) can be used to infer the strength of each ecological process dominating the community assembly
 under the specific hypothesis \citep{Stegen_Quantifying_2013}.
 This can be achievable by the function cal\_process() to parse the percentage of each inferred process.
+
+\hypertarget{example-7}{%
+\subsection{Example}\label{example-7}}
+
 We first check the phylogenetic signal.
 
 \begin{Shaded}
@@ -1979,233 +2156,223 @@ drift & 39.1 \\
 \bottomrule
 \end{longtable}
 
-\hypertarget{trans_network-class}{%
-\section{trans\_network class}\label{trans_network-class}}
+\hypertarget{key-points-7}{%
+\subsection{Key points}\label{key-points-7}}
 
-　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology\citep{Deng_Molecular_2012, Faust_Microbial_2012, Coyte_Theecology_2015}.
-In this part, we describe all the core contents in the trans\_network class.
-The network construction approaches can be classified into two types: correlation-based and non correlation-based.
-Several approaches can be used to calculate correlations and significances.
+\begin{itemize}
+\tightlist
+\item
+  trans\_nullmodel\$new: filter\_thres parameter for the filtering of taxa with relative low abundance
+\item
+  cal\_rcbray(): if you just need rcbray, ignore other operations
+\end{itemize}
 
-We first introduce the correlation-based network. The parameter cal\_cor in trans\_network is used for selecting the correlation calculation method.
+\hypertarget{other-function}{%
+\subsection{Other function}\label{other-function}}
+
+\begin{itemize}
+\tightlist
+\item
+  cal\_Cscore(): calculates the (normalised) mean number of checkerboard combinations (C-score) using C.score
+\end{itemize}
+
+\hypertarget{explainable-class}{%
+\chapter{Explainable class}\label{explainable-class}}
+
+We group trans\_env and trans\_func classes into `Explainable class',
+as the environmental measurements and functional data are generally explainable factors.
+
+\hypertarget{trans_env-class}{%
+\section{trans\_env class}\label{trans_env-class}}
+
+　The environmental variables are explainable indices in analyzing microbial community structure and assembly mechanisms.
+
+\hypertarget{example-8}{%
+\subsection{Example}\label{example-8}}
+
+We first show the RDA analysis (db-RDA and RDA).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Use R base cor.test, slow}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"base"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
-\CommentTok{\# return t1$res\_cor\_p list; one table: correlation; another: p value}
+\CommentTok{\# add\_data is used to add the environmental data}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# SparCC method, require SpiecEasi package}
-\CommentTok{\# SparCC is very slow, so consider filtering more species with low abundance}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
+\CommentTok{\# use bray{-}curtis distance to do dbrda}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_rda}\NormalTok{(}\AttributeTok{use\_dbrda =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# t1$res\_rda is the result list stored in the object}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_rda}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \DecValTok{10}\NormalTok{)}
+\CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rda}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/plot_rda_dbrda} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# When the OTU number is large, use R WGCNA package to replace R base to calculate correlations}
-\CommentTok{\# require WGCNA package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\CommentTok{\# use Genus}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_rda}\NormalTok{(}\AttributeTok{use\_dbrda =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\CommentTok{\# As the main results of RDA are related with the projection and angles between different arrows,}
+\CommentTok{\# we adjust the length of the arrow to show them clearly using several parameters.}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_rda}\NormalTok{(}\AttributeTok{show\_taxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \DecValTok{1500}\NormalTok{, }\AttributeTok{max\_perc\_tax =} \DecValTok{3000}\NormalTok{, }\AttributeTok{min\_perc\_env =} \DecValTok{200}\NormalTok{, }\AttributeTok{min\_perc\_tax =} \DecValTok{300}\NormalTok{)}
+\CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rda}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-The parameter COR\_cut can be used to select the correlation threshold.
-Furthermore, COR\_optimization = TRUE represent using RMT theory to find the optimized correlation threshold instead of the COR\_cut\citep{Deng_Molecular_2012}.
+\begin{center}\includegraphics[width=650px]{Images/plot_rda_genus} \end{center}
+
+Mantel test can be used to check whether there is significant correlations between environmental variables and distance matrix.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# construct network; require igraph package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_optimization =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# return t1$res\_network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# return t1$res\_mantel}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mantel}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# use arbitrary coefficient threshold to contruct network}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# add modules in the network}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# save network}
-\CommentTok{\# open the gexf file using Gephi(https://gephi.org/)}
-\CommentTok{\# require rgexf package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\AttributeTok{filepath =} \StringTok{"network.gexf"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-We plot the network and present the node colors according to the calculated modules in Gephi.
-
-\begin{center}\includegraphics[width=550px]{Images/network1_spearman} \end{center}
-
-Now, we show the node colors with the Phylum information and the edges colors with the positive and negative correlations.
-All the data used has been stored in the network.gexf file, including modules classifications, Phylum information and edges classifications.
-
-\begin{center}\includegraphics[width=550px]{Images/network2_spearman} \end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# calculate network attributes}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network\_attr}\NormalTok{()}
-\CommentTok{\# return t1$res\_network\_attr}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.35}}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.14}}@{}}
-\toprule
-Property & Value \\
-\midrule
-\endhead
-Vertex & 407 \\
-Edge & 1989 \\
-Average\_degree & 9.774 \\
-Average\_path\_length & 3.878 \\
-Network\_diameter & 9 \\
-Clustering\_coefficient & 0.4698 \\
-Density & 0.02407 \\
-Heterogeneity & 1.194 \\
-Centralization & 0.09908 \\
-\bottomrule
-\end{longtable}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# classify the node; return t1$res\_node\_type}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_node\_type}\NormalTok{()}
-\CommentTok{\# return t1$res\_node\_type}
-\CommentTok{\# we retain the file for the following example in trans\_func part}
-\NormalTok{network\_node\_type }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type}
-\end{Highlighting}
-\end{Shaded}
+\begin{verbatim}
+## The result is stored in object$res_mantel or object$res_mantel_partial ...
+\end{verbatim}
 
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.22}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.18}}
   >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.26}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.21}}@{}}
 \toprule
-~ & z & module & p & taxa\_roles \\
+variable\_name & cor\_method & corr\_res & p\_res & significance \\
 \midrule
 \endhead
-\textbf{OTU\_50} & -1.305 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_1} & -0.04067 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_55} & -1.239 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_13824} & -0.2403 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_151} & -1.372 & M2 & 0.4444 & Peripheral nodes \\
+Temperature & pearson & 0.452 & 0.001 & *** \\
+Precipitation & pearson & 0.2791 & 0.001 & *** \\
+TOC & pearson & 0.13 & 0.003 & ** \\
+NH4 & pearson & -0.05539 & 0.926 & \\
+NO3 & pearson & 0.06758 & 0.05 & * \\
+pH & pearson & 0.4085 & 0.001 & *** \\
+Conductivity & pearson & 0.2643 & 0.001 & *** \\
+TN & pearson & 0.1321 & 0.002 & ** \\
 \bottomrule
 \end{longtable}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# plot node roles in terms of the within{-}module connectivity and among{-}module connectivity}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=700px]{Images/plot_taxa_roles} \end{center}
+The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
+Let's first perform a correlation heatmap using Genus level data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# plot node roles with phylum information}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{2}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_taxa_roles_2} \end{center}
-
-Now, we show the eigengene analysis of modules.
-The eigengene of a module, i.e.~the first principal component of PCA, represents the main variance of the abundance in the species of the module.
+\begin{verbatim}
+## The correlation result is stored in object$res_cor ...
+\end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_eigen}\NormalTok{()}
-\CommentTok{\# return t1$res\_eigen}
+\CommentTok{\# return t1$res\_cor}
 \end{Highlighting}
 \end{Shaded}
 
-Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.
+Then, we can plot the correlation results using plot\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# create trans\_env object like the above operation}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\CommentTok{\# calculate correlations}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_eigen)}
-\CommentTok{\# plot the correlation heatmap}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\CommentTok{\# default ggplot2 method with clustering}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/Env_module_eigen} \end{center}
-
-The subset\_network() function can be used to extract a part of nodes and edges among these nodes from the network.
-In this function, you should provide the nodes you need using the node parameter.
+There are too many genera.
+We can use the filter\_feature parameter in plot\_cor to filter some taxa that do not have any significance \textless{} 0.001.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# extract a sub network that contains all nodes in module M1}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{module }\SpecialCharTok{==} \StringTok{"M1"}\NormalTok{, ] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# return a new network with igraph class}
-\CommentTok{\# extract sub network in which all edge labels are "+", i.e. positive edges}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{edge =} \StringTok{"+"}\NormalTok{)}
+\CommentTok{\# filter genera that do not have at least one ***}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{filter\_feature =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{"**"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-Then we show the next implemented network construction approach:
-SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package \citep{Kurtz_Sparse_2015}.
+Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
+we can use other\_taxa parameter in cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NA}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
-\CommentTok{\# require SpiecEasi package  https://github.com/zdk123/SpiecEasi}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
-\CommentTok{\# see t1$res\_network}
+\CommentTok{\# first create trans\_diff object as a demonstration}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{rf\_taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\CommentTok{\# then create trans\_env object}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\CommentTok{\# use other\_taxa to select taxa you need}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave\citep{Tackmann_Rapid_2019}.
-It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e.~OTU tables constructed from sequencing data)
-through statistical co-occurrence.
-If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
-and add the julia in the computer path.
+\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  download and install julia from \url{https://julialang.org/downloads/}\\
-\item
-  Put julia in the computer env PATH, such as your\_directory\_path\Julia\bin  
-\item
-  Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in \url{https://github.com/meringlab/FlashWeave.jl}
-\end{enumerate}
+The pheatmap method is also available.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NA}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
-\CommentTok{\# require Julia in the computer path, and the package FlashWeave}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"PGM"}\NormalTok{)}
-\CommentTok{\# see t1$res\_network}
+\CommentTok{\# clustering heatmap; require pheatmap package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
+
+Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+by\_group parameter can be used for this goal.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# calculate correlations for different groups using parameter by\_group}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\CommentTok{\# return t1$res\_cor}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot_groups} \end{center}
+
+If you are concerned with the relationship between environmental factors and alpha diversity, you can also use this function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\CommentTok{\# use add\_abund\_table parameter to add the extra data table}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
+
+The function plot\_scatterfit() in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use pH and bray{-}curtis distance}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}
+    \AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }
+    \AttributeTok{y =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{env\_data), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{env\_data)], }
+    \AttributeTok{use\_cor =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{alpha =}\NormalTok{ .}\DecValTok{1}\NormalTok{,}
+    \AttributeTok{x\_axis\_title =} \StringTok{"Euclidean distance of pH"}\NormalTok{, }
+    \AttributeTok{y\_axis\_title =} \StringTok{"Bray{-}Curtis distance"}\NormalTok{, }
+    \AttributeTok{text\_x\_pos =} \DecValTok{4}\NormalTok{, }
+    \AttributeTok{text\_y\_pos =}\NormalTok{ .}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_pHbray} \end{center}
 
 \hypertarget{trans_func-class}{%
 \section{trans\_func class}\label{trans_func-class}}
@@ -2218,19 +2385,23 @@ These tools are great to be used for the prediction of functional profiles based
 In addition, it is also important to obtain the functions for each taxa or OTU, not just the whole profile of communities.
 But it is hard to know exact functions of each OTU.
 FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
-We match the taxonomic information of prokaryotes against this database to identify the traits of prokaryotes on biogeochemical roles.
+We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
 The NJC19 database\citep{Lim_Large_2020} is also available for animal associated prokaryotic data, such as human gut microbiota.
-We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to identify the fungal traits.
+We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to predict the fungal traits.
+
+\hypertarget{example-9}{%
+\subsection{Example}\label{example-9}}
+
+We first identify/predict traits of taxa.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Identify microbial traits}
 \CommentTok{\# create object of trans\_func}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
 \CommentTok{\# mapping the taxonomy to the database}
 \CommentTok{\# this can recognize prokaryotes or fungi automatically.}
 \CommentTok{\# default database for prokaryotes is FAPROTAX database}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2243,12 +2414,12 @@ We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \ci
 \end{verbatim}
 
 \begin{verbatim}
-## The functional table is stored in object$res_spe_func ...
+## The functional binary table is stored in object$res_spe_func ...
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# return t2$res\_spe\_func, 1 represent function exists, 0 represent no or cannot confirmed.}
+\CommentTok{\# return t2$res\_spe\_func, 1 represent trait exists, 0 represent no or cannot confirmed.}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2513,8 +2684,8 @@ If you want to use Tax4Fun2 method, you must add the fasta file to the microtabl
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{other-data}{%
-\chapter{Other data}\label{other-data}}
+\hypertarget{other-dataset}{%
+\chapter{Other dataset}\label{other-dataset}}
 
 \hypertarget{fungi-data}{%
 \section{Fungi data}\label{fungi-data}}
@@ -2564,11 +2735,11 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 Many methods in microeco package can be used not only for the traditional species abundance data, i.e.~species-sample table,
 but also for other data, such as metagenomic and metabolomic data.
 In the file2meco package (\url{https://github.com/ChiLiubio/file2meco}),
-we provide several functions to transform the output files of some famous metagenomic tools (e.g.~HUMAnN) to
+we provide several functions to transform the output files of some famous metagenomic tools (e.g.~HUMAnN and kraken) to
 the microtable object directly.
 HUMAnN\citep{Franzosa_Species_2018} is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
 Certainly, it can also be used for the whole community profile of metabolic pathways if you do not need something at species-level.
-The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
+The humann2meco() function can be used to creat the microtable object using metagenomic analysis files from HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
 Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pathway abundance file input.
 Here, we show the example of KEGG pathway results.
 
@@ -2623,8 +2794,8 @@ Let's run LEfSe to find some functional biomarkers to differentiate two groups.
 
 \begin{center}\includegraphics[width=700px]{Images/plot_HUMANN_KEGG_lefse_bar} \end{center}
 
-\hypertarget{animal-data}{%
-\section{Animal data}\label{animal-data}}
+\hypertarget{gut-microbiome}{%
+\section{Gut microbiome}\label{gut-microbiome}}
 
 We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database\citep{Lim_Large_2020}.
 
@@ -2641,7 +2812,7 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \CommentTok{\# construct microtable object}
 \NormalTok{data1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
 \NormalTok{data1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\CommentTok{\# We correct the species names in tax\_table}
+\CommentTok{\# revise the species names in tax\_table}
 \NormalTok{select\_rows }\OtherTok{\textless{}{-}}\NormalTok{ data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species }\SpecialCharTok{!=} \StringTok{"s\_\_"}
 \NormalTok{data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species[select\_rows] }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"s\_\_"}\NormalTok{, }\FunctionTok{gsub}\NormalTok{(}\StringTok{"g\_\_"}\NormalTok{, }\StringTok{""}\NormalTok{, data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Genus[select\_rows]), }\StringTok{" "}\NormalTok{, }\FunctionTok{gsub}\NormalTok{(}\StringTok{"s\_\_"}\NormalTok{, }\StringTok{""}\NormalTok{, data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species[select\_rows]))}
 \CommentTok{\# taxonomic abundance}
@@ -2673,7 +2844,7 @@ We show some important things here.
 \section{clone}\label{clone}}
 
 R6 class has a special copy mechanism which is different from S3 and S4.
-If you want to copy an object completely, you should use the function clone() instead of direct assignment.
+\textbf{If you want to copy an object completely, you should use the function clone() instead of direct assignment.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2706,7 +2877,7 @@ If you want to copy an object completely, you should use the function clone() in
 \section{subset of samples}\label{subset-of-samples}}
 
 We donnot provide the special function to filter samples in microtable class, as we think it is redundant.
-We recommend user to directly manipulate the sample\_table in microtable object.
+\textbf{We recommend user to directly manipulate the sample\_table in microtable object.}
 For example, if we want to analyze samples from `CW' and `IW', respectively, we can operate like this:
 
 \begin{Shaded}
@@ -2716,7 +2887,23 @@ For example, if we want to analyze samples from `CW' and `IW', respectively, we 
 \NormalTok{group1}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(group1}\SpecialCharTok{$}\NormalTok{sample\_table, Group }\SpecialCharTok{==} \StringTok{"CW"}\NormalTok{)}
 \CommentTok{\# this is necessary to make files in group1 corresponding}
 \NormalTok{group1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{group1}
+\end{Highlighting}
+\end{Shaded}
 
+\begin{verbatim}
+## microtable class:
+## sample_table have 30 rows and 4 columns
+## otu_table have 9727 rows and 30 columns
+## tax_table have 9727 rows and 7 columns
+## phylo_tree have 9727 tips
+## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Beta diversity: calculated for bray,jaccard
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# similar with obove operation}
 \NormalTok{group2 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
 \NormalTok{group2}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(group2}\SpecialCharTok{$}\NormalTok{sample\_table, Group }\SpecialCharTok{==} \StringTok{"IW"}\NormalTok{)}
@@ -2728,7 +2915,7 @@ For example, if we want to analyze samples from `CW' and `IW', respectively, we 
 \hypertarget{change-object}{%
 \section{change object}\label{change-object}}
 
-All the classes are set public, meaning that you can change, add or remove the objects stored in them as you want.
+All the classes are set public, meaning that you can \textbf{change, add or remove the objects stored in them as you want}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2742,7 +2929,7 @@ All the classes are set public, meaning that you can change, add or remove the o
 \hypertarget{group-order}{%
 \section{group order}\label{group-order}}
 
-If you want to reorder the groups, assign the factors may be the most simplest way.
+If you want to reorder the groups, \textbf{assign the factors may be the most simplest way.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2838,6 +3025,23 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 \begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
 
+\hypertarget{save-function}{%
+\section{save() function}\label{save-function}}
+
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e.~the data save and communication.
+By applying R6 classes, the analyzed data in `R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
+It is also very convenient to save the analyzed data (i.e.~object) to local computer with save() function for back-up and communication with others.
+This is also the recommended way to send data for testing in `Github Issues'.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# save \textquotesingle{}dataset\textquotesingle{} to local computer}
+\FunctionTok{save}\NormalTok{(dataset, }\AttributeTok{file =} \StringTok{"dataset.RData"}\NormalTok{)}
+\CommentTok{\# load the data by others in their R project}
+\FunctionTok{load}\NormalTok{(}\StringTok{"dataset.RData"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{mecodev-package}{%
 \chapter{mecodev package}\label{mecodev-package}}
 
@@ -2871,14 +3075,14 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 \section{trans\_convert}\label{trans_convert}}
 
 The class trans\_convert provide several data transformation approaches for the microtable object.
-The output will also be a microtable object.
+The output is also a microtable object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{data}\NormalTok{(dataset)}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_convert}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
 \NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{convert}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
-\CommentTok{\# returned test2 is another microtable object}
+\CommentTok{\# returned test2 is another transformed microtable object}
 \end{Highlighting}
 \end{Shaded}
 

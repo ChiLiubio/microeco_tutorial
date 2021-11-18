@@ -1,0 +1,205 @@
+# Diversity-based class
+
+Diversity is one of the core topics in community ecology.
+It refers to alpha diversity, beta diversity and gamma diversity.
+
+
+## trans_alpha class
+
+　Alpha diversity can be transformed and plotted using trans_alpha class.
+Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.
+
+### Example
+
+The trans_alpha object have two data frame: alpha_data and alpha_stat.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+# return t1$alpha_stat
+t1$alpha_stat[1:5, ]
+```
+
+```{r, echo = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+pander::pander(t1$alpha_stat[1:5, ])
+```
+
+Then, we test the differences among groups using the KW rank sum test and anova with multiple comparisons.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "KW")
+# return t1$res_alpha_diff
+t1$res_alpha_diff[1:5, ]
+```
+
+```{r, echo = FALSE}
+t1$cal_diff(method = "KW")
+pander::pander(t1$res_alpha_diff[1:5, ])
+```
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "anova")
+# return t1$res_alpha_diff
+t1$res_alpha_diff
+```
+
+
+```{r, echo = FALSE}
+t1$cal_diff(method = "anova")
+pander::pander(t1$res_alpha_diff)
+```
+
+Now, let us plot the mean and se of alpha diversity for each group, and add the duncan.test (agricolae package) result.
+```{r, echo = TRUE, eval = FALSE}
+t1$plot_alpha(add_letter = T, measure = "Chao1", use_boxplot = FALSE)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_alpha_letter.png")
+```
+
+We can also use the boxplot to show the paired comparisons directly.
+```{r, echo = TRUE, eval = FALSE}
+t1$plot_alpha(pair_compare = TRUE, measure = "Chao1", shape = "Group")
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_alpha.png")
+```
+
+The multi-factor analysis of variance is also supported. 
+It is notable that the result res_alpha_diff will be a list instead of a data.frame.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", anova_set = "Group+Type")
+# now the result t1$res_alpha_diff is a list
+# see the help document for the usage of anova_set
+```
+
+### Key points
+
+  + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
+
+
+## trans_beta class
+
+　The trans_beta class is developed for the beta diversity analysis.
+When needed, the beta_diversity in microtable table will be invoked for transformation and ploting using trans_beta class.
+The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
+
+### Example
+
+We first show the ordination using PCoA.
+
+```{r, echo = TRUE, eval = TRUE}
+# we first create an trans_beta object
+# measure parameter can invoke the distance matrix of bray in dataset$beta_diversity
+t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# use PCoA as an example, PCA or NMDS is also available
+t1$cal_ordination(ordination = "PCoA")
+# t1$res_ordination is the ordination result list
+class(t1$res_ordination)
+# plot the PCoA result
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellipse = TRUE)
+```
+
+```{r, out.width = "650px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_ordination.png")
+```
+
+Then we plot and compare the group distances.
+
+```{r, echo = TRUE, eval = FALSE}
+# calculate and plot sample distances within groups
+t1$cal_group_distance()
+# return t1$res_group_distance
+t1$plot_group_distance(distance_pair_stat = TRUE)
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_group_distance_within.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# calculate and plot sample distances between groups
+t1$cal_group_distance(within_group = FALSE)
+t1$plot_group_distance(distance_pair_stat = TRUE)
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_group_distance_between.png")
+```
+
+Clustering plot is also a frequently used method.
+
+```{r, echo = TRUE, eval = FALSE}
+# use replace_name to set the label name, group parameter used to set the color
+t1$plot_clustering(group = "Group", replace_name = c("Saline", "Type"))
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_clustering.png")
+```
+
+
+perMANOVA[@Anderson_Austral_2001] is often used in the differential test of distances among groups.
+
+```{r, echo = TRUE, eval = FALSE}
+# manova for all groups
+t1$cal_manova(cal_manova_all = TRUE)
+t1$res_manova$aov.tab
+```
+
+```{r, echo = FALSE}
+t1$cal_manova(cal_manova_all = TRUE)
+pander::pander(t1$res_manova$aov.tab)
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# manova for each paired groups
+t1$cal_manova(cal_manova_paired = TRUE)
+t1$res_manova
+```
+
+```{r, echo = FALSE}
+t1$cal_manova(cal_manova_paired = TRUE)
+pander::pander(t1$res_manova)
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# manova for specified group set: here "Group + Type"
+t1$cal_manova(cal_manova_set = "Group + Type")
+t1$res_manova$aov.tab
+```
+
+```{r, echo = FALSE}
+t1$cal_manova(cal_manova_set = "Group + Type")
+pander::pander(t1$res_manova$aov.tab)
+```
+
+
+PERMDISP[@Anderson_Navigating_2011] is also implemented to check multivariate homogeneity of groups dispersions (variances).
+
+```{r, echo = TRUE}
+# PERMDISP for the whole comparison and for each paired groups
+t1$cal_betadisper()
+t1$res_betadisper
+```
+
+
+
+### Key points
+
+  + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
+  + cal_manova(): cal_manova function can be used for paired comparisons, holistic test and multi-factor test
+  + plot_group_distance(): pair_compare_filter_select parameter in plot_group_distance can be used to select the significance label shown in the plot
+
+
+
+
+
+

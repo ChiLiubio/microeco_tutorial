@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.6.0)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.6.0)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.6.0)" />
+  
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  
+
+<meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
+
+
+<meta name="date" content="2021-11-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="composition-based-class.html"/>
+<link rel="next" href="model-based-class.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree</a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi</a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi</a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA</a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun</a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#example"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.2</b> Key points</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#other-functions"><i class="fa fa-check"></i><b>3.1.3</b> Other functions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.1.1</b> Example</a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-2"><i class="fa fa-check"></i><b>4.2.1</b> Example</a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.1.1</b> Example</a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-4"><i class="fa fa-check"></i><b>5.2.1</b> Example</a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.2.1</b> Example</a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.2</b> Key points</a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#other-functions-1"><i class="fa fa-check"></i><b>6.2.3</b> Other functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-7"><i class="fa fa-check"></i><b>6.3.1</b> Example</a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points</a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.1.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>8</b> Other dataset</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>8.1</b> Fungi data</a></li>
+<li class="chapter" data-level="8.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>8.2</b> Metagenomic data</a></li>
+<li class="chapter" data-level="8.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>8.3</b> Gut microbiome</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>9</b> Notes</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="notes.html"><a href="notes.html#clone"><i class="fa fa-check"></i><b>9.1</b> clone</a></li>
+<li class="chapter" data-level="9.2" data-path="notes.html"><a href="notes.html#subset-of-samples"><i class="fa fa-check"></i><b>9.2</b> subset of samples</a></li>
+<li class="chapter" data-level="9.3" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>9.3</b> change object</a></li>
+<li class="chapter" data-level="9.4" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>9.4</b> group order</a></li>
+<li class="chapter" data-level="9.5" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>9.5</b> add layers to plot</a></li>
+<li class="chapter" data-level="9.6" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>9.6</b> save() function</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>10</b> mecodev package</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>10.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="10.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>10.2</b> trans_convert</a></li>
+<li class="chapter" data-level="10.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>10.3</b> trans_netchord</a></li>
+<li class="chapter" data-level="10.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>10.4</b> trans_ts</a></li>
+<li class="chapter" data-level="10.5" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>10.5</b> trans_gamma</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>11</b> Other examples</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>11.1</b> Custom taxa order in bar plot</a></li>
+<li class="chapter" data-level="11.2" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>11.2</b> The importance of tidy_taxonomy function</a></li>
+<li class="chapter" data-level="11.3" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>11.3</b> Question of prefix in the taxa</a></li>
+<li class="chapter" data-level="11.4" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>11.4</b> The use of phylogenetic tree</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.6.0)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="diversity-based-class" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Diversity-based class</h1>
+<p>Diversity is one of the core topics in community ecology.
+It refers to alpha diversity, beta diversity and gamma diversity.</p>
+<div id="trans_alpha-class" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> trans_alpha class</h2>
+<p>　Alpha diversity can be transformed and plotted using trans_alpha class.
+Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.</p>
+<div id="example-3" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Example</h3>
+<p>The trans_alpha object have two data frame: alpha_data and alpha_stat.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="diversity-based-class.html#cb74-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb74-2"><a href="diversity-based-class.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$alpha_stat</span></span>
+<span id="cb74-3"><a href="diversity-based-class.html#cb74-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>alpha_stat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span></code></pre></div>
+<pre><code>## The group statistics are stored in object$alpha_stat ...</code></pre>
+<pre><code>## The transformed diversity data is stored in object$alpha_data ...</code></pre>
+<table style="width:75%;">
+<colgroup>
+<col width="11%" />
+<col width="15%" />
+<col width="6%" />
+<col width="12%" />
+<col width="13%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Group</th>
+<th align="center">Measure</th>
+<th align="center">N</th>
+<th align="center">Mean</th>
+<th align="center">SD</th>
+<th align="center">SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">CW</td>
+<td align="center">Observed</td>
+<td align="center">30</td>
+<td align="center">1843</td>
+<td align="center">220.6</td>
+<td align="center">40.27</td>
+</tr>
+<tr class="even">
+<td align="center">CW</td>
+<td align="center">Chao1</td>
+<td align="center">30</td>
+<td align="center">2553</td>
+<td align="center">338.1</td>
+<td align="center">61.73</td>
+</tr>
+<tr class="odd">
+<td align="center">CW</td>
+<td align="center">ACE</td>
+<td align="center">30</td>
+<td align="center">2716</td>
+<td align="center">367</td>
+<td align="center">67.01</td>
+</tr>
+<tr class="even">
+<td align="center">CW</td>
+<td align="center">Shannon</td>
+<td align="center">30</td>
+<td align="center">6.308</td>
+<td align="center">0.5355</td>
+<td align="center">0.09777</td>
+</tr>
+<tr class="odd">
+<td align="center">CW</td>
+<td align="center">Simpson</td>
+<td align="center">30</td>
+<td align="center">0.9897</td>
+<td align="center">0.01305</td>
+<td align="center">0.002382</td>
+</tr>
+</tbody>
+</table>
+<p>Then, we test the differences among groups using the KW rank sum test and anova with multiple comparisons.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="diversity-based-class.html#cb77-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;KW&quot;</span>)</span>
+<span id="cb77-2"><a href="diversity-based-class.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_alpha_diff</span></span>
+<span id="cb77-3"><a href="diversity-based-class.html#cb77-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_alpha_diff[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span></code></pre></div>
+<pre><code>## The result is stored in object$res_alpha_diff ...</code></pre>
+<table style="width:94%;">
+<colgroup>
+<col width="23%" />
+<col width="15%" />
+<col width="19%" />
+<col width="15%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Groups</th>
+<th align="center">Measure</th>
+<th align="center">Test method</th>
+<th align="center">p.value</th>
+<th align="center">Significance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">IW vs CW</td>
+<td align="center">Observed</td>
+<td align="center">KW</td>
+<td align="center">0.0371</td>
+<td align="center">*</td>
+</tr>
+<tr class="even">
+<td align="center">IW vs TW</td>
+<td align="center">Observed</td>
+<td align="center">KW</td>
+<td align="center">0.4553</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">CW vs TW</td>
+<td align="center">Observed</td>
+<td align="center">KW</td>
+<td align="center">0.3912</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">IW vs CW vs TW</td>
+<td align="center">Observed</td>
+<td align="center">KW</td>
+<td align="center">0.155</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">IW vs CW</td>
+<td align="center">Chao1</td>
+<td align="center">KW</td>
+<td align="center">0.002689</td>
+<td align="center">**</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="diversity-based-class.html#cb79-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
+<span id="cb79-2"><a href="diversity-based-class.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_alpha_diff</span></span>
+<span id="cb79-3"><a href="diversity-based-class.html#cb79-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_alpha_diff</span></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by &#39;klaR&#39;:
+##   method      from 
+##   predict.rda vegan
+##   print.rda   vegan
+##   plot.rda    vegan</code></pre>
+<pre><code>## The result is stored in object$res_alpha_diff ...</code></pre>
+<table>
+<colgroup>
+<col width="10%" />
+<col width="12%" />
+<col width="9%" />
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+<col width="10%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Observed</th>
+<th align="center">Chao1</th>
+<th align="center">ACE</th>
+<th align="center">Shannon</th>
+<th align="center">Simpson</th>
+<th align="center">InvSimpson</th>
+<th align="center">Fisher</th>
+<th align="center">Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>IW</strong></td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">b</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TW</strong></td>
+<td align="center">a</td>
+<td align="center">ab</td>
+<td align="center">b</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>CW</strong></td>
+<td align="center">a</td>
+<td align="center">b</td>
+<td align="center">b</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+<td align="center">a</td>
+</tr>
+</tbody>
+</table>
+<p>Now, let us plot the mean and se of alpha diversity for each group, and add the duncan.test (agricolae package) result.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="diversity-based-class.html#cb82-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">add_letter =</span> T, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">use_boxplot =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Images/plot_alpha_letter.png" width="600px" style="display: block; margin: auto;" /></p>
+<p>We can also use the boxplot to show the paired comparisons directly.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="diversity-based-class.html#cb83-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">pair_compare =</span> <span class="cn">TRUE</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Group&quot;</span>)</span></code></pre></div>
+<p><img src="Images/plot_alpha.png" width="600px" style="display: block; margin: auto;" /></p>
+<p>The multi-factor analysis of variance is also supported.
+It is notable that the result res_alpha_diff will be a list instead of a data.frame.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="diversity-based-class.html#cb84-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb84-2"><a href="diversity-based-class.html#cb84-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">anova_set =</span> <span class="st">&quot;Group+Type&quot;</span>)</span>
+<span id="cb84-3"><a href="diversity-based-class.html#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co"># now the result t1$res_alpha_diff is a list</span></span>
+<span id="cb84-4"><a href="diversity-based-class.html#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document for the usage of anova_set</span></span></code></pre></div>
+</div>
+<div id="key-points-3" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Key points</h3>
+<ul>
+<li>trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation</li>
+</ul>
+</div>
+</div>
+<div id="trans_beta-class" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> trans_beta class</h2>
+<p>　The trans_beta class is developed for the beta diversity analysis.
+When needed, the beta_diversity in microtable table will be invoked for transformation and ploting using trans_beta class.
+The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.</p>
+<div id="example-4" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Example</h3>
+<p>We first show the ordination using PCoA.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="diversity-based-class.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we first create an trans_beta object</span></span>
+<span id="cb85-2"><a href="diversity-based-class.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="co"># measure parameter can invoke the distance matrix of bray in dataset$beta_diversity</span></span>
+<span id="cb85-3"><a href="diversity-based-class.html#cb85-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
+<pre><code>## Please also cite the original paper: An et al. (2019). Soil bacterial community structure in Chinese wetlands. Geoderma, 337, 290-299.</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="diversity-based-class.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use PCoA as an example, PCA or NMDS is also available</span></span>
+<span id="cb87-2"><a href="diversity-based-class.html#cb87-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span>
+<span id="cb87-3"><a href="diversity-based-class.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$res_ordination is the ordination result list</span></span>
+<span id="cb87-4"><a href="diversity-based-class.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t1<span class="sc">$</span>res_ordination)</span>
+<span id="cb87-5"><a href="diversity-based-class.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the PCoA result</span></span>
+<span id="cb87-6"><a href="diversity-based-class.html#cb87-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_group_ellipse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Images/plot_ordination.png" width="650px" style="display: block; margin: auto;" /></p>
+<p>Then we plot and compare the group distances.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="diversity-based-class.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
+<span id="cb88-2"><a href="diversity-based-class.html#cb88-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>()</span>
+<span id="cb88-3"><a href="diversity-based-class.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_group_distance</span></span>
+<span id="cb88-4"><a href="diversity-based-class.html#cb88-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">distance_pair_stat =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Images/plot_group_distance_within.png" width="500px" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="diversity-based-class.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances between groups</span></span>
+<span id="cb89-2"><a href="diversity-based-class.html#cb89-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb89-3"><a href="diversity-based-class.html#cb89-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">distance_pair_stat =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Images/plot_group_distance_between.png" width="500px" style="display: block; margin: auto;" /></p>
+<p>Clustering plot is also a frequently used method.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="diversity-based-class.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use replace_name to set the label name, group parameter used to set the color</span></span>
+<span id="cb90-2"><a href="diversity-based-class.html#cb90-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_clustering</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">replace_name =</span> <span class="fu">c</span>(<span class="st">&quot;Saline&quot;</span>, <span class="st">&quot;Type&quot;</span>))</span></code></pre></div>
+<p><img src="Images/plot_clustering.png" width="550px" style="display: block; margin: auto;" /></p>
+<p>perMANOVA<span class="citation">(<a href="#ref-Anderson_Austral_2001" role="doc-biblioref">Anderson 2001</a>)</span> is often used in the differential test of distances among groups.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="diversity-based-class.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups</span></span>
+<span id="cb91-2"><a href="diversity-based-class.html#cb91-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb91-3"><a href="diversity-based-class.html#cb91-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova<span class="sc">$</span>aov.tab</span></code></pre></div>
+<pre><code>## The result is stored in object$res_manova ...</code></pre>
+<table style="width:99%;">
+<caption>Permutation: free</caption>
+<colgroup>
+<col width="22%" />
+<col width="6%" />
+<col width="16%" />
+<col width="13%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Df</th>
+<th align="center">SumsOfSqs</th>
+<th align="center">MeanSqs</th>
+<th align="center">F.Model</th>
+<th align="center">R2</th>
+<th align="center">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>Group</strong></td>
+<td align="center">2</td>
+<td align="center">6.121</td>
+<td align="center">3.06</td>
+<td align="center">10.57</td>
+<td align="center">0.1955</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">87</td>
+<td align="center">25.18</td>
+<td align="center">0.2895</td>
+<td align="center">NA</td>
+<td align="center">0.8045</td>
+<td align="center">NA</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Total</strong></td>
+<td align="center">89</td>
+<td align="center">31.3</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="diversity-based-class.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for each paired groups</span></span>
+<span id="cb93-2"><a href="diversity-based-class.html#cb93-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb93-3"><a href="diversity-based-class.html#cb93-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<pre><code>## The result is stored in object$res_manova ...</code></pre>
+<table style="width:97%;">
+<colgroup>
+<col width="15%" />
+<col width="13%" />
+<col width="20%" />
+<col width="12%" />
+<col width="13%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Groups</th>
+<th align="center">measure</th>
+<th align="center">permutations</th>
+<th align="center">R2</th>
+<th align="center">p.value</th>
+<th align="center">Significance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">IW vs CW</td>
+<td align="center">bray</td>
+<td align="center">999</td>
+<td align="center">0.1595</td>
+<td align="center">0.001</td>
+<td align="center">***</td>
+</tr>
+<tr class="even">
+<td align="center">IW vs TW</td>
+<td align="center">bray</td>
+<td align="center">999</td>
+<td align="center">0.147</td>
+<td align="center">0.001</td>
+<td align="center">***</td>
+</tr>
+<tr class="odd">
+<td align="center">CW vs TW</td>
+<td align="center">bray</td>
+<td align="center">999</td>
+<td align="center">0.1556</td>
+<td align="center">0.001</td>
+<td align="center">***</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="diversity-based-class.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: here &quot;Group + Type&quot;</span></span>
+<span id="cb95-2"><a href="diversity-based-class.html#cb95-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
+<span id="cb95-3"><a href="diversity-based-class.html#cb95-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova<span class="sc">$</span>aov.tab</span></code></pre></div>
+<pre><code>## The result is stored in object$res_manova ...</code></pre>
+<table style="width:99%;">
+<caption>Permutation: free</caption>
+<colgroup>
+<col width="22%" />
+<col width="6%" />
+<col width="16%" />
+<col width="13%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Df</th>
+<th align="center">SumsOfSqs</th>
+<th align="center">MeanSqs</th>
+<th align="center">F.Model</th>
+<th align="center">R2</th>
+<th align="center">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>Group</strong></td>
+<td align="center">2</td>
+<td align="center">6.121</td>
+<td align="center">3.06</td>
+<td align="center">12.01</td>
+<td align="center">0.1955</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Type</strong></td>
+<td align="center">3</td>
+<td align="center">3.783</td>
+<td align="center">1.261</td>
+<td align="center">4.949</td>
+<td align="center">0.1208</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Residuals</strong></td>
+<td align="center">84</td>
+<td align="center">21.4</td>
+<td align="center">0.2548</td>
+<td align="center">NA</td>
+<td align="center">0.6836</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Total</strong></td>
+<td align="center">89</td>
+<td align="center">31.3</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+</tr>
+</tbody>
+</table>
+<p>PERMDISP<span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span> is also implemented to check multivariate homogeneity of groups dispersions (variances).</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="diversity-based-class.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PERMDISP for the whole comparison and for each paired groups</span></span>
+<span id="cb97-2"><a href="diversity-based-class.html#cb97-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_betadisper</span>()</span></code></pre></div>
+<pre><code>## The result is stored in object$res_betadisper ...</code></pre>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="diversity-based-class.html#cb99-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_betadisper</span></code></pre></div>
+<pre><code>## 
+## Permutation test for homogeneity of multivariate dispersions
+## Permutation: free
+## Number of permutations: 999
+## 
+## Response: Distances
+##           Df  Sum Sq   Mean Sq      F N.Perm Pr(&gt;F)  
+## Groups     2 0.04131 0.0206545 4.1682    999  0.021 *
+## Residuals 87 0.43110 0.0049552                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Pairwise comparisons:
+## (Observed p-value below diagonal, permuted p-value above diagonal)
+##           CW        IW    TW
+## CW           0.4690000 0.063
+## IW 0.4621193           0.005
+## TW 0.0566190 0.0050319</code></pre>
+</div>
+<div id="key-points-4" class="section level3" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Key points</h3>
+<ul>
+<li>trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation</li>
+<li>cal_manova(): cal_manova function can be used for paired comparisons, holistic test and multi-factor test</li>
+<li>plot_group_distance(): pair_compare_filter_select parameter in plot_group_distance can be used to select the significance label shown in the plot</li>
+</ul>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Anderson_Austral_2001" class="csl-entry">
+Anderson, M. J. 2001. <span>“A New Method for Non-Parametric Multivariate Analysis of Variance.”</span> Journal Article. <em>Austral Ecology</em>, no. 26: 32–46.
+</div>
+<div id="ref-Anderson_Navigating_2011" class="csl-entry">
+Anderson, M. J., T. O. Crist, J. M. Chase, M. Vellend, B. D. Inouye, A. L. Freestone, N. J. Sanders, et al. 2011. <span>“Navigating the Multiple Meanings of Beta Diversity: A Roadmap for the Practicing Ecologist.”</span> Journal Article. <em>Ecology Letters</em> 14 (1): 19–28. <a href="https://doi.org/10.1111/j.1461-0248.2010.01552.x">https://doi.org/10.1111/j.1461-0248.2010.01552.x</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="composition-based-class.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-based-class.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-Diversity-based_class.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

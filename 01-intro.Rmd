@@ -3,7 +3,7 @@
 The microeco package has several advantages compared to other packages in R.
 The main goal of developing this package is to help users analyse communtiy ecology data fast.
 So a series of commonly-used approaches are implemented.
-Some new methods are in active development.
+Some new methods are also in active development.
 To facilitate the data mining, the whole structure of microeco package are modularized to
 make users conveniently remember, search and use.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
@@ -12,15 +12,16 @@ Main files stored in the objects of microeco package is the commonly used data.f
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
 
+
 ## R6 Class
 
 All the classes in microeco package depend on the R6 class [@R6_Winston]. 
 R6 uses the encapsulated object-oriented programming paradigm, 
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions. 
-If you are interested in the class feature, read more from 'Advanced R' book.
+If you are interested in the class feature, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
-This influences how we think about naming. The methods belong to objects, not generics, and you call them like object$method().
+This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
 
   + R6’s reference semantics allow methods to simultaneously return a value and modify an object.
   
@@ -61,7 +62,6 @@ t1$cal_network(network_method = "SpiecEasi")
 Error in t1$cal_network(network_method = "SpiecEasi"): igraph package not installed ...
 ```
 
-
 <br>
 The reason is that network construction require igraph package. We donot put the igraph and some other packages (e.g. SpiecEasi in github) on the "Imports" part of microeco package.
 
@@ -69,7 +69,7 @@ The solutions:
 
 1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
 
-2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to repeat the analysis in tutorial.
+2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run all the examples in tutorial.
 
 We show several packages that are published in CRAN and not installed automatically.
 
@@ -81,13 +81,12 @@ pre_pac <- read.delim("prerequite_packages.tsv")
 knitr::kable(pre_pac)
 ```
 
-
 Then, if you want to install these packages or some of them, you can do like this:
 
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("reshape2", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial")
 # Now check or install
 lapply(packages, function(x) {
 	if(!require(x, character.only = TRUE)) {
@@ -95,7 +94,7 @@ lapply(packages, function(x) {
 	}})
 ```
 
-There are also some packages that are useful in some functions. These packages may be R packages published in github or bioconductor,
+There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
 or packages written by other languages.
 
 
@@ -110,7 +109,6 @@ BiocManager::install("ggtree")
 
 The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
 The package can be installed from Github https://github.com/zdk123/SpiecEasi
-
 
 ### Gephi
 Gephi is an excellent network visualization tool and used to open the saved network file, 
@@ -183,9 +181,9 @@ rep_fasta <- seqinr::read.fasta(rep_fasta_path)
 Most of the plotting in the package rely on the ggplot2 package system.
 We provide some parameters to change the corresponding plot.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
-Each data table used for plotting is stored in the object and can be downloaded for the personalized analysis and plotting.
+Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated through github pushing or email (liuchi0426@126.com).
+Any contribution of a modified class is also appreciated via github pushing or email (liuchi0426@126.com).
 
 
 
