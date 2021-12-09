@@ -141,23 +141,25 @@ install.packages(system.file("extdata", "Tax4Fun_0.3.1.tar.gz", package="microec
 
 
 ### Tax4Fun2
-Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities [@Wemheuer_Tax4Fun2_2020].
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package.
-The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+The only thing need to do is to download the blast tool (**ignore this if the blast tool is in the path**) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
+Note that some errors can come from the latest versions because of memory issue (https://www.biostars.org/p/413294/). 
+An easy solution is to use previous version (such as 2.5.0).
 Downlaod Ref99NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download"  or Ref100NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" .
 Uncompress all the folders. The final folders should be like these structures:
 
 blast tools:  
-　|-- ncbi-blast-2.11.0+  
+　|-- ncbi-blast-2.5.0+  
 　　|---- bin  
 　　　|------ blastn.exe  
 　　　|------ makeblastdb.exe  
 　　　|------ ......  
 
-Ref99NR/Ref100NR:  
+Ref99NR:  
 　|-- Tax4Fun2_ReferenceData_v2  
 　　|---- Ref99NR  
 　　　|------ otu000001.tbl.gz  
@@ -165,7 +167,9 @@ Ref99NR/Ref100NR:
 　　　|------ Ref99NR.fasta  
 　　　|------ Ref99NR.tre  
 
-The path "ncbi-blast-2.11.0+/bin" and "Tax4Fun2_ReferenceData_v2" will be required in the trans_func$cal_tax4fun2() function.
+The path "Tax4Fun2_ReferenceData_v2" will be required in the trans_func$cal_tax4fun2() function.
+The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added to the path (environmental variable).
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # seqinr should be installed for reading and writing fasta file

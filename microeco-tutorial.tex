@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.6.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
-\date{2021-11-18}
+\date{2021-12-09}
 
 \begin{document}
 \maketitle
@@ -369,23 +369,25 @@ Tax4Fun is an R package used for the prediction of functional potential of proka
 \hypertarget{tax4fun2}{%
 \subsection{Tax4Fun2}\label{tax4fun2}}
 
-Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities \citep{Wemheuer_Tax4Fun2_2020}.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package.
-The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+The only thing need to do is to download the blast tool (\textbf{ignore this if the blast tool is in the path}) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from ``\url{ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
+Note that some errors can come from the latest versions because of memory issue (\url{https://www.biostars.org/p/413294/}).
+An easy solution is to use previous version (such as 2.5.0).
 Downlaod Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}'' .
 Uncompress all the folders. The final folders should be like these structures:
 
 blast tools:\\
-　\textbar-- ncbi-blast-2.11.0+\\
+　\textbar-- ncbi-blast-2.5.0+\\
 　　\textbar---- bin\\
 　　　\textbar------ blastn.exe\\
 　　　\textbar------ makeblastdb.exe\\
 　　　\textbar------ \ldots\ldots{}
 
-Ref99NR/Ref100NR:\\
+Ref99NR:\\
 　\textbar-- Tax4Fun2\_ReferenceData\_v2\\
 　　\textbar---- Ref99NR\\
 　　　\textbar------ otu000001.tbl.gz\\
@@ -393,7 +395,8 @@ Ref99NR/Ref100NR:\\
 　　　\textbar------ Ref99NR.fasta\\
 　　　\textbar------ Ref99NR.tre
 
-The path ``ncbi-blast-2.11.0+/bin'' and ``Tax4Fun2\_ReferenceData\_v2'' will be required in the trans\_func\$cal\_tax4fun2() function.
+The path ``Tax4Fun2\_ReferenceData\_v2'' will be required in the trans\_func\$cal\_tax4fun2() function.
+The blast tool path ``ncbi-blast-2.5.0+/bin'' is also required if it is not added to the path (environmental variable).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2675,14 +2678,25 @@ If you want to use Tax4Fun2 method, you must add the fasta file to the microtabl
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(use\_dataset)}
 \CommentTok{\# create a directory for result and log files}
 \FunctionTok{dir.create}\NormalTok{(}\StringTok{"test\_prediction"}\NormalTok{)}
-\CommentTok{\# see https://github.com/ChiLiubio/microeco for downloading ncbi{-}blast and Ref99NR/Ref100NR}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2}\NormalTok{(}\AttributeTok{blast\_tool\_path =} \StringTok{"ncbi{-}blast{-}2.11.0+/bin"}\NormalTok{, }\AttributeTok{path\_to\_reference\_data =} \StringTok{"test\_ReferenceData\_v2"}\NormalTok{,}
+\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2 for downloading ncbi{-}blast and Ref99NR/Ref100NR}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2}\NormalTok{(}\AttributeTok{blast\_tool\_path =} \StringTok{"ncbi{-}blast{-}2.5.0+/bin"}\NormalTok{, }\AttributeTok{path\_to\_reference\_data =} \StringTok{"test\_ReferenceData\_v2"}\NormalTok{,}
   \AttributeTok{path\_to\_temp\_folder =} \StringTok{"test\_prediction"}\NormalTok{, }\AttributeTok{database\_mode =} \StringTok{"Ref99NR"}\NormalTok{)}
 
 \CommentTok{\# functional gene redundancies}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2\_FRI}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{key-points-8}{%
+\subsection{Key points}\label{key-points-8}}
+
+\begin{itemize}
+\tightlist
+\item
+  blast\_tool\_path parameter in cal\_tax4fun2: if the blast tool has been in `environment variable' of computer, use blast\_tool\_path = NULL
+\item
+  blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (\url{https://www.biostars.org/p/413294/}). An easy solution is to use previous version (such as 2.5.0).
+\end{itemize}
 
 \hypertarget{other-dataset}{%
 \chapter{Other dataset}\label{other-dataset}}

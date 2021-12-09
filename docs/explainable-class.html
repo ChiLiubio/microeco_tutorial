@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-11-18" />
+<meta name="date" content="2021-12-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,6 +240,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-8"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>8</b> Other dataset</a>
@@ -697,12 +698,19 @@ If you want to use Tax4Fun2 method, you must add the fasta file to the microtabl
 <span id="cb180-12"><a href="explainable-class.html#cb180-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(use_dataset)</span>
 <span id="cb180-13"><a href="explainable-class.html#cb180-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
 <span id="cb180-14"><a href="explainable-class.html#cb180-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
-<span id="cb180-15"><a href="explainable-class.html#cb180-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/microeco for downloading ncbi-blast and Ref99NR/Ref100NR</span></span>
-<span id="cb180-16"><a href="explainable-class.html#cb180-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.11.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
+<span id="cb180-15"><a href="explainable-class.html#cb180-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR</span></span>
+<span id="cb180-16"><a href="explainable-class.html#cb180-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
 <span id="cb180-17"><a href="explainable-class.html#cb180-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>, <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>)</span>
 <span id="cb180-18"><a href="explainable-class.html#cb180-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb180-19"><a href="explainable-class.html#cb180-19" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
 <span id="cb180-20"><a href="explainable-class.html#cb180-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+</div>
+<div id="key-points-8" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Key points</h3>
+<ul>
+<li>blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in ‘environment variable’ of computer, use blast_tool_path = NULL</li>
+<li>blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (<a href="https://www.biostars.org/p/413294/" class="uri">https://www.biostars.org/p/413294/</a>). An easy solution is to use previous version (such as 2.5.0).</li>
+</ul>
 
 </div>
 </div>

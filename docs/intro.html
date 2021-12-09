@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-11-18" />
+<meta name="date" content="2021-12-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,6 +240,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-8"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>8</b> Other dataset</a>
@@ -487,28 +488,31 @@ the correlation algorithm in WGCNA is very fast compared to the ‘cor’ option
 </div>
 <div id="tax4fun2" class="section level3" number="2.3.7">
 <h3><span class="header-section-number">2.3.7</span> Tax4Fun2</h3>
-<p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities.
+<p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span>.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package.
-The only thing need to do is to download the blast tool and Ref99NR/Ref100NR database.
+The only thing need to do is to download the blast tool (<strong>ignore this if the blast tool is in the path</strong>) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from “<a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" class="uri">ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+</a>” ; e.g. ncbi-blast-****-x64-win64.tar.gz for windows system.
+Note that some errors can come from the latest versions because of memory issue (<a href="https://www.biostars.org/p/413294/" class="uri">https://www.biostars.org/p/413294/</a>).
+An easy solution is to use previous version (such as 2.5.0).
 Downlaod Ref99NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download</a>” or Ref100NR.zip from “<a href="https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" class="uri">https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download</a>” .
 Uncompress all the folders. The final folders should be like these structures:</p>
 <p>blast tools:<br />
-　|– ncbi-blast-2.11.0+<br />
+　|– ncbi-blast-2.5.0+<br />
 　　|—- bin<br />
 　　　|—— blastn.exe<br />
 　　　|—— makeblastdb.exe<br />
 　　　|—— ……</p>
-<p>Ref99NR/Ref100NR:<br />
+<p>Ref99NR:<br />
 　|– Tax4Fun2_ReferenceData_v2<br />
 　　|—- Ref99NR<br />
 　　　|—— otu000001.tbl.gz<br />
 　　　|—— ……<br />
 　　　|—— Ref99NR.fasta<br />
 　　　|—— Ref99NR.tre</p>
-<p>The path “ncbi-blast-2.11.0+/bin” and “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.</p>
+<p>The path “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.
+The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not added to the path (environmental variable).</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># seqinr should be installed for reading and writing fasta file</span></span>
 <span id="cb9-2"><a href="intro.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-3"><a href="intro.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
@@ -533,6 +537,9 @@ Any contribution of a modified class is also appreciated via github pushing or e
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-R6_Winston" class="csl-entry">
 Chang, Winston. 2020. <em>R6: Encapsulated Classes with Reference Semantics</em>. <a href="https://CRAN.R-project.org/package=R6">https://CRAN.R-project.org/package=R6</a>.
+</div>
+<div id="ref-Wemheuer_Tax4Fun2_2020" class="csl-entry">
+Wemheuer, Franziska, Jessica A. Taylor, Rolf Daniel, Emma Johnston, Peter Meinicke, Torsten Thomas, and Bernd Wemheuer. 2020. <span>“Tax4Fun2: Prediction of Habitat-Specific Functional Profiles and Functional Redundancy Based on 16s rRNA Gene Sequences.”</span> Journal Article. <em>Environmental Microbiome</em> 15 (1). <a href="https://doi.org/10.1186/s40793-020-00358-7">https://doi.org/10.1186/s40793-020-00358-7</a>.
 </div>
 </div>
             </section>

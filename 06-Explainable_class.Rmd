@@ -320,14 +320,18 @@ use_dataset
 t1 <- trans_func$new(use_dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
-# see https://github.com/ChiLiubio/microeco for downloading ncbi-blast and Ref99NR/Ref100NR
-t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.11.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR
+t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
   path_to_temp_folder = "test_prediction", database_mode = "Ref99NR")
 
 # functional gene redundancies
 t1$cal_tax4fun2_FRI()
 ```
 
+### Key points
+
+  + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, use blast_tool_path = NULL
+  + blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as 2.5.0).
 
 
 
