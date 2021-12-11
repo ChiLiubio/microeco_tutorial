@@ -240,11 +240,12 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 
 Tax4Fun requires a strict input file demand on the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
+Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
 ```{r, echo = TRUE}
 t1 <- trans_func$new(dataset)
-# install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/
-# decompress SILVA123; provide path in folderReferenceData as you put
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
+# provide the file path of SILVA123
 t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
 # t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
@@ -301,9 +302,9 @@ knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
 ```
 
 Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
-It can provides two indexes for the evaluation of functional gene redundancies.
-We provide two functions cal_tax4fun2() and cal_tax4fun2_FRI() in trans_func class for the Tax4Fun2 analysis.  
-If you want to use Tax4Fun2 method, you must add the fasta file to the microtable object.
+It also provides two indexes for the evaluation of functional gene redundancies.
+If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
+Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create a microtable object with the fasta file
@@ -320,7 +321,8 @@ use_dataset
 t1 <- trans_func$new(use_dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
-# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
+# ignore blast_tool_path parameter if blast tools have been in path
 t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
   path_to_temp_folder = "test_prediction", database_mode = "Ref99NR")
 

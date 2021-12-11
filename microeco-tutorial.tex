@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.6.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao}
-\date{2021-12-09}
+\date{2021-12-11}
 
 \begin{document}
 \maketitle
@@ -321,7 +321,7 @@ The package can be installed from Github \url{https://github.com/zdk123/SpiecEas
 \subsection{Gephi}\label{gephi}}
 
 Gephi is an excellent network visualization tool and used to open the saved network file,
-i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/extended-class.html\#trans_network-class}{tutorial}.
+i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/model-based-class.html\#trans_network-class}{tutorial}.
 You can download Gephi and learn how to use it from \url{https://gephi.org/users/download/}
 
 \hypertarget{wgcna}{%
@@ -363,7 +363,7 @@ Tax4Fun is an R package used for the prediction of functional potential of proka
 \tightlist
 \item
   download SILVA123 reference data from \url{http://tax4fun.gobics.de/}\\
-  　unzip SILVA123.zip , move it to a place that you can remember.
+  　unzip SILVA123.zip and provide this path to the folderReferenceData parameter of cal\_tax4fun function in trans\_func class.
 \end{enumerate}
 
 \hypertarget{tax4fun2}{%
@@ -1717,7 +1717,7 @@ We first introduce the correlation-based network. The parameter cal\_cor in tran
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# SparCC method, require SpiecEasi package}
+\CommentTok{\# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco\_tutorial/intro.html\#spieceasi for the installation}
 \CommentTok{\# SparCC is very slow, so consider filtering more species with low abundance}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
@@ -1725,8 +1725,8 @@ We first introduce the correlation-based network. The parameter cal\_cor in tran
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# When the OTU number is large, use R WGCNA package to replace R base to calculate correlations}
-\CommentTok{\# require WGCNA package}
+\CommentTok{\# When the OTU number is large, using R WGCNA package to replace "base" will be faster}
+\CommentTok{\# require WGCNA package, see https://chiliubio.github.io/microeco\_tutorial/intro.html\#wgcna for the installation}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2519,12 +2519,13 @@ The percentages of the OTUs having the same trait can reflect the functional red
 
 Tax4Fun requires a strict input file demand on the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
+Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun} for installing Tax4Fun package and download SILVA123 ref data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
-\CommentTok{\# install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/}
-\CommentTok{\# decompress SILVA123; provide path in folderReferenceData as you put}
+\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation}
+\CommentTok{\# provide the file path of SILVA123}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2658,9 +2659,9 @@ We can also do something else. For example, we can use lefse to test the differe
 \begin{center}\includegraphics[width=600px]{Images/plot_lefse_bar_tax4fun} \end{center}
 
 Tax4Fun2 \citep{Wemheuer_Tax4Fun2_2020} is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
-It can provides two indexes for the evaluation of functional gene redundancies.
-We provide two functions cal\_tax4fun2() and cal\_tax4fun2\_FRI() in trans\_func class for the Tax4Fun2 analysis.\\
-If you want to use Tax4Fun2 method, you must add the fasta file to the microtable object.
+It also provides two indexes for the evaluation of functional gene redundancies.
+If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
+Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun2} for downloading ncbi-blast and Ref99NR/Ref100NR.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2678,7 +2679,8 @@ If you want to use Tax4Fun2 method, you must add the fasta file to the microtabl
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(use\_dataset)}
 \CommentTok{\# create a directory for result and log files}
 \FunctionTok{dir.create}\NormalTok{(}\StringTok{"test\_prediction"}\NormalTok{)}
-\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2 for downloading ncbi{-}blast and Ref99NR/Ref100NR}
+\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2 for installation}
+\CommentTok{\# ignore blast\_tool\_path parameter if blast tools have been in path}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2}\NormalTok{(}\AttributeTok{blast\_tool\_path =} \StringTok{"ncbi{-}blast{-}2.5.0+/bin"}\NormalTok{, }\AttributeTok{path\_to\_reference\_data =} \StringTok{"test\_ReferenceData\_v2"}\NormalTok{,}
   \AttributeTok{path\_to\_temp\_folder =} \StringTok{"test\_prediction"}\NormalTok{, }\AttributeTok{database\_mode =} \StringTok{"Ref99NR"}\NormalTok{)}
 
@@ -3042,7 +3044,7 @@ make the plot using the data (generally data.frame class) stored in the object.
 \hypertarget{save-function}{%
 \section{save() function}\label{save-function}}
 
-As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e.~the data save and communication.
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e.~the data repeatability and communication.
 By applying R6 classes, the analyzed data in `R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
 It is also very convenient to save the analyzed data (i.e.~object) to local computer with save() function for back-up and communication with others.
 This is also the recommended way to send data for testing in `Github Issues'.
@@ -3055,6 +3057,9 @@ This is also the recommended way to send data for testing in `Github Issues'.
 \FunctionTok{load}\NormalTok{(}\StringTok{"dataset.RData"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+So it is repeatable.
 
 \hypertarget{mecodev-package}{%
 \chapter{mecodev package}\label{mecodev-package}}

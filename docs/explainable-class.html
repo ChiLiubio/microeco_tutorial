@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao" />
 
 
-<meta name="date" content="2021-12-09" />
+<meta name="date" content="2021-12-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -588,10 +588,11 @@ We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNG
 <span id="cb162-4"><a href="explainable-class.html#cb162-4" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Images/plot_func_perc_corr.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun requires a strict input file demand on the taxonomic information.
-To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.</p>
+To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
+Please see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun</a> for installing Tax4Fun package and download SILVA123 ref data.</p>
 <div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="explainable-class.html#cb163-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb163-2"><a href="explainable-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/</span></span>
-<span id="cb163-3"><a href="explainable-class.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="co"># decompress SILVA123; provide path in folderReferenceData as you put</span></span>
+<span id="cb163-2"><a href="explainable-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation</span></span>
+<span id="cb163-3"><a href="explainable-class.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="co"># provide the file path of SILVA123</span></span>
 <span id="cb163-4"><a href="explainable-class.html#cb163-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun</span>(<span class="at">folderReferenceData =</span> <span class="st">&quot;./SILVA123&quot;</span>)</span></code></pre></div>
 <pre><code>## 载入需要的程辑包：Tax4Fun</code></pre>
 <pre><code>## 载入需要的程辑包：Matrix</code></pre>
@@ -681,9 +682,9 @@ To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link 
 <span id="cb179-2"><a href="explainable-class.html#cb179-2" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.8</span>)</span></code></pre></div>
 <p><img src="Images/plot_lefse_bar_tax4fun.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun2 <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span> is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
-It can provides two indexes for the evaluation of functional gene redundancies.
-We provide two functions cal_tax4fun2() and cal_tax4fun2_FRI() in trans_func class for the Tax4Fun2 analysis.<br />
-If you want to use Tax4Fun2 method, you must add the fasta file to the microtable object.</p>
+It also provides two indexes for the evaluation of functional gene redundancies.
+If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
+Please see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2</a> for downloading ncbi-blast and Ref99NR/Ref100NR.</p>
 <div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="explainable-class.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object with the fasta file</span></span>
 <span id="cb180-2"><a href="explainable-class.html#cb180-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
 <span id="cb180-3"><a href="explainable-class.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
@@ -698,12 +699,13 @@ If you want to use Tax4Fun2 method, you must add the fasta file to the microtabl
 <span id="cb180-12"><a href="explainable-class.html#cb180-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(use_dataset)</span>
 <span id="cb180-13"><a href="explainable-class.html#cb180-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
 <span id="cb180-14"><a href="explainable-class.html#cb180-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
-<span id="cb180-15"><a href="explainable-class.html#cb180-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR</span></span>
-<span id="cb180-16"><a href="explainable-class.html#cb180-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
-<span id="cb180-17"><a href="explainable-class.html#cb180-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>, <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>)</span>
-<span id="cb180-18"><a href="explainable-class.html#cb180-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb180-19"><a href="explainable-class.html#cb180-19" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
-<span id="cb180-20"><a href="explainable-class.html#cb180-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+<span id="cb180-15"><a href="explainable-class.html#cb180-15" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation</span></span>
+<span id="cb180-16"><a href="explainable-class.html#cb180-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ignore blast_tool_path parameter if blast tools have been in path</span></span>
+<span id="cb180-17"><a href="explainable-class.html#cb180-17" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;test_ReferenceData_v2&quot;</span>,</span>
+<span id="cb180-18"><a href="explainable-class.html#cb180-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>, <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>)</span>
+<span id="cb180-19"><a href="explainable-class.html#cb180-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb180-20"><a href="explainable-class.html#cb180-20" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
+<span id="cb180-21"><a href="explainable-class.html#cb180-21" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
 </div>
 <div id="key-points-8" class="section level3" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Key points</h3>

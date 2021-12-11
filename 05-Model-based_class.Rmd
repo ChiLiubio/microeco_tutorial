@@ -154,14 +154,14 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU",
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# SparCC method, require SpiecEasi package
+# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the installation
 # SparCC is very slow, so consider filtering more species with low abundance
 t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001, SparCC_simu_num = 100)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# When the OTU number is large, use R WGCNA package to replace R base to calculate correlations
-# require WGCNA package
+# When the OTU number is large, using R WGCNA package to replace "base" will be faster
+# require WGCNA package, see https://chiliubio.github.io/microeco_tutorial/intro.html#wgcna for the installation
 t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
 ```
 

@@ -150,7 +150,7 @@ The package can be installed from Github https://github.com/zdk123/SpiecEasi
 
 ### Gephi
 Gephi is an excellent network visualization tool and used to open the saved network file, 
-i.e. network.gexf in the [tutorial](https://chiliubio.github.io/microeco_tutorial/extended-class.html#trans_network-class).
+i.e. network.gexf in the [tutorial](https://chiliubio.github.io/microeco_tutorial/model-based-class.html#trans_network-class).
 You can download Gephi and learn how to use it from https://gephi.org/users/download/
 
 
@@ -175,7 +175,7 @@ install.packages(system.file("extdata", "Tax4Fun_0.3.1.tar.gz", package="microec
 ```
 
 2. download SILVA123 reference data from http://tax4fun.gobics.de/  
-　unzip SILVA123.zip , move it to a place that you can remember.
+　unzip SILVA123.zip and provide this path to the folderReferenceData parameter of cal_tax4fun function in trans_func class.
 
 
 ### Tax4Fun2
@@ -226,7 +226,6 @@ The user can also assign the output a name and use the ggplot2-style grammers to
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
 Any contribution of a modified class is also appreciated via github pushing or email (liuchi0426@126.com).
-
 
 
 
@@ -1072,14 +1071,14 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU",
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# SparCC method, require SpiecEasi package
+# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the installation
 # SparCC is very slow, so consider filtering more species with low abundance
 t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001, SparCC_simu_num = 100)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# When the OTU number is large, use R WGCNA package to replace R base to calculate correlations
-# require WGCNA package
+# When the OTU number is large, using R WGCNA package to replace "base" will be faster
+# require WGCNA package, see https://chiliubio.github.io/microeco_tutorial/intro.html#wgcna for the installation
 t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
 ```
 
@@ -1683,11 +1682,12 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 
 Tax4Fun requires a strict input file demand on the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
+Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
 ```{r, echo = TRUE}
 t1 <- trans_func$new(dataset)
-# install Tax4Fun package and download SILVA123 ref data from  http://tax4fun.gobics.de/
-# decompress SILVA123; provide path in folderReferenceData as you put
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
+# provide the file path of SILVA123
 t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
 # t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
@@ -1744,9 +1744,9 @@ knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
 ```
 
 Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
-It can provides two indexes for the evaluation of functional gene redundancies.
-We provide two functions cal_tax4fun2() and cal_tax4fun2_FRI() in trans_func class for the Tax4Fun2 analysis.  
-If you want to use Tax4Fun2 method, you must add the fasta file to the microtable object.
+It also provides two indexes for the evaluation of functional gene redundancies.
+If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
+Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create a microtable object with the fasta file
@@ -1763,7 +1763,8 @@ use_dataset
 t1 <- trans_func$new(use_dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
-# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
+# ignore blast_tool_path parameter if blast tools have been in path
 t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
   path_to_temp_folder = "test_prediction", database_mode = "Ref99NR")
 
@@ -2040,7 +2041,7 @@ knitr::include_graphics("Images/plot_bar_mean_classic.png")
 
 ## save() function
 
-As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data save and communication.
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
 By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
 It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
 This is also the recommended way to send data for testing in 'Github Issues'.
@@ -2052,13 +2053,8 @@ save(dataset, file = "dataset.RData")
 load("dataset.RData")
 ```
 
-
-
-
-
-
-
-
+The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+So it is repeatable.
 
 
 
