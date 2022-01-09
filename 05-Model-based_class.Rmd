@@ -7,11 +7,12 @@ We group all the classes with complex models into the type 'Model-based class'.
 
 　Differential abundance test is a very important part in the microbial community data analysis.
 It can be used to find the significant taxa in determining the community differences across groups.
+With the field development, there are some combined methods to better capture the important biomarker information.
 Currently, trans_diff class have four famous approaches to perform this analysis: 
 metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], random forest and metagenomeSeq[@Paulson_Differential_2013].
 Metastat depends on the permutations and t-test and performs well on the sparse data.
 It is used for the comparisons of taxonomic abundance between two groups at any taxonomic level.
-LEfSe and random forest in this class is mainly used for the identification of biomarkers including all taxonomic level.
+LEfSe and random forest in this class is mainly used for the identification of biomarkers at all taxonomic levels.
 metagenomeSeq method is implemented to find significant species between two groups at species level (OTU/ASV).
 
 
@@ -292,18 +293,19 @@ t1$subset_network(edge = "+")
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
 sub1 <- t1$subset_network(node = dataset$otu_table[, "S1", drop = FALSE] %>% .[.[, 1] !=0, , drop = FALSE] %>% rownames, rm_single = TRUE)
+# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
 t2 <- clone(t1)
 t2$res_network <- sub1
 # then t2 have a network for 'S1' and can be used for further analysis
 t2$cal_module()
 t2$save_network("S1.gexf")
-# use a loop for more samples
+# please use a loop for more samples
 ```
 
 
 Then we show the next implemented network construction approach: 
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package [@Kurtz_Sparse_2015].
-
+See https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the package installation.
 
 ```{r, echo = TRUE, eval=FALSE}
 # cal_cor select NA
@@ -355,7 +357,7 @@ beta nearest taxon index (betaNTI), beta net relatedness index (betaNRI) and Bra
 The approach for phylogenetic signal analysis is based on the mantel correlogram [@Liu_Long_term_2017], 
 in which the change of phylogenetic signal is intuitional and clear compared to other approaches.
 The algorithms of betaMNTD and betaMPD have been optimized to be faster than those in the picante package [@Picante_Kembel_2010].
-The combinations between RCbray and betaNTI (or betaNRI) can be used to infer the strength of each ecological process dominating the community assembly 
+The combinations between RCbray and betaNTI can be used to infer the strength of each ecological process dominating the community assembly 
 under the specific hypothesis [@Stegen_Quantifying_2013].
 This can be achievable by the function cal_process() to parse the percentage of each inferred process.
 
@@ -417,7 +419,7 @@ knitr::include_graphics("Images/plot_betaNRI_one_dataset.png")
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
 you can calculate the results for each group, respectively.
-We can find that, when we perform betaNRI for each group respectively, 
+The results show that, when we perform betaNRI for each group respectively, 
 mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW, 
 revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
 
@@ -434,8 +436,11 @@ for(i in all_groups){
 	sesbeta_each[[i]] <- test$res_ses_betampd
 }
 # merge and reshape to generate one symmetrical matrix
-test <- lapply(sesbeta_each, melt) %>% do.call(rbind, .) %>%
-	reshape2::dcast(., Var1~Var2, value.var = "value") %>% `row.names<-`(.[,1]) %>% .[, -1, drop = FALSE]
+test <- lapply(sesbeta_each, reshape2::melt) %>% 
+	do.call(rbind, .) %>%
+	reshape2::dcast(., Var1~Var2, value.var = "value")
+rownames(test) <- test[, 1]
+test <- test[, -1, drop = FALSE]
 # like the above operation
 dataset$beta_diversity[["betaNRI"]] <- test
 t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
@@ -511,7 +516,7 @@ pander::pander(t1$res_process)
 ### Key points
 
   + trans_nullmodel$new: filter_thres parameter for the filtering of taxa with relative low abundance
-  + cal_rcbray(): if you just need rcbray, ignore other operations
+  + cal_rcbray(): if you just need rcbray, ignore other phylogenetic operations
  
 ### Other function
 

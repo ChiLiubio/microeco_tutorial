@@ -2,8 +2,8 @@
 
 ## Fungi data
 
-The above examples are shown with the prokaryotic data.
-Now, we use the ITS amplicon sequencing dataset as an example to show the use of FUNGuild database[@Nguyen_FUNGuild_2016].
+Another ITS sequencing dataset [@Gao_Strong_2019] is also stored in the example data of the package.
+Here, we use it as an example to show the use of FUNGuild database[@Nguyen_FUNGuild_2016].
 FungalTraits [@Polme_FungalTraits_2020] database is also available for identifying fungal traits.
 
 
@@ -64,6 +64,7 @@ sample_file_path <- system.file("extdata", "example_metagenome_sample_info.tsv",
 match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", package="file2meco")
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
+# match_table parameter can be used to replace sample names
 test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
 # remove the unclassified pathway in the top level
 test$tax_table %<>% subset(level1 != "unclassified")
@@ -78,7 +79,7 @@ test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RCo
 knitr::include_graphics("Images/plot_HUMANN_KEGG_bar.png")
 ```
 
-Then, we select both function and taxa to see which taxa the high abundant pathways come from.
+Then, we select both function and taxa to see which taxa those high abundant pathways come from.
 
 ```{r, echo = TRUE, eval = FALSE}
 # This operation is more flexible
@@ -123,7 +124,7 @@ taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco"
 # construct microtable object
 data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
 data1$tidy_dataset()
-# revise the species names in tax_table
+# revise the species names in tax_table as the information in the example file is not standard
 select_rows <- data1$tax_table$Species != "s__"
 data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
 # taxonomic abundance

@@ -77,16 +77,22 @@ t1$cal_diff(method = "anova", anova_set = "Group+Type")
 # see the help document for the usage of anova_set
 ```
 
+
 ### Key points
 
   + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
+  + cal_diff: anova_set parameter can be used for multi-factor analysis of variance
 
 
 ## trans_beta class
 
-　The trans_beta class is developed for the beta diversity analysis.
-When needed, the beta_diversity in microtable table will be invoked for transformation and ploting using trans_beta class.
+　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
+As beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011],
+So we encapsulate some commonly-used approaches according to the research of microbial community ecology[@Ramette_Multivariate_2007].
+Note that the parts related with "Environmental interpretation" are placed into the trans_env class.
+When needed, the beta_diversity list in microtable object will be invoked for transformation and ploting using trans_beta class.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
+
 
 ### Example
 
@@ -195,9 +201,9 @@ t1$res_betadisper
 ### Key points
 
   + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
+  + cal_ordination(): PCoA, PCA and NMDS approaches are all available
   + cal_manova(): cal_manova function can be used for paired comparisons, holistic test and multi-factor test
-  + plot_group_distance(): pair_compare_filter_select parameter in plot_group_distance can be used to select the significance label shown in the plot
-
+  + plot_group_distance(): hide_ns and pair_compare_filter_select parameters can be used to control the significance labels shown in the plot
 
 
 

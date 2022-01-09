@@ -20,6 +20,26 @@ t2$sample_table <- NULL
 identical(t2, t1)
 ```
 
+
+## save() function
+
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
+By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of the intermediate files and can reduce memory spending.
+It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
+This is also the recommended way to send data for testing in 'Github Issues'.
+
+```{r, echo = TRUE, eval = FALSE}
+# save 'dataset' to local computer
+save(dataset, file = "dataset.RData")
+# dataset.RData can be compressed into zip format for the upload in 'Github Issues'
+# load the data by others in their R project
+load("dataset.RData")
+```
+
+The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+So it is repeatable.
+
+
 ## subset of samples
 We donnot provide the special function to filter samples in microtable class, as we think it is redundant.
 **We recommend user to directly manipulate the sample_table in microtable object.**
@@ -88,23 +108,6 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```{r, out.width = "400px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
-
-## save() function
-
-As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
-By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
-It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
-This is also the recommended way to send data for testing in 'Github Issues'.
-
-```{r, echo = TRUE, eval = FALSE}
-# save 'dataset' to local computer
-save(dataset, file = "dataset.RData")
-# load the data by others in their R project
-load("dataset.RData")
-```
-
-The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
-So it is repeatable.
 
 
 

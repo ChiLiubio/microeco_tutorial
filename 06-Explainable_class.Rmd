@@ -99,10 +99,13 @@ knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
+Note that, besides the color_vector parameter, 
+color_palette can also be used to control color palette with customized colors.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
-t1$plot_cor(pheatmap = TRUE)
+# Let's take another color pallete
+t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9, name = "RdYlBu")))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -130,7 +133,7 @@ If you are concerned with the relationship between environmental factors and alp
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
-t1$plot_cor()
+t1$plot_cor(pheatmap = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -157,28 +160,36 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
 ```
 
 
+### Key points
+
+  + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
+  + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
+  + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.
+
+
 ## trans_func class
+
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
-As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is a good choice. 
+As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice. 
 Several software are often used for this goal, such as PICRUSt[@Langille_Predictive_2013], Tax4Fun[@Aßhauer_Tax4Fun_2015] and FAPROTAX[@Louca_High_2016; @Louca_Decoupling_2016].
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
 In addition, it is also important to obtain the functions for each taxa or OTU, not just the whole profile of communities.
 But it is hard to know exact functions of each OTU.
-FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
+FAPROTAX database is a collection of the traits and functions of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
-The NJC19 database[@Lim_Large_2020] is also available for animal associated prokaryotic data, such as human gut microbiota.
+The NJC19 database[@Lim_Large_2020] is also available for animal-associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild [@Nguyen_FUNGuild_2016] and FungalTraits [@Polme_FungalTraits_2020] databases to predict the fungal traits.
 
 ### Example
 
-We first identify/predict traits of taxa.
+We first identify/predict traits of taxa with the prokaryotic example data.
 
 ```{r, echo = TRUE}
 # create object of trans_func
 t2 <- trans_func$new(dataset)
 # mapping the taxonomy to the database
-# this can recognize prokaryotes or fungi automatically.
+# this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
 # default database for prokaryotes is FAPROTAX database
 t2$cal_spe_func(prok_database = "FAPROTAX")
 # return t2$res_spe_func, 1 represent trait exists, 0 represent no or cannot confirmed.
@@ -196,9 +207,12 @@ The percentages of the OTUs having the same trait can reflect the functional red
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate the percentages of OTUs for each trait in each module of network
-# use_community = FALSE represent calculating module, not community, node_type_table provide the module information
+# use_community = TRUE; for community
+t2$cal_spe_func_perc(use_community = TRUE)
+# return t2$res_spe_func_perc for each sample
+# Then, let's explore network modules; use_community = FALSE
+# node_type_table is generated in the trans_network part
 t2$cal_spe_func_perc(use_community = FALSE, node_type_table = network_node_type)
-# return t2$res_spe_func_perc
 # we only plot some important traits, so we use the default group list to filter and show the traits.
 t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
 # M represents module, ordered by the nodes number from high to low
@@ -238,14 +252,14 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 ```
 
 
-Tax4Fun requires a strict input file demand on the taxonomic information.
+Tax4Fun requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
 Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
 ```{r, echo = TRUE}
 t1 <- trans_func$new(dataset)
 # see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
-# provide the file path of SILVA123
+# and provide the file path of SILVA123
 t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
 # t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
@@ -266,7 +280,7 @@ pathway_file <- t1$tax4fun_path$Tax4FunProfile %>% t %>% as.data.frame
 rownames(pathway_file) %<>% gsub("(^.*);\\s.*", "\\1", .)
 # load the pathway hierarchical metadata
 data(ko_map)
-# create a microtable object, familiar?
+# further create a microtable object, familiar?
 func1 <- microtable$new(otu_table = pathway_file, tax_table = ko_map, sample_table = t1$sample_table)
 print(func1)
 ```
@@ -311,6 +325,7 @@ Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for
 data(sample_info_16S)
 data(otu_table_16S)
 data(taxonomy_table_16S)
+# representative sequences are necessary for this analysis
 data(rep_fasta_16S)
 
 use_dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, rep_fasta = rep_fasta_16S)
@@ -323,8 +338,9 @@ t1 <- trans_func$new(use_dataset)
 dir.create("test_prediction")
 # see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
 # ignore blast_tool_path parameter if blast tools have been in path
-t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
-  path_to_temp_folder = "test_prediction", database_mode = "Ref99NR")
+# the function can search whether blast tool directory is in the path, if not, automatically use provided blast_tool_path parameter
+t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "Tax4Fun2_ReferenceData_v2",
+  database_mode = "Ref99NR", path_to_temp_folder = "test_prediction")
 
 # functional gene redundancies
 t1$cal_tax4fun2_FRI()
@@ -332,7 +348,7 @@ t1$cal_tax4fun2_FRI()
 
 ### Key points
 
-  + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, use blast_tool_path = NULL
+  + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, it is ok to use blast_tool_path = NULL 
   + blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as 2.5.0).
 
 

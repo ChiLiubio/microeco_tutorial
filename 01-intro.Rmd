@@ -2,9 +2,8 @@
 
 The microeco package has several advantages compared to other packages in R.
 The main goal of developing this package is to help users analyse communtiy ecology data fast.
-So a series of commonly-used approaches are implemented.
-Some new methods are also in active development.
-To facilitate the data mining, the whole structure of microeco package are modularized to
+So a series of commonly-used and cutting-edge approaches are implemented.
+To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
 apply those files to other tools according to the format requirement.
@@ -12,13 +11,12 @@ Main files stored in the objects of microeco package is the commonly used data.f
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
 
-
 ## R6 Class
 
 All the classes in microeco package depend on the R6 class [@R6_Winston]. 
 R6 uses the encapsulated object-oriented programming paradigm, 
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions. 
-If you are interested in the class feature, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
+If you are interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
 This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
@@ -31,7 +29,7 @@ This influences how we think about naming. The methods belong to objects, not ge
 
 The use of help documents in the microeco package may be a little different from other packages we often used.
 If you wish to see one of help documents of functions, you should search the name of the class (not the name of the function) 
-and click the link of the function.
+and click the link of each function.
 
 ```{r, echo = TRUE}
 # first install microeco, see https://github.com/ChiLiubio/microeco
@@ -48,7 +46,7 @@ library(microeco)
 
 ### Important packages
 To keep the start and use of microeco package simplified, 
-the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
 So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -67,9 +65,9 @@ The reason is that network construction require igraph package. We donot put the
 
 The solutions:
 
-1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
+1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run all the examples in tutorial.
+2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
 
 We show several packages that are published in CRAN and not installed automatically.
 
@@ -86,20 +84,20 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x")
 # Now check or install
-lapply(packages, function(x) {
+for(x in packages){
 	if(!require(x, character.only = TRUE)) {
 		install.packages(x, dependencies = TRUE)
-	}})
+	}
+}
 ```
 
 There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
 or packages written by other languages.
 
-
 ### ggtree
-Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
+Plotting the cladogram from LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
 ```{r, echo = TRUE, eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 BiocManager::install("ggtree")
@@ -145,7 +143,7 @@ Tax4Fun2 is another R package for the the prediction of functional profiles and 
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package.
-The only thing need to do is to download the blast tool (**ignore this if the blast tool is in the path**) and Ref99NR/Ref100NR database (select one).
+The only thing need to do is to download the blast tool (**ignore this if the blast tool has been in the path**) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
 Note that some errors can come from the latest versions because of memory issue (https://www.biostars.org/p/413294/). 
 An easy solution is to use previous version (such as 2.5.0).
@@ -172,18 +170,20 @@ The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added 
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# seqinr should be installed for reading and writing fasta file
+# Either seqinr or Biostrings package should be installed for reading and writing fasta file
 install.packages("seqinr", dependencies = TRUE)
+# or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html
 # Now we show how to read the fasta file
 # see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco
 rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 rep_fasta <- seqinr::read.fasta(rep_fasta_path)
+# or use Biostrings::readDNAStringSet(rep_fasta_path)
 # then see the help document of microtable class about the rep_fasta in microtable$new().
 ```
 
 ## Plotting
 Most of the plotting in the package rely on the ggplot2 package system.
-We provide some parameters to change the corresponding plot.
+We provide some parameters to change the corresponding plot, but it may be far from enough.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.

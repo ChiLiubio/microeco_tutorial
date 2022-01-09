@@ -1,6 +1,6 @@
 --- 
-title: "Tutorial for R microeco package (v0.6.0)"
-author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Xiangzhen Li, Minjie Yao"
+title: "Tutorial for R microeco package (v0.6.5)"
+author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -28,9 +28,9 @@ theseus[@Price_theseus_2018], rANOMALY[@Theil_rANOMALY_2021],
 MicrobiomeExplorer[@Reeder_MicrobiomeExplorer_2021],
 tidyMicro[@Carpenter_tidyMicro_2021], microbial (https://github.com/guokai8/microbial), 
 and so on.
-However, we lack a flexible, comprehensive and modularized R package to analyze and manage the data.
-So we create the microeco R package[@Liu_microeco_2021] for this goal (https://github.com/ChiLiubio/microeco).
-Besides, we also develop the file2meco package (https://github.com/ChiLiubio/file2meco) for the data input from some tools easily
+However, users still lack a flexible, comprehensive and modularized R package to analyze and manage the data easily.
+So we created the microeco R package[@Liu_microeco_2021] for this goal (https://github.com/ChiLiubio/microeco).
+Besides, we also develop the file2meco package (https://github.com/ChiLiubio/file2meco) for the data input from some famous tools easily
 and mecodev package (https://github.com/ChiLiubio/mecodev) for some extending approaches in this field.
 
 
@@ -40,9 +40,8 @@ and mecodev package (https://github.com/ChiLiubio/mecodev) for some extending ap
 
 The microeco package has several advantages compared to other packages in R.
 The main goal of developing this package is to help users analyse communtiy ecology data fast.
-So a series of commonly-used approaches are implemented.
-Some new methods are also in active development.
-To facilitate the data mining, the whole structure of microeco package are modularized to
+So a series of commonly-used and cutting-edge approaches are implemented.
+To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
 apply those files to other tools according to the format requirement.
@@ -50,13 +49,12 @@ Main files stored in the objects of microeco package is the commonly used data.f
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 
 
-
 ## R6 Class
 
 All the classes in microeco package depend on the R6 class [@R6_Winston]. 
 R6 uses the encapsulated object-oriented programming paradigm, 
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions. 
-If you are interested in the class feature, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
+If you are interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
 This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
@@ -69,7 +67,7 @@ This influences how we think about naming. The methods belong to objects, not ge
 
 The use of help documents in the microeco package may be a little different from other packages we often used.
 If you wish to see one of help documents of functions, you should search the name of the class (not the name of the function) 
-and click the link of the function.
+and click the link of each function.
 
 ```{r, echo = TRUE}
 # first install microeco, see https://github.com/ChiLiubio/microeco
@@ -86,7 +84,7 @@ library(microeco)
 
 ### Important packages
 To keep the start and use of microeco package simplified, 
-the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and important in the data analysis.
+the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
 So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -105,9 +103,9 @@ The reason is that network construction require igraph package. We donot put the
 
 The solutions:
 
-1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor. Just try it.
+1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run all the examples in tutorial.
+2. install the packages in advance. We recommend this solution if you are interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
 
 We show several packages that are published in CRAN and not installed automatically.
 
@@ -124,20 +122,20 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x")
 # Now check or install
-lapply(packages, function(x) {
+for(x in packages){
 	if(!require(x, character.only = TRUE)) {
 		install.packages(x, dependencies = TRUE)
-	}})
+	}
+}
 ```
 
 There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
 or packages written by other languages.
 
-
 ### ggtree
-Plotting the cladogram from the LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
+Plotting the cladogram from LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
 ```{r, echo = TRUE, eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 BiocManager::install("ggtree")
@@ -183,7 +181,7 @@ Tax4Fun2 is another R package for the the prediction of functional profiles and 
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package.
-The only thing need to do is to download the blast tool (**ignore this if the blast tool is in the path**) and Ref99NR/Ref100NR database (select one).
+The only thing need to do is to download the blast tool (**ignore this if the blast tool has been in the path**) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
 Note that some errors can come from the latest versions because of memory issue (https://www.biostars.org/p/413294/). 
 An easy solution is to use previous version (such as 2.5.0).
@@ -210,18 +208,20 @@ The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added 
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# seqinr should be installed for reading and writing fasta file
+# Either seqinr or Biostrings package should be installed for reading and writing fasta file
 install.packages("seqinr", dependencies = TRUE)
+# or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html
 # Now we show how to read the fasta file
 # see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco
 rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 rep_fasta <- seqinr::read.fasta(rep_fasta_path)
+# or use Biostrings::readDNAStringSet(rep_fasta_path)
 # then see the help document of microtable class about the rep_fasta in microtable$new().
 ```
 
 ## Plotting
 Most of the plotting in the package rely on the ggplot2 package system.
-We provide some parameters to change the corresponding plot.
+We provide some parameters to change the corresponding plot, but it may be far from enough.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
@@ -237,26 +237,26 @@ All the other classes depend on the microtable class.
 
 ## microtable class
 
-　Many tools can be used for the bioinformatic analysis, such as QIIME [@Caporaso_QIIME_2010], QIIME2 [@Bolyen_Reproducible_2019], 
+　Many tools can be used for the bioinformatic analysis of amplicon sequencing data, such as QIIME [@Caporaso_QIIME_2010], QIIME2 [@Bolyen_Reproducible_2019], 
 usearch (https://www.drive5.com/usearch/), mothur [@Schloss_Introducing_2009], 
 SILVAngs (https://ngs.arb-silva.de/silvangs/), 
 and RDP (http://rdp.cme.msu.edu/).
 Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
 (1) OTU/ASV table, i.e. the species-sample abundance table; 
 (2) taxonomy table, the taxonomic assignment table;
-(3) representative sequences.
+(3) representative sequences;
 (4) phylogenetic tree;
-(5) Generally, it is useful to create a detailed sample information table to store all the sample information, 
+(5) metadata. It is generally useful to create a detailed sample information table to store all the sample information, 
 including the environmental data.
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
 At least, the OTU table (i.e. species-sample abundance table) should be provided to create microtable object.
 Thus, the microtable class can recognize the sample information table is missing and create a default sample table according to
-the sample names of otu_table.
+the sample names in otu_table.
 To make the file reading more convenient,
 we also build another R package file2meco (https://github.com/ChiLiubio/file2meco) to read the output files of some tools into microtable object.
 Currently, those tools/softwares include not only commonly-used QIIME [@Caporaso_QIIME_2010] and QIIME2[@Bolyen_Reproducible_2019], 
-but also some metagenomic tools, such as HUMAnN [@Franzosa_Species_2018].
+but also some metagenomic tools, such as HUMAnN [@Franzosa_Species_2018] and kraken2 [@Wood_Improved_2019].
 In this tutorial, we use the data inside the package microeco to show some operations.
 
 ### Example
@@ -273,7 +273,6 @@ The column "Type" represents the sampling region: northeastern region (NE), nort
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP). 
 The column "Saline" represents the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-Another ITS sequencing dataset [@Gao_Strong_2019] is also stored in the example data of the package.
 
 
 ```{r, echo = TRUE}
@@ -322,10 +321,10 @@ pander::pander(taxonomy_table_16S[1:5, 1:3])
 ```
 
 Sometimes, your taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
-These information can largely influence the following taxonomic abundance calculation and other taxonomy-based analysis.
+These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
 So it is generally necessary to clean this file using the **tidy_taxonomy** function.
-Another very important part of this operation is to unify the taxonomic prefix,
-e.g. transforming D_1__ to p__ for phylum level.
+Another very important result of this operation is to unify the taxonomic prefix automatically,
+e.g. transforming D_1__ to p__ for phylum level or adding p__ to phylum directly.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -367,17 +366,19 @@ class(phylo_tree_16S)
 Then, we create an object of microtable class.
 This operation is very similar with the package phyloseq[@Mcmurdie_phyloseq_2013], but microeco is more brief.
 The otu_table in the microtable class must be the species-sample format: rownames - OTU names; colnames - sample names.
-**The colnames in otu_table must be in accordance with rownames of sample_table**.
-Otherwise, the following check can filter all the samples of otu_table because of no overlap of sample names between otu_table and sample_table.
+**The colnames in otu_table must have overlap with rownames of sample_table**.
+Otherwise, the following check can filter all the samples of otu_table because of no same sample names between otu_table and sample_table.
 
 
 ```{r, echo = TRUE}
 # In R6 class, '$new' is the original method used to create a new object of class
-dataset <- microtable$new(otu_table = otu_table_16S)
 # If you only provide abundance table, the class can help you create a sample info table
+dataset <- microtable$new(otu_table = otu_table_16S)
 class(dataset)
+# generally add the metadata
+dataset <- microtable$new(otu_table = otu_table_16S, sample_table = sample_info_16S)
 dataset
-# Let's create a dataset microtable with more information
+# Let's create a microtable object with more information
 dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
 dataset
 ```
@@ -392,13 +393,14 @@ We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplas
 
 ```{r, echo = TRUE}
 # This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax_table.
-# So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation.
+# So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation to filter tax_table.
 dataset$filter_pollution(taxa = c("mitochondria", "chloroplast"))
 print(dataset)
 ```
 
 
 To make the OTU and sample information consistent across all files in the dataset object, we use function **tidy_dataset** to trim the dataset.
+
 
 ```{r, echo = TRUE}
 dataset$tidy_dataset()
@@ -414,7 +416,7 @@ dataset$sample_sums() %>% range
 
 
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
-we need to perform the resampling to make the sequence number equal for each sample.
+it is optional perform the resampling to make the sequence number equal for each sample.
 The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.
 
 ```{r, echo = TRUE}
@@ -423,10 +425,10 @@ dataset$rarefy_samples(sample.size = 10000)
 dataset$sample_sums() %>% range
 ```
 
-Then, we calculate the taxa abundance at each taxonomic rank using cal_abund().
+Then, we can calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function **return a list called taxa_abund stored in the microtable object**. 
 This list contain several data frame of the abundance information at each taxonomic rank.
-It's worth noting that the cal_abund() function can be used to **solve more complex cases with special parameters**,
+It's worth noting that the cal_abund() function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
 Those have been shown in README of file2meco package (https://github.com/ChiLiubio/file2meco) with complex metagenomic dataset.
 
@@ -436,6 +438,16 @@ dataset$cal_abund()
 # return dataset$taxa_abund
 class(dataset$taxa_abund)
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+# show part of the relative abundance at Phylum level
+dataset$taxa_abund$Phylum[1:5, 1:5]
+```
+
+```{r, echo = FALSE}
+pander::pander(dataset$taxa_abund$Phylum[1:5, 1:5])
+```
+
 
 The function save_abund() can be used to save the taxa abundance file to a local place easily.
 
@@ -485,7 +497,7 @@ dataset$save_betadiv(dirpath = "beta_diversity")
   + microtable class: creating microtable object requires at least one file input (otu_table)
   + tidy_taxonomy(): necessary to make taxonomic table have unified format
   + tidy_dataset(): necessary to clean files in microtable object
-  + cal_abund(): powerful and flexible to cope with complex cases in tax_table
+  + cal_abund(): powerful and flexible to cope with complex cases in tax_table, see the parameters
   + taxa_abund: taxa_abund is a list stored in microtable object and have several data frame
   + beta_diversity: beta_diversity is also a list stored in microtable object and have several distance matrix
 
@@ -516,7 +528,7 @@ as they mainly show the composition information of communities.
 
 
 ## trans_abund class
-　The trans_abund class is used to transform taxonomic abundance data for plotting taxa abundance with the ggplot2 package.
+　The trans_abund class is used to transform taxonomic abundance data to plots with the ggplot2 package.
 As a premise, the **taxa_abund list in the object of microtable class must be first calculated**.
 
 ### Example
@@ -542,28 +554,37 @@ knitr::include_graphics("Images/plot_bar.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# The groupmean parameter can be used to obtain the group-mean barplot.
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
-t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
-```
-
-```{r, out.width = "400px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_mean.png")
+# two facets example
+# require package ggh4x, please run install.packages("ggh4x") if not installed
+t1$plot_bar(others_color = "grey70", facet = "Group", facet2 = "Type", xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
 ```
 
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8)
-# use_alluvium = TRUE make the alluvial plot, clustering = TRUE can be used to reorder the samples by clustering
-t1$plot_bar(use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
+# require ggalluvial package
+# use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
+# select another color palette
+t1$plot_bar(use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6, use_colors = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_allu.png")
 ```
 
+The bar plot can also be performed with group mean values.
 
+```{r, echo = TRUE, eval = FALSE}
+# The groupmean parameter can be used to obtain the group-mean barplot.
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+g1 <- t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
+g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
+```
+
+```{r, out.width = "400px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_bar_mean.png")
+```
 
 The box plot is an excellent way to intuitionally show data distribution across groups.
 
@@ -611,10 +632,11 @@ knitr::include_graphics("Images/plot_pie.png")
 
 ## trans_venn class
 
-The trans_venn class is used for venn analysis.
+The trans_venn class is used for venn analysis, i.e. shared and unique taxa.
 
 ### Example
 
+This part can be performed using samples or groups at OTU/ASV level or higher taxonomic level.
 To analyze the unique and shared OTUs of groups,
 we first merge samples according to the "Group" column of sample_table.
 
@@ -622,7 +644,17 @@ we first merge samples according to the "Group" column of sample_table.
 # merge samples as one community for each group
 dataset1 <- dataset$merge_samples(use_group = "Group")
 # dataset1 is a new microtable object
-# create trans_venn object, see other available options in ratio
+# create trans_venn object
+t1 <- trans_venn$new(dataset1, ratio = NULL)
+t1$plot_venn()
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_venn_0.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# create venn plot with more information
 t1 <- trans_venn$new(dataset1, ratio = "seqratio")
 t1$plot_venn()
 # The integer is OTU number
@@ -633,7 +665,7 @@ t1$plot_venn()
 knitr::include_graphics("Images/trans_venn_1.png")
 ```
 
-When the groups are too many to show with venn plot, we can use petal plot.
+When the groups are too many to show with venn plot, using petal plot is better.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
@@ -646,8 +678,9 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
-Sometimes, we are interested in the composition of unique and shared species. In another words,
-the composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
+Generally, after getting the venn plot, we do not know what those shared or unique taxa are.
+The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
+So, it is interesting to further analyze the composition of unique and shared species. 
 For this goal, we first transform the results of venn plot to the traditional species-sample table, that is, another object of microtable class.
 
 ```{r, echo = TRUE, eval = TRUE}
@@ -665,8 +698,9 @@ We use bar plot to show the composition at the Genus level.
 # calculate taxa abundance, that is, the frequency
 t2$cal_abund()
 # transform and plot
-t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 10)
-t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE)
+t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 8)
+t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE, use_colors = RColorBrewer::brewer.pal(8, "Set2"),
+	order_x = c("IW", "CW", "TW", "IW-CW", "IW-TW", "CW-TW", "IW-CW-TW"))
 ```
 
 
@@ -689,9 +723,6 @@ knitr::include_graphics("Images/trans_venn_pie.png")
 
   + ratio parameter: ratio parameter in trans_abund$new control whether and what content appear under the taxa number in venn plot
   + returned data: using trans_venn$new() return venn_table and venn_count_abund stored in trans_venn object for further ploting
-
-
-
 
 
 
@@ -786,16 +817,22 @@ t1$cal_diff(method = "anova", anova_set = "Group+Type")
 # see the help document for the usage of anova_set
 ```
 
+
 ### Key points
 
   + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
+  + cal_diff: anova_set parameter can be used for multi-factor analysis of variance
 
 
 ## trans_beta class
 
-　The trans_beta class is developed for the beta diversity analysis.
-When needed, the beta_diversity in microtable table will be invoked for transformation and ploting using trans_beta class.
+　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
+As beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011],
+So we encapsulate some commonly-used approaches according to the research of microbial community ecology[@Ramette_Multivariate_2007].
+Note that the parts related with "Environmental interpretation" are placed into the trans_env class.
+When needed, the beta_diversity list in microtable object will be invoked for transformation and ploting using trans_beta class.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
+
 
 ### Example
 
@@ -904,9 +941,9 @@ t1$res_betadisper
 ### Key points
 
   + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
+  + cal_ordination(): PCoA, PCA and NMDS approaches are all available
   + cal_manova(): cal_manova function can be used for paired comparisons, holistic test and multi-factor test
-  + plot_group_distance(): pair_compare_filter_select parameter in plot_group_distance can be used to select the significance label shown in the plot
-
+  + plot_group_distance(): hide_ns and pair_compare_filter_select parameters can be used to control the significance labels shown in the plot
 
 
 
@@ -924,11 +961,12 @@ We group all the classes with complex models into the type 'Model-based class'.
 
 　Differential abundance test is a very important part in the microbial community data analysis.
 It can be used to find the significant taxa in determining the community differences across groups.
+With the field development, there are some combined methods to better capture the important biomarker information.
 Currently, trans_diff class have four famous approaches to perform this analysis: 
 metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], random forest and metagenomeSeq[@Paulson_Differential_2013].
 Metastat depends on the permutations and t-test and performs well on the sparse data.
 It is used for the comparisons of taxonomic abundance between two groups at any taxonomic level.
-LEfSe and random forest in this class is mainly used for the identification of biomarkers including all taxonomic level.
+LEfSe and random forest in this class is mainly used for the identification of biomarkers at all taxonomic levels.
 metagenomeSeq method is implemented to find significant species between two groups at species level (OTU/ASV).
 
 
@@ -1209,18 +1247,19 @@ t1$subset_network(edge = "+")
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
 sub1 <- t1$subset_network(node = dataset$otu_table[, "S1", drop = FALSE] %>% .[.[, 1] !=0, , drop = FALSE] %>% rownames, rm_single = TRUE)
+# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
 t2 <- clone(t1)
 t2$res_network <- sub1
 # then t2 have a network for 'S1' and can be used for further analysis
 t2$cal_module()
 t2$save_network("S1.gexf")
-# use a loop for more samples
+# please use a loop for more samples
 ```
 
 
 Then we show the next implemented network construction approach: 
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package [@Kurtz_Sparse_2015].
-
+See https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the package installation.
 
 ```{r, echo = TRUE, eval=FALSE}
 # cal_cor select NA
@@ -1272,7 +1311,7 @@ beta nearest taxon index (betaNTI), beta net relatedness index (betaNRI) and Bra
 The approach for phylogenetic signal analysis is based on the mantel correlogram [@Liu_Long_term_2017], 
 in which the change of phylogenetic signal is intuitional and clear compared to other approaches.
 The algorithms of betaMNTD and betaMPD have been optimized to be faster than those in the picante package [@Picante_Kembel_2010].
-The combinations between RCbray and betaNTI (or betaNRI) can be used to infer the strength of each ecological process dominating the community assembly 
+The combinations between RCbray and betaNTI can be used to infer the strength of each ecological process dominating the community assembly 
 under the specific hypothesis [@Stegen_Quantifying_2013].
 This can be achievable by the function cal_process() to parse the percentage of each inferred process.
 
@@ -1334,7 +1373,7 @@ knitr::include_graphics("Images/plot_betaNRI_one_dataset.png")
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
 you can calculate the results for each group, respectively.
-We can find that, when we perform betaNRI for each group respectively, 
+The results show that, when we perform betaNRI for each group respectively, 
 mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW, 
 revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
 
@@ -1351,8 +1390,11 @@ for(i in all_groups){
 	sesbeta_each[[i]] <- test$res_ses_betampd
 }
 # merge and reshape to generate one symmetrical matrix
-test <- lapply(sesbeta_each, melt) %>% do.call(rbind, .) %>%
-	reshape2::dcast(., Var1~Var2, value.var = "value") %>% `row.names<-`(.[,1]) %>% .[, -1, drop = FALSE]
+test <- lapply(sesbeta_each, reshape2::melt) %>% 
+	do.call(rbind, .) %>%
+	reshape2::dcast(., Var1~Var2, value.var = "value")
+rownames(test) <- test[, 1]
+test <- test[, -1, drop = FALSE]
 # like the above operation
 dataset$beta_diversity[["betaNRI"]] <- test
 t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
@@ -1428,7 +1470,7 @@ pander::pander(t1$res_process)
 ### Key points
 
   + trans_nullmodel$new: filter_thres parameter for the filtering of taxa with relative low abundance
-  + cal_rcbray(): if you just need rcbray, ignore other operations
+  + cal_rcbray(): if you just need rcbray, ignore other phylogenetic operations
  
 ### Other function
 
@@ -1541,10 +1583,13 @@ knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
+Note that, besides the color_vector parameter, 
+color_palette can also be used to control color palette with customized colors.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
-t1$plot_cor(pheatmap = TRUE)
+# Let's take another color pallete
+t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9, name = "RdYlBu")))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -1572,7 +1617,7 @@ If you are concerned with the relationship between environmental factors and alp
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
-t1$plot_cor()
+t1$plot_cor(pheatmap = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -1599,28 +1644,36 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
 ```
 
 
+### Key points
+
+  + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
+  + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
+  + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.
+
+
 ## trans_func class
+
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
-As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is a good choice. 
+As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice. 
 Several software are often used for this goal, such as PICRUSt[@Langille_Predictive_2013], Tax4Fun[@Aßhauer_Tax4Fun_2015] and FAPROTAX[@Louca_High_2016; @Louca_Decoupling_2016].
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
 In addition, it is also important to obtain the functions for each taxa or OTU, not just the whole profile of communities.
 But it is hard to know exact functions of each OTU.
-FAPROTAX database is a collection of the traits and characteristics of prokaryotes based on the known research results published in books and literatures.
+FAPROTAX database is a collection of the traits and functions of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
-The NJC19 database[@Lim_Large_2020] is also available for animal associated prokaryotic data, such as human gut microbiota.
+The NJC19 database[@Lim_Large_2020] is also available for animal-associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild [@Nguyen_FUNGuild_2016] and FungalTraits [@Polme_FungalTraits_2020] databases to predict the fungal traits.
 
 ### Example
 
-We first identify/predict traits of taxa.
+We first identify/predict traits of taxa with the prokaryotic example data.
 
 ```{r, echo = TRUE}
 # create object of trans_func
 t2 <- trans_func$new(dataset)
 # mapping the taxonomy to the database
-# this can recognize prokaryotes or fungi automatically.
+# this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
 # default database for prokaryotes is FAPROTAX database
 t2$cal_spe_func(prok_database = "FAPROTAX")
 # return t2$res_spe_func, 1 represent trait exists, 0 represent no or cannot confirmed.
@@ -1638,9 +1691,12 @@ The percentages of the OTUs having the same trait can reflect the functional red
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate the percentages of OTUs for each trait in each module of network
-# use_community = FALSE represent calculating module, not community, node_type_table provide the module information
+# use_community = TRUE; for community
+t2$cal_spe_func_perc(use_community = TRUE)
+# return t2$res_spe_func_perc for each sample
+# Then, let's explore network modules; use_community = FALSE
+# node_type_table is generated in the trans_network part
 t2$cal_spe_func_perc(use_community = FALSE, node_type_table = network_node_type)
-# return t2$res_spe_func_perc
 # we only plot some important traits, so we use the default group list to filter and show the traits.
 t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
 # M represents module, ordered by the nodes number from high to low
@@ -1680,14 +1736,14 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 ```
 
 
-Tax4Fun requires a strict input file demand on the taxonomic information.
+Tax4Fun requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
 Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
 ```{r, echo = TRUE}
 t1 <- trans_func$new(dataset)
 # see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
-# provide the file path of SILVA123
+# and provide the file path of SILVA123
 t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
 # t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
@@ -1708,7 +1764,7 @@ pathway_file <- t1$tax4fun_path$Tax4FunProfile %>% t %>% as.data.frame
 rownames(pathway_file) %<>% gsub("(^.*);\\s.*", "\\1", .)
 # load the pathway hierarchical metadata
 data(ko_map)
-# create a microtable object, familiar?
+# further create a microtable object, familiar?
 func1 <- microtable$new(otu_table = pathway_file, tax_table = ko_map, sample_table = t1$sample_table)
 print(func1)
 ```
@@ -1753,6 +1809,7 @@ Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for
 data(sample_info_16S)
 data(otu_table_16S)
 data(taxonomy_table_16S)
+# representative sequences are necessary for this analysis
 data(rep_fasta_16S)
 
 use_dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, rep_fasta = rep_fasta_16S)
@@ -1765,8 +1822,9 @@ t1 <- trans_func$new(use_dataset)
 dir.create("test_prediction")
 # see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
 # ignore blast_tool_path parameter if blast tools have been in path
-t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "test_ReferenceData_v2",
-  path_to_temp_folder = "test_prediction", database_mode = "Ref99NR")
+# the function can search whether blast tool directory is in the path, if not, automatically use provided blast_tool_path parameter
+t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "Tax4Fun2_ReferenceData_v2",
+  database_mode = "Ref99NR", path_to_temp_folder = "test_prediction")
 
 # functional gene redundancies
 t1$cal_tax4fun2_FRI()
@@ -1774,7 +1832,7 @@ t1$cal_tax4fun2_FRI()
 
 ### Key points
 
-  + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, use blast_tool_path = NULL
+  + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, it is ok to use blast_tool_path = NULL 
   + blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as 2.5.0).
 
 
@@ -1792,8 +1850,8 @@ t1$cal_tax4fun2_FRI()
 
 ## Fungi data
 
-The above examples are shown with the prokaryotic data.
-Now, we use the ITS amplicon sequencing dataset as an example to show the use of FUNGuild database[@Nguyen_FUNGuild_2016].
+Another ITS sequencing dataset [@Gao_Strong_2019] is also stored in the example data of the package.
+Here, we use it as an example to show the use of FUNGuild database[@Nguyen_FUNGuild_2016].
 FungalTraits [@Polme_FungalTraits_2020] database is also available for identifying fungal traits.
 
 
@@ -1854,6 +1912,7 @@ sample_file_path <- system.file("extdata", "example_metagenome_sample_info.tsv",
 match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", package="file2meco")
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
+# match_table parameter can be used to replace sample names
 test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
 # remove the unclassified pathway in the top level
 test$tax_table %<>% subset(level1 != "unclassified")
@@ -1868,7 +1927,7 @@ test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RCo
 knitr::include_graphics("Images/plot_HUMANN_KEGG_bar.png")
 ```
 
-Then, we select both function and taxa to see which taxa the high abundant pathways come from.
+Then, we select both function and taxa to see which taxa those high abundant pathways come from.
 
 ```{r, echo = TRUE, eval = FALSE}
 # This operation is more flexible
@@ -1913,7 +1972,7 @@ taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco"
 # construct microtable object
 data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
 data1$tidy_dataset()
-# revise the species names in tax_table
+# revise the species names in tax_table as the information in the example file is not standard
 select_rows <- data1$tax_table$Species != "s__"
 data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
 # taxonomic abundance
@@ -1969,6 +2028,26 @@ t2 <- t1
 t2$sample_table <- NULL
 identical(t2, t1)
 ```
+
+
+## save() function
+
+As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
+By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of the intermediate files and can reduce memory spending.
+It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
+This is also the recommended way to send data for testing in 'Github Issues'.
+
+```{r, echo = TRUE, eval = FALSE}
+# save 'dataset' to local computer
+save(dataset, file = "dataset.RData")
+# dataset.RData can be compressed into zip format for the upload in 'Github Issues'
+# load the data by others in their R project
+load("dataset.RData")
+```
+
+The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+So it is repeatable.
+
 
 ## subset of samples
 We donnot provide the special function to filter samples in microtable class, as we think it is redundant.
@@ -2038,23 +2117,6 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```{r, out.width = "400px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
-
-## save() function
-
-As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
-By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers to reduce the intermediate files and structure and memory spending.
-It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
-This is also the recommended way to send data for testing in 'Github Issues'.
-
-```{r, echo = TRUE, eval = FALSE}
-# save 'dataset' to local computer
-save(dataset, file = "dataset.RData")
-# load the data by others in their R project
-load("dataset.RData")
-```
-
-The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
-So it is repeatable.
 
 
 
@@ -2232,7 +2294,7 @@ knitr::include_graphics("Images/plot_gamma_simu.png")
 
 # Other examples
 
-We encourage users to contribute some unique, special and helpful examples inspired by the microeco, file2meco and mecodev package.
+We encourage users to contribute some unique, special or helpful examples inspired by the microeco, file2meco and mecodev package.
 
 
 ## Custom taxa order in bar plot
@@ -2243,7 +2305,7 @@ This is a discussion topic in microeco Discussions part. Here is the link (https
 
 ## The importance of tidy_taxonomy function
 
-The taxonomic classification with standard prefix is very important for some analysis methods,
+The taxonomic classification with standard prefix is very important for some analyses,
 e.g. taxonomic abundance plotting and biomarker finding.
 The tidy_taxonomy function in microeco package is designed to make the taxa having standard prefix.
 See those Issues for the detailed examples: (https://github.com/ChiLiubio/microeco/issues/32) and (https://github.com/ChiLiubio/microeco/issues/22).
@@ -2258,6 +2320,8 @@ and (https://github.com/ChiLiubio/microeco/issues/15).
 ## The use of phylogenetic tree
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (https://github.com/ChiLiubio/microeco/issues/33).
+
+
 
 
 

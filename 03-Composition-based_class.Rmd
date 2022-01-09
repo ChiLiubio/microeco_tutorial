@@ -5,7 +5,7 @@ as they mainly show the composition information of communities.
 
 
 ## trans_abund class
-　The trans_abund class is used to transform taxonomic abundance data for plotting taxa abundance with the ggplot2 package.
+　The trans_abund class is used to transform taxonomic abundance data to plots with the ggplot2 package.
 As a premise, the **taxa_abund list in the object of microtable class must be first calculated**.
 
 ### Example
@@ -31,28 +31,37 @@ knitr::include_graphics("Images/plot_bar.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# The groupmean parameter can be used to obtain the group-mean barplot.
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
-t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
-```
-
-```{r, out.width = "400px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_mean.png")
+# two facets example
+# require package ggh4x, please run install.packages("ggh4x") if not installed
+t1$plot_bar(others_color = "grey70", facet = "Group", facet2 = "Type", xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
 ```
 
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8)
-# use_alluvium = TRUE make the alluvial plot, clustering = TRUE can be used to reorder the samples by clustering
-t1$plot_bar(use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
+# require ggalluvial package
+# use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
+# select another color palette
+t1$plot_bar(use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6, use_colors = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_allu.png")
 ```
 
+The bar plot can also be performed with group mean values.
 
+```{r, echo = TRUE, eval = FALSE}
+# The groupmean parameter can be used to obtain the group-mean barplot.
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+g1 <- t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
+g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
+```
+
+```{r, out.width = "400px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_bar_mean.png")
+```
 
 The box plot is an excellent way to intuitionally show data distribution across groups.
 
@@ -100,10 +109,11 @@ knitr::include_graphics("Images/plot_pie.png")
 
 ## trans_venn class
 
-The trans_venn class is used for venn analysis.
+The trans_venn class is used for venn analysis, i.e. shared and unique taxa.
 
 ### Example
 
+This part can be performed using samples or groups at OTU/ASV level or higher taxonomic level.
 To analyze the unique and shared OTUs of groups,
 we first merge samples according to the "Group" column of sample_table.
 
@@ -111,7 +121,17 @@ we first merge samples according to the "Group" column of sample_table.
 # merge samples as one community for each group
 dataset1 <- dataset$merge_samples(use_group = "Group")
 # dataset1 is a new microtable object
-# create trans_venn object, see other available options in ratio
+# create trans_venn object
+t1 <- trans_venn$new(dataset1, ratio = NULL)
+t1$plot_venn()
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_venn_0.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# create venn plot with more information
 t1 <- trans_venn$new(dataset1, ratio = "seqratio")
 t1$plot_venn()
 # The integer is OTU number
@@ -122,7 +142,7 @@ t1$plot_venn()
 knitr::include_graphics("Images/trans_venn_1.png")
 ```
 
-When the groups are too many to show with venn plot, we can use petal plot.
+When the groups are too many to show with venn plot, using petal plot is better.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
@@ -135,8 +155,9 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
-Sometimes, we are interested in the composition of unique and shared species. In another words,
-the composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
+Generally, after getting the venn plot, we do not know what those shared or unique taxa are.
+The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
+So, it is interesting to further analyze the composition of unique and shared species. 
 For this goal, we first transform the results of venn plot to the traditional species-sample table, that is, another object of microtable class.
 
 ```{r, echo = TRUE, eval = TRUE}
@@ -154,8 +175,9 @@ We use bar plot to show the composition at the Genus level.
 # calculate taxa abundance, that is, the frequency
 t2$cal_abund()
 # transform and plot
-t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 10)
-t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE)
+t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 8)
+t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE, use_colors = RColorBrewer::brewer.pal(8, "Set2"),
+	order_x = c("IW", "CW", "TW", "IW-CW", "IW-TW", "CW-TW", "IW-CW-TW"))
 ```
 
 
@@ -178,9 +200,6 @@ knitr::include_graphics("Images/trans_venn_pie.png")
 
   + ratio parameter: ratio parameter in trans_abund$new control whether and what content appear under the taxa number in venn plot
   + returned data: using trans_venn$new() return venn_table and venn_count_abund stored in trans_venn object for further ploting
-
-
-
 
 
 
