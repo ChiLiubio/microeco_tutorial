@@ -1740,7 +1740,7 @@ Tax4Fun requires a strict input file format associated with the taxonomic inform
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
 Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = TRUE, message=FALSE}
 t1 <- trans_func$new(dataset)
 # see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
 # and provide the file path of SILVA123
@@ -1748,6 +1748,7 @@ t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
 # t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
 ```
+
 
 ```{r, echo = FALSE}
 pander::pander(t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2])
