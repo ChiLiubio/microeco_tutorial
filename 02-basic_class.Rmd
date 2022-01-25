@@ -150,6 +150,16 @@ dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_
 dataset
 ```
 
+If the users want to know more details on microtable class, 
+please see the help document of the class using the following help command.
+For example, see the phylo_tree parameter of microtable$new() for reading phylogenetic tree.
+
+```{r, echo = TRUE, eval = FALSE}
+# search the class name, not the function name
+?microtable
+```
+
+
 Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria". 
 ```{r, echo = TRUE}
 dataset$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
