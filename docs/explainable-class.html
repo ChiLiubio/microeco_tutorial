@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-01-25" />
+<meta name="date" content="2022-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -715,8 +715,19 @@ Please see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax
 <span id="cb177-19"><a href="explainable-class.html#cb177-19" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;Tax4Fun2_ReferenceData_v2&quot;</span>,</span>
 <span id="cb177-20"><a href="explainable-class.html#cb177-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>, <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>)</span>
 <span id="cb177-21"><a href="explainable-class.html#cb177-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb177-22"><a href="explainable-class.html#cb177-22" aria-hidden="true" tabindex="-1"></a><span class="co"># functional gene redundancies</span></span>
-<span id="cb177-23"><a href="explainable-class.html#cb177-23" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+<span id="cb177-22"><a href="explainable-class.html#cb177-22" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare feature table and metadata</span></span>
+<span id="cb177-23"><a href="explainable-class.html#cb177-23" aria-hidden="true" tabindex="-1"></a>tax4fun2_pathway <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_tax4fun2_pathway</span>
+<span id="cb177-24"><a href="explainable-class.html#cb177-24" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(tax4fun2_pathway) <span class="ot">&lt;-</span> tax4fun2_pathway[, <span class="dv">1</span>]</span>
+<span id="cb177-25"><a href="explainable-class.html#cb177-25" aria-hidden="true" tabindex="-1"></a>tax4fun2_pathway <span class="ot">&lt;-</span> tax4fun2_pathway[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb177-26"><a href="explainable-class.html#cb177-26" aria-hidden="true" tabindex="-1"></a>func_num <span class="ot">&lt;-</span> <span class="fu">ncol</span>(tax4fun2_pathway)<span class="sc">:</span> (<span class="fu">ncol</span>(tax4fun2_pathway) <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb177-27"><a href="explainable-class.html#cb177-27" aria-hidden="true" tabindex="-1"></a>func_map <span class="ot">&lt;-</span> tax4fun2_pathway[, func_num]</span>
+<span id="cb177-28"><a href="explainable-class.html#cb177-28" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(func_map) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;level_1&quot;</span>, <span class="st">&quot;level_2&quot;</span>, <span class="st">&quot;level_3&quot;</span>)</span>
+<span id="cb177-29"><a href="explainable-class.html#cb177-29" aria-hidden="true" tabindex="-1"></a>tax4fun2_pathway <span class="ot">&lt;-</span> tax4fun2_pathway[, <span class="sc">-</span>func_num]</span>
+<span id="cb177-30"><a href="explainable-class.html#cb177-30" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object for pathways</span></span>
+<span id="cb177-31"><a href="explainable-class.html#cb177-31" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> tax4fun2_pathway, <span class="at">tax_table =</span> func_map, <span class="at">sample_table =</span> use_dataset<span class="sc">$</span>sample_table)</span>
+<span id="cb177-32"><a href="explainable-class.html#cb177-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-33"><a href="explainable-class.html#cb177-33" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate functional gene redundancies</span></span>
+<span id="cb177-34"><a href="explainable-class.html#cb177-34" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
 </div>
 <div id="key-points-9" class="section level3" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Key points</h3>

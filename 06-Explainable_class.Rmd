@@ -343,7 +343,18 @@ dir.create("test_prediction")
 t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "Tax4Fun2_ReferenceData_v2",
   database_mode = "Ref99NR", path_to_temp_folder = "test_prediction")
 
-# functional gene redundancies
+# prepare feature table and metadata
+tax4fun2_pathway <- t1$res_tax4fun2_pathway
+rownames(tax4fun2_pathway) <- tax4fun2_pathway[, 1]
+tax4fun2_pathway <- tax4fun2_pathway[, -1]
+func_num <- ncol(tax4fun2_pathway): (ncol(tax4fun2_pathway) - 2)
+func_map <- tax4fun2_pathway[, func_num]
+colnames(func_map) <- c("level_1", "level_2", "level_3")
+tax4fun2_pathway <- tax4fun2_pathway[, -func_num]
+# create a microtable object for pathways
+func2 <- microtable$new(otu_table = tax4fun2_pathway, tax_table = func_map, sample_table = use_dataset$sample_table)
+
+# calculate functional gene redundancies
 t1$cal_tax4fun2_FRI()
 ```
 
