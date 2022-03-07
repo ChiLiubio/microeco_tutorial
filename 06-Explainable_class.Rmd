@@ -353,6 +353,8 @@ colnames(func_map) <- c("level_1", "level_2", "level_3")
 tax4fun2_pathway <- tax4fun2_pathway[, -func_num]
 # create a microtable object for pathways
 func2 <- microtable$new(otu_table = tax4fun2_pathway, tax_table = func_map, sample_table = use_dataset$sample_table)
+func2$tidy_dataset()
+func2
 
 # calculate functional gene redundancies
 t1$cal_tax4fun2_FRI()

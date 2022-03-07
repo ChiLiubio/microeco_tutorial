@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.6.5)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-02-28}
+\date{2022-03-07}
 
 \begin{document}
 \maketitle
@@ -1041,7 +1041,7 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=40in]{Images/plot_bar_allu} \end{center}
+\begin{center}\includegraphics{Images/plot_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
 
@@ -2769,6 +2769,8 @@ Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fu
 \NormalTok{tax4fun2\_pathway }\OtherTok{\textless{}{-}}\NormalTok{ tax4fun2\_pathway[, }\SpecialCharTok{{-}}\NormalTok{func\_num]}
 \CommentTok{\# create a microtable object for pathways}
 \NormalTok{func2 }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ tax4fun2\_pathway, }\AttributeTok{tax\_table =}\NormalTok{ func\_map, }\AttributeTok{sample\_table =}\NormalTok{ use\_dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
+\NormalTok{func2}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{func2}
 
 \CommentTok{\# calculate functional gene redundancies}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2\_FRI}\NormalTok{()}
@@ -2785,6 +2787,233 @@ Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fu
 \item
   blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (\url{https://www.biostars.org/p/413294/}). An easy solution is to use previous version (such as 2.5.0).
 \end{itemize}
+
+\hypertarget{file2meco-package}{%
+\chapter{file2meco package}\label{file2meco-package}}
+
+In the microtable class part, we show the basic use of the creating of microtable object with the example data.
+Actually, constructing the basic microtable object from other tools/platforms (e.g.~QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
+can be easily achieved with the package file2meco (\url{https://github.com/ChiLiubio/file2meco}).
+
+\hypertarget{qiime}{%
+\section{QIIME}\label{qiime}}
+
+The qiime1meco() function can be used to construct the microtable object using the raw OTU file from QIIME1.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# see https://github.com/ChiLiubio/file2meco for the installation}
+\FunctionTok{library}\NormalTok{(file2meco)}
+\CommentTok{\# see the help document}
+\NormalTok{?qiime1meco}
+\CommentTok{\# Let\textquotesingle{}s run the examples}
+\CommentTok{\# use the raw data files stored inside the package}
+\NormalTok{otu\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"otu\_table\_raw.txt"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample\_info.csv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{phylo\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"rep\_phylo.tre"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.}
+\NormalTok{rep\_fasta\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"rep.fna"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# contruct microtable object}
+\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_fasta\_path)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{qiime2}{%
+\section{QIIME2}\label{qiime2}}
+
+The qiime2meco() function is designed to create the microtable object using files from QIIME2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(file2meco)}
+\NormalTok{?qiime2meco}
+\CommentTok{\# use data files inside the package which were downloaded from (https://docs.qiime2.org/2020.8/tutorials/pd{-}mice/).}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{phylo\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"tree.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{rep\_fasta\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_rep\_set.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# construct microtable object}
+\FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path)}
+\FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_fasta\_path)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{humann-metagenomic-results}{%
+\section{HUMAnN metagenomic results}\label{humann-metagenomic-results}}
+
+HUMAnN is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level (\url{https://doi.org/10.1038/s41592-018-0176-y}).
+The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
+Currently, it supports both the MetaCyc and KEGG pathway abundance file input directly.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(file2meco)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\NormalTok{?humann2meco}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+
+\CommentTok{\# MetaCyc pathway database based analysis}
+\CommentTok{\# use the raw data files stored inside the package for MetaCyc pathway database based analysis}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_MetaCyc\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# the default db is "MetaCyc"}
+\FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{)}
+\FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\CommentTok{\# Let\textquotesingle{}s try more interesting usages with microeco}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# rel = FALSE donot use relative abundance}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Superclass1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Superclass1"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{)}
+\CommentTok{\# select both function and taxa}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Superclass1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# functional biomarker}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Superclass1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_lefse\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\CommentTok{\# taxa biomarker}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{4}\SpecialCharTok{:}\DecValTok{9}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_lefse\_bar}\NormalTok{(}\AttributeTok{LDA\_score =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use KEGG pathway based HUMAnN result}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_KEGG\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(level1 }\SpecialCharTok{!=} \StringTok{"unclassified"}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# rel = FALSE donot use relative abundance}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"level2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{)}
+\CommentTok{\# select both function and taxa}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"level1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{level1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# functional biomarker}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_lefse\_bar}\NormalTok{(}\AttributeTok{LDA\_score =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{metaphlan}{%
+\section{MetaPhlAn}\label{metaphlan}}
+
+MetaPhlAn is an software used for metagenomic taxonomic profiling (\url{https://doi.org/10.1038/nmeth.3589}).
+The format of MetaPhlAn classification results is usually called `mpa' format.
+The mpa2meco function is developed for this format conversion to microtable object.
+See the following example of Kraken2 part.
+
+\hypertarget{kraken2}{%
+\section{Kraken2}\label{kraken2}}
+
+Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
+Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
+That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
+Kraken2 is the newest version (\url{https://doi.org/10.1186/s13059-019-1891-0}).
+The merged Kraken2 results can be obtained by merge\_metaphlan\_tables.py from MetaPhlAn or combine\_mpa.py from KrakenTools (\url{https://ccb.jhu.edu/software/krakentools/}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the example is metagenomic classification result}
+\CommentTok{\# use the raw data files stored inside the package}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_kraken2\_merge.txt"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\FunctionTok{mpa2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ncyc}{%
+\section{Ncyc}\label{ncyc}}
+
+Ncyc database is a curated integrative database for fast and accurate metagenomic profiling of nitrogen cycling genes (\url{https://doi.org/10.1093/bioinformatics/bty741}).
+The ncyc2meco() function is designed for construct the microtable object using gene abundance files from Ncyc (\url{https://github.com/qichao1984/NCyc}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(file2meco)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\NormalTok{?ncyc2meco}
+\CommentTok{\# use the raw data files stored inside the package}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_Ncyc\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path)}
+\FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Let\textquotesingle{}s try more interesting usages with microeco}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# use split\_group = TRUE to calculate the pathway abundance with multipe map correspondance}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_column =} \StringTok{"Pathway"}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Pathway }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Pathway"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
+\CommentTok{\# for gene abundance, no splitting on the pathways}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_group =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Gene }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Gene"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{phyloseq}{%
+\section{phyloseq}\label{phyloseq}}
+
+Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversion between microtable object and phyloseq object (phyloseq package).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Please first install phyloseq}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"phyloseq"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(phyloseq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# from microtable to phyloseq object}
+\FunctionTok{data}\NormalTok{(}\StringTok{"dataset"}\NormalTok{)}
+\NormalTok{physeq }\OtherTok{\textless{}{-}} \FunctionTok{meco2phyloseq}\NormalTok{(dataset)}
+\NormalTok{physeq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# from phyloseq to microtable object}
+\FunctionTok{data}\NormalTok{(}\StringTok{"GlobalPatterns"}\NormalTok{)}
+\NormalTok{meco\_dataset }\OtherTok{\textless{}{-}} \FunctionTok{phyloseq2meco}\NormalTok{(GlobalPatterns)}
+\NormalTok{meco\_dataset}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{other-dataset}{%
 \chapter{Other dataset}\label{other-dataset}}
@@ -3073,7 +3302,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-203-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-213-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3110,7 +3339,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-204-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-214-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

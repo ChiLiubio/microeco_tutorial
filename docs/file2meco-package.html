@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 file2meco package | Tutorial for R microeco package (v0.6.5)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v0.6.5)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v0.6.5)" />
+  
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
+  
+
+<meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
+
+
+<meta name="date" content="2022-03-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="explainable-class.html"/>
+<link rel="next" href="other-dataset.html"/>
+<script src="libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background<span></span></a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction<span></span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence<span></span></a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages<span></span></a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree<span></span></a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi<span></span></a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi<span></span></a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA<span></span></a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun<span></span></a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#example"><i class="fa fa-check"></i><b>3.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#other-functions"><i class="fa fa-check"></i><b>3.1.3</b> Other functions<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class<span></span></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class<span></span></a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class<span></span></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-2"><i class="fa fa-check"></i><b>4.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class<span></span></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class<span></span></a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class<span></span></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-4"><i class="fa fa-check"></i><b>5.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class<span></span></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class<span></span></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class<span></span></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#other-functions-1"><i class="fa fa-check"></i><b>6.2.3</b> Other functions<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class<span></span></a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-7"><i class="fa fa-check"></i><b>6.3.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-8"><i class="fa fa-check"></i><b>7.1.2</b> Key points<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-9"><i class="fa fa-check"></i><b>7.2.2</b> Key points<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="file2meco-package.html"><a href="file2meco-package.html"><i class="fa fa-check"></i><b>8</b> file2meco package<span></span></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime"><i class="fa fa-check"></i><b>8.1</b> QIIME<span></span></a></li>
+<li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2<span></span></a></li>
+<li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann-metagenomic-results"><i class="fa fa-check"></i><b>8.3</b> HUMAnN metagenomic results<span></span></a></li>
+<li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn<span></span></a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2<span></span></a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncyc"><i class="fa fa-check"></i><b>8.6</b> Ncyc<span></span></a></li>
+<li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>9</b> Other dataset<span></span></a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>9.1</b> Fungi data<span></span></a></li>
+<li class="chapter" data-level="9.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>9.2</b> Metagenomic data<span></span></a></li>
+<li class="chapter" data-level="9.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>9.3</b> Gut microbiome<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>10</b> Notes<span></span></a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="notes.html"><a href="notes.html#clone"><i class="fa fa-check"></i><b>10.1</b> clone<span></span></a></li>
+<li class="chapter" data-level="10.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>10.2</b> save() function<span></span></a></li>
+<li class="chapter" data-level="10.3" data-path="notes.html"><a href="notes.html#subset-of-samples"><i class="fa fa-check"></i><b>10.3</b> subset of samples<span></span></a></li>
+<li class="chapter" data-level="10.4" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>10.4</b> change object<span></span></a></li>
+<li class="chapter" data-level="10.5" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>10.5</b> group order<span></span></a></li>
+<li class="chapter" data-level="10.6" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>10.6</b> add layers to plot<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>11</b> mecodev package<span></span></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>11.1</b> trans_rarefy<span></span></a></li>
+<li class="chapter" data-level="11.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>11.2</b> trans_convert<span></span></a></li>
+<li class="chapter" data-level="11.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>11.3</b> trans_netchord<span></span></a></li>
+<li class="chapter" data-level="11.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>11.4</b> trans_ts<span></span></a></li>
+<li class="chapter" data-level="11.5" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>11.5</b> trans_gamma<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>12</b> Other examples<span></span></a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>12.1</b> Custom taxa order in bar plot<span></span></a></li>
+<li class="chapter" data-level="12.2" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>12.2</b> The importance of tidy_taxonomy function<span></span></a></li>
+<li class="chapter" data-level="12.3" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>12.3</b> Question of prefix in the taxa<span></span></a></li>
+<li class="chapter" data-level="12.4" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>12.4</b> The use of phylogenetic tree<span></span></a></li>
+</ul></li>
+<li><a href="references.html#references">References<span></span></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.6.5)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="file2meco-package" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> file2meco package<a href="file2meco-package.html#file2meco-package" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In the microtable class part, we show the basic use of the creating of microtable object with the example data.
+Actually, constructing the basic microtable object from other tools/platforms (e.g. QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
+can be easily achieved with the package file2meco (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>).</p>
+<div id="qiime" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> QIIME<a href="file2meco-package.html#qiime" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The qiime1meco() function can be used to construct the microtable object using the raw OTU file from QIIME1.</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="file2meco-package.html#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco for the installation</span></span>
+<span id="cb178-2"><a href="file2meco-package.html#cb178-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb178-3"><a href="file2meco-package.html#cb178-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document</span></span>
+<span id="cb178-4"><a href="file2meco-package.html#cb178-4" aria-hidden="true" tabindex="-1"></a>?qiime1meco</span>
+<span id="cb178-5"><a href="file2meco-package.html#cb178-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s run the examples</span></span>
+<span id="cb178-6"><a href="file2meco-package.html#cb178-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package</span></span>
+<span id="cb178-7"><a href="file2meco-package.html#cb178-7" aria-hidden="true" tabindex="-1"></a>otu_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;otu_table_raw.txt&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb178-8"><a href="file2meco-package.html#cb178-8" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample_info.csv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb178-9"><a href="file2meco-package.html#cb178-9" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb178-10"><a href="file2meco-package.html#cb178-10" aria-hidden="true" tabindex="-1"></a><span class="co"># if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.</span></span>
+<span id="cb178-11"><a href="file2meco-package.html#cb178-11" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb178-12"><a href="file2meco-package.html#cb178-12" aria-hidden="true" tabindex="-1"></a><span class="co"># contruct microtable object</span></span>
+<span id="cb178-13"><a href="file2meco-package.html#cb178-13" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(<span class="at">otu_table =</span> otu_file_path)</span>
+<span id="cb178-14"><a href="file2meco-package.html#cb178-14" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(<span class="at">otu_table =</span> otu_file_path, <span class="at">sample_data =</span> sample_file_path)</span>
+<span id="cb178-15"><a href="file2meco-package.html#cb178-15" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(<span class="at">otu_table =</span> otu_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path)</span>
+<span id="cb178-16"><a href="file2meco-package.html#cb178-16" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(<span class="at">otu_table =</span> otu_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path, <span class="at">rep_fasta =</span> rep_fasta_path)</span></code></pre></div>
+</div>
+<div id="qiime2" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> QIIME2<a href="file2meco-package.html#qiime2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The qiime2meco() function is designed to create the microtable object using files from QIIME2.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="file2meco-package.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb179-2"><a href="file2meco-package.html#cb179-2" aria-hidden="true" tabindex="-1"></a>?qiime2meco</span>
+<span id="cb179-3"><a href="file2meco-package.html#cb179-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the package which were downloaded from (https://docs.qiime2.org/2020.8/tutorials/pd-mice/).</span></span>
+<span id="cb179-4"><a href="file2meco-package.html#cb179-4" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb179-5"><a href="file2meco-package.html#cb179-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb179-6"><a href="file2meco-package.html#cb179-6" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb179-7"><a href="file2meco-package.html#cb179-7" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;tree.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb179-8"><a href="file2meco-package.html#cb179-8" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_rep_set.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb179-9"><a href="file2meco-package.html#cb179-9" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb179-10"><a href="file2meco-package.html#cb179-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path)</span>
+<span id="cb179-11"><a href="file2meco-package.html#cb179-11" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
+<span id="cb179-12"><a href="file2meco-package.html#cb179-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path, <span class="at">phylo_tree =</span> phylo_file_path, <span class="at">rep_fasta =</span> rep_fasta_path)</span></code></pre></div>
+</div>
+<div id="humann-metagenomic-results" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> HUMAnN metagenomic results<a href="file2meco-package.html#humann-metagenomic-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>HUMAnN is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level (<a href="https://doi.org/10.1038/s41592-018-0176-y" class="uri">https://doi.org/10.1038/s41592-018-0176-y</a>).
+The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (<a href="https://huttenhower.sph.harvard.edu/humann" class="uri">https://huttenhower.sph.harvard.edu/humann</a>).
+Currently, it supports both the MetaCyc and KEGG pathway abundance file input directly.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="file2meco-package.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb180-2"><a href="file2meco-package.html#cb180-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb180-3"><a href="file2meco-package.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb180-4"><a href="file2meco-package.html#cb180-4" aria-hidden="true" tabindex="-1"></a>?humann2meco</span>
+<span id="cb180-5"><a href="file2meco-package.html#cb180-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_sample_info.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb180-6"><a href="file2meco-package.html#cb180-6" aria-hidden="true" tabindex="-1"></a>match_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_match_table.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb180-7"><a href="file2meco-package.html#cb180-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb180-8"><a href="file2meco-package.html#cb180-8" aria-hidden="true" tabindex="-1"></a><span class="co"># MetaCyc pathway database based analysis</span></span>
+<span id="cb180-9"><a href="file2meco-package.html#cb180-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package for MetaCyc pathway database based analysis</span></span>
+<span id="cb180-10"><a href="file2meco-package.html#cb180-10" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_HUMAnN_MetaCyc_abund.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb180-11"><a href="file2meco-package.html#cb180-11" aria-hidden="true" tabindex="-1"></a><span class="co"># the default db is &quot;MetaCyc&quot;</span></span>
+<span id="cb180-12"><a href="file2meco-package.html#cb180-12" aria-hidden="true" tabindex="-1"></a><span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;MetaCyc&quot;</span>)</span>
+<span id="cb180-13"><a href="file2meco-package.html#cb180-13" aria-hidden="true" tabindex="-1"></a><span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;MetaCyc&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb180-14"><a href="file2meco-package.html#cb180-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s try more interesting usages with microeco</span></span>
+<span id="cb180-15"><a href="file2meco-package.html#cb180-15" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;MetaCyc&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb180-16"><a href="file2meco-package.html#cb180-16" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb180-17"><a href="file2meco-package.html#cb180-17" aria-hidden="true" tabindex="-1"></a><span class="co"># rel = FALSE donot use relative abundance</span></span>
+<span id="cb180-18"><a href="file2meco-package.html#cb180-18" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb180-19"><a href="file2meco-package.html#cb180-19" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Superclass1 <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb180-20"><a href="file2meco-package.html#cb180-20" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Superclass1&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>)</span>
+<span id="cb180-21"><a href="file2meco-package.html#cb180-21" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">ylab_title =</span> <span class="st">&quot;Abundance (RPK)&quot;</span>)</span>
+<span id="cb180-22"><a href="file2meco-package.html#cb180-22" aria-hidden="true" tabindex="-1"></a><span class="co"># select both function and taxa</span></span>
+<span id="cb180-23"><a href="file2meco-package.html#cb180-23" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="fu">c</span>(<span class="st">&quot;Superclass1&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Genus&quot;</span>), <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb180-24"><a href="file2meco-package.html#cb180-24" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">delete_part_prefix =</span> T)</span>
+<span id="cb180-25"><a href="file2meco-package.html#cb180-25" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb180-26"><a href="file2meco-package.html#cb180-26" aria-hidden="true" tabindex="-1"></a><span class="co"># functional biomarker</span></span>
+<span id="cb180-27"><a href="file2meco-package.html#cb180-27" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb180-28"><a href="file2meco-package.html#cb180-28" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Superclass1 <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb180-29"><a href="file2meco-package.html#cb180-29" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb180-30"><a href="file2meco-package.html#cb180-30" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb180-31"><a href="file2meco-package.html#cb180-31" aria-hidden="true" tabindex="-1"></a><span class="co"># taxa biomarker</span></span>
+<span id="cb180-32"><a href="file2meco-package.html#cb180-32" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb180-33"><a href="file2meco-package.html#cb180-33" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Phylum <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb180-34"><a href="file2meco-package.html#cb180-34" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb180-35"><a href="file2meco-package.html#cb180-35" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="file2meco-package.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use KEGG pathway based HUMAnN result</span></span>
+<span id="cb181-2"><a href="file2meco-package.html#cb181-2" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_HUMAnN_KEGG_abund.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb181-3"><a href="file2meco-package.html#cb181-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb181-4"><a href="file2meco-package.html#cb181-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(level1 <span class="sc">!=</span> <span class="st">&quot;unclassified&quot;</span>)</span>
+<span id="cb181-5"><a href="file2meco-package.html#cb181-5" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb181-6"><a href="file2meco-package.html#cb181-6" aria-hidden="true" tabindex="-1"></a><span class="co"># rel = FALSE donot use relative abundance</span></span>
+<span id="cb181-7"><a href="file2meco-package.html#cb181-7" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb181-8"><a href="file2meco-package.html#cb181-8" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;level2&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>)</span>
+<span id="cb181-9"><a href="file2meco-package.html#cb181-9" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">ylab_title =</span> <span class="st">&quot;Abundance (RPK)&quot;</span>)</span>
+<span id="cb181-10"><a href="file2meco-package.html#cb181-10" aria-hidden="true" tabindex="-1"></a><span class="co"># select both function and taxa</span></span>
+<span id="cb181-11"><a href="file2meco-package.html#cb181-11" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="fu">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Genus&quot;</span>), <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb181-12"><a href="file2meco-package.html#cb181-12" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>level1 <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb181-13"><a href="file2meco-package.html#cb181-13" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Phylum <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb181-14"><a href="file2meco-package.html#cb181-14" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">delete_part_prefix =</span> T)</span>
+<span id="cb181-15"><a href="file2meco-package.html#cb181-15" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb181-16"><a href="file2meco-package.html#cb181-16" aria-hidden="true" tabindex="-1"></a><span class="co"># functional biomarker</span></span>
+<span id="cb181-17"><a href="file2meco-package.html#cb181-17" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb181-18"><a href="file2meco-package.html#cb181-18" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb181-19"><a href="file2meco-package.html#cb181-19" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_lefse_bar</span>(<span class="at">LDA_score =</span> <span class="dv">3</span>)</span></code></pre></div>
+</div>
+<div id="metaphlan" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> MetaPhlAn<a href="file2meco-package.html#metaphlan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>MetaPhlAn is an software used for metagenomic taxonomic profiling (<a href="https://doi.org/10.1038/nmeth.3589" class="uri">https://doi.org/10.1038/nmeth.3589</a>).
+The format of MetaPhlAn classification results is usually called ‘mpa’ format.
+The mpa2meco function is developed for this format conversion to microtable object.
+See the following example of Kraken2 part.</p>
+</div>
+<div id="kraken2" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Kraken2<a href="file2meco-package.html#kraken2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
+Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
+That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
+Kraken2 is the newest version (<a href="https://doi.org/10.1186/s13059-019-1891-0" class="uri">https://doi.org/10.1186/s13059-019-1891-0</a>).
+The merged Kraken2 results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (<a href="https://ccb.jhu.edu/software/krakentools/" class="uri">https://ccb.jhu.edu/software/krakentools/</a>).</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="file2meco-package.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the example is metagenomic classification result</span></span>
+<span id="cb182-2"><a href="file2meco-package.html#cb182-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package</span></span>
+<span id="cb182-3"><a href="file2meco-package.html#cb182-3" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_kraken2_merge.txt&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb182-4"><a href="file2meco-package.html#cb182-4" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_sample_info.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb182-5"><a href="file2meco-package.html#cb182-5" aria-hidden="true" tabindex="-1"></a>match_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_match_table.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb182-6"><a href="file2meco-package.html#cb182-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mpa2meco</span>(<span class="at">abund_table =</span> abund_file_path)</span>
+<span id="cb182-7"><a href="file2meco-package.html#cb182-7" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">mpa2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb182-8"><a href="file2meco-package.html#cb182-8" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span></code></pre></div>
+</div>
+<div id="ncyc" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Ncyc<a href="file2meco-package.html#ncyc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ncyc database is a curated integrative database for fast and accurate metagenomic profiling of nitrogen cycling genes (<a href="https://doi.org/10.1093/bioinformatics/bty741" class="uri">https://doi.org/10.1093/bioinformatics/bty741</a>).
+The ncyc2meco() function is designed for construct the microtable object using gene abundance files from Ncyc (<a href="https://github.com/qichao1984/NCyc" class="uri">https://github.com/qichao1984/NCyc</a>).</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="file2meco-package.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb183-2"><a href="file2meco-package.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb183-3"><a href="file2meco-package.html#cb183-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb183-4"><a href="file2meco-package.html#cb183-4" aria-hidden="true" tabindex="-1"></a>?ncyc2meco</span>
+<span id="cb183-5"><a href="file2meco-package.html#cb183-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package</span></span>
+<span id="cb183-6"><a href="file2meco-package.html#cb183-6" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_Ncyc_table.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb183-7"><a href="file2meco-package.html#cb183-7" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_sample_info.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb183-8"><a href="file2meco-package.html#cb183-8" aria-hidden="true" tabindex="-1"></a>match_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_metagenome_match_table.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb183-9"><a href="file2meco-package.html#cb183-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ncyc2meco</span>(<span class="at">abund_table =</span> abund_file_path)</span>
+<span id="cb183-10"><a href="file2meco-package.html#cb183-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ncyc2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="file2meco-package.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s try more interesting usages with microeco</span></span>
+<span id="cb184-2"><a href="file2meco-package.html#cb184-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">ncyc2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
+<span id="cb184-3"><a href="file2meco-package.html#cb184-3" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb184-4"><a href="file2meco-package.html#cb184-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use split_group = TRUE to calculate the pathway abundance with multipe map correspondance</span></span>
+<span id="cb184-5"><a href="file2meco-package.html#cb184-5" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>, <span class="at">split_group =</span> <span class="cn">TRUE</span>, <span class="at">split_column =</span> <span class="st">&quot;Pathway&quot;</span>)</span>
+<span id="cb184-6"><a href="file2meco-package.html#cb184-6" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Pathway <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb184-7"><a href="file2meco-package.html#cb184-7" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Pathway&quot;</span>)</span>
+<span id="cb184-8"><a href="file2meco-package.html#cb184-8" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>)</span>
+<span id="cb184-9"><a href="file2meco-package.html#cb184-9" aria-hidden="true" tabindex="-1"></a><span class="co"># for gene abundance, no splitting on the pathways</span></span>
+<span id="cb184-10"><a href="file2meco-package.html#cb184-10" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>, <span class="at">split_group =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb184-11"><a href="file2meco-package.html#cb184-11" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Gene <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
+<span id="cb184-12"><a href="file2meco-package.html#cb184-12" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Gene&quot;</span>)</span>
+<span id="cb184-13"><a href="file2meco-package.html#cb184-13" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>)</span></code></pre></div>
+</div>
+<div id="phyloseq" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> phyloseq<a href="file2meco-package.html#phyloseq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversion between microtable object and phyloseq object (phyloseq package).</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="file2meco-package.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please first install phyloseq</span></span>
+<span id="cb185-2"><a href="file2meco-package.html#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb185-3"><a href="file2meco-package.html#cb185-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;phyloseq&quot;</span>)</span>
+<span id="cb185-4"><a href="file2meco-package.html#cb185-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(phyloseq)</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="file2meco-package.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from microtable to phyloseq object</span></span>
+<span id="cb186-2"><a href="file2meco-package.html#cb186-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;dataset&quot;</span>)</span>
+<span id="cb186-3"><a href="file2meco-package.html#cb186-3" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> <span class="fu">meco2phyloseq</span>(dataset)</span>
+<span id="cb186-4"><a href="file2meco-package.html#cb186-4" aria-hidden="true" tabindex="-1"></a>physeq</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="file2meco-package.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from phyloseq to microtable object</span></span>
+<span id="cb187-2"><a href="file2meco-package.html#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;GlobalPatterns&quot;</span>)</span>
+<span id="cb187-3"><a href="file2meco-package.html#cb187-3" aria-hidden="true" tabindex="-1"></a>meco_dataset <span class="ot">&lt;-</span> <span class="fu">phyloseq2meco</span>(GlobalPatterns)</span>
+<span id="cb187-4"><a href="file2meco-package.html#cb187-4" aria-hidden="true" tabindex="-1"></a>meco_dataset</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="explainable-class.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="other-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07-file2meco.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

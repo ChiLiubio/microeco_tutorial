@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Explainable class | Tutorial for R microeco package (v0.6.5)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.6.5)" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-02-28" />
+<meta name="date" content="2022-03-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,9 +32,10 @@
   
   
 <link rel="prev" href="model-based-class.html"/>
-<link rel="next" href="other-dataset.html"/>
-<script src="libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="next" href="file2meco-package.html"/>
+<script src="libs/header-attrs-2.12/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,9 +51,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -159,122 +160,132 @@ div.csl-indent {
 <li><a href="./">microeco tutorial</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background<span></span></a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction<span></span></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class</a></li>
-<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help</a></li>
-<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence</a>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.1</b> R6 Class<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.2</b> Help<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.3</b> Dependence<span></span></a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages</a></li>
-<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree</a></li>
-<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi</a></li>
-<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi</a></li>
-<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA</a></li>
-<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun</a></li>
-<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2</a></li>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.3.1</b> Important packages<span></span></a></li>
+<li class="chapter" data-level="2.3.2" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.3.2</b> ggtree<span></span></a></li>
+<li class="chapter" data-level="2.3.3" data-path="intro.html"><a href="intro.html#spieceasi"><i class="fa fa-check"></i><b>2.3.3</b> SpiecEasi<span></span></a></li>
+<li class="chapter" data-level="2.3.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.3.4</b> Gephi<span></span></a></li>
+<li class="chapter" data-level="2.3.5" data-path="intro.html"><a href="intro.html#wgcna"><i class="fa fa-check"></i><b>2.3.5</b> WGCNA<span></span></a></li>
+<li class="chapter" data-level="2.3.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.3.6</b> Tax4Fun<span></span></a></li>
+<li class="chapter" data-level="2.3.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.3.7</b> Tax4Fun2<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.4</b> Plotting<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#example"><i class="fa fa-check"></i><b>3.1.1</b> Example</a></li>
-<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.2</b> Key points</a></li>
-<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#other-functions"><i class="fa fa-check"></i><b>3.1.3</b> Other functions</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class</a>
-<ul>
-<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.1.1</b> Example</a></li>
-<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-2"><i class="fa fa-check"></i><b>4.2.1</b> Example</a></li>
-<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points</a></li>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#example"><i class="fa fa-check"></i><b>3.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#other-functions"><i class="fa fa-check"></i><b>3.1.3</b> Other functions<span></span></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class</a>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class<span></span></a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class</a>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class<span></span></a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.1.1</b> Example</a></li>
-<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points</a></li>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class</a>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class<span></span></a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-4"><i class="fa fa-check"></i><b>5.2.1</b> Example</a></li>
-<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
-<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.2.1</b> Example</a></li>
-<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.2</b> Key points</a></li>
-<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#other-functions-1"><i class="fa fa-check"></i><b>6.2.3</b> Other functions</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-7"><i class="fa fa-check"></i><b>6.3.1</b> Example</a></li>
-<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points</a></li>
-<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function</a></li>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-2"><i class="fa fa-check"></i><b>4.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points<span></span></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class</a>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class<span></span></a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class</a>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class<span></span></a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.1.1</b> Example</a></li>
-<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-8"><i class="fa fa-check"></i><b>7.1.2</b> Key points</a></li>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class<span></span></a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
-<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-9"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-4"><i class="fa fa-check"></i><b>5.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points<span></span></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>8</b> Other dataset</a>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class<span></span></a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>8.1</b> Fungi data</a></li>
-<li class="chapter" data-level="8.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>8.2</b> Metagenomic data</a></li>
-<li class="chapter" data-level="8.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>8.3</b> Gut microbiome</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>9</b> Notes</a>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class<span></span></a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="notes.html"><a href="notes.html#clone"><i class="fa fa-check"></i><b>9.1</b> clone</a></li>
-<li class="chapter" data-level="9.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>9.2</b> save() function</a></li>
-<li class="chapter" data-level="9.3" data-path="notes.html"><a href="notes.html#subset-of-samples"><i class="fa fa-check"></i><b>9.3</b> subset of samples</a></li>
-<li class="chapter" data-level="9.4" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>9.4</b> change object</a></li>
-<li class="chapter" data-level="9.5" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>9.5</b> group order</a></li>
-<li class="chapter" data-level="9.6" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>9.6</b> add layers to plot</a></li>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>10</b> mecodev package</a>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class<span></span></a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>10.1</b> trans_rarefy</a></li>
-<li class="chapter" data-level="10.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>10.2</b> trans_convert</a></li>
-<li class="chapter" data-level="10.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>10.3</b> trans_netchord</a></li>
-<li class="chapter" data-level="10.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>10.4</b> trans_ts</a></li>
-<li class="chapter" data-level="10.5" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>10.5</b> trans_gamma</a></li>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#other-functions-1"><i class="fa fa-check"></i><b>6.2.3</b> Other functions<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>11</b> Other examples</a>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class<span></span></a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>11.1</b> Custom taxa order in bar plot</a></li>
-<li class="chapter" data-level="11.2" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>11.2</b> The importance of tidy_taxonomy function</a></li>
-<li class="chapter" data-level="11.3" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>11.3</b> Question of prefix in the taxa</a></li>
-<li class="chapter" data-level="11.4" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>11.4</b> The use of phylogenetic tree</a></li>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-7"><i class="fa fa-check"></i><b>6.3.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points<span></span></a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.1.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-8"><i class="fa fa-check"></i><b>7.1.2</b> Key points<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class<span></span></a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example<span></span></a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-9"><i class="fa fa-check"></i><b>7.2.2</b> Key points<span></span></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="file2meco-package.html"><a href="file2meco-package.html"><i class="fa fa-check"></i><b>8</b> file2meco package<span></span></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime"><i class="fa fa-check"></i><b>8.1</b> QIIME<span></span></a></li>
+<li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2<span></span></a></li>
+<li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann-metagenomic-results"><i class="fa fa-check"></i><b>8.3</b> HUMAnN metagenomic results<span></span></a></li>
+<li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn<span></span></a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2<span></span></a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncyc"><i class="fa fa-check"></i><b>8.6</b> Ncyc<span></span></a></li>
+<li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>9</b> Other dataset<span></span></a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>9.1</b> Fungi data<span></span></a></li>
+<li class="chapter" data-level="9.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>9.2</b> Metagenomic data<span></span></a></li>
+<li class="chapter" data-level="9.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>9.3</b> Gut microbiome<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>10</b> Notes<span></span></a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="notes.html"><a href="notes.html#clone"><i class="fa fa-check"></i><b>10.1</b> clone<span></span></a></li>
+<li class="chapter" data-level="10.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>10.2</b> save() function<span></span></a></li>
+<li class="chapter" data-level="10.3" data-path="notes.html"><a href="notes.html#subset-of-samples"><i class="fa fa-check"></i><b>10.3</b> subset of samples<span></span></a></li>
+<li class="chapter" data-level="10.4" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>10.4</b> change object<span></span></a></li>
+<li class="chapter" data-level="10.5" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>10.5</b> group order<span></span></a></li>
+<li class="chapter" data-level="10.6" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>10.6</b> add layers to plot<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>11</b> mecodev package<span></span></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>11.1</b> trans_rarefy<span></span></a></li>
+<li class="chapter" data-level="11.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_convert"><i class="fa fa-check"></i><b>11.2</b> trans_convert<span></span></a></li>
+<li class="chapter" data-level="11.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_netchord"><i class="fa fa-check"></i><b>11.3</b> trans_netchord<span></span></a></li>
+<li class="chapter" data-level="11.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>11.4</b> trans_ts<span></span></a></li>
+<li class="chapter" data-level="11.5" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>11.5</b> trans_gamma<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="other-examples.html"><a href="other-examples.html"><i class="fa fa-check"></i><b>12</b> Other examples<span></span></a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="other-examples.html"><a href="other-examples.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>12.1</b> Custom taxa order in bar plot<span></span></a></li>
+<li class="chapter" data-level="12.2" data-path="other-examples.html"><a href="other-examples.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>12.2</b> The importance of tidy_taxonomy function<span></span></a></li>
+<li class="chapter" data-level="12.3" data-path="other-examples.html"><a href="other-examples.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>12.3</b> Question of prefix in the taxa<span></span></a></li>
+<li class="chapter" data-level="12.4" data-path="other-examples.html"><a href="other-examples.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>12.4</b> The use of phylogenetic tree<span></span></a></li>
+</ul></li>
+<li><a href="references.html#references">References<span></span></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -295,15 +306,15 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="explainable-class" class="section level1" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Explainable class</h1>
+<div id="explainable-class" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Explainable class<a href="explainable-class.html#explainable-class" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>We group trans_env and trans_func classes into ‘Explainable class,’
 as the environmental measurements and functional data are generally explainable factors.</p>
-<div id="trans_env-class" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> trans_env class</h2>
+<div id="trans_env-class" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> trans_env class<a href="explainable-class.html#trans_env-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>　The environmental variables are explainable indices in analyzing microbial community structure and assembly mechanisms.</p>
-<div id="example-8" class="section level3" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> Example</h3>
+<div id="example-8" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Example<a href="explainable-class.html#example-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We first show the RDA analysis (db-RDA and RDA).</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="explainable-class.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add_data is used to add the environmental data</span></span>
 <span id="cb139-2"><a href="explainable-class.html#cb139-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span></code></pre></div>
@@ -459,8 +470,8 @@ by_group parameter can be used for this goal.</p>
 <span id="cb153-10"><a href="explainable-class.html#cb153-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">text_y_pos =</span> .<span class="dv">4</span>)</span></code></pre></div>
 <p><img src="Images/plot_scatterfit_pHbray.png" width="550px" style="display: block; margin: auto;" /></p>
 </div>
-<div id="key-points-8" class="section level3" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> Key points</h3>
+<div id="key-points-8" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Key points<a href="explainable-class.html#key-points-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.</li>
 <li>use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.</li>
@@ -468,8 +479,8 @@ by_group parameter can be used for this goal.</p>
 </ul>
 </div>
 </div>
-<div id="trans_func-class" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> trans_func class</h2>
+<div id="trans_func-class" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> trans_func class<a href="explainable-class.html#trans_func-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
 As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice.
@@ -481,8 +492,8 @@ FAPROTAX database is a collection of the traits and functions of prokaryotes bas
 We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
 The NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span> is also available for animal-associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span> and FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> databases to predict the fungal traits.</p>
-<div id="example-9" class="section level3" number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> Example</h3>
+<div id="example-9" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Example<a href="explainable-class.html#example-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We first identify/predict traits of taxa with the prokaryotic example data.</p>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="explainable-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create object of trans_func</span></span>
 <span id="cb154-2"><a href="explainable-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
@@ -725,12 +736,14 @@ Please see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax
 <span id="cb177-29"><a href="explainable-class.html#cb177-29" aria-hidden="true" tabindex="-1"></a>tax4fun2_pathway <span class="ot">&lt;-</span> tax4fun2_pathway[, <span class="sc">-</span>func_num]</span>
 <span id="cb177-30"><a href="explainable-class.html#cb177-30" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object for pathways</span></span>
 <span id="cb177-31"><a href="explainable-class.html#cb177-31" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> tax4fun2_pathway, <span class="at">tax_table =</span> func_map, <span class="at">sample_table =</span> use_dataset<span class="sc">$</span>sample_table)</span>
-<span id="cb177-32"><a href="explainable-class.html#cb177-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb177-33"><a href="explainable-class.html#cb177-33" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate functional gene redundancies</span></span>
-<span id="cb177-34"><a href="explainable-class.html#cb177-34" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+<span id="cb177-32"><a href="explainable-class.html#cb177-32" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb177-33"><a href="explainable-class.html#cb177-33" aria-hidden="true" tabindex="-1"></a>func2</span>
+<span id="cb177-34"><a href="explainable-class.html#cb177-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-35"><a href="explainable-class.html#cb177-35" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate functional gene redundancies</span></span>
+<span id="cb177-36"><a href="explainable-class.html#cb177-36" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
 </div>
-<div id="key-points-9" class="section level3" number="7.2.2">
-<h3><span class="header-section-number">7.2.2</span> Key points</h3>
+<div id="key-points-9" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Key points<a href="explainable-class.html#key-points-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in ‘environment variable’ of computer, it is ok to use blast_tool_path = NULL</li>
 <li>blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (<a href="https://www.biostars.org/p/413294/" class="uri">https://www.biostars.org/p/413294/</a>). An easy solution is to use previous version (such as 2.5.0).</li>
@@ -739,7 +752,7 @@ Please see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax
 </div>
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Aßhauer_Tax4Fun_2015" class="csl-entry">
 Aßhauer, Kathrin P, Bernd Wemheuer, Rolf Daniel, and Peter Meinicke. 2015. <span>“Tax4Fun: Predicting Functional Profiles from Metagenomic 16s rRNA Data.”</span> Journal Article. <em>Bioinformatics</em> 31 (17): 2882–84.
@@ -772,11 +785,10 @@ Wemheuer, Franziska, Jessica A. Taylor, Rolf Daniel, Emma Johnston, Peter Meinic
         </div>
       </div>
 <a href="model-based-class.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="other-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="file2meco-package.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -816,6 +828,10 @@ gitbook.start({
 "text": null
 },
 "download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
