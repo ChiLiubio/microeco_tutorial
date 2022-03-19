@@ -1,7 +1,7 @@
 # Notes
 We show some important things here.
 
-## clone
+## clone() function
 R6 class has a special copy mechanism which is different from S3 and S4.
 **If you want to copy an object completely, you should use the function clone() instead of direct assignment.**
 
@@ -108,6 +108,33 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```{r, out.width = "400px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
+
+## colors for many groups
+
+In general, the color palette in the ploting function is enough for the settings of groups or samples,
+such as RColorBrewer::brewer.pal(12, "Paired").
+If the user has too many groups (e.g. 20), the color_palette_20 can be used. It has 20 colors with paired combinations.
+If this is still not enough, the randomcoloR package can be used for generating more colors.
+
+```{r, echo = TRUE, eval = TRUE}
+color_palette_20
+```
+
+```{r, echo = TRUE, eval = FALSE}
+barplot(1:20, col = color_palette_20)
+```
+
+## customized data input
+
+From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL dataset input for some customized usage of some functions in those classes.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_env$new()
+t1 <- trans_alpha$new(dataset = NULL, group = NULL)
+```
+
+
+
 
 
 

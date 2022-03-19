@@ -8,12 +8,14 @@ We group all the classes with complex models into the type 'Model-based class'.
 　Differential abundance test is a very important part in the microbial community data analysis.
 It can be used to find the significant taxa in determining the community differences across groups.
 With the field development, there are some combined methods to better capture the important biomarker information.
-Currently, trans_diff class have four famous approaches to perform this analysis: 
+Currently, trans_diff class have several famous approaches to perform this analysis: 
 metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], random forest and metagenomeSeq[@Paulson_Differential_2013].
 Metastat depends on the permutations and t-test and performs well on the sparse data.
 It is used for the comparisons of taxonomic abundance between two groups at any taxonomic level.
 LEfSe and random forest in this class is mainly used for the identification of biomarkers at all taxonomic levels.
 metagenomeSeq method is implemented to find significant species between two groups at species level (OTU/ASV).
+In addition, Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for groups = 2) and 
+Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups > 2 are also available.
 
 
 ### Example
@@ -114,9 +116,9 @@ The current method can calculate random forest by bootstrapping like the method 
 MeanDecreaseGini is selected as the indicator value in the analysis.
 
 ```{r, echo = TRUE, eval = FALSE}
-# use Genus level for parameter rf_taxa_level, if you want to use all taxa, change to "all"
+# use Genus level for parameter taxa_level, if you want to use all taxa, change to "all"
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
-t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
 # t1$res_rf is the result stored in the object
 # plot the result
 t2 <- t1$plot_diff_abund(use_number = 1:20, only_abund_plot = FALSE)
@@ -128,10 +130,26 @@ gridExtra::grid.arrange(t2$p1, t2$p2, ncol=2, nrow = 1, widths = c(2,2))
 knitr::include_graphics("Images/plot_diff_abund.png")
 ```
 
+If the user only want to get the taxa with significant different abundance, both the method parameter "KW" and "KW_dunn" are available in trans_diff$new.
+The method = "KW" represents Kruskal-Wallis Rank Sum Test (for groups > 2) and Wilcoxon Rank Sum Tests (for groups = 2)
+for a specific taxonomic level or all levels of microtable$taxa_abund.
+The method = "KW_dunn" represents Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups > 2.
+
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
+# "KW_dunn" method depends on the FSA package
+t1 <- trans_diff$new(dataset = d1, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+# see t1$res_diff for the result
+```
+
+
+
 ### Key points
 
   + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before the analysis
   + trans_diff$new: creating this class will invoke taxa_abund stored in microtable object
+  + trans_diff$plot_lefse_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
 
 
 
@@ -521,6 +539,15 @@ pander::pander(t1$res_process)
 ### Other function
 
   + cal_Cscore(): calculates the (normalised) mean number of checkerboard combinations (C-score) using C.score
+  + cal_NRI(): calculates Nearest Relative Index (NRI)
+  + cal_NTI(): calculates Nearest Taxon Index (NTI)
+
+
+
+
+
+
+
 
 
 

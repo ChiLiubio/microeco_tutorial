@@ -1,7 +1,7 @@
 # Composition-based class
 
 The trans_abund class and trans_venn class are grouped into 'Composition-based class', 
-as they mainly show the composition information of communities.
+since they are mainly used to show the composition information of communities.
 
 
 ## trans_abund class
@@ -169,7 +169,7 @@ For this goal, we first transform the results of venn plot to the traditional sp
 dataset1 <- dataset$merge_samples(use_group = "Group")
 t1 <- trans_venn$new(dataset1)
 # transform venn results to the sample-species table, here do not consider abundance, only use presence/absence.
-t2 <- t1$trans_venn_com(use_OTUs_frequency = TRUE)
+t2 <- t1$trans_venn_com(use_frequency = TRUE)
 # t2 is a new microtable class, each part is considered a sample
 class(t2)
 ```

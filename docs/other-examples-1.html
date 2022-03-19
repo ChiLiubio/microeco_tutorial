@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Tutorial for R microeco package (v0.7.0)</title>
+  <title>Chapter 12 Other examples | Tutorial for R microeco package (v0.7.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Tutorial for R microeco package (v0.7.0)" />
+  <meta property="og:title" content="Chapter 12 Other examples | Tutorial for R microeco package (v0.7.0)" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Tutorial for R microeco package (v0.7.0)" />
+  <meta name="twitter:title" content="Chapter 12 Other examples | Tutorial for R microeco package (v0.7.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="intro.html"/>
+<link rel="prev" href="mecodev-package.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.12/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -309,63 +309,32 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Tutorial for R microeco package (v0.7.0)</h1>
-<p class="author"><em>Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li</em></p>
-<p class="date"><em>2022-03-19</em></p>
+<div id="other-examples-1" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Other examples<a href="other-examples-1.html#other-examples-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We’ve gathered a few ways to make your analyses easier.
+We encourage users to contribute some unique, special or helpful examples inspired by the microeco, file2meco and mecodev package.</p>
+<div id="custom-taxa-order-in-bar-plot" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Custom taxa order in bar plot<a href="other-examples-1.html#custom-taxa-order-in-bar-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Jarrod J. Scott contribute a cool answer to the question that how to use custom taxa and the order in bar plot.
+This is a discussion topic in microeco Discussions part. Here is the link (<a href="https://github.com/ChiLiubio/microeco/discussions/45" class="uri">https://github.com/ChiLiubio/microeco/discussions/45</a>).</p>
 </div>
-<div id="background" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Background<a href="index.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>　R language <span class="citation">(<a href="#ref-R-base" role="doc-biblioref">R Core Team 2016</a>)</span> and its packages ecosystem are wonderful tools for data analysis.
-In the field of microbial community ecology, many packages can be used for the data analysis,
-such as vegan <span class="citation">(<a href="#ref-Jari_vegan_2019" role="doc-biblioref">Oksanen et al. 2019</a>)</span>, ape <span class="citation">(<a href="#ref-Paradis_ape_2018" role="doc-biblioref">Paradis and Schliep 2018</a>)</span> and picante <span class="citation">(<a href="#ref-Picante_Kembel_2010" role="doc-biblioref">Kembel et al. 2010</a>)</span>.
-However, with the development of the high-throughput sequencing techniques,
-the increasing data amount and complexity make the data mining a challenge.
-There have been some R packages created for the statistics and visualization in microbial community ecology,
-such as phyloseq <span class="citation">(<a href="#ref-Mcmurdie_phyloseq_2013" role="doc-biblioref">Mcmurdie and Holmes 2013</a>)</span>,
-microbiome (<a href="https://github.com/microbiome/microbiome" class="uri">https://github.com/microbiome/microbiome</a>), microbiomeSeq (<a href="http://www.github.com/umerijaz/microbiomeSeq" class="uri">http://www.github.com/umerijaz/microbiomeSeq</a>),
-ampvis2 (<a href="https://madsalbertsen.github.io/ampvis2/reference/index.html" class="uri">https://madsalbertsen.github.io/ampvis2/reference/index.html</a>), MicrobiomeR(<a href="https://github.com/vallenderlab/MicrobiomeR" class="uri">https://github.com/vallenderlab/MicrobiomeR</a>),
-theseus <span class="citation">(<a href="#ref-Price_theseus_2018" role="doc-biblioref">Price et al. 2018</a>)</span>, rANOMALY <span class="citation">(<a href="#ref-Theil_rANOMALY_2021" role="doc-biblioref">Theil and Rifa 2021</a>)</span>,
-MicrobiomeExplorer <span class="citation">(<a href="#ref-Reeder_MicrobiomeExplorer_2021" role="doc-biblioref">Reeder et al. 2021</a>)</span>,
-tidyMicro <span class="citation">(<a href="#ref-Carpenter_tidyMicro_2021" role="doc-biblioref">Carpenter et al. 2021</a>)</span>, microbial (<a href="https://github.com/guokai8/microbial" class="uri">https://github.com/guokai8/microbial</a>),
-and so on.
-However, users still lack a flexible, comprehensive and modularized R package to analyze and manage the data easily.
-So we created the microeco R package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">Liu et al. 2021</a>)</span> for this goal (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
-Besides, we also develop the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) for the data input from some famous tools easily
-and mecodev package (<a href="https://github.com/ChiLiubio/mecodev" class="uri">https://github.com/ChiLiubio/mecodev</a>) for some extending approaches in this field.</p>
+<div id="the-importance-of-tidy_taxonomy-function" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> The importance of tidy_taxonomy function<a href="other-examples-1.html#the-importance-of-tidy_taxonomy-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The taxonomic classification with standard prefix is very important for some analyses,
+e.g. taxonomic abundance plotting and biomarker finding.
+The tidy_taxonomy function in microeco package is designed to make the taxa having standard prefix.
+See those Issues for the detailed examples: (<a href="https://github.com/ChiLiubio/microeco/issues/32" class="uri">https://github.com/ChiLiubio/microeco/issues/32</a>) and (<a href="https://github.com/ChiLiubio/microeco/issues/22" class="uri">https://github.com/ChiLiubio/microeco/issues/22</a>).</p>
+</div>
+<div id="question-of-prefix-in-the-taxa" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Question of prefix in the taxa<a href="other-examples-1.html#question-of-prefix-in-the-taxa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The prefix of taxa in taxonomic table may affect the following performance of plotting, e.g. text in legend.
+Please see those Issues (<a href="https://github.com/ChiLiubio/microeco/issues/32" class="uri">https://github.com/ChiLiubio/microeco/issues/32</a>), (<a href="https://github.com/ChiLiubio/microeco/issues/7" class="uri">https://github.com/ChiLiubio/microeco/issues/7</a>)
+and (<a href="https://github.com/ChiLiubio/microeco/issues/15" class="uri">https://github.com/ChiLiubio/microeco/issues/15</a>).</p>
+</div>
+<div id="the-use-of-phylogenetic-tree" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> The use of phylogenetic tree<a href="other-examples-1.html#the-use-of-phylogenetic-tree" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One of Issues referred to the basic use of phylogenetic tree in the microeco package (<a href="https://github.com/ChiLiubio/microeco/issues/33" class="uri">https://github.com/ChiLiubio/microeco/issues/33</a>).</p>
 
-</div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Carpenter_tidyMicro_2021" class="csl-entry">
-Carpenter, C. M., D. N. Frank, K. Williamson, J. Arbet, B. D. Wagner, K. Kechris, and M. E. Kroehl. 2021. <span>“tidyMicro: A Pipeline for Microbiome Data Analysis and Visualization Using the Tidyverse in r.”</span> Journal Article. <em>BMC Bioinformatics</em> 22 (1): 41. <a href="https://doi.org/10.1186/s12859-021-03967-2">https://doi.org/10.1186/s12859-021-03967-2</a>.
-</div>
-<div id="ref-Picante_Kembel_2010" class="csl-entry">
-Kembel, S. W., P. D. Cowan, M. R. Helmus, W. K. Cornwell, H. Morlon, D. D. Ackerly, S. P. Blomberg, and C. O. Webb. 2010. <span>“Picante: <span>R</span> Tools for Integrating Phylogenies and Ecology.”</span> <em>Bioinformatics</em> 26: 1463–64.
-</div>
-<div id="ref-Liu_microeco_2021" class="csl-entry">
-Liu, Chi, Yaoming Cui, Xiangzhen Li, and Minjie Yao. 2021. <span>“<span class="nocase">microeco: An R package for data mining in microbial community ecology</span>.”</span> Journal Article. <em>FEMS Microbiol. Ecol.</em> 97 (2): fiaa255.
-</div>
-<div id="ref-Mcmurdie_phyloseq_2013" class="csl-entry">
-Mcmurdie, Paul J, and Susan Holmes. 2013. <span>“Phyloseq: An r Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.”</span> Journal Article. <em>Plos One</em> 8 (4): e61217.
-</div>
-<div id="ref-Jari_vegan_2019" class="csl-entry">
-Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt, Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2019. <em>Vegan: Community Ecology Package</em>. <a href="https://CRAN.R-project.org/package=vegan">https://CRAN.R-project.org/package=vegan</a>.
-</div>
-<div id="ref-Paradis_ape_2018" class="csl-entry">
-Paradis, E., and K. Schliep. 2018. <span>“Ape 5.0: An Environment for Modern Phylogenetics and Evolutionary Analyses in <span>R</span>.”</span> <em>Bioinformatics</em> 35: 526–28.
-</div>
-<div id="ref-Price_theseus_2018" class="csl-entry">
-Price, Jacob R., Stephen Woloszynek, Gail Rosen, and Christopher M. Sales. 2018. <span>“Theseus - an r Package for the Analysis and Visualization.”</span> Journal Article. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/295675">https://doi.org/10.1101/295675</a>.
-</div>
-<div id="ref-R-base" class="csl-entry">
-R Core Team. 2016. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
-</div>
-<div id="ref-Reeder_MicrobiomeExplorer_2021" class="csl-entry">
-Reeder, J., M. Huang, J. S. Kaminker, and J. N. Paulson. 2021. <span>“MicrobiomeExplorer: An r Package for the Analysis and Visualization of Microbial Communities.”</span> Journal Article. <em>Bioinformatics</em> 37 (9): 1317–18. <a href="https://doi.org/10.1093/bioinformatics/btaa838">https://doi.org/10.1093/bioinformatics/btaa838</a>.
-</div>
-<div id="ref-Theil_rANOMALY_2021" class="csl-entry">
-Theil, S., and E. Rifa. 2021. <span>“rANOMALY: AmplicoN wOrkflow for Microbial Community AnaLYsis.”</span> Journal Article. <em>F1000Res</em> 10: 7. <a href="https://doi.org/10.12688/f1000research.27268.1">https://doi.org/10.12688/f1000research.27268.1</a>.
 </div>
 </div>
             </section>
@@ -373,8 +342,8 @@ Theil, S., and E. Rifa. 2021. <span>“rANOMALY: AmplicoN wOrkflow for Microbial
           </div>
         </div>
       </div>
-
-<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="mecodev-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -405,7 +374,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/11-Other_examples.Rmd",
 "text": "Edit"
 },
 "history": {

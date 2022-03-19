@@ -19,11 +19,11 @@ t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 
 ```{r, echo = TRUE, eval = FALSE}
 # use bray-curtis distance to do dbrda
-t1$cal_rda(use_dbrda = TRUE, use_measure = "bray")
+t1$cal_ordination(method = "dbRDA", use_measure = "bray")
 # t1$res_rda is the result list stored in the object
-t1$trans_rda(adjust_arrow_length = TRUE, max_perc_env = 10)
+t1$trans_ordination(adjust_arrow_length = TRUE, max_perc_env = 1.5)
 # t1$res_rda_trans is the transformed result for plotting
-t1$plot_rda(plot_color = "Group")
+t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
@@ -32,12 +32,12 @@ knitr::include_graphics("Images/plot_rda_dbrda.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus
-t1$cal_rda(use_dbrda = FALSE, taxa_level = "Genus")
+t1$cal_ordination(method = "RDA", taxa_level = "Genus")
 # As the main results of RDA are related with the projection and angles between different arrows,
 # we adjust the length of the arrow to show them clearly using several parameters.
-t1$trans_rda(show_taxa = 10, adjust_arrow_length = TRUE, max_perc_env = 1500, max_perc_tax = 3000, min_perc_env = 200, min_perc_tax = 300)
+t1$trans_ordination(show_taxa = 10, adjust_arrow_length = TRUE, max_perc_env = 1.5, max_perc_tax = 1.5, min_perc_env = 0.2, min_perc_tax = 0.2)
 # t1$res_rda_trans is the transformed result for plotting
-t1$plot_rda(plot_color = "Group")
+t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
@@ -133,7 +133,8 @@ If you are concerned with the relationship between environmental factors and alp
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
-t1$plot_cor(pheatmap = TRUE)
+# Let's try to use ggplot2 with clustering plot
+t1$plot_cor(cluster_ggplot = "row")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -280,24 +281,24 @@ pathway_file <- t1$tax4fun_path$Tax4FunProfile %>% t %>% as.data.frame
 # filter rownames, only keep ko+number
 rownames(pathway_file) %<>% gsub("(^.*);\\s.*", "\\1", .)
 # load the pathway hierarchical metadata
-data(ko_map)
+data(Tax4Fun2_KEGG)
 # further create a microtable object, familiar?
-func1 <- microtable$new(otu_table = pathway_file, tax_table = ko_map, sample_table = t1$sample_table)
+func1 <- microtable$new(otu_table = pathway_file, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = t1$sample_table)
 print(func1)
 ```
 
 Now, we need to trim data and calculate abundance.
 ```{r, echo = TRUE, eval = TRUE}
 func1$tidy_dataset()
-# calculate abundance automatically at three levels: level_1, level_2, level_3
+# calculate abundance automatically at three levels: Level.1, Level.2, Level.3
 func1$cal_abund()
 print(func1)
 ```
 
 Then, we can plot the abundance.
 ```{r, echo = TRUE, eval = FALSE}
-# bar plot at level_1
-func2 <- trans_abund$new(func1, taxrank = "level_1", groupmean = "Group")
+# bar plot at Level.1
+func2 <- trans_abund$new(func1, taxrank = "Level.1", groupmean = "Group")
 func2$plot_bar(legend_text_italic = FALSE)
 ```
 
@@ -327,6 +328,8 @@ data(sample_info_16S)
 data(otu_table_16S)
 data(taxonomy_table_16S)
 # representative sequences are necessary for this analysis
+# use read.fasta() of seqinr package or readDNAStringSet() of Biostrings package to read fasta file
+# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2  for the reading example
 data(rep_fasta_16S)
 
 use_dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, rep_fasta = rep_fasta_16S)
@@ -344,17 +347,11 @@ t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_dat
   database_mode = "Ref99NR", path_to_temp_folder = "test_prediction")
 
 # prepare feature table and metadata
-tax4fun2_pathway <- t1$res_tax4fun2_pathway
-rownames(tax4fun2_pathway) <- tax4fun2_pathway[, 1]
-tax4fun2_pathway <- tax4fun2_pathway[, -1]
-func_num <- ncol(tax4fun2_pathway): (ncol(tax4fun2_pathway) - 2)
-func_map <- tax4fun2_pathway[, func_num]
-colnames(func_map) <- c("level_1", "level_2", "level_3")
-tax4fun2_pathway <- tax4fun2_pathway[, -func_num]
+data(Tax4Fun2_KEGG)
 # create a microtable object for pathways
-func2 <- microtable$new(otu_table = tax4fun2_pathway, tax_table = func_map, sample_table = use_dataset$sample_table)
+func2 <- microtable$new(otu_table = t1$res_tax4fun2_pathway, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = use_dataset$sample_table)
 func2$tidy_dataset()
-func2
+func2$cal_abund()
 
 # calculate functional gene redundancies
 t1$cal_tax4fun2_FRI()

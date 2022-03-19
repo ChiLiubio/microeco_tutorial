@@ -24,7 +24,8 @@ t1 <- trans_alpha$new(dataset = dataset, group = "Group")
 pander::pander(t1$alpha_stat[1:5, ])
 ```
 
-Then, we test the differences among groups using the KW rank sum test and anova with multiple comparisons.
+Then, we test the differences among groups using Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for groups = 2),
+Dunn's Kruskal-Wallis Multiple Comparisons (for cases with groups > 2) and anova with multiple comparisons.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "KW")
@@ -33,9 +34,21 @@ t1$res_alpha_diff[1:5, ]
 ```
 
 ```{r, echo = FALSE}
-t1$cal_diff(method = "KW")
-pander::pander(t1$res_alpha_diff[1:5, ])
+suppressWarnings(t1$cal_diff(method = "KW"))
+pander::pander(t1$res_alpha_diff[1:5, 1:5])
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "KW_dunn")
+# return t1$res_alpha_diff
+t1$res_alpha_diff[1:5, ]
+```
+
+```{r, echo = FALSE}
+t1$cal_diff(method = "KW_dunn")
+pander::pander(t1$res_alpha_diff[1:5, c(1, 3:6)])
+```
+
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
