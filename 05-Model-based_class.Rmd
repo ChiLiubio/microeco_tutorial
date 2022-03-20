@@ -130,7 +130,7 @@ gridExtra::grid.arrange(t2$p1, t2$p2, ncol=2, nrow = 1, widths = c(2,2))
 knitr::include_graphics("Images/plot_diff_abund.png")
 ```
 
-If the user only want to get the taxa with significant different abundance, both the method parameter "KW" and "KW_dunn" are available in trans_diff$new.
+If the user only want to get the taxa with significant different abundance, both the method parameter "KW" and "KW_dunn" are available.
 The method = "KW" represents Kruskal-Wallis Rank Sum Test (for groups > 2) and Wilcoxon Rank Sum Tests (for groups = 2)
 for a specific taxonomic level or all levels of microtable$taxa_abund.
 The method = "KW_dunn" represents Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups > 2.
@@ -541,6 +541,127 @@ pander::pander(t1$res_process)
   + cal_Cscore(): calculates the (normalised) mean number of checkerboard combinations (C-score) using C.score
   + cal_NRI(): calculates Nearest Relative Index (NRI)
   + cal_NTI(): calculates Nearest Taxon Index (NTI)
+
+
+## trans_classifier class
+
+The trans_classifier class is a wrapper for methods of machine-learning-based classification models.
+Microbiome-based supervised machine-learning has been successful in predicting human health status [@Poore_Microbiome_2020]
+and soil categories [@Wilhelm_Predicting_2021].
+
+### Dependencies
+
+Before starting the examples, make sure those packages have been installed.
+
+```{r, echo = TRUE, eval = FALSE}
+packages <- c("Boruta", "parallel", "rsample", "randomForest", "caret", "gridExtra", "ROCR")
+# Now check or install
+for(x in packages){
+	if(!require(x, character.only = TRUE)) {
+		install.packages(x, dependencies = TRUE)
+	}
+}
+```
+
+### Examples
+In this tutorial, we use the example data in file2meco to demonstrate the feature selection, data training and prediction with random forest algorithm.
+
+```{r, echo = TRUE, eval=FALSE}
+library(file2meco)
+abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
+sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
+taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
+# construct microtable object
+d1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+d1$cal_abund()
+
+# initialize: use "genotype" as response variable
+# x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa_abund
+t1 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors = "All")
+```
+
+Then, we attempt to use Boruta package [@Kursa_Feature_2010] to do feature selection.
+
+```{r, echo = TRUE, eval=FALSE}
+# require Boruta package
+t1$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
+```
+
+We silit the data into training and testing set.
+
+```{r, echo = TRUE, eval=FALSE}
+# generate train and test set
+t1$cal_split(prop.train = 3/4)
+```
+
+Before training the model, we run the set_trainControl to invoke the trainControl function of caret package to generate the parameters used for training.
+Here we use the default parameters in trainControl function.
+
+```{r, echo = TRUE, eval=FALSE}
+# require caret package
+t1$set_trainControl()
+```
+
+Now let's start model training with rf method.
+
+```{r, echo = TRUE, eval=FALSE}
+# use default parameter method = "rf"
+t1$cal_train(max.ntree = 500)
+```
+
+We can use cal_predict function to predict the testing data set.
+
+```{r, echo = TRUE, eval=FALSE}
+t1$cal_predict()
+# plot the confusionMatrix to check out the performance
+t1$plot_confusionMatrix()
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_confusionMatrix_with_selection.png")
+```
+
+Using cal_ROC and plot_ROC can get the ROC curve.
+
+```{r, echo = TRUE, eval=FALSE}
+t1$cal_ROC()
+t1$plot_ROC(size = 0.5, alpha = 0.7)
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_ROC_with_selection.png")
+```
+
+
+To compare the results between the procedure with feature selection and that without feature selection,
+we also perfom all the analysis without feature selection to show the results.
+
+```{r, echo = TRUE, eval=FALSE}
+t2 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors = "All")
+# no feature selection, others same with previous steps
+t2$cal_split(prop.train = 3/4)
+t2$set_trainControl()
+t2$cal_train(max.ntree = 500)
+t2$cal_predict()
+t2$plot_confusionMatrix()
+t2$cal_ROC()
+t2$plot_ROC(size = 0.5, alpha = 0.7)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_confusionMatrix_without_selection.png")
+```
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_ROC_without_selection.png")
+```
+
+### Key points
+
+  + cal_feature_sel(): perform feature selection
+  
+### Other function
+
+  + cal_feature_imp(): get feature importance from the training model when method is "rf"
 
 
 

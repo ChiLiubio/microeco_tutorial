@@ -81,8 +81,8 @@ We can use the filter_feature parameter in plot_cor to filter some taxa that do 
 t1$plot_cor(filter_feature = c("", "*", "**"))
 ```
 
-Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
-we can use other_taxa parameter in cal_cor function.
+Sometimes, if the user want to conduct the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+please use **other_taxa parameter** in cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
@@ -99,8 +99,8 @@ knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
-Note that, besides the color_vector parameter, 
-color_palette can also be used to control color palette with customized colors.
+Note that, besides the **color_vector parameter**, 
+**color_palette** can also be used to control color palette with customized colors.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clustering heatmap; require pheatmap package
@@ -113,7 +113,7 @@ knitr::include_graphics("Images/plot_corr_pheatmap.png")
 ```
 
 Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
-by_group parameter can be used for this goal.
+**by_group parameter** can be used for this goal.
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group
@@ -127,7 +127,8 @@ knitr::include_graphics("Images/plot_corr_ggplot_groups.png")
 ```
 
 
-If you are concerned with the relationship between environmental factors and alpha diversity, you can also use this function.
+If the user is concerned with the relationship between environmental factors and alpha diversity, 
+please use **add_abund_table parameter** in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
@@ -255,11 +256,11 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 
 Tax4Fun requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
-Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
+Please check out the dependence part https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
 
 ```{r, echo = TRUE, eval = TRUE, message=FALSE}
 t1 <- trans_func$new(dataset)
-# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation
+# https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation description
 # and provide the file path of SILVA123
 t1$cal_tax4fun(folderReferenceData = "./SILVA123")
 # return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
@@ -320,7 +321,7 @@ knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
 Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
 If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
-Please see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
+Please check out https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create a microtable object with the fasta file
@@ -329,7 +330,7 @@ data(otu_table_16S)
 data(taxonomy_table_16S)
 # representative sequences are necessary for this analysis
 # use read.fasta() of seqinr package or readDNAStringSet() of Biostrings package to read fasta file
-# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2  for the reading example
+# https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2  for the reading example
 data(rep_fasta_16S)
 
 use_dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, rep_fasta = rep_fasta_16S)
@@ -340,7 +341,7 @@ use_dataset
 t1 <- trans_func$new(use_dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
-# see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
+# https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
 # ignore blast_tool_path parameter if blast tools have been in path
 # the function can search whether blast tool directory is in the path, if not, automatically use provided blast_tool_path parameter
 t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "Tax4Fun2_ReferenceData_v2",

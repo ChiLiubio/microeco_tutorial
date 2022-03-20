@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.7.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-03-19}
+\date{2022-03-20}
 
 \begin{document}
 \maketitle
@@ -1704,6 +1704,8 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 ## TW 0.0566190 0.0050319
 \end{verbatim}
 
+For the explanation of statistical methods in microbial ecology, please read \url{http://mb3is.megx.net/gustame}
+
 \hypertarget{key-points-4}{%
 \subsection{Key points}\label{key-points-4}}
 
@@ -1860,7 +1862,9 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 
 \begin{center}\includegraphics[width=800px]{Images/plot_diff_abund} \end{center}
 
-If the user only want to get the taxa with significant different abundance, both the method parameter ``KW'' and ``KW\_dunn'' are available in trans\_diff\(new. The method = "KW" represents Kruskal-Wallis Rank Sum Test (for groups > 2) and Wilcoxon Rank Sum Tests (for groups = 2) for a specific taxonomic level or all levels of microtable\)taxa\_abund.
+If the user only want to get the taxa with significant different abundance, both the method parameter ``KW'' and ``KW\_dunn'' are available.
+The method = ``KW'' represents Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2) and Wilcoxon Rank Sum Tests (for groups = 2)
+for a specific taxonomic level or all levels of microtable\$taxa\_abund.
 The method = ``KW\_dunn'' represents Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups \textgreater{} 2.
 
 \begin{Shaded}
@@ -2379,6 +2383,150 @@ drift & 39.1 \\
   cal\_NTI(): calculates Nearest Taxon Index (NTI)
 \end{itemize}
 
+\hypertarget{trans_classifier-class}{%
+\section{trans\_classifier class}\label{trans_classifier-class}}
+
+The trans\_classifier class is a wrapper for methods of machine-learning-based classification models.
+Microbiome-based supervised machine-learning has been successful in predicting human health status \citep{Poore_Microbiome_2020}
+and soil categories \citep{Wilhelm_Predicting_2021}.
+
+\hypertarget{dependencies}{%
+\subsection{Dependencies}\label{dependencies}}
+
+Before starting the examples, make sure those packages have been installed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Boruta"}\NormalTok{, }\StringTok{"parallel"}\NormalTok{, }\StringTok{"rsample"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"caret"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"ROCR"}\NormalTok{)}
+\CommentTok{\# Now check or install}
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
+        \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{examples}{%
+\subsection{Examples}\label{examples}}
+
+In this tutorial, we use the example data in file2meco to demonstrate the feature selection, data training and prediction with random forest algorithm.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(file2meco)}
+\NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# construct microtable object}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+
+\CommentTok{\# initialize: use "genotype" as response variable}
+\CommentTok{\# x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa\_abund}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{y.response =} \StringTok{"genotype"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"All"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then, we attempt to use Boruta package \citep{Kursa_Feature_2010} to do feature selection.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require Boruta package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We silit the data into training and testing set.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# generate train and test set}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Before training the model, we run the set\_trainControl to invoke the trainControl function of caret package to generate the parameters used for training.
+Here we use the default parameters in trainControl function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require caret package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Now let's start model training with rf method.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use default parameter method = "rf"}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{max.ntree =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We can use cal\_predict function to predict the testing data set.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_predict}\NormalTok{()}
+\CommentTok{\# plot the confusionMatrix to check out the performance}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_confusionMatrix}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_with_selection} \end{center}
+
+Using cal\_ROC and plot\_ROC can get the ROC curve.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ROC}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{size =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=500px]{Images/plot_ROC_with_selection} \end{center}
+
+To compare the results between the procedure with feature selection and that without feature selection,
+we also perfom all the analysis without feature selection to show the results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{y.response =} \StringTok{"genotype"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"All"}\NormalTok{)}
+\CommentTok{\# no feature selection, others same with previous steps}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{max.ntree =} \DecValTok{500}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_predict}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_confusionMatrix}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_ROC}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{size =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_without_selection} \end{center}
+
+\begin{center}\includegraphics[width=500px]{Images/plot_ROC_without_selection} \end{center}
+
+\hypertarget{key-points-8}{%
+\subsection{Key points}\label{key-points-8}}
+
+\begin{itemize}
+\tightlist
+\item
+  cal\_feature\_sel(): perform feature selection
+\end{itemize}
+
+\hypertarget{other-function-1}{%
+\subsection{Other function}\label{other-function-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  cal\_feature\_imp(): get feature importance from the training model when method is ``rf''
+\end{itemize}
+
 \hypertarget{explainable-class}{%
 \chapter{Explainable class}\label{explainable-class}}
 
@@ -2503,8 +2651,8 @@ We can use the filter\_feature parameter in plot\_cor to filter some taxa that d
 \end{Highlighting}
 \end{Shaded}
 
-Sometimes, if we want to conduct the correlation analysis between the environmental factors and some important taxa which are detected in the biomarker analysis,
-we can use other\_taxa parameter in cal\_cor function.
+Sometimes, if the user want to conduct the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+please use \textbf{other\_taxa parameter} in cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2521,8 +2669,8 @@ we can use other\_taxa parameter in cal\_cor function.
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
 
 The pheatmap method is also available.
-Note that, besides the color\_vector parameter,
-color\_palette can also be used to control color palette with customized colors.
+Note that, besides the \textbf{color\_vector parameter},
+\textbf{color\_palette} can also be used to control color palette with customized colors.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2535,7 +2683,7 @@ color\_palette can also be used to control color palette with customized colors.
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
 
 Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
-by\_group parameter can be used for this goal.
+\textbf{by\_group parameter} can be used for this goal.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2548,7 +2696,8 @@ by\_group parameter can be used for this goal.
 
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot_groups} \end{center}
 
-If you are concerned with the relationship between environmental factors and alpha diversity, you can also use this function.
+If the user is concerned with the relationship between environmental factors and alpha diversity,
+please use \textbf{add\_abund\_table parameter} in the cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2581,8 +2730,8 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
 
 \begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_pHbray} \end{center}
 
-\hypertarget{key-points-8}{%
-\subsection{Key points}\label{key-points-8}}
+\hypertarget{key-points-9}{%
+\subsection{Key points}\label{key-points-9}}
 
 \begin{itemize}
 \tightlist
@@ -2739,12 +2888,12 @@ The percentages of the OTUs having the same trait can reflect the functional red
 
 Tax4Fun requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
-Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun} for installing Tax4Fun package and download SILVA123 ref data.
+Please check out the dependence part \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun} for installing Tax4Fun package and download SILVA123 ref data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
-\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation}
+\CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation description}
 \CommentTok{\# and provide the file path of SILVA123}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
 \end{Highlighting}
@@ -2857,7 +3006,7 @@ We can also do something else. For example, we can use lefse to test the differe
 Tax4Fun2 \citep{Wemheuer_Tax4Fun2_2020} is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
 If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
-Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun2} for downloading ncbi-blast and Ref99NR/Ref100NR.
+Please check out \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun2} for downloading ncbi-blast and Ref99NR/Ref100NR.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2867,7 +3016,7 @@ Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fu
 \FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
 \CommentTok{\# representative sequences are necessary for this analysis}
 \CommentTok{\# use read.fasta() of seqinr package or readDNAStringSet() of Biostrings package to read fasta file}
-\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2  for the reading example}
+\CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2  for the reading example}
 \FunctionTok{data}\NormalTok{(rep\_fasta\_16S)}
 
 \NormalTok{use\_dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_fasta\_16S)}
@@ -2878,7 +3027,7 @@ Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fu
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(use\_dataset)}
 \CommentTok{\# create a directory for result and log files}
 \FunctionTok{dir.create}\NormalTok{(}\StringTok{"test\_prediction"}\NormalTok{)}
-\CommentTok{\# see https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2 for installation}
+\CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun2 for installation}
 \CommentTok{\# ignore blast\_tool\_path parameter if blast tools have been in path}
 \CommentTok{\# the function can search whether blast tool directory is in the path, if not, automatically use provided blast\_tool\_path parameter}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2}\NormalTok{(}\AttributeTok{blast\_tool\_path =} \StringTok{"ncbi{-}blast{-}2.5.0+/bin"}\NormalTok{, }\AttributeTok{path\_to\_reference\_data =} \StringTok{"Tax4Fun2\_ReferenceData\_v2"}\NormalTok{,}
@@ -2896,8 +3045,8 @@ Please see \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fu
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-9}{%
-\subsection{Key points}\label{key-points-9}}
+\hypertarget{key-points-10}{%
+\subsection{Key points}\label{key-points-10}}
 
 \begin{itemize}
 \tightlist
@@ -3272,7 +3421,7 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \hypertarget{notes}{%
 \chapter{Notes}\label{notes}}
 
-We show some important things here.
+We show some other important points here.
 
 \hypertarget{clone-function}{%
 \section{clone() function}\label{clone-function}}
@@ -3404,7 +3553,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-218-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-231-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3441,7 +3590,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-219-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-232-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
