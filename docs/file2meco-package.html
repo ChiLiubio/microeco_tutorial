@@ -24,7 +24,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-03-20" />
+<meta name="date" content="2022-03-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -350,12 +350,9 @@ can be easily achieved with the package file2meco (<a href="https://github.com/C
 <span id="cb200-4"><a href="file2meco-package.html#cb200-4" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb200-5"><a href="file2meco-package.html#cb200-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb200-6"><a href="file2meco-package.html#cb200-6" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb200-7"><a href="file2meco-package.html#cb200-7" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;tree.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb200-8"><a href="file2meco-package.html#cb200-8" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_rep_set.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb200-9"><a href="file2meco-package.html#cb200-9" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
-<span id="cb200-10"><a href="file2meco-package.html#cb200-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path)</span>
-<span id="cb200-11"><a href="file2meco-package.html#cb200-11" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span>
-<span id="cb200-12"><a href="file2meco-package.html#cb200-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path, <span class="at">phylo_tree =</span> phylo_file_path, <span class="at">rep_fasta =</span> rep_fasta_path)</span></code></pre></div>
+<span id="cb200-7"><a href="file2meco-package.html#cb200-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb200-8"><a href="file2meco-package.html#cb200-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path)</span>
+<span id="cb200-9"><a href="file2meco-package.html#cb200-9" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(<span class="at">ASV_data =</span> abund_file_path, <span class="at">sample_data =</span> sample_file_path, <span class="at">taxonomy_data =</span> taxonomy_file_path)</span></code></pre></div>
 </div>
 <div id="humann-metagenomic-results" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> HUMAnN metagenomic results<a href="file2meco-package.html#humann-metagenomic-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -403,7 +400,7 @@ Currently, it supports both the MetaCyc (<a href="https://metacyc.org/" class="u
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="file2meco-package.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use KEGG pathway based HUMAnN result</span></span>
 <span id="cb202-2"><a href="file2meco-package.html#cb202-2" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_HUMAnN_KEGG_abund.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb202-3"><a href="file2meco-package.html#cb202-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
-<span id="cb202-4"><a href="file2meco-package.html#cb202-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(level1 <span class="sc">!=</span> <span class="st">&quot;unclassified&quot;</span>)</span>
+<span id="cb202-4"><a href="file2meco-package.html#cb202-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Level<span class="fl">.1</span> <span class="sc">!=</span> <span class="st">&quot;unclassified&quot;</span>)</span>
 <span id="cb202-5"><a href="file2meco-package.html#cb202-5" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span></code></pre></div>
 </div>
 <div id="metaphlan" class="section level2 hasAnchor" number="8.4">

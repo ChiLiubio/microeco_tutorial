@@ -28,6 +28,8 @@ theseus [@Price_theseus_2018], rANOMALY [@Theil_rANOMALY_2021],
 MicrobiomeExplorer [@Reeder_MicrobiomeExplorer_2021],
 tidyMicro [@Carpenter_tidyMicro_2021], microbial (https://github.com/guokai8/microbial), 
 and so on.
+In addition, some web tools associated with R language are also useful for microbial community data analysis, 
+such as Shiny-phyloseq [@McMurdie_Shiny_2015], Mian [@Jin_Mian_2021] and animalcules [@Zhao_animalcules_2021].
 However, users still lack a flexible, comprehensive and modularized R package to analyze and manage the data easily.
 So we created the microeco R package [@Liu_microeco_2021] for this goal (https://github.com/ChiLiubio/microeco).
 Besides, we also develop the file2meco package (https://github.com/ChiLiubio/file2meco) for the data input from some famous tools easily
@@ -2100,12 +2102,9 @@ library(file2meco)
 abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
-phylo_file_path <- system.file("extdata", "tree.qza", package="file2meco")
-rep_fasta_path <- system.file("extdata", "dada2_rep_set.qza", package="file2meco")
 # construct microtable object
 qiime2meco(ASV_data = abund_file_path)
 qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
-qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path, phylo_tree = phylo_file_path, rep_fasta = rep_fasta_path)
 ```
 
 
@@ -2162,7 +2161,7 @@ test1$plot_lefse_bar(LDA_score = 2)
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
 test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
-test$tax_table %<>% subset(level1 != "unclassified")
+test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
 ```
 
@@ -2321,12 +2320,12 @@ match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", 
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
 # match_table parameter can be used to replace sample names
 test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
-# remove the unclassified pathway in the top level
-test$tax_table %<>% subset(level1 != "unclassified")
+# remove the unclassified pathway in Level.1
+test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
 # rel = FALSE donot use relative abundance, use the raw RPK
 test$cal_abund(select_cols = 1:3, rel = FALSE)
-test1 <- trans_abund$new(test, taxrank = "level2", ntaxa = 10)
+test1 <- trans_abund$new(test, taxrank = "Level.2", ntaxa = 10)
 test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RColorBrewer::brewer.pal(12, "Set3"))
 ```
 
@@ -2338,8 +2337,8 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 
 ```{r, echo = TRUE, eval = FALSE}
 # This operation is more flexible
-test$cal_abund(select_cols = c("level1", "Phylum", "Genus"), rel = FALSE)
-test$taxa_abund$level1 %<>% .[!grepl("unclass", rownames(.)), ]
+test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
+test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
 test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RColorBrewer::brewer.pal(12, "Set3"))
@@ -2734,7 +2733,9 @@ We encourage users to contribute some unique, special or helpful examples inspir
 
 ## Custom taxa order in bar plot
 
-Jarrod J. Scott contribute a cool answer to the question that how to use custom taxa and the order in bar plot.
+The flexibility of the package design can be reflected on many aspects.
+In some cases, it is possible to tactfully handle some particular challenges.
+For example, Dr.Jarrod contribute a cool answer to the question that how to use custom taxa and the order in bar plot by modifying the data inside the object.
 This is a discussion topic in microeco Discussions part. Here is the link (https://github.com/ChiLiubio/microeco/discussions/45).
 
 

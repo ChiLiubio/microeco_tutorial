@@ -39,12 +39,9 @@ library(file2meco)
 abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
-phylo_file_path <- system.file("extdata", "tree.qza", package="file2meco")
-rep_fasta_path <- system.file("extdata", "dada2_rep_set.qza", package="file2meco")
 # construct microtable object
 qiime2meco(ASV_data = abund_file_path)
 qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
-qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path, phylo_tree = phylo_file_path, rep_fasta = rep_fasta_path)
 ```
 
 
@@ -101,7 +98,7 @@ test1$plot_lefse_bar(LDA_score = 2)
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
 test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
-test$tax_table %<>% subset(level1 != "unclassified")
+test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
 ```
 
