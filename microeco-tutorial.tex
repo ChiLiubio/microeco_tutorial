@@ -298,7 +298,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \begin{Highlighting}[]
 \CommentTok{\# If a package is not installed, it will be installed from CRAN.}
 \CommentTok{\# First select the packages of interest}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -2550,7 +2550,8 @@ as the environmental measurements and functional data are generally explainable 
 \hypertarget{example-8}{%
 \subsection{Example}\label{example-8}}
 
-We first show the RDA analysis (db-RDA and RDA).
+Creating trans\_env object has at least two ways.
+The following is using additional environmental data which is not in the microtable object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2558,6 +2559,39 @@ We first show the RDA analysis (db-RDA and RDA).
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
+
+Maybe a more general way is to directly use the data from sample\_table of your microtable object.
+To show this operation, we first merge additional table into sample\_table to generate a new microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new\_test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{new\_test}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(new\_test}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(new\_test}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\CommentTok{\# now new\_test$sample\_table has the whole data}
+\NormalTok{new\_test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable class:
+## sample_table have 90 rows and 15 columns
+## otu_table have 12766 rows and 90 columns
+## tax_table have 12766 rows and 7 columns
+## phylo_tree have 12766 tips
+## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Beta diversity: calculated for bray,jaccard
+\end{verbatim}
+
+Now let's use env\_cols to select the required columns from sample\_table in the microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ new\_test, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We first show the RDA analysis (db-RDA and RDA).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2746,6 +2780,8 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
 \tightlist
 \item
   complete\_na parameter in trans\_env\$new: used to fill the NA (missing value) of the environmental data based on the mice package.
+\item
+  env\_cols parameter in trans\_env\$new: select the variables from sample\_table of your microtable object.
 \item
   add\_abund\_table parameter in cal\_cor: other customized data can be also provided for the correlation analysis.
 \item
@@ -3561,7 +3597,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-232-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-234-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3598,7 +3634,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-233-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-235-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

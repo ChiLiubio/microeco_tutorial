@@ -10,12 +10,30 @@ as the environmental measurements and functional data are generally explainable 
 
 ### Example
 
-We first show the RDA analysis (db-RDA and RDA).
-
+Creating trans_env object has at least two ways.
+The following is using additional environmental data which is not in the microtable object.
 ```{r, echo = TRUE}
 # add_data is used to add the environmental data
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 ```
+
+Maybe a more general way is to directly use the data from sample_table of your microtable object.
+To show this operation, we first merge additional table into sample_table to generate a new microtable object.
+
+```{r, echo = TRUE}
+new_test <- clone(dataset)
+new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
+# now new_test$sample_table has the whole data
+new_test
+```
+
+Now let's use env_cols to select the required columns from sample_table in the microtable object.
+
+```{r, echo = TRUE}
+t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+```
+
+We first show the RDA analysis (db-RDA and RDA).
 
 ```{r, echo = TRUE, eval = FALSE}
 # use bray-curtis distance to do dbrda
@@ -165,6 +183,7 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
 ### Key points
 
   + complete_na parameter in trans_env$new: used to fill the NA (missing value) of the environmental data based on the mice package.
+  + env_cols parameter in trans_env$new: select the variables from sample_table of your microtable object.
   + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
   + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
   + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.
