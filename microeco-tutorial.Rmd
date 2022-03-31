@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.7.0)"
+title: "Tutorial for R microeco package (v0.7.1)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -50,6 +50,15 @@ apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 Before starting the specific usage of each class, let's first learn several key points.
+
+## Framework
+
+This is a framework for users to fast understand the design of the microeco package. 
+
+```{r, out.width = "8000px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/microeco_framework.png")
+```
+
 
 ## R6 Class
 
@@ -1851,6 +1860,7 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
 
 ### Key points
 
+  + complete_na parameter in trans_env$new: used to fill the NA (missing value) of the environmental data based on the mice package.
   + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
   + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
   + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.

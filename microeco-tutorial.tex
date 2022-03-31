@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.7.0)},
+  pdftitle={Tutorial for R microeco package (v0.7.1)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.7.0)}
+\title{Tutorial for R microeco package (v0.7.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-03-23}
+\date{2022-03-31}
 
 \begin{document}
 \maketitle
@@ -169,6 +169,13 @@ apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 Before starting the specific usage of each class, let's first learn several key points.
+
+\hypertarget{framework}{%
+\section{Framework}\label{framework}}
+
+This is a framework for users to fast understand the design of the microeco package.
+
+\begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
 
 \hypertarget{r6-class}{%
 \section{R6 Class}\label{r6-class}}
@@ -1114,7 +1121,7 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=40in]{Images/plot_bar_allu} \end{center}
+\begin{center}\includegraphics{Images/plot_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
 
@@ -2738,6 +2745,8 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
 \begin{itemize}
 \tightlist
 \item
+  complete\_na parameter in trans\_env\$new: used to fill the NA (missing value) of the environmental data based on the mice package.
+\item
   add\_abund\_table parameter in cal\_cor: other customized data can be also provided for the correlation analysis.
 \item
   use\_cor parameter in plot\_scatterfit: both the correlation and regression are available in this function.
@@ -3552,7 +3561,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-231-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-232-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3589,7 +3598,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-232-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-233-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

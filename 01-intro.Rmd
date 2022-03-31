@@ -11,6 +11,15 @@ Main files stored in the object of each class are the frequently-used data.frame
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
 Before starting the specific usage of each class, let's first learn several key points.
 
+## Framework
+
+This is a framework for users to fast understand the design of the microeco package. 
+
+```{r, out.width = "8000px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/microeco_framework.png")
+```
+
+
 ## R6 Class
 
 All the classes in microeco package depend on the R6 class [@R6_Winston]. 
@@ -86,7 +95,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x", "FSA")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
