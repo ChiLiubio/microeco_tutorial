@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.7.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-03-31}
+\date{2022-04-02}
 
 \begin{document}
 \maketitle
@@ -1018,6 +1018,42 @@ The phylogenetic tree can be read with read.tree function in ape package.
 \end{Highlighting}
 \end{Shaded}
 
+Other functions and examples are listed here.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# clone a complete dataset named test}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+
+\CommentTok{\# add the rownames of tax\_table as the last column of tax\_table directly; very useful in some analysis, e.g. OTU/ASV biomarker finding.}
+\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{add\_rownames2taxonomy}\NormalTok{(}\AttributeTok{use\_name =} \StringTok{"OTU"}\NormalTok{)}
+\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
+
+\CommentTok{\# sum the abundance for each taxa; very useful for taxa abundance checking and filtering}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_sums}\NormalTok{()}
+
+\CommentTok{\# merge samples according to a specific group of sample\_table to generate a new microtable object}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test1}
+
+\CommentTok{\# merge taxa according to a specific taxonomic rank level of tax\_table to generate a new microtable object}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{test1}
+
+\CommentTok{\# rename feature names in all the files of microtable object}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{rename\_taxa}\NormalTok{(}\AttributeTok{newname\_prefix =} \StringTok{"new\_name\_"}\NormalTok{)}
+\FunctionTok{rownames}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{otu\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\FunctionTok{rownames}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+
+\CommentTok{\# output sample names in microtable object}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{sample\_names}\NormalTok{()[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+
+\CommentTok{\# output taxa names in microtable object}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_names}\NormalTok{()[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{key-points}{%
 \subsection{Key points}\label{key-points}}
 
@@ -1034,32 +1070,13 @@ The phylogenetic tree can be read with read.tree function in ape package.
 \item
   tidy\_dataset(): necessary to clean files in microtable object
 \item
+  add\_rownames2taxonomy(): add the rownames of tax\_table as the last column of tax\_table
+\item
   cal\_abund(): powerful and flexible to cope with complex cases in tax\_table, see the parameters
 \item
   taxa\_abund: taxa\_abund is a list stored in microtable object and have several data frame
 \item
   beta\_diversity: beta\_diversity is also a list stored in microtable object and have several distance matrix
-\end{itemize}
-
-\hypertarget{other-functions}{%
-\subsection{Other functions}\label{other-functions}}
-
-\begin{itemize}
-\tightlist
-\item
-  add\_rownames2taxonomy(): add the rownames of tax\_table as the last column of tax\_table directly; very useful in some analysis, e.g.~OTU/ASV biomarker finding.
-\item
-  taxa\_sums(): sum the abundance for each taxa; very useful for taxa abundance checking and filtering
-\item
-  merge\_samples(): merge samples according to a specific group of sample\_table to generate a new microtable object
-\item
-  merge\_taxa(): merge taxa according to a specific taxonomic rank level of tax\_table to generate a new microtable object
-\item
-  rename\_taxa(): rename the OTU/ASV names in all the files of microtable object
-\item
-  sample\_names(): output sample names in microtable object
-\item
-  taxa\_names(): output taxa names in microtable object
 \end{itemize}
 
 \hypertarget{composition-based-class}{%
@@ -2139,7 +2156,7 @@ and add the julia in the computer path.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# cal\_cor select NA}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
 \CommentTok{\# require Julia in the computer path, and the package FlashWeave}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"PGM"}\NormalTok{)}
 \CommentTok{\# see t1$res\_network}
@@ -2155,8 +2172,8 @@ and add the julia in the computer path.
   subset\_network(): this function can extract any sub-network according to the input nodes, e.g.~sub-network for modules or samples
 \end{itemize}
 
-\hypertarget{other-functions-1}{%
-\subsection{Other functions}\label{other-functions-1}}
+\hypertarget{other-functions}{%
+\subsection{Other functions}\label{other-functions}}
 
 \begin{itemize}
 \tightlist
@@ -3597,7 +3614,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-234-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-235-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3634,7 +3651,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-235-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-236-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
