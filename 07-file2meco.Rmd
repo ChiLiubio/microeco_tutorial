@@ -35,13 +35,22 @@ The qiime2meco() function is designed to create the microtable object using file
 ```{r, echo = TRUE, eval = FALSE}
 library(file2meco)
 ?qiime2meco
-# use data files inside the package which were downloaded from (https://docs.qiime2.org/2020.8/tutorials/pd-mice/).
+# use data files inside the package which were downloaded from (https://docs.qiime2.org/2022.2/tutorials/moving-pictures-usage/).
 abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
 qiime2meco(ASV_data = abund_file_path)
 qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+# add phylogenetic tree and fasta for more demonstrations
+# please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/tree.qza
+# the file name is 'tree.qza'
+tree_data <- "tree.qza"
+# please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/dada2_rep_set.qza
+# the file name is 'dada2_rep_set.qza'
+rep_data <- "dada2_rep_set.qza"
+test1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path, phylo_tree = tree_data, rep_fasta = rep_data, auto_tidy = TRUE)
+test1
 ```
 
 

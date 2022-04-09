@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.7.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-04-02}
+\date{2022-04-09}
 
 \begin{document}
 \maketitle
@@ -176,6 +176,9 @@ Before starting the specific usage of each class, let's first learn several key 
 This is a framework for users to fast understand the design of the microeco package.
 
 \begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
+
+The stored `Functions' and `Files' in `Basic class' represent that you can access those functions or files using \$ operator
+as we show in the figure, e.g., function \texttt{dataset\$cal\_alphadiv()} and its returned result \texttt{dataset\$alpha\_diversity}.
 
 \hypertarget{r6-class}{%
 \section{R6 Class}\label{r6-class}}
@@ -576,7 +579,7 @@ Crenarchaeotic Group & c\_\_ \\
 
 Generally, users' taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
-So it is usually necessary to clean this data using the \textbf{tidy\_taxonomy} function.
+So it is usually necessary to clean this data using the \texttt{tidy\_taxonomy} function.
 Another very important result of this operation is to \textbf{unify the taxonomic prefix} automatically,
 e.g.~transforming D\_1\_\_ to p\_\_ for phylum level or adding p\_\_ to phylum directly.
 
@@ -780,7 +783,7 @@ We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chlorop
 ## phylo_tree have 14096 tips
 \end{verbatim}
 
-To make the OTU and sample information consistent across all files in the dataset object, we use function \textbf{tidy\_dataset} to trim the dataset.
+To make the OTU and sample information consistent across all files in the dataset object, we use function \texttt{tidy\_dataset} to trim the dataset.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -811,7 +814,7 @@ Then let's use sample\_sums() to check the sequence numbers in each sample.
 
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 it is optional perform the resampling to make the sequence number equal for each sample.
-The function rarefy\_samples can invoke the function tidy\_dataset automatically before and after the rarefying.
+The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_dataset} automatically before and after the rarefying.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -841,7 +844,7 @@ The function rarefy\_samples can invoke the function tidy\_dataset automatically
 Then, let's calculate the taxa abundance at each taxonomic rank using cal\_abund().
 This function \textbf{return a list called taxa\_abund stored in the microtable object}.
 This list contain several data frame of the abundance information at each taxonomic rank.
-It's worth noting that the cal\_abund() function can be used to \textbf{solve more complicated cases with special parameters},
+It's worth noting that the \texttt{cal\_abund()} function can be used to \textbf{solve more complicated cases with special parameters},
 such as supporting both the relative and absolute abundance calculation and selecting the partial `taxonomic' columns.
 Those have been shown in file2meco package part (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html\#humann-metagenomic-results}) with complex metagenomic dataset.
 
@@ -893,7 +896,7 @@ Those have been shown in file2meco package part (\url{https://chiliubio.github.i
 \bottomrule
 \end{longtable}
 
-The function save\_abund() can be used to save the taxa abundance file to a local place easily.
+The function \texttt{save\_abund()} can be used to save the taxa abundance file to a local place easily.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -934,7 +937,7 @@ For the definition of each alpha diversity index, please see \url{http://scikit-
 \end{Highlighting}
 \end{Shaded}
 
-Let's go on to beta diversity with function cal\_betadiv().
+Let's go on to beta diversity with function \texttt{cal\_betadiv()}.
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
 \begin{Shaded}
@@ -954,7 +957,7 @@ We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Uni
 
 From v0.7.0, the microtable\$new has a new parameter auto\_tidy. if auto\_tidy = TRUE, the function can automatically use tidy\_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
-the class can not recognize this modification, the user should use tidy\_dataset function to manually trim the microtable object.
+the class can not recognize this modification, the user should use \texttt{tidy\_dataset} function to manually trim the microtable object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1008,7 +1011,7 @@ the class can not recognize this modification, the user should use tidy\_dataset
 ## otu_table have 8864 rows and 10 columns
 \end{verbatim}
 
-The phylogenetic tree can be read with read.tree function in ape package.
+The phylogenetic tree can be read with \texttt{read.tree} function in ape package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1064,19 +1067,19 @@ Other functions and examples are listed here.
 \item
   otu\_table: rownames must be feature names; colnames must be sample names
 \item
-  microtable class: creating microtable object requires at least one file input (otu\_table)
+  \texttt{microtable} class: creating microtable object requires at least one file input (otu\_table)
 \item
-  tidy\_taxonomy(): necessary to make taxonomic table have unified format
+  \texttt{tidy\_taxonomy()}: necessary to make taxonomic table have unified format
 \item
-  tidy\_dataset(): necessary to clean files in microtable object
+  \texttt{tidy\_dataset()}: necessary to clean files in microtable object
 \item
-  add\_rownames2taxonomy(): add the rownames of tax\_table as the last column of tax\_table
+  \texttt{add\_rownames2taxonomy()}: add the rownames of tax\_table as the last column of tax\_table
 \item
-  cal\_abund(): powerful and flexible to cope with complex cases in tax\_table, see the parameters
+  \texttt{cal\_abund()}: powerful and flexible to cope with complex cases in tax\_table, see the parameters
 \item
   taxa\_abund: taxa\_abund is a list stored in microtable object and have several data frame
 \item
-  beta\_diversity: beta\_diversity is also a list stored in microtable object and have several distance matrix
+  beta\_diversity: beta\_diversity is a list stored in microtable object and have several distance matrix
 \end{itemize}
 
 \hypertarget{composition-based-class}{%
@@ -1267,7 +1270,15 @@ For this goal, we first transform the results of venn plot to the traditional sp
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$venn_table and object$venn_count_abund ...
+## The names is stored in object$res_names ...
+\end{verbatim}
+
+\begin{verbatim}
+## The details of each venn part is stored in object$res_content ...
+\end{verbatim}
+
+\begin{verbatim}
+## The summary table used for plot is stored in object$res_summary_table ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -3162,13 +3173,22 @@ The qiime2meco() function is designed to create the microtable object using file
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(file2meco)}
 \NormalTok{?qiime2meco}
-\CommentTok{\# use data files inside the package which were downloaded from (https://docs.qiime2.org/2020.8/tutorials/pd{-}mice/).}
+\CommentTok{\# use data files inside the package which were downloaded from (https://docs.qiime2.org/2022.2/tutorials/moving{-}pictures{-}usage/).}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# construct microtable object}
 \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path)}
 \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\CommentTok{\# add phylogenetic tree and fasta for more demonstrations}
+\CommentTok{\# please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd{-}mice/tree.qza}
+\CommentTok{\# the file name is \textquotesingle{}tree.qza\textquotesingle{}}
+\NormalTok{tree\_data }\OtherTok{\textless{}{-}} \StringTok{"tree.qza"}
+\CommentTok{\# please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd{-}mice/dada2\_rep\_set.qza}
+\CommentTok{\# the file name is \textquotesingle{}dada2\_rep\_set.qza\textquotesingle{}}
+\NormalTok{rep\_data }\OtherTok{\textless{}{-}} \StringTok{"dada2\_rep\_set.qza"}
+\NormalTok{test1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ tree\_data, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_data, }\AttributeTok{auto\_tidy =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test1}
 \end{Highlighting}
 \end{Shaded}
 

@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-04-02" />
+<meta name="date" content="2022-04-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -321,16 +321,16 @@ div.csl-indent {
 <h2><span class="header-section-number">10.1</span> clone() function<a href="notes.html#clone-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>R6 class has a special copy mechanism which is different from S3 and S4.
 <strong>If you want to copy an object completely, you should use the function clone() instead of direct assignment.</strong></p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="notes.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use clone to copy completely</span></span>
-<span id="cb218-2"><a href="notes.html#cb218-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb218-3"><a href="notes.html#cb218-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(t1)</span>
-<span id="cb218-4"><a href="notes.html#cb218-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb218-5"><a href="notes.html#cb218-5" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(t2, t1)</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="notes.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use clone to copy completely</span></span>
+<span id="cb220-2"><a href="notes.html#cb220-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb220-3"><a href="notes.html#cb220-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(t1)</span>
+<span id="cb220-4"><a href="notes.html#cb220-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb220-5"><a href="notes.html#cb220-5" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(t2, t1)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="notes.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this operation is usually unuseful, because changing t2 will also affect t1</span></span>
-<span id="cb220-2"><a href="notes.html#cb220-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> t1</span>
-<span id="cb220-3"><a href="notes.html#cb220-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb220-4"><a href="notes.html#cb220-4" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(t2, t1)</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="notes.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this operation is usually unuseful, because changing t2 will also affect t1</span></span>
+<span id="cb222-2"><a href="notes.html#cb222-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> t1</span>
+<span id="cb222-3"><a href="notes.html#cb222-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb222-4"><a href="notes.html#cb222-4" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(t2, t1)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="save-function" class="section level2 hasAnchor" number="10.2">
@@ -339,11 +339,11 @@ div.csl-indent {
 By applying R6 classes, the analyzed data in ‘R Environment’ can have minimum numbers of the intermediate files and can reduce memory spending.
 It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
 This is also the recommended way to send data for testing in ‘Github Issues.’</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="notes.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save &#39;dataset&#39; to local computer</span></span>
-<span id="cb222-2"><a href="notes.html#cb222-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(dataset, <span class="at">file =</span> <span class="st">&quot;dataset.RData&quot;</span>)</span>
-<span id="cb222-3"><a href="notes.html#cb222-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset.RData can be compressed into zip format for the upload in &#39;Github Issues&#39;</span></span>
-<span id="cb222-4"><a href="notes.html#cb222-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data by others in their R project</span></span>
-<span id="cb222-5"><a href="notes.html#cb222-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;dataset.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="notes.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save &#39;dataset&#39; to local computer</span></span>
+<span id="cb224-2"><a href="notes.html#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(dataset, <span class="at">file =</span> <span class="st">&quot;dataset.RData&quot;</span>)</span>
+<span id="cb224-3"><a href="notes.html#cb224-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset.RData can be compressed into zip format for the upload in &#39;Github Issues&#39;</span></span>
+<span id="cb224-4"><a href="notes.html#cb224-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data by others in their R project</span></span>
+<span id="cb224-5"><a href="notes.html#cb224-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;dataset.RData&quot;</span>)</span></code></pre></div>
 <p>The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
 So it is repeatable.</p>
 </div>
@@ -352,12 +352,12 @@ So it is repeatable.</p>
 <p>We donnot provide the special function to filter samples in microtable class, as we think it is redundant.
 <strong>We recommend user to directly manipulate the sample_table in microtable object.</strong>
 For example, if we want to analyze samples from ‘CW’ and ‘IW,’ respectively, we can operate like this:</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="notes.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remember first clone the full dataset</span></span>
-<span id="cb223-2"><a href="notes.html#cb223-2" aria-hidden="true" tabindex="-1"></a>group1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb223-3"><a href="notes.html#cb223-3" aria-hidden="true" tabindex="-1"></a>group1<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">subset</span>(group1<span class="sc">$</span>sample_table, Group <span class="sc">==</span> <span class="st">&quot;CW&quot;</span>)</span>
-<span id="cb223-4"><a href="notes.html#cb223-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this is necessary to make files in group1 corresponding</span></span>
-<span id="cb223-5"><a href="notes.html#cb223-5" aria-hidden="true" tabindex="-1"></a>group1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb223-6"><a href="notes.html#cb223-6" aria-hidden="true" tabindex="-1"></a>group1</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="notes.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remember first clone the full dataset</span></span>
+<span id="cb225-2"><a href="notes.html#cb225-2" aria-hidden="true" tabindex="-1"></a>group1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb225-3"><a href="notes.html#cb225-3" aria-hidden="true" tabindex="-1"></a>group1<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">subset</span>(group1<span class="sc">$</span>sample_table, Group <span class="sc">==</span> <span class="st">&quot;CW&quot;</span>)</span>
+<span id="cb225-4"><a href="notes.html#cb225-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this is necessary to make files in group1 corresponding</span></span>
+<span id="cb225-5"><a href="notes.html#cb225-5" aria-hidden="true" tabindex="-1"></a>group1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb225-6"><a href="notes.html#cb225-6" aria-hidden="true" tabindex="-1"></a>group1</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 30 rows and 4 columns
 ## otu_table have 9727 rows and 30 columns
@@ -366,42 +366,42 @@ For example, if we want to analyze samples from ‘CW’ and ‘IW,’ respectiv
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
 ## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="notes.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># similar with obove operation</span></span>
-<span id="cb225-2"><a href="notes.html#cb225-2" aria-hidden="true" tabindex="-1"></a>group2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb225-3"><a href="notes.html#cb225-3" aria-hidden="true" tabindex="-1"></a>group2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">subset</span>(group2<span class="sc">$</span>sample_table, Group <span class="sc">==</span> <span class="st">&quot;IW&quot;</span>)</span>
-<span id="cb225-4"><a href="notes.html#cb225-4" aria-hidden="true" tabindex="-1"></a>group2<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb225-5"><a href="notes.html#cb225-5" aria-hidden="true" tabindex="-1"></a><span class="co"># now we get two microtable objects: group1 for CW and group2 for IW</span></span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="notes.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="co"># similar with obove operation</span></span>
+<span id="cb227-2"><a href="notes.html#cb227-2" aria-hidden="true" tabindex="-1"></a>group2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb227-3"><a href="notes.html#cb227-3" aria-hidden="true" tabindex="-1"></a>group2<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">subset</span>(group2<span class="sc">$</span>sample_table, Group <span class="sc">==</span> <span class="st">&quot;IW&quot;</span>)</span>
+<span id="cb227-4"><a href="notes.html#cb227-4" aria-hidden="true" tabindex="-1"></a>group2<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb227-5"><a href="notes.html#cb227-5" aria-hidden="true" tabindex="-1"></a><span class="co"># now we get two microtable objects: group1 for CW and group2 for IW</span></span></code></pre></div>
 </div>
 <div id="change-object" class="section level2 hasAnchor" number="10.4">
 <h2><span class="header-section-number">10.4</span> change object<a href="notes.html#change-object" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All the classes are set public, meaning that you can <strong>change, add or remove the objects stored in them as you want</strong>.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="notes.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add a matrix you think useful</span></span>
-<span id="cb226-2"><a href="notes.html#cb226-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
-<span id="cb226-3"><a href="notes.html#cb226-3" aria-hidden="true" tabindex="-1"></a><span class="co"># change the information</span></span>
-<span id="cb226-4"><a href="notes.html#cb226-4" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[, <span class="sc">-</span><span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="notes.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add a matrix you think useful</span></span>
+<span id="cb228-2"><a href="notes.html#cb228-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb228-3"><a href="notes.html#cb228-3" aria-hidden="true" tabindex="-1"></a><span class="co"># change the information</span></span>
+<span id="cb228-4"><a href="notes.html#cb228-4" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[, <span class="sc">-</span><span class="dv">2</span>]</span></code></pre></div>
 </div>
 <div id="group-order" class="section level2 hasAnchor" number="10.5">
 <h2><span class="header-section-number">10.5</span> group order<a href="notes.html#group-order" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you want to reorder the groups, <strong>assign the factors may be the most simplest way.</strong></p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="notes.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb227-2"><a href="notes.html#cb227-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
-<span id="cb227-3"><a href="notes.html#cb227-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="notes.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb229-2"><a href="notes.html#cb229-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb229-3"><a href="notes.html#cb229-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span></code></pre></div>
 <pre><code>## The ordination result is stored in object$res_ordination ...</code></pre>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="notes.html#cb229-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_group_ellipse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="notes.html#cb231-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_group_ellipse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="microeco-tutorial_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
 <p>Then we assign factors to the ‘Group’ in sample_table of dataset.
 We can find the changed group order in the legend and colors in the plot.</p>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="notes.html#cb230-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>sample_table<span class="sc">$</span>Group <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>))</span>
-<span id="cb230-2"><a href="notes.html#cb230-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataset<span class="sc">$</span>sample_table)</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="notes.html#cb232-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>sample_table<span class="sc">$</span>Group <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>))</span>
+<span id="cb232-2"><a href="notes.html#cb232-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataset<span class="sc">$</span>sample_table)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    90 obs. of  4 variables:
 ##  $ SampleID: chr  &quot;S1&quot; &quot;S2&quot; &quot;S3&quot; &quot;S4&quot; ...
 ##  $ Group   : Factor w/ 3 levels &quot;IW&quot;,&quot;TW&quot;,&quot;CW&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Type    : chr  &quot;NE&quot; &quot;NE&quot; &quot;NE&quot; &quot;NE&quot; ...
 ##  $ Saline  : chr  &quot;Non-saline soil&quot; &quot;Non-saline soil&quot; &quot;Non-saline soil&quot; &quot;Non-saline soil&quot; ...</code></pre>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="notes.html#cb232-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
-<span id="cb232-2"><a href="notes.html#cb232-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="notes.html#cb234-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb234-2"><a href="notes.html#cb234-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span></code></pre></div>
 <pre><code>## The ordination result is stored in object$res_ordination ...</code></pre>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="notes.html#cb234-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_group_ellipse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="notes.html#cb236-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_group_ellipse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="microeco-tutorial_files/figure-html/unnamed-chunk-236-1.png" width="672" /></p>
 </div>
 <div id="add-layers-to-plot" class="section level2 hasAnchor" number="10.6">
@@ -410,10 +410,10 @@ We can find the changed group order in the legend and colors in the plot.</p>
 The important parameters in the plotting functions are configured according to our experience.
 If the inner parameters can not enough, the user can add the layers to the plot like the following operation or
 make the plot using the data (generally data.frame class) stored in the object.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="notes.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The groupmean parameter can be used to obtain the group-mean barplot.</span></span>
-<span id="cb235-2"><a href="notes.html#cb235-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb235-3"><a href="notes.html#cb235-3" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">others_color =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb235-4"><a href="notes.html#cb235-4" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="notes.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The groupmean parameter can be used to obtain the group-mean barplot.</span></span>
+<span id="cb237-2"><a href="notes.html#cb237-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb237-3"><a href="notes.html#cb237-3" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">others_color =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb237-4"><a href="notes.html#cb237-4" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>))</span></code></pre></div>
 <p><img src="Images/plot_bar_mean_classic.png" width="400px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="colors-for-many-groups" class="section level2 hasAnchor" number="10.7">
@@ -422,17 +422,17 @@ make the plot using the data (generally data.frame class) stored in the object.<
 such as RColorBrewer::brewer.pal(12, “Paired”).
 If the user has too many groups (e.g. 20), the color_palette_20 can be used. It has 20 colors with paired combinations.
 If this is still not enough, the randomcoloR package can be used for generating more colors.</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="notes.html#cb236-1" aria-hidden="true" tabindex="-1"></a>color_palette_20</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="notes.html#cb238-1" aria-hidden="true" tabindex="-1"></a>color_palette_20</span></code></pre></div>
 <pre><code>##  [1] &quot;#1f77b4&quot; &quot;#aec7e8&quot; &quot;#ff7f0e&quot; &quot;#ffbb78&quot; &quot;#2ca02c&quot; &quot;#98df8a&quot; &quot;#d62728&quot;
 ##  [8] &quot;#ff9896&quot; &quot;#9467bd&quot; &quot;#c5b0d5&quot; &quot;#8c564b&quot; &quot;#c49c94&quot; &quot;#e377c2&quot; &quot;#f7b6d2&quot;
 ## [15] &quot;#7f7f7f&quot; &quot;#c7c7c7&quot; &quot;#bcbd22&quot; &quot;#dbdb8d&quot; &quot;#17becf&quot; &quot;#9edae5&quot;</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="notes.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">col =</span> color_palette_20)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="notes.html#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">col =</span> color_palette_20)</span></code></pre></div>
 </div>
 <div id="customized-data-input" class="section level2 hasAnchor" number="10.8">
 <h2><span class="header-section-number">10.8</span> customized data input<a href="notes.html#customized-data-input" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL dataset input for some customized usage of some functions in those classes.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="notes.html#cb239-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb239-2"><a href="notes.html#cb239-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> <span class="cn">NULL</span>, <span class="at">group =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="notes.html#cb241-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb241-2"><a href="notes.html#cb241-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> <span class="cn">NULL</span>, <span class="at">group =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 
 </div>
 </div>

@@ -90,7 +90,7 @@ pander::pander(taxonomy_table_16S[1:5, 1:3])
 
 Generally, users' taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
-So it is usually necessary to clean this data using the **tidy_taxonomy** function.
+So it is usually necessary to clean this data using the `tidy_taxonomy` function.
 Another very important result of this operation is to **unify the taxonomic prefix** automatically,
 e.g. transforming D_1__ to p__ for phylum level or adding p__ to phylum directly.
 
@@ -177,7 +177,7 @@ print(dataset)
 ```
 
 
-To make the OTU and sample information consistent across all files in the dataset object, we use function **tidy_dataset** to trim the dataset.
+To make the OTU and sample information consistent across all files in the dataset object, we use function `tidy_dataset` to trim the dataset.
 
 
 ```{r, echo = TRUE}
@@ -195,7 +195,7 @@ dataset$sample_sums() %>% range
 
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 it is optional perform the resampling to make the sequence number equal for each sample.
-The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.
+The function `rarefy_samples` can invoke the function `tidy_dataset` automatically before and after the rarefying.
 
 ```{r, echo = TRUE}
 # As an example, use 10000 sequences in each sample
@@ -206,7 +206,7 @@ dataset$sample_sums() %>% range
 Then, let's calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function **return a list called taxa_abund stored in the microtable object**. 
 This list contain several data frame of the abundance information at each taxonomic rank.
-It's worth noting that the cal_abund() function can be used to **solve more complicated cases with special parameters**,
+It's worth noting that the `cal_abund()` function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
 Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic dataset.
 
@@ -227,7 +227,7 @@ pander::pander(dataset$taxa_abund$Phylum[1:5, 1:5])
 ```
 
 
-The function save_abund() can be used to save the taxa abundance file to a local place easily.
+The function `save_abund()` can be used to save the taxa abundance file to a local place easily.
 
 ```{r, echo = TRUE, eval = FALSE}
 dataset$save_abund(dirpath = "taxa_abund")
@@ -249,7 +249,7 @@ class(dataset$alpha_diversity)
 dataset$save_alphadiv(dirpath = "alpha_diversity")
 ```
 
-Let's go on to beta diversity with function cal_betadiv().
+Let's go on to beta diversity with function `cal_betadiv()`.
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.
 
 ```{r, echo = FALSE, eval = TRUE, message = FALSE}
@@ -270,7 +270,7 @@ dataset$save_betadiv(dirpath = "beta_diversity")
 
 From v0.7.0, the microtable$new has a new parameter auto_tidy. if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
-the class can not recognize this modification, the user should use tidy_dataset function to manually trim the microtable object.
+the class can not recognize this modification, the user should use `tidy_dataset` function to manually trim the microtable object.
 
 ```{r, echo = TRUE, eval = TRUE}
 test <- microtable$new(sample_table = sample_info_16S[1:40, ], otu_table = otu_table_16S, auto_tidy = FALSE)
@@ -283,7 +283,7 @@ test1$tidy_dataset()
 test1
 ```
 
-The phylogenetic tree can be read with read.tree function in ape package.
+The phylogenetic tree can be read with `read.tree` function in ape package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use the example data rep_phylo.tre in file2meco package https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#qiime
@@ -330,13 +330,13 @@ test$taxa_names()[1:5]
 
   + sample_table: rownames of sample_table must be sample names used
   + otu_table: rownames must be feature names; colnames must be sample names
-  + microtable class: creating microtable object requires at least one file input (otu_table)
-  + tidy_taxonomy(): necessary to make taxonomic table have unified format
-  + tidy_dataset(): necessary to clean files in microtable object
-  + add_rownames2taxonomy(): add the rownames of tax_table as the last column of tax_table
-  + cal_abund(): powerful and flexible to cope with complex cases in tax_table, see the parameters
+  + `microtable` class: creating microtable object requires at least one file input (otu_table)
+  + `tidy_taxonomy()`: necessary to make taxonomic table have unified format
+  + `tidy_dataset()`: necessary to clean files in microtable object
+  + `add_rownames2taxonomy()`: add the rownames of tax_table as the last column of tax_table
+  + `cal_abund()`: powerful and flexible to cope with complex cases in tax_table, see the parameters
   + taxa_abund: taxa_abund is a list stored in microtable object and have several data frame
-  + beta_diversity: beta_diversity is also a list stored in microtable object and have several distance matrix
+  + beta_diversity: beta_diversity is a list stored in microtable object and have several distance matrix
 
 
 

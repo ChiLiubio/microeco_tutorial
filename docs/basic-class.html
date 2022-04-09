@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-04-02" />
+<meta name="date" content="2022-04-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -491,7 +491,7 @@ Crenarchaeotic Group</td>
 </table>
 <p>Generally, users’ taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
-So it is usually necessary to clean this data using the <strong>tidy_taxonomy</strong> function.
+So it is usually necessary to clean this data using the <code>tidy_taxonomy</code> function.
 Another very important result of this operation is to <strong>unify the taxonomic prefix</strong> automatically,
 e.g. transforming D_1__ to p__ for phylum level or adding p__ to phylum directly.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="basic-class.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the taxonomic information unified, very important</span></span>
@@ -673,7 +673,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
 ## phylo_tree have 14096 tips</code></pre>
-<p>To make the OTU and sample information consistent across all files in the dataset object, we use function <strong>tidy_dataset</strong> to trim the dataset.</p>
+<p>To make the OTU and sample information consistent across all files in the dataset object, we use function <code>tidy_dataset</code> to trim the dataset.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basic-class.html#cb40-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
 <span id="cb40-2"><a href="basic-class.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
 <pre><code>## microtable class:
@@ -686,7 +686,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <pre><code>## [1] 10316 37087</code></pre>
 <p>Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 it is optional perform the resampling to make the sequence number equal for each sample.
-The function rarefy_samples can invoke the function tidy_dataset automatically before and after the rarefying.</p>
+The function <code>rarefy_samples</code> can invoke the function <code>tidy_dataset</code> automatically before and after the rarefying.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basic-class.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, use 10000 sequences in each sample</span></span>
 <span id="cb44-2"><a href="basic-class.html#cb44-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
 <pre><code>## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...</code></pre>
@@ -696,7 +696,7 @@ The function rarefy_samples can invoke the function tidy_dataset automatically b
 <p>Then, let’s calculate the taxa abundance at each taxonomic rank using cal_abund().
 This function <strong>return a list called taxa_abund stored in the microtable object</strong>.
 This list contain several data frame of the abundance information at each taxonomic rank.
-It’s worth noting that the cal_abund() function can be used to <strong>solve more complicated cases with special parameters</strong>,
+It’s worth noting that the <code>cal_abund()</code> function can be used to <strong>solve more complicated cases with special parameters</strong>,
 such as supporting both the relative and absolute abundance calculation and selecting the partial ‘taxonomic’ columns.
 Those have been shown in file2meco package part (<a href="https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results" class="uri">https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results</a>) with complex metagenomic dataset.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="basic-class.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use default parameters</span></span>
@@ -769,7 +769,7 @@ Those have been shown in file2meco package part (<a href="https://chiliubio.gith
 </tr>
 </tbody>
 </table>
-<p>The function save_abund() can be used to save the taxa abundance file to a local place easily.</p>
+<p>The function <code>save_abund()</code> can be used to save the taxa abundance file to a local place easily.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="basic-class.html#cb54-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
 <p>Then, let’s calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
@@ -782,7 +782,7 @@ For the definition of each alpha diversity index, please see <a href="http://sci
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="basic-class.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
 <span id="cb59-2"><a href="basic-class.html#cb59-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
-<p>Let’s go on to beta diversity with function cal_betadiv().
+<p>Let’s go on to beta diversity with function <code>cal_betadiv()</code>.
 We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="basic-class.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
 <span id="cb60-2"><a href="basic-class.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package installed</span></span>
@@ -796,7 +796,7 @@ We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Uni
 <h3><span class="header-section-number">3.1.2</span> Other examples<a href="basic-class.html#other-examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>From v0.7.0, the microtable$new has a new parameter auto_tidy. if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
-the class can not recognize this modification, the user should use tidy_dataset function to manually trim the microtable object.</p>
+the class can not recognize this modification, the user should use <code>tidy_dataset</code> function to manually trim the microtable object.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="basic-class.html#cb61-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb61-2"><a href="basic-class.html#cb61-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
 <pre><code>## microtable class:
@@ -817,7 +817,7 @@ the class can not recognize this modification, the user should use tidy_dataset 
 <pre><code>## microtable class:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 8864 rows and 10 columns</code></pre>
-<p>The phylogenetic tree can be read with read.tree function in ape package.</p>
+<p>The phylogenetic tree can be read with <code>read.tree</code> function in ape package.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="basic-class.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the example data rep_phylo.tre in file2meco package https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#qiime</span></span>
 <span id="cb69-2"><a href="basic-class.html#cb69-2" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb69-3"><a href="basic-class.html#cb69-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(phylo_file_path)</span></code></pre></div>
@@ -857,13 +857,13 @@ the class can not recognize this modification, the user should use tidy_dataset 
 <ul>
 <li>sample_table: rownames of sample_table must be sample names used</li>
 <li>otu_table: rownames must be feature names; colnames must be sample names</li>
-<li>microtable class: creating microtable object requires at least one file input (otu_table)</li>
-<li>tidy_taxonomy(): necessary to make taxonomic table have unified format</li>
-<li>tidy_dataset(): necessary to clean files in microtable object</li>
-<li>add_rownames2taxonomy(): add the rownames of tax_table as the last column of tax_table</li>
-<li>cal_abund(): powerful and flexible to cope with complex cases in tax_table, see the parameters</li>
+<li><code>microtable</code> class: creating microtable object requires at least one file input (otu_table)</li>
+<li><code>tidy_taxonomy()</code>: necessary to make taxonomic table have unified format</li>
+<li><code>tidy_dataset()</code>: necessary to clean files in microtable object</li>
+<li><code>add_rownames2taxonomy()</code>: add the rownames of tax_table as the last column of tax_table</li>
+<li><code>cal_abund()</code>: powerful and flexible to cope with complex cases in tax_table, see the parameters</li>
 <li>taxa_abund: taxa_abund is a list stored in microtable object and have several data frame</li>
-<li>beta_diversity: beta_diversity is also a list stored in microtable object and have several distance matrix</li>
+<li>beta_diversity: beta_diversity is a list stored in microtable object and have several distance matrix</li>
 </ul>
 
 </div>
