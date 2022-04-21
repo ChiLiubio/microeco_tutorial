@@ -163,8 +163,10 @@ Several approaches can be used to calculate correlations and significances.
 
 ### Example
 
-We first introduce the correlation-based network. The parameter cal_cor in trans_network is used for selecting the correlation calculation method.
-
+We first introduce the correlation-based network. 
+This is only intended to show some operations conveniently. Does not mean we are suggesting this approach in any case.
+Please check the final part for other network construction methods.
+The parameter cal_cor in trans_network is used for selecting the correlation calculation method.
 
 ```{r, echo = TRUE, eval=FALSE}
 # Use R base cor.test, a little slow
@@ -189,18 +191,18 @@ Furthermore, COR_optimization = TRUE represent using RMT theory to find the opti
 
 ```{r, echo = TRUE, eval=FALSE}
 # construct network; require igraph package
-t1$cal_network(p_thres = 0.01, COR_optimization = TRUE)
+t1$cal_network(COR_p_thres = 0.01, COR_optimization = TRUE)
 # return t1$res_network
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
 # use arbitrary coefficient threshold to contruct network
-t1$cal_network(p_thres = 0.01, COR_cut = 0.7)
+t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# add modules in the network
-t1$cal_module()
+# add modules for this undirected network
+t1$cal_module(method = "cluster_fast_greedy")
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -238,20 +240,20 @@ pander::pander(res_network_attr)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# classify the node; return t1$res_node_type
+# classify the node; return t1$res_node_table 
 t1$cal_node_type()
-# return t1$res_node_type
+# return t1$res_node_table 
 # we retain the file for the following example in trans_func part
-network_node_type <- t1$res_node_type
+network_node_table <- t1$res_node_table 
 ```
 
 ```{r, echo = FALSE}
 # read
-network_node_type <- read.csv("Files/res_node_type.csv", row.names = 1, check.names = FALSE)
+network_node_table <- read.csv("Files/res_node_table.csv", row.names = 1, check.names = FALSE)
 ```
 
 ```{r, echo = FALSE}
-pander::pander(network_node_type[1:5, c(1:4)])
+pander::pander(network_node_table[1:5, c(1:4)])
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -300,7 +302,7 @@ In this function, you should provide the nodes you need using the node parameter
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract a sub network that contains all nodes in module M1
-t1$subset_network(node = t1$res_node_type %>% .[.$module == "M1", ] %>% rownames, rm_single = TRUE)
+t1$subset_network(node = t1$res_node_table %>% .[.$module == "M1", ] %>% rownames, rm_single = TRUE)
 # return a new network with igraph class
 # extract sub network in which all edge labels are "+", i.e. positive edges
 t1$subset_network(edge = "+")
@@ -321,7 +323,23 @@ t2$save_network("S1.gexf")
 ```
 
 
-Then we show the next implemented network construction approach: 
+We also add the function `plot_network` from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
+The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
+See https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html and https://kateto.net/network-visualization for more
+details on the network visualization in R.
+
+```{r, echo = TRUE, eval = FALSE}
+# default parameter represents using igraph plot.igraph function
+t1$plot_network()
+# use ggraph package method
+t1$plot_network(method = "ggraph", node_color = "Phylum")
+# use networkD3 package method for the dynamic network visualization in R
+t1$plot_network(method = "networkD3", node_color = "module")
+t1$plot_network(method = "networkD3", node_color = "Phylum")
+```
+
+
+**Then let's show other implemented network construction approaches**: 
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package [@Kurtz_Sparse_2015].
 See https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the package installation.
 
@@ -334,9 +352,9 @@ t1$cal_network(network_method = "SpiecEasi")
 ```
 
 
-We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave[@Tackmann_Rapid_2019].
-It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e. OTU tables constructed from sequencing data) 
-through statistical co-occurrence.
+We also introduce the third network construction approach: julia package FlashWeave[@Tackmann_Rapid_2019].
+This is a probabilistic graph based method to obtain the conditional independence.
+It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package, 
 and add the julia in the computer path.
 
@@ -344,13 +362,27 @@ and add the julia in the computer path.
 2. Put julia in the computer env PATH, such as  your_directory_path\Julia\bin  
 3. Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in https://github.com/meringlab/FlashWeave.jl  
 
+```{r, echo = TRUE, eval=FALSE}
+# cal_cor select NA
+t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0)
+# require Julia in the computer path, and the package FlashWeave
+t1$cal_network(network_method = "FlashWeave")
+# see t1$res_network
+```
+
+The fourth method that implemented in the class is beemStatic package [@Li_BEEMStatic_2021].
+This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
+which is typically used in the microbial time-series data. 
+The result from this approach is a directed network.
+Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
 # cal_cor select NA
 t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0)
 # require Julia in the computer path, and the package FlashWeave
-t1$cal_network(network_method = "PGM")
-# see t1$res_network
+t1$cal_network(network_method = "beemStatic")
+# calculate modules for the directed network
+t1$cal_module(method = "cluster_optimal")
 ```
 
 
@@ -363,7 +395,7 @@ t1$cal_network(network_method = "PGM")
   + get_edge_table(): get the table of edges, including connected nodes, labels and weight.
   + cal_powerlaw_p(): perform a bootstrapping hypothesis test to determine whether degrees follows a power law distribution
   + cal_powerlaw_p(): fit degrees to a power law distribution.
-
+  + plot_network(): plot the network in R with igraph or ggraph package for static network, and networkD3 package for dynamic network.
 
 ## trans_nullmodel class
   In recent decades, 
@@ -547,14 +579,15 @@ pander::pander(t1$res_process)
 
 The trans_classifier class is a wrapper for methods of machine-learning-based classification models.
 Microbiome-based supervised machine-learning has been successful in predicting human health status [@Poore_Microbiome_2020]
-and soil categories [@Wilhelm_Predicting_2021].
+and soil categories [@Wilhelm_Predicting_2021]. 
+
 
 ### Dependencies
 
 Before starting the examples, make sure those packages have been installed.
 
 ```{r, echo = TRUE, eval = FALSE}
-packages <- c("Boruta", "parallel", "rsample", "randomForest", "caret", "gridExtra", "ROCR")
+packages <- c("Boruta", "parallel", "rsample", "randomForest", "caret", "gridExtra", "multiROC")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -578,13 +611,6 @@ d1$cal_abund()
 # initialize: use "genotype" as response variable
 # x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa_abund
 t1 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors = "All")
-```
-
-Then, we attempt to use Boruta package [@Kursa_Feature_2010] to do feature selection.
-
-```{r, echo = TRUE, eval=FALSE}
-# require Boruta package
-t1$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
 ```
 
 We silit the data into training and testing set.
@@ -618,10 +644,10 @@ t1$plot_confusionMatrix()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_confusionMatrix_with_selection.png")
+knitr::include_graphics("Images/plot_confusionMatrix_without_selection.png")
 ```
 
-Using cal_ROC and plot_ROC can get the ROC curve.
+Using cal_ROC and plot_ROC can get the ROC (Receiver Operator Characteristic) curve.
 
 ```{r, echo = TRUE, eval=FALSE}
 t1$cal_ROC()
@@ -629,16 +655,26 @@ t1$plot_ROC(size = 0.5, alpha = 0.7)
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_ROC_with_selection.png")
+knitr::include_graphics("Images/plot_ROC_without_selection.png")
 ```
 
+While building a machine learning model for microbiome data,
+the huge diversity of microbial community and/or associated relationships among taxa accross phylogeny can lead to a large number of unnecessary features,
+which can reduce the overall accuracy, increase the complexity and overfit of the model and decrease the generalization capability of the model.
+So, feature selection is one important step in building machine-learning model.
+Then, we attempt to use Boruta package [@Kursa_Feature_2010] to do feature selection.
+
+```{r, echo = TRUE, eval=FALSE}
+# require Boruta package
+t1$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
+```
 
 To compare the results between the procedure with feature selection and that without feature selection,
-we also perfom all the analysis without feature selection to show the results.
+we also perfom all the analysis with feature selection to show the whole results.
 
 ```{r, echo = TRUE, eval=FALSE}
 t2 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors = "All")
-# no feature selection, others same with previous steps
+t2$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
 t2$cal_split(prop.train = 3/4)
 t2$set_trainControl()
 t2$cal_train(max.ntree = 500)
@@ -649,11 +685,37 @@ t2$plot_ROC(size = 0.5, alpha = 0.7)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_confusionMatrix_without_selection.png")
+knitr::include_graphics("Images/plot_confusionMatrix_with_selection.png")
 ```
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_ROC_without_selection.png")
+knitr::include_graphics("Images/plot_ROC_with_selection.png")
 ```
+
+To plot the Precision-Recall curve (PR curve), please make plot_type = "PR" in plot_ROC function.
+
+```{r, echo = TRUE, eval=FALSE}
+t2$plot_ROC(plot_type = "PR", size = 0.5, alpha = 0.7)
+```
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_PR_with_selection.png")
+```
+
+To show the ROC curve or PR curve of the training result, please make input = "train" in plot_ROC function.
+
+```{r, echo = TRUE, eval=FALSE}
+t2$cal_ROC(input = "train")
+t2$plot_ROC(plot_type = "ROC", size = 0.5, alpha = 0.7)
+```
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_ROC_with_selection_training.png")
+```
+
+For other machine-learning models, please use method parameter in cal_train function.
+```{r, echo = TRUE, eval=FALSE}
+# use SVM method
+t2$al_train(method = "svmRadial", tuneLength = 15)
+```
+
 
 ### Key points
 
@@ -662,7 +724,7 @@ knitr::include_graphics("Images/plot_ROC_without_selection.png")
 ### Other function
 
   + cal_feature_imp(): get feature importance from the training model when method is "rf"
-
+  + cal_preProcess(): Pre-process (centering, scaling etc.) of the feature data based on the caret::preProcess function.
 
 
 

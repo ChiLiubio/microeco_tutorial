@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.1)</title>
+  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.5)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.1)" />
+  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.5)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.1)" />
+  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v0.7.5)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-04-09" />
+<meta name="date" content="2022-04-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.7.1)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.7.5)</a>
           </h1>
         </div>
 
@@ -641,27 +641,25 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <p>perMANOVA<span class="citation">(<a href="#ref-Anderson_Austral_2001" role="doc-biblioref">Anderson 2001</a>)</span> is often used in the differential test of distances among groups.</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="diversity-based-class.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups</span></span>
 <span id="cb108-2"><a href="diversity-based-class.html#cb108-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb108-3"><a href="diversity-based-class.html#cb108-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova<span class="sc">$</span>aov.tab</span></code></pre></div>
+<span id="cb108-3"><a href="diversity-based-class.html#cb108-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
-<table style="width:99%;">
-<caption>Permutation: free</caption>
+<table style="width:79%;">
+<caption>Permutation test for adonis under reduced model</caption>
 <colgroup>
-<col width="22%" />
+<col width="20%" />
 <col width="6%" />
-<col width="16%" />
-<col width="13%" />
-<col width="13%" />
+<col width="15%" />
 <col width="12%" />
+<col width="11%" />
 <col width="12%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center"> </th>
 <th align="center">Df</th>
-<th align="center">SumsOfSqs</th>
-<th align="center">MeanSqs</th>
-<th align="center">F.Model</th>
+<th align="center">SumOfSqs</th>
 <th align="center">R2</th>
+<th align="center">F</th>
 <th align="center">Pr(&gt;F)</th>
 </tr>
 </thead>
@@ -670,27 +668,24 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <td align="center"><strong>Group</strong></td>
 <td align="center">2</td>
 <td align="center">6.121</td>
-<td align="center">3.06</td>
-<td align="center">10.57</td>
 <td align="center">0.1955</td>
+<td align="center">10.57</td>
 <td align="center">0.001</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>Residuals</strong></td>
+<td align="center"><strong>Residual</strong></td>
 <td align="center">87</td>
 <td align="center">25.18</td>
-<td align="center">0.2895</td>
-<td align="center">NA</td>
 <td align="center">0.8045</td>
+<td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>Total</strong></td>
 <td align="center">89</td>
 <td align="center">31.3</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
 <td align="center">1</td>
+<td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 </tbody>
@@ -699,22 +694,24 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <span id="cb110-2"><a href="diversity-based-class.html#cb110-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_paired =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb110-3"><a href="diversity-based-class.html#cb110-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
-<table style="width:97%;">
+<table>
 <colgroup>
-<col width="15%" />
+<col width="14%" />
 <col width="13%" />
-<col width="20%" />
-<col width="12%" />
+<col width="10%" />
+<col width="11%" />
 <col width="13%" />
-<col width="20%" />
+<col width="17%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center">Groups</th>
 <th align="center">measure</th>
-<th align="center">permutations</th>
+<th align="center">F</th>
 <th align="center">R2</th>
 <th align="center">p.value</th>
+<th align="center">p.adjusted</th>
 <th align="center">Significance</th>
 </tr>
 </thead>
@@ -722,24 +719,27 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <tr class="odd">
 <td align="center">IW vs CW</td>
 <td align="center">bray</td>
-<td align="center">999</td>
+<td align="center">11.01</td>
 <td align="center">0.1595</td>
+<td align="center">0.001</td>
 <td align="center">0.001</td>
 <td align="center">***</td>
 </tr>
 <tr class="even">
 <td align="center">IW vs TW</td>
 <td align="center">bray</td>
-<td align="center">999</td>
+<td align="center">9.992</td>
 <td align="center">0.147</td>
+<td align="center">0.001</td>
 <td align="center">0.001</td>
 <td align="center">***</td>
 </tr>
 <tr class="odd">
 <td align="center">CW vs TW</td>
 <td align="center">bray</td>
-<td align="center">999</td>
+<td align="center">10.69</td>
 <td align="center">0.1556</td>
+<td align="center">0.001</td>
 <td align="center">0.001</td>
 <td align="center">***</td>
 </tr>
@@ -747,27 +747,25 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 </table>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="diversity-based-class.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: here &quot;Group + Type&quot;</span></span>
 <span id="cb112-2"><a href="diversity-based-class.html#cb112-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">cal_manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
-<span id="cb112-3"><a href="diversity-based-class.html#cb112-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova<span class="sc">$</span>aov.tab</span></code></pre></div>
+<span id="cb112-3"><a href="diversity-based-class.html#cb112-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
-<table style="width:99%;">
-<caption>Permutation: free</caption>
+<table style="width:79%;">
+<caption>Permutation test for adonis under reduced model</caption>
 <colgroup>
-<col width="22%" />
+<col width="20%" />
 <col width="6%" />
-<col width="16%" />
-<col width="13%" />
-<col width="13%" />
+<col width="15%" />
 <col width="12%" />
+<col width="11%" />
 <col width="12%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center"> </th>
 <th align="center">Df</th>
-<th align="center">SumsOfSqs</th>
-<th align="center">MeanSqs</th>
-<th align="center">F.Model</th>
+<th align="center">SumOfSqs</th>
 <th align="center">R2</th>
+<th align="center">F</th>
 <th align="center">Pr(&gt;F)</th>
 </tr>
 </thead>
@@ -776,36 +774,24 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <td align="center"><strong>Group</strong></td>
 <td align="center">2</td>
 <td align="center">6.121</td>
-<td align="center">3.06</td>
-<td align="center">12.01</td>
 <td align="center">0.1955</td>
+<td align="center">10.57</td>
 <td align="center">0.001</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>Type</strong></td>
-<td align="center">3</td>
-<td align="center">3.783</td>
-<td align="center">1.261</td>
-<td align="center">4.949</td>
-<td align="center">0.1208</td>
-<td align="center">0.001</td>
+<td align="center"><strong>Residual</strong></td>
+<td align="center">87</td>
+<td align="center">25.18</td>
+<td align="center">0.8045</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>Residuals</strong></td>
-<td align="center">84</td>
-<td align="center">21.4</td>
-<td align="center">0.2548</td>
-<td align="center">NA</td>
-<td align="center">0.6836</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
 <td align="center"><strong>Total</strong></td>
 <td align="center">89</td>
 <td align="center">31.3</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
 <td align="center">1</td>
+<td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
 </tbody>
@@ -822,7 +808,7 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 ## 
 ## Response: Distances
 ##           Df  Sum Sq   Mean Sq      F N.Perm Pr(&gt;F)  
-## Groups     2 0.04131 0.0206545 4.1682    999  0.021 *
+## Groups     2 0.04131 0.0206545 4.1682    999  0.028 *
 ## Residuals 87 0.43110 0.0049552                       
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
@@ -830,8 +816,8 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 ## Pairwise comparisons:
 ## (Observed p-value below diagonal, permuted p-value above diagonal)
 ##           CW        IW    TW
-## CW           0.4690000 0.063
-## IW 0.4621193           0.005
+## CW           0.4800000 0.062
+## IW 0.4621193           0.007
 ## TW 0.0566190 0.0050319</code></pre>
 <p>For the explanation of statistical methods in microbial ecology, please read <a href="http://mb3is.megx.net/gustame" class="uri">http://mb3is.megx.net/gustame</a></p>
 </div>

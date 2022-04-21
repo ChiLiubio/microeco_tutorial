@@ -21,12 +21,12 @@ dataset$tidy_dataset()
 # create trans_network object
 t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
 # create correlation network 
-t1$cal_network(p_thres = 0.05, COR_cut = 0.6)
+t1$cal_network(COR_p_thres = 0.05, COR_cut = 0.6)
 # add modules
 t1$cal_module()
 # calculate node topological properties
-t1$cal_node_type()
-node_type_table <- t1$res_node_type
+t1$get_node_table()
+node_type_table <- t1$res_node_table
 # create trans_func object
 t2 <- trans_func$new(dataset)
 # identify species traits, automatically select database for prokaryotes or fungi

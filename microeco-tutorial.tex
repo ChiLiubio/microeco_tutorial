@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.7.1)},
+  pdftitle={Tutorial for R microeco package (v0.7.5)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.7.1)}
+\title{Tutorial for R microeco package (v0.7.5)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-04-09}
+\date{2022-04-21}
 
 \begin{document}
 \maketitle
@@ -177,8 +177,9 @@ This is a framework for users to fast understand the design of the microeco pack
 
 \begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
 
-The stored `Functions' and `Files' in `Basic class' represent that you can access those functions or files using \$ operator
-as we show in the figure, e.g., function \texttt{dataset\$cal\_alphadiv()} and its returned result \texttt{dataset\$alpha\_diversity}.
+The stored `Functions' and `Files' represent that you can access those functions or files in R6 object using \$ operator
+as we show in the figure. An example is the function \texttt{dataset\$cal\_alphadiv()} and its return result \texttt{dataset\$alpha\_diversity}.
+The dataset is a microtable object.
 
 \hypertarget{r6-class}{%
 \section{R6 Class}\label{r6-class}}
@@ -1141,7 +1142,7 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{Images/plot_bar_allu} \end{center}
+\begin{center}\includegraphics[width=40in]{Images/plot_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
 
@@ -1605,7 +1606,7 @@ perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of
 \begin{Highlighting}[]
 \CommentTok{\# manova for all groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{cal\_manova\_all =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}\SpecialCharTok{$}\NormalTok{aov.tab}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1614,25 +1615,24 @@ perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.22}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.07}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.17}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}@{}}
-\caption{Permutation: free}\tabularnewline
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.21}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}@{}}
+\caption{Permutation test for adonis under reduced model}\tabularnewline
 \toprule
-~ & Df & SumsOfSqs & MeanSqs & F.Model & R2 & Pr(\textgreater F) \\
+~ & Df & SumOfSqs & R2 & F & Pr(\textgreater F) \\
 \midrule
 \endfirsthead
 \toprule
-~ & Df & SumsOfSqs & MeanSqs & F.Model & R2 & Pr(\textgreater F) \\
+~ & Df & SumOfSqs & R2 & F & Pr(\textgreater F) \\
 \midrule
 \endhead
-\textbf{Group} & 2 & 6.121 & 3.06 & 10.57 & 0.1955 & 0.001 \\
-\textbf{Residuals} & 87 & 25.18 & 0.2895 & NA & 0.8045 & NA \\
-\textbf{Total} & 89 & 31.3 & NA & NA & 1 & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 \\
+\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA \\
+\textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
 \bottomrule
 \end{longtable}
 
@@ -1649,19 +1649,20 @@ perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.15}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.21}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.21}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.14}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.13}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.13}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.17}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.20}}@{}}
 \toprule
-Groups & measure & permutations & R2 & p.value & Significance \\
+Groups & measure & F & R2 & p.value & p.adjusted & Significance \\
 \midrule
 \endhead
-IW vs CW & bray & 999 & 0.1595 & 0.001 & *** \\
-IW vs TW & bray & 999 & 0.147 & 0.001 & *** \\
-CW vs TW & bray & 999 & 0.1556 & 0.001 & *** \\
+IW vs CW & bray & 11.01 & 0.1595 & 0.001 & 0.001 & *** \\
+IW vs TW & bray & 9.992 & 0.147 & 0.001 & 0.001 & *** \\
+CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
 \bottomrule
 \end{longtable}
 
@@ -1669,7 +1670,7 @@ CW vs TW & bray & 999 & 0.1556 & 0.001 & *** \\
 \begin{Highlighting}[]
 \CommentTok{\# manova for specified group set: here "Group + Type"}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{cal\_manova\_set =} \StringTok{"Group + Type"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}\SpecialCharTok{$}\NormalTok{aov.tab}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1678,26 +1679,24 @@ CW vs TW & bray & 999 & 0.1556 & 0.001 & *** \\
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.22}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.07}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.17}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.14}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}@{}}
-\caption{Permutation: free}\tabularnewline
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.21}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.07}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.12}}@{}}
+\caption{Permutation test for adonis under reduced model}\tabularnewline
 \toprule
-~ & Df & SumsOfSqs & MeanSqs & F.Model & R2 & Pr(\textgreater F) \\
+~ & Df & SumOfSqs & R2 & F & Pr(\textgreater F) \\
 \midrule
 \endfirsthead
 \toprule
-~ & Df & SumsOfSqs & MeanSqs & F.Model & R2 & Pr(\textgreater F) \\
+~ & Df & SumOfSqs & R2 & F & Pr(\textgreater F) \\
 \midrule
 \endhead
-\textbf{Group} & 2 & 6.121 & 3.06 & 12.01 & 0.1955 & 0.001 \\
-\textbf{Type} & 3 & 3.783 & 1.261 & 4.949 & 0.1208 & 0.001 \\
-\textbf{Residuals} & 84 & 21.4 & 0.2548 & NA & 0.6836 & NA \\
-\textbf{Total} & 89 & 31.3 & NA & NA & 1 & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 \\
+\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA \\
+\textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
 \bottomrule
 \end{longtable}
 
@@ -1728,7 +1727,7 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 ## 
 ## Response: Distances
 ##           Df  Sum Sq   Mean Sq      F N.Perm Pr(>F)  
-## Groups     2 0.04131 0.0206545 4.1682    999  0.021 *
+## Groups     2 0.04131 0.0206545 4.1682    999  0.028 *
 ## Residuals 87 0.43110 0.0049552                       
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1736,8 +1735,8 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 ## Pairwise comparisons:
 ## (Observed p-value below diagonal, permuted p-value above diagonal)
 ##           CW        IW    TW
-## CW           0.4690000 0.063
-## IW 0.4621193           0.005
+## CW           0.4800000 0.062
+## IW 0.4621193           0.007
 ## TW 0.0566190 0.0050319
 \end{verbatim}
 
@@ -1937,7 +1936,10 @@ Several approaches can be used to calculate correlations and significances.
 \hypertarget{example-6}{%
 \subsection{Example}\label{example-6}}
 
-We first introduce the correlation-based network. The parameter cal\_cor in trans\_network is used for selecting the correlation calculation method.
+We first introduce the correlation-based network.
+This is only intended to show some operations conveniently. Does not mean we are suggesting this approach in any case.
+Please check the final part for other network construction methods.
+The parameter cal\_cor in trans\_network is used for selecting the correlation calculation method.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1969,7 +1971,7 @@ Furthermore, COR\_optimization = TRUE represent using RMT theory to find the opt
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# construct network; require igraph package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_optimization =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_optimization =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
@@ -1977,14 +1979,14 @@ Furthermore, COR\_optimization = TRUE represent using RMT theory to find the opt
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use arbitrary coefficient threshold to contruct network}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# add modules in the network}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\CommentTok{\# add modules for this undirected network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_fast\_greedy"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2035,29 +2037,29 @@ Centralization & 0.09908 \\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# classify the node; return t1$res\_node\_type}
+\CommentTok{\# classify the node; return t1$res\_node\_table }
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_node\_type}\NormalTok{()}
-\CommentTok{\# return t1$res\_node\_type}
+\CommentTok{\# return t1$res\_node\_table }
 \CommentTok{\# we retain the file for the following example in trans\_func part}
-\NormalTok{network\_node\_type }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type}
+\NormalTok{network\_node\_table }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_table }
 \end{Highlighting}
 \end{Shaded}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.22}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.19}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.14}}
   >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.12}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.26}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.19}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.19}}@{}}
 \toprule
-~ & z & module & p & taxa\_roles \\
+~ & name & degree & betweenness & Abundance \\
 \midrule
 \endhead
-\textbf{OTU\_50} & -1.305 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_1} & -0.04067 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_55} & -1.239 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_13824} & -0.2403 & M2 & 0 & Peripheral nodes \\
-\textbf{OTU\_151} & -1.372 & M2 & 0.4444 & Peripheral nodes \\
+\textbf{OTU\_50} & OTU\_50 & 2 & 0 & 0.2301 \\
+\textbf{OTU\_305} & OTU\_305 & 3 & 4 & 0.1394 \\
+\textbf{OTU\_1} & OTU\_1 & 21 & 2 & 1.409 \\
+\textbf{OTU\_41} & OTU\_41 & 1 & 0 & 0.1603 \\
+\textbf{OTU\_59} & OTU\_59 & 3 & 2306 & 0.5588 \\
 \bottomrule
 \end{longtable}
 
@@ -2110,7 +2112,7 @@ In this function, you should provide the nodes you need using the node parameter
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# extract a sub network that contains all nodes in module M1}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{module }\SpecialCharTok{==} \StringTok{"M1"}\NormalTok{, ] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_table }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{module }\SpecialCharTok{==} \StringTok{"M1"}\NormalTok{, ] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return a new network with igraph class}
 \CommentTok{\# extract sub network in which all edge labels are "+", i.e. positive edges}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{edge =} \StringTok{"+"}\NormalTok{)}
@@ -2133,7 +2135,24 @@ In this function, you should provide the nodes you need using the node parameter
 \end{Highlighting}
 \end{Shaded}
 
-Then we show the next implemented network construction approach:
+We also add the function \texttt{plot\_network} from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
+The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
+See \url{https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html} and \url{https://kateto.net/network-visualization} for more
+details on the network visualization in R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# default parameter represents using igraph plot.igraph function}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{()}
+\CommentTok{\# use ggraph package method}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"ggraph"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"Phylum"}\NormalTok{)}
+\CommentTok{\# use networkD3 package method for the dynamic network visualization in R}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"networkD3"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"module"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"networkD3"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"Phylum"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Then let's show other implemented network construction approaches}:
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package \citep{Kurtz_Sparse_2015}.
 See \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#spieceasi} for the package installation.
 
@@ -2147,9 +2166,9 @@ See \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#spieceasi} fo
 \end{Highlighting}
 \end{Shaded}
 
-We also introduce the third network construction approach: Probabilistic Graphical Models (PGM), which is implemented in julia package FlashWeave\citep{Tackmann_Rapid_2019}.
-It predicts ecological interactions among microbes from large-scale compositional abundance data (i.e.~OTU tables constructed from sequencing data)
-through statistical co-occurrence.
+We also introduce the third network construction approach: julia package FlashWeave\citep{Tackmann_Rapid_2019}.
+This is a probabilistic graph based method to obtain the conditional independence.
+It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
 and add the julia in the computer path.
 
@@ -2169,8 +2188,25 @@ and add the julia in the computer path.
 \CommentTok{\# cal\_cor select NA}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
 \CommentTok{\# require Julia in the computer path, and the package FlashWeave}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"PGM"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"FlashWeave"}\NormalTok{)}
 \CommentTok{\# see t1$res\_network}
+\end{Highlighting}
+\end{Shaded}
+
+The fourth method that implemented in the class is beemStatic package \citep{Li_BEEMStatic_2021}.
+This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
+which is typically used in the microbial time-series data.
+The result from this approach is a directed network.
+Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemStatic package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# cal\_cor select NA}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
+\CommentTok{\# require Julia in the computer path, and the package FlashWeave}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"beemStatic"}\NormalTok{)}
+\CommentTok{\# calculate modules for the directed network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2194,6 +2230,8 @@ and add the julia in the computer path.
   cal\_powerlaw\_p(): perform a bootstrapping hypothesis test to determine whether degrees follows a power law distribution
 \item
   cal\_powerlaw\_p(): fit degrees to a power law distribution.
+\item
+  plot\_network(): plot the network in R with igraph or ggraph package for static network, and networkD3 package for dynamic network.
 \end{itemize}
 
 \hypertarget{trans_nullmodel-class}{%
@@ -2434,7 +2472,7 @@ Before starting the examples, make sure those packages have been installed.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Boruta"}\NormalTok{, }\StringTok{"parallel"}\NormalTok{, }\StringTok{"rsample"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"caret"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"ROCR"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Boruta"}\NormalTok{, }\StringTok{"parallel"}\NormalTok{, }\StringTok{"rsample"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"caret"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"multiROC"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -2462,15 +2500,6 @@ In this tutorial, we use the example data in file2meco to demonstrate the featur
 \CommentTok{\# initialize: use "genotype" as response variable}
 \CommentTok{\# x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa\_abund}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{y.response =} \StringTok{"genotype"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"All"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Then, we attempt to use Boruta package \citep{Kursa_Feature_2010} to do feature selection.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# require Boruta package}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2512,9 +2541,9 @@ We can use cal\_predict function to predict the testing data set.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_with_selection} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_without_selection} \end{center}
 
-Using cal\_ROC and plot\_ROC can get the ROC curve.
+Using cal\_ROC and plot\_ROC can get the ROC (Receiver Operator Characteristic) curve.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2523,15 +2552,28 @@ Using cal\_ROC and plot\_ROC can get the ROC curve.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=500px]{Images/plot_ROC_with_selection} \end{center}
+\begin{center}\includegraphics[width=500px]{Images/plot_ROC_without_selection} \end{center}
+
+While building a machine learning model for microbiome data,
+the huge diversity of microbial community and/or associated relationships among taxa accross phylogeny can lead to a large number of unnecessary features,
+which can reduce the overall accuracy, increase the complexity and overfit of the model and decrease the generalization capability of the model.
+So, feature selection is one important step in building machine-learning model.
+Then, we attempt to use Boruta package \citep{Kursa_Feature_2010} to do feature selection.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require Boruta package}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 To compare the results between the procedure with feature selection and that without feature selection,
-we also perfom all the analysis without feature selection to show the results.
+we also perfom all the analysis with feature selection to show the whole results.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{y.response =} \StringTok{"genotype"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"All"}\NormalTok{)}
-\CommentTok{\# no feature selection, others same with previous steps}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{max.ntree =} \DecValTok{500}\NormalTok{)}
@@ -2542,9 +2584,39 @@ we also perfom all the analysis without feature selection to show the results.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_without_selection} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/plot_confusionMatrix_with_selection} \end{center}
 
-\begin{center}\includegraphics[width=500px]{Images/plot_ROC_without_selection} \end{center}
+\begin{center}\includegraphics[width=500px]{Images/plot_ROC_with_selection} \end{center}
+
+To plot the Precision-Recall curve (PR curve), please make plot\_type = ``PR'' in plot\_ROC function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"PR"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=500px]{Images/plot_PR_with_selection} \end{center}
+
+To show the ROC curve or PR curve of the training result, please make input = ``train'' in plot\_ROC function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_ROC}\NormalTok{(}\AttributeTok{input =} \StringTok{"train"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"ROC"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=500px]{Images/plot_ROC_with_selection_training} \end{center}
+
+For other machine-learning models, please use method parameter in cal\_train function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use SVM method}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{al\_train}\NormalTok{(}\AttributeTok{method =} \StringTok{"svmRadial"}\NormalTok{, }\AttributeTok{tuneLength =} \DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{key-points-8}{%
 \subsection{Key points}\label{key-points-8}}
@@ -2562,6 +2634,8 @@ we also perfom all the analysis without feature selection to show the results.
 \tightlist
 \item
   cal\_feature\_imp(): get feature importance from the training model when method is ``rf''
+\item
+  cal\_preProcess(): Pre-process (centering, scaling etc.) of the feature data based on the caret::preProcess function.
 \end{itemize}
 
 \hypertarget{explainable-class}{%
@@ -2659,29 +2733,12 @@ Mantel test can be used to check whether there is significant correlations betwe
 \end{Shaded}
 
 \begin{verbatim}
-## The result is stored in object$res_mantel or object$res_mantel_partial ...
+## The result is stored in object$res_mantel ...
 \end{verbatim}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.22}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.18}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.15}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.11}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.21}}@{}}
-\toprule
-variable\_name & cor\_method & corr\_res & p\_res & significance \\
-\midrule
-\endhead
-Temperature & pearson & 0.452 & 0.001 & *** \\
-Precipitation & pearson & 0.2791 & 0.001 & *** \\
-TOC & pearson & 0.13 & 0.003 & ** \\
-NH4 & pearson & -0.05539 & 0.926 & \\
-NO3 & pearson & 0.06758 & 0.05 & * \\
-pH & pearson & 0.4085 & 0.001 & *** \\
-Conductivity & pearson & 0.2643 & 0.001 & *** \\
-TN & pearson & 0.1321 & 0.002 & ** \\
-\bottomrule
-\end{longtable}
+Quitting from lines 1857-1859 (microeco-tutorial.Rmd)
+Error in .subset(x, j) : 只有负下标里才能有零
+Calls: local \ldots{} eval\_with\_user\_handlers -\textgreater{} eval -\textgreater{} eval -\textgreater{} -\textgreater{} {[} -\textgreater{} {[}.data.frame
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using Genus level data.
@@ -2816,6 +2873,8 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
   use\_cor parameter in plot\_scatterfit: both the correlation and regression are available in this function.
 \item
   cal\_mantel(): partial\_mantel = TRUE can be used for partial mantel test.
+\item
+  plot\_ordination(): use the parameters (e.g., env\_nudge\_x and taxa\_nudge\_x ) to adjust the text positions.
 \end{itemize}
 
 \hypertarget{trans_func-class}{%
@@ -2850,7 +2909,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \end{Shaded}
 
 \begin{verbatim}
-## Please also cite the original FAPROTAX paper: Louca et al. (2016).
+## FAPROTAX v1.2.4. Please also cite the original FAPROTAX paper: Louca et al. (2016).
 \end{verbatim}
 
 \begin{verbatim}
@@ -2899,7 +2958,7 @@ The percentages of the OTUs having the same trait can reflect the functional red
 \CommentTok{\# return t2$res\_spe\_func\_perc for each sample}
 \CommentTok{\# Then, let\textquotesingle{}s explore network modules; use\_community = FALSE}
 \CommentTok{\# node\_type\_table is generated in the trans\_network part}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{use\_community =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{node\_type\_table =}\NormalTok{ network\_node\_type)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{use\_community =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{node\_type\_table =}\NormalTok{ network\_node\_table)}
 \CommentTok{\# we only plot some important traits, so we use the default group list to filter and show the traits.}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{select\_samples =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \CommentTok{\# M represents module, ordered by the nodes number from high to low}
@@ -3379,12 +3438,12 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \CommentTok{\# create trans\_network object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.000001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \CommentTok{\# create correlation network }
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}
 \CommentTok{\# add modules}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
 \CommentTok{\# calculate node topological properties}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_node\_type}\NormalTok{()}
-\NormalTok{node\_type\_table }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_type}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{get\_node\_table}\NormalTok{()}
+\NormalTok{node\_type\_table }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_node\_table}
 \CommentTok{\# create trans\_func object}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
 \CommentTok{\# identify species traits, automatically select database for prokaryotes or fungi}
@@ -3635,7 +3694,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-235-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-242-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -3672,7 +3731,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-236-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-243-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

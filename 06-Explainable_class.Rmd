@@ -72,7 +72,7 @@ t1$res_mantel
 
 ```{r, echo = FALSE}
 t1$cal_mantel(use_measure = "bray")
-pander::pander(t1$res_mantel)
+pander::pander(t1$res_mantel[, -2:3])
 ```
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
@@ -187,6 +187,7 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
   + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
   + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
   + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.
+  + plot_ordination(): use the parameters (e.g., env_nudge_x and taxa_nudge_x ) to adjust the text positions.
 
 
 ## trans_func class
@@ -235,7 +236,7 @@ t2$cal_spe_func_perc(use_community = TRUE)
 # return t2$res_spe_func_perc for each sample
 # Then, let's explore network modules; use_community = FALSE
 # node_type_table is generated in the trans_network part
-t2$cal_spe_func_perc(use_community = FALSE, node_type_table = network_node_type)
+t2$cal_spe_func_perc(use_community = FALSE, node_type_table = network_node_table)
 # we only plot some important traits, so we use the default group list to filter and show the traits.
 t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
 # M represents module, ordered by the nodes number from high to low
