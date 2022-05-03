@@ -1,12 +1,12 @@
 # Explainable class
 
 We group trans_env and trans_func classes into 'Explainable class', 
-as the environmental measurements and functional data are generally explainable factors.
+as the environmental variables and functional data are generally explainable factors.
 
 
 ## trans_env class
-
-　The environmental variables are explainable indices in analyzing microbial community structure and assembly mechanisms.
+There may be some NA (missing value) in the user's env data.
+If so, please add complete_na = TRUE when creating the trans_env object.
 
 ### Example
 
@@ -33,7 +33,41 @@ Now let's use env_cols to select the required columns from sample_table in the m
 t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
 ```
 
-We first show the RDA analysis (db-RDA and RDA).
+Generally, it is necessary to have a deep understanding on the environmental variables in order to better use more methods.
+So, we first show the cal_diff and cal_autocor functions.
+The cal_diff function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff parts.
+
+
+```{r, echo = TRUE, eval = FALSE}
+# use Wilcoxon Rank Sum and Signed Rank Tests as an example
+t1$cal_diff(group = "Group", method = "wilcox")
+t1$res_diff[, c(1, 2, 4, 6, 7)]
+```
+```{r, echo = FALSE}
+t1$cal_diff(group = "Group", method = "wilcox")
+pander::pander(t1$res_diff[, c(1, 2, 4, 6, 7)])
+```
+
+Then we show the autocorrelations among variables.
+
+```{r, echo = TRUE, eval = FALSE}
+# require GGally package installed
+t1$cal_autocor()
+```
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_env_autocor1.png")
+```
+
+For different groups, please use group parameter to show the distributions of variables and the autocorrelations across groups.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_autocor(group = "Group")
+```
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_env_autocor_group.png")
+```
+
+Then let's do the RDA analysis (db-RDA and RDA).
 
 ```{r, echo = TRUE, eval = FALSE}
 # use bray-curtis distance to do dbrda
@@ -62,6 +96,20 @@ t1$plot_ordination(plot_color = "Group")
 knitr::include_graphics("Images/plot_rda_genus.png")
 ```
 
+For more plotting ways, run the following examples.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group")
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "chull"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "chull", "centroid"), add_sample_label = "SampleID")
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = "centroid", centroid_segment_alpha = 0.9, centroid_segment_size = 1, centroid_segment_linetype = 1)
+t1$plot_ordination(plot_color = "Type", plot_type = c("point", "centroid"), centroid_segment_linetype = 1)
+```
+
+
 Mantel test can be used to check whether there is significant correlations between environmental variables and distance matrix.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -72,7 +120,7 @@ t1$res_mantel
 
 ```{r, echo = FALSE}
 t1$cal_mantel(use_measure = "bray")
-pander::pander(t1$res_mantel[, -2:3])
+pander::pander(t1$res_mantel[, -c(2:3)])
 ```
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
@@ -164,19 +212,36 @@ The function plot_scatterfit() in trans_env class is designed for the scatter pl
 
 ```{r, echo = TRUE, eval = FALSE}
 # use pH and bray-curtis distance
+# add correlation statistics
 t1$plot_scatterfit(
 	x = "pH", 
-	y = dataset$beta_diversity$bray[rownames(t1$env_data), rownames(t1$env_data)], 
-	use_cor = TRUE,
-	alpha = .1,
+	y = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
+	type = "cor",
+	point_alpha = 0.1, label.x.npc = "center", label.y.npc = "bottom", 
 	x_axis_title = "Euclidean distance of pH", 
-	y_axis_title = "Bray-Curtis distance", 
-	text_x_pos = 4, 
-	text_y_pos = .4)
+	y_axis_title = "Bray-Curtis distance"
+	)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
+knitr::include_graphics("Images/plot_scatterfit_cor.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# regression with type = "lm", use group parameter for different groups
+t1$plot_scatterfit(
+    x = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
+	y = "pH",
+	type = "lm", 
+	group = "Group", 
+	group_order = c("CW", "TW", "IW"),
+	point_size = 3, point_alpha = 0.3, line_se = FALSE, line_size = 1.5, shape_values = c(16, 17, 7),
+    y_axis_title = "Euclidean distance of pH", x_axis_title = "Bray-Curtis distance"
+)
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_scatterfit_lmgroup.png")
 ```
 
 
@@ -187,7 +252,7 @@ knitr::include_graphics("Images/plot_scatterfit_pHbray.png")
   + add_abund_table parameter in cal_cor: other customized data can be also provided for the correlation analysis.
   + use_cor parameter in plot_scatterfit: both the correlation and regression are available in this function.
   + cal_mantel(): partial_mantel = TRUE can be used for partial mantel test.
-  + plot_ordination(): use the parameters (e.g., env_nudge_x and taxa_nudge_x ) to adjust the text positions.
+  + plot_ordination(): use plot_type parameter to select point types and env_nudge_x and taxa_nudge_x (also _y) to adjust the text positions.
 
 
 ## trans_func class
@@ -214,6 +279,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 t2 <- trans_func$new(dataset)
 # mapping the taxonomy to the database
 # this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
+# for fungi example, see https://chiliubio.github.io/microeco_tutorial/other-dataset.html#fungi-data
 # default database for prokaryotes is FAPROTAX database
 t2$cal_spe_func(prok_database = "FAPROTAX")
 # return t2$res_spe_func, 1 represent trait exists, 0 represent no or cannot confirmed.
@@ -227,23 +293,36 @@ t2$res_spe_func[1:5, 1:2]
 pander::pander(t2$res_spe_func[1:5, 1:2])
 ```
 
-The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community or the module in the network.
+The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community.
 
-```{r, echo = TRUE, eval = FALSE}
-# calculate the percentages of OTUs for each trait in each module of network
-# use_community = TRUE; for community
-t2$cal_spe_func_perc(use_community = TRUE)
-# return t2$res_spe_func_perc for each sample
-# Then, let's explore network modules; use_community = FALSE
-# node_type_table is generated in the trans_network part
-t2$cal_spe_func_perc(use_community = FALSE, node_type_table = network_node_table)
-# we only plot some important traits, so we use the default group list to filter and show the traits.
-t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
-# M represents module, ordered by the nodes number from high to low
+```{r, echo = TRUE}
+# calculate the percentages for communities
+# here do not consider the abundance
+t2$cal_spe_func_perc(abundance_weighted = FALSE)
+# t2$res_spe_func_perc[1:5, 1:2]
 ```
 
+```{r, echo = FALSE}
+pander::pander(t2$res_spe_func_perc[1:5, 1:2])
+```
+
+Then we also take an example to show the percentages of the OTUs for each trait in network modules.
+
+```{r, echo = TRUE, eval = FALSE}
+# construct a network for the example
+network <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
+network$cal_network(p_thres = 0.01, COR_cut = 0.7)
+network$cal_module()
+# convert module info to microtable object
+meco_module <- network$trans_comm(use_col = "module")
+meco_module_func <- trans_func$new(meco_module)
+meco_module_func$cal_spe_func(prok_database = "FAPROTAX")
+meco_module_func$cal_spe_func_perc(abundance_weighted = FALSE)
+meco_module_func$plot_spe_func_perc(select_samples = paste0("M", 1:10))
+# M represents module, ordered by the nodes number from high to low
+```
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_func_perc.png")
+knitr::include_graphics("Images/plot_func_perc_module.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -253,16 +332,6 @@ t2$func_group_list
 t2$show_prok_func("methanotrophy")
 ```
 
-
-```{r, echo = TRUE}
-# calculate the percentages for communities
-t2$cal_spe_func_perc(use_community = TRUE)
-# t2$res_spe_func_perc[1:5, 1:2]
-```
-
-```{r, echo = FALSE}
-pander::pander(t2$res_spe_func_perc[1:5, 1:2])
-```
 
 ```{r, echo = TRUE, eval = FALSE}
 # then we try to correlate the res_spe_func_perc of communities to environmental variables
@@ -333,7 +402,7 @@ We can also do something else. For example, we can use lefse to test the differe
 
 ```{r, echo = TRUE, eval = FALSE}
 func2 <- trans_diff$new(dataset = func1, method = "lefse", group = "Group", alpha = 0.05, lefse_subgroup = NULL)
-func2$plot_lefse_bar(LDA_score = 3, width = 0.8)
+func2$plot_diff_bar(threshold = 3, width = 0.8)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -384,11 +453,6 @@ t1$cal_tax4fun2_FRI()
 
   + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, it is ok to use blast_tool_path = NULL 
   + blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as 2.5.0).
-
-
-
-
-
 
 
 

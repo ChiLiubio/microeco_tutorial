@@ -1,7 +1,7 @@
 # Introduction {#intro}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse communtiy ecology data fast.
+The main goal of developing this package is to help users analyse microbial communtiy data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
@@ -9,11 +9,11 @@ It is notable that, beside the demonstration in the tutorial, users can also sav
 apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
-Before starting the specific usage of each class, let's first learn several key points.
+Before starting the specific usage of each class, let's first introduce several key points.
 
 ## Framework
 
-This is a framework for users to fast understand the design of the microeco package. 
+This is a rough framework for users to fast understand the design of the microeco package. 
 
 ```{r, out.width = "8000px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/microeco_framework.png")
@@ -22,14 +22,16 @@ knitr::include_graphics("Images/microeco_framework.png")
 The stored 'Functions' and 'Files' represent that you can access those functions or files in R6 object using $ operator 
 as we show in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
 The dataset is a microtable object.
+Generally, the return files of functions are named with the prefix 'res_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
+Except for microtable class, the transformed data in creating object is also generally named with the prefix 'data_'.
 
 
 ## R6 Class
 
-All the classes in microeco package depend on the R6 class [@R6_Winston]. 
-R6 uses the encapsulated object-oriented programming paradigm, 
+All the main classes in microeco package depend on the R6 class [@R6_Winston]. 
+R6 uses the encapsulated object-oriented (OO) programming paradigm, 
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions. 
-If you are interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
+If the user is interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
 This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
@@ -40,9 +42,9 @@ This influences how we think about naming. The methods belong to objects, not ge
 
 ## Help
 
-The use of help documents in the microeco package may be a little different from other packages we often used.
-If you wish to see one of help documents of functions, you should search the name of the class (not the name of the function) 
-and click the link of each function.
+The usage of help documents in the microeco package may be a little different from other packages we often used.
+If you wish to see the help document of a function, you should search the name of the class it belongs to (not the name of the function) 
+and click the link of the function.
 
 ```{r, echo = TRUE}
 # first install microeco, see https://github.com/ChiLiubio/microeco
@@ -51,7 +53,7 @@ library(microeco)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# this can show all the functions and the detailed descriptions in the microtable class
+# this can show all the functions and the detailed descriptions of the microtable class
 # same with: help(microtable)
 ?microtable
 ```
@@ -99,7 +101,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "gridExtra", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x", "FSA")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x", "FSA", "gridExtra")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -131,14 +133,14 @@ You can download Gephi and learn how to use it from https://gephi.org/users/down
 
 ### WGCNA
 In the correlation-based network, when the species number is very large,
-the correlation algorithm in WGCNA is very fast compared to the 'cor' option in trans_network.
+the correlation algorithm in WGCNA is very fast.
 
 ```{r, echo = TRUE, eval = FALSE}
 install.packages("WGCNA", dependencies = TRUE)
 ```
 
 ### Tax4Fun
-Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.
+Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.
 
 1. install Tax4Fun package
 ```{r, echo = TRUE, eval = FALSE}
@@ -156,7 +158,7 @@ install.packages(system.file("extdata", "Tax4Fun_0.3.1.tar.gz", package="microec
 Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities [@Wemheuer_Tax4Fun2_2020].
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
-The user do not need to install Tax4Fun2 R package.
+The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (**ignore this if the blast tool has been in the path**) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
 Note that some errors can come from the latest versions because of memory issue (https://www.biostars.org/p/413294/). 
@@ -180,7 +182,7 @@ Ref99NR:
 　　　|------ Ref99NR.tre  
 
 The path "Tax4Fun2_ReferenceData_v2" will be required in the trans_func$cal_tax4fun2() function.
-The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added to the path (environmental variable).
+The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added to the system env path (environmental variable).
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -188,11 +190,12 @@ The blast tool path "ncbi-blast-2.5.0+/bin" is also required if it is not added 
 install.packages("seqinr", dependencies = TRUE)
 # or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html
 # Now we show how to read the fasta file
-# see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco
+# see https://github.com/ChiLiubio/file2meco to install file2meco
 rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 rep_fasta <- seqinr::read.fasta(rep_fasta_path)
-# or use Biostrings::readDNAStringSet(rep_fasta_path)
-# then see the help document of microtable class about the rep_fasta in microtable$new().
+# or use Biostrings package
+rep_fasta <- Biostrings::readDNAStringSet(rep_fasta_path)
+# also see the help document of microtable class about the rep_fasta parameter in microtable$new().
 ```
 
 ## Plotting
@@ -201,6 +204,5 @@ We provide some parameters to change the corresponding plot, but it may be far f
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated via github pushing or email (liuchi0426@126.com).
-
+Any contribution of a modified class is also appreciated via Github-Pull requests (https://github.com/ChiLiubio/microeco_tutorial/pulls) or Email (liuchi0426@126.com).
 

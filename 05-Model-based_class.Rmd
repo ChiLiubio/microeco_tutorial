@@ -7,28 +7,39 @@ We group all the classes with complex models into the type 'Model-based class'.
 
 　Differential abundance test is a very important part in the microbial community data analysis.
 It can be used to find the significant taxa in determining the community differences across groups.
-With the field development, there are some combined methods to better capture the important biomarker information.
+With the field development, there are also some wrapped methods to better capture the important biomarkers,
+such as the combination of machine-learning and differential abundance test.
 Currently, trans_diff class have several famous approaches to perform this analysis: 
-metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], random forest and metagenomeSeq[@Paulson_Differential_2013].
-Metastat depends on the permutations and t-test and performs well on the sparse data.
-It is used for the comparisons of taxonomic abundance between two groups at any taxonomic level.
-LEfSe and random forest in this class is mainly used for the identification of biomarkers at all taxonomic levels.
-metagenomeSeq method is implemented to find significant species between two groups at species level (OTU/ASV).
-In addition, Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for groups = 2) and 
-Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups > 2 are also available.
+metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], RF (random forest + differential test), metagenomeSeq[@Paulson_Differential_2013],
+Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each paired group) and 
+Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
+t.test and anova.
+Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
+It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
+LEfSe and RF in this class are both the wrapped method (i.e. the combination of machine-learning and differential abundance test)
+and are mainly used for the identification of biomarkers at all taxonomic levels.
+The metagenomeSeq method is implemented to find significant feature between two groups at feature level (OTU/ASV) directly.
 
 
 ### Example
 
+From v0.8.0, all the differential test result is stored in the object$res_diff.
 Let's first run metastat example.
 
 ```{r, echo = TRUE, eval = FALSE}
 # metastat analysis at Genus level
-t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", metastat_taxa_level = "Genus")
-# t1$res_metastat is the result
-# t1$res_metastat_group_matrix is the group comparisons order for plotting
-# plot the first paired groups, choose_group = 1
-t1$plot_metastat(use_number = 1:10, qvalue = 0.05, choose_group = 1)
+t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
+# t1$res_diff is the differential test result
+# t1$res_abund is the group abundance
+```
+
+Because the example 'Group' in sample_table has three groups, 
+the metastat can run the comparisons for each paired group. So there are three pairs in t1$res_diff$Comparison.
+For the abundance plotting, the user should use select_group to select the required pair.
+
+```{r, echo = TRUE, eval = FALSE}
+# select_group should be one of groups in t1$res_diff$Comparison
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
@@ -37,35 +48,33 @@ knitr::include_graphics("Images/plot_metastat_1.png")
 
 LEfSe combines the non-parametric test and linear discriminant analysis [@Segata_Metagenomic_2011].
 
-
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_diff$new(dataset = dataset, method = "lefse", group = "Group", alpha = 0.01, lefse_subgroup = NULL)
-# t1$res_lefse is the LEfSe result
-# t1$res_abund is the abundance information
-t1$plot_lefse_bar(LDA_score = 4)
+# see t1$res_diff for the result
+# From v0.8.0, threshold is used for the LDA score selection.
+t1$plot_diff_bar(threshold = 4)
+# we show 20 taxa with the highest LDA
+t1$plot_diff_bar(use_number = 1:30, width = 0.8, group_order = c("CW", "IW", "TW"))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_lefse_bar.png")
 ```
 
-
 ```{r, echo = TRUE, eval = FALSE}
-t1$res_lefse[1:5, ]
+# show part of the table
+t1$res_diff[1:5, c(1, 3, 4, 6)]
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
 res_lefse <- read.csv("Files/res_lefse.csv")
-t1 <- list()
-t1[["res_lefse"]] <- res_lefse
-pander::pander(t1$res_lefse[1:5, ])
+pander::pander(res_lefse[1:5, c(1, 3, 4, 6)])
 ```
-
 
 Then, we plot the abundance of biomarkers detected by LEfSe.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1$plot_diff_abund(use_number = 1:30)
+t1$plot_diff_abund(use_number = 1:30, group_order = c("CW", "IW", "TW"))
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
@@ -80,7 +89,7 @@ We only show the full taxonomic label at Phylum level and use letters at other l
 ```{r, echo = TRUE, eval = FALSE}
 # clade_label_level 5 represent phylum level in this analysis
 # require ggtree package
-t1$plot_lefse_cladogram(use_taxa_num = 200, use_feature_num = 50, clade_label_level = 5)
+t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, clade_label_level = 5, group_order = c("CW", "IW", "TW"))
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
@@ -99,17 +108,13 @@ use_labels <- c("c__Deltaproteobacteria", "c__Actinobacteria", "o__Rhizobiales",
 	"p__Chloroflexi", "c__Acidobacteria", "c__Gammaproteobacteria", "c__Betaproteobacteria", "c__KD4-96",
 	"c__Bacilli", "o__Gemmatimonadales", "f__Gemmatimonadaceae", "o__Bacillales", "o__Rhodobacterales")
 # then use parameter select_show_labels to show
-t1$plot_lefse_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = use_labels)
+t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = use_labels)
 # Now we can see that more taxa names appear in the tree
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_lefse_cladogram_1.png")
 ```
-
-If you are interested in taxonomic tree, you can also use metacoder package[@Foster_Metacoder_2017] to plot the taxonomic tree based on the selected taxa. 
-We do not show the usage here.
-
 
 The third approach is rf, which depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
 The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
@@ -119,59 +124,68 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 # use Genus level for parameter taxa_level, if you want to use all taxa, change to "all"
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
 t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
-# t1$res_rf is the result stored in the object
-# plot the result
-t2 <- t1$plot_diff_abund(use_number = 1:20, only_abund_plot = FALSE)
-gridExtra::grid.arrange(t2$p1, t2$p2, ncol=2, nrow = 1, widths = c(2,2))
-# the middle asterisk represent the significances
+# plot the MeanDecreaseGini bar
+g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
+# plot the abundance using same taxa in g1
+g2 <- t1$plot_diff_abund(group_order = c("TW", "CW", "IW"), select_taxa = t1$plot_diff_bar_taxa)
+# now the y axis in g1 and g2 is same, so we can merge them
+# remove g1 legend; remove g2 y axis text and ticks
+g1 <- g1 + theme(legend.position = "none")
+g2 <- g2 + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_diff_abund.png")
+knitr::include_graphics("Images/plot_rf_diff_abund.png")
 ```
 
-If the user only want to get the taxa with significant different abundance, both the method parameter "KW" and "KW_dunn" are available.
-The method = "KW" represents Kruskal-Wallis Rank Sum Test (for groups > 2) and Wilcoxon Rank Sum Tests (for groups = 2)
-for a specific taxonomic level or all levels of microtable$taxa_abund.
-The method = "KW_dunn" represents Dunn's Kruskal-Wallis Multiple Comparisons for cases with groups > 2.
 
+For other details of methods, please see the document with `help(trans_diff)`.
+Those are some examples.
 
 ```{r, echo = TRUE, eval = FALSE}
+# Kruskal-Wallis Rank Sum Test for all groups (>= 2)
 t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
-# "KW_dunn" method depends on the FSA package
-t1 <- trans_diff$new(dataset = d1, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
-# see t1$res_diff for the result
+t1$plot_diff_abund(use_number = 1:20)
+# Dunn's Kruskal-Wallis Multiple Comparisons when group number > 2; require FSA package
+t1 <- trans_diff$new(dataset = dataset, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - IW", group_order = c("CW", "IW"))
+# Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
+t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
+# t.test
+t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
+# anova
+t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
+t1$res_diff
+# zero-inflated log-normal model-based differential test method from metagenomeSeq package
+t1 <- trans_diff$new(dataset = dataset, method = "mseq", group = "Group")
 ```
-
-
 
 ### Key points
 
-  + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before the analysis
+  + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before creating your dataset
   + trans_diff$new: creating this class will invoke taxa_abund stored in microtable object
-  + trans_diff$plot_lefse_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
-
+  + trans_diff$plot_diff_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
 
 
 ## trans_network class
 
 　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology [@Deng_Molecular_2012; @Faust_Microbial_2012; @Coyte_Theecology_2015].
-In this part, we describe all the core contents in the trans_network class.
-The network construction approaches can be classified into two types: correlation-based and non correlation-based.
-Several approaches can be used to calculate correlations and significances.
-
+In this part, we describe part of the implemented methods in the trans_network class.
 
 ### Example
 
-We first introduce the correlation-based network. 
-This is only intended to show some operations conveniently. Does not mean we are suggesting this approach in any case.
+We use the correlation-based network to show the main operations for users. 
+This is only intended to show some operations conveniently. 
+**Does not mean we are suggesting this approach in any case**.
 Please check the final part for other network construction methods.
-The parameter cal_cor in trans_network is used for selecting the correlation calculation method.
 
 ```{r, echo = TRUE, eval=FALSE}
+# The parameter cal_cor in trans_network is used for selecting the correlation calculation method.
 # Use R base cor.test, a little slow
 t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
-# return t1$res_cor_p list; one table: correlation; another: p value
+# return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -181,23 +195,20 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# When the OTU number is large, using R WGCNA package to replace "base" will be faster
+# When the OTU number is large, using cal_cor = "WGCNA" will be faster
 # require WGCNA package, see https://chiliubio.github.io/microeco_tutorial/intro.html#wgcna for the installation
 t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
 ```
 
 The parameter COR_cut can be used to select the correlation threshold.
-Furthermore, COR_optimization = TRUE represent using RMT theory to find the optimized correlation threshold instead of the COR_cut[@Deng_Molecular_2012].
+Furthermore, COR_optimization = TRUE can be used to find the optimized coefficient threshold instead of the COR_cut based on the RMT theory [@Deng_Molecular_2012].
 
 ```{r, echo = TRUE, eval=FALSE}
 # construct network; require igraph package
 t1$cal_network(COR_p_thres = 0.01, COR_optimization = TRUE)
-# return t1$res_network
-```
-
-```{r, echo = TRUE, eval=FALSE}
 # use arbitrary coefficient threshold to contruct network
 t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7)
+# return t1$res_network
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -207,7 +218,7 @@ t1$cal_module(method = "cluster_fast_greedy")
 
 ```{r, echo = TRUE, eval=FALSE}
 # save network
-# open the gexf file using Gephi(https://gephi.org/)
+# open network.gexf file using Gephi(https://gephi.org/)
 # require rgexf package
 t1$save_network(filepath = "network.gexf")
 ```
@@ -218,7 +229,7 @@ knitr::include_graphics("Images/network1_spearman.png")
 ```
 
 Now, we show the node colors with the Phylum information and the edges colors with the positive and negative correlations.
-All the data used has been stored in the network.gexf file, including modules classifications, Phylum information and edges classifications.
+All the data used has been stored in the network.gexf file, including modules classifications, Phylum information and edge labels.
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/network2_spearman.png")
@@ -228,7 +239,7 @@ knitr::include_graphics("Images/network2_spearman.png")
 ```{r, echo = TRUE, eval = FALSE}
 # calculate network attributes
 t1$cal_network_attr()
-# return t1$res_network_attr
+t1$res_network_attr
 ```
 
 ```{r, echo = FALSE}
@@ -239,12 +250,13 @@ res_network_attr <- read.csv("Files/res_network_attr.csv", check.names = FALSE)
 pander::pander(res_network_attr)
 ```
 
+The function get_node_table, get_edge_table and get_adjacency_matrix are designed to 
+get node properties table, edge properties table and adjacency matrix from network, respectively.
+
 ```{r, echo = TRUE, eval = FALSE}
-# classify the node; return t1$res_node_table 
-t1$cal_node_type()
-# return t1$res_node_table 
-# we retain the file for the following example in trans_func part
-network_node_table <- t1$res_node_table 
+# get node properties
+t1$get_node_table(node_roles = TRUE)
+# return t1$res_node_table
 ```
 
 ```{r, echo = FALSE}
@@ -253,8 +265,17 @@ network_node_table <- read.csv("Files/res_node_table.csv", row.names = 1, check.
 ```
 
 ```{r, echo = FALSE}
-pander::pander(network_node_table[1:5, c(1:4)])
+pander::pander(network_node_table[1:5, c(1:6)])
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+# get edge properties
+t1$get_edge_table()
+# return t1$res_edge_table 
+t1$get_adjacency_matrix()
+# return t1$res_adjacency_matrix
+```
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # plot node roles in terms of the within-module connectivity and among-module connectivity
@@ -285,7 +306,7 @@ t1$cal_eigen()
 Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.
 
 ```{r, echo = TRUE, eval = FALSE}
-# create trans_env object like the above operation
+# create trans_env object
 t2 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # calculate correlations
 t2$cal_cor(add_abund_table = t1$res_eigen)
@@ -302,7 +323,7 @@ In this function, you should provide the nodes you need using the node parameter
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract a sub network that contains all nodes in module M1
-t1$subset_network(node = t1$res_node_table %>% .[.$module == "M1", ] %>% rownames, rm_single = TRUE)
+t1$subset_network(node = t1$res_node_table %>% base::subset(module == "M1") %>% rownames, rm_single = TRUE)
 # return a new network with igraph class
 # extract sub network in which all edge labels are "+", i.e. positive edges
 t1$subset_network(edge = "+")
@@ -312,7 +333,7 @@ t1$subset_network(edge = "+")
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
-sub1 <- t1$subset_network(node = dataset$otu_table[, "S1", drop = FALSE] %>% .[.[, 1] !=0, , drop = FALSE] %>% rownames, rm_single = TRUE)
+sub1 <- t1$subset_network(node = dataset$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
 # see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
 t2 <- clone(t1)
 t2$res_network <- sub1
@@ -322,7 +343,6 @@ t2$save_network("S1.gexf")
 # please use a loop for more samples
 ```
 
-
 We also add the function `plot_network` from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html and https://kateto.net/network-visualization for more
@@ -330,13 +350,22 @@ details on the network visualization in R.
 
 ```{r, echo = TRUE, eval = FALSE}
 # default parameter represents using igraph plot.igraph function
-t1$plot_network()
+t2$plot_network()
 # use ggraph package method
-t1$plot_network(method = "ggraph", node_color = "Phylum")
+t2$plot_network(method = "ggraph", node_color = "Phylum")
 # use networkD3 package method for the dynamic network visualization in R
 t1$plot_network(method = "networkD3", node_color = "module")
 t1$plot_network(method = "networkD3", node_color = "Phylum")
 ```
+
+From v0.8.0, the trans_comm function can be used to transform the node classification to a new microtable object for other analysis.
+
+```{r, echo = TRUE, eval = FALSE}
+# use_col is used to select a column of t1$res_node_table
+microtable_module <- t1$trans_comm(use_col = "module", abundance = TRUE)
+microtable_module
+```
+
 
 
 **Then let's show other implemented network construction approaches**: 
@@ -351,9 +380,8 @@ t1$cal_network(network_method = "SpiecEasi")
 # see t1$res_network
 ```
 
-
-We also introduce the third network construction approach: julia package FlashWeave[@Tackmann_Rapid_2019].
-This is a probabilistic graph based method to obtain the conditional independence.
+The third network construction approach: julia package FlashWeave[@Tackmann_Rapid_2019].
+This is a probabilistic graph-based method to obtain the conditional independence.
 It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
 If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package, 
 and add the julia in the computer path.
@@ -370,55 +398,51 @@ t1$cal_network(network_method = "FlashWeave")
 # see t1$res_network
 ```
 
-The fourth method that implemented in the class is beemStatic package [@Li_BEEMStatic_2021].
+The fourth method implemented: beemStatic package [@Li_BEEMStatic_2021].
 This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
 which is typically used in the microbial time-series data. 
-The result from this approach is a directed network.
+So the network from this approach is a directed network.
 Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
-# cal_cor select NA
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0)
-# require Julia in the computer path, and the package FlashWeave
+t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.001)
 t1$cal_network(network_method = "beemStatic")
-# calculate modules for the directed network
+# modules for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
 
 
 ### Key points
 
+  + cal_network(): get a network named res_network based on different methods
+  + get_node_table(): get node properties table
   + subset_network(): this function can extract any sub-network according to the input nodes, e.g. sub-network for modules or samples
 
 ### Other functions
 
-  + get_edge_table(): get the table of edges, including connected nodes, labels and weight.
-  + cal_powerlaw_p(): perform a bootstrapping hypothesis test to determine whether degrees follows a power law distribution
-  + cal_powerlaw_p(): fit degrees to a power law distribution.
-  + plot_network(): plot the network in R with igraph or ggraph package for static network, and networkD3 package for dynamic network.
+  + cal_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follows a power law distribution and fit degrees to a power law distribution.
+
 
 ## trans_nullmodel class
   In recent decades, 
 the integration of phylogenetic analysis and null model promotes the inference of niche and neutral influences on community assembly more powerfully 
-by adding a phylogeny dimension [@Webb_Phylogenies_2002; @Stegen_Quantifying_2013].
+by adding a phylogeny dimension [@Webb_Phylogenies_2002; @Picante_Kembel_2010; @Stegen_Quantifying_2013].
 The trans_nullmodel class provides an encapsulation, including the calculation of the phylogenetic signal, 
 beta mean pairwise phylogenetic distance (betaMPD), beta mean nearest taxon distance (betaMNTD), 
 beta nearest taxon index (betaNTI), beta net relatedness index (betaNRI) and Bray-Curtis-based Raup-Crick (RCbray).
 The approach for phylogenetic signal analysis is based on the mantel correlogram [@Liu_Long_term_2017], 
 in which the change of phylogenetic signal is intuitional and clear compared to other approaches.
-The algorithms of betaMNTD and betaMPD have been optimized to be faster than those in the picante package [@Picante_Kembel_2010].
 The combinations between RCbray and betaNTI can be used to infer the strength of each ecological process dominating the community assembly 
 under the specific hypothesis [@Stegen_Quantifying_2013].
-This can be achievable by the function cal_process() to parse the percentage of each inferred process.
-
 
 ### Example
 
 We first check the phylogenetic signal.
 
 ```{r, echo = TRUE}
-# generate trans_nullmodel object; use 1000 OTUs as example
-t1 <- trans_nullmodel$new(dataset, taxa_number = 1000, add_data = env_data_16S)
+# generate trans_nullmodel object
+# as an example, we only use high abundance OTU with mean relative abundance > 0.0005
+t1 <- trans_nullmodel$new(dataset, filter_thres = 0.0005, add_data = env_data_16S)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -433,16 +457,17 @@ t1$plot_mantel_corr()
 knitr::include_graphics("Images/plot_mantel_corr.png")
 ```
 
-
 betaNRI(ses.betampd) is used to show the 'basal' phylogenetic turnover[@Liu_Long_term_2017].
 Compared to betaNTI, it can capture more turnover information associated with the deep phylogeny.
-It is noted that there are many null models with the development in the several decades.
-In the trans_nullmodel class, we randomized the phylogenetic relatedness of species.
+It is noted that there are many null models with the development in the several decades of community ecology.
+In the trans_nullmodel class, 
+the default null mode of betaNTI and betaNRI is the randomization of the phylogenetic relatedness among species.
 This shuffling approach fix the observed levels of species α-diversity and β-diversity to
 explore whether the observed phylogenetic turnover significantly differ from null model that phylogenetic relatedness among species are random.
 
 ```{r, echo = TRUE, eval=FALSE}
-# null model run 500 times
+# see null.model parameter for other null models
+# null model run 500 times for the example
 t1$cal_ses_betampd(runs=500, abundance.weighted = TRUE)
 # return t1$res_ses_betampd
 ```
@@ -468,7 +493,7 @@ knitr::include_graphics("Images/plot_betaNRI_one_dataset.png")
 ```
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
-you can calculate the results for each group, respectively.
+you should calculate the results for each group, respectively.
 The results show that, when we perform betaNRI for each group respectively, 
 mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW, 
 revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
@@ -481,7 +506,7 @@ all_groups <- unique(dataset$sample_table[, group_col])
 # calculate for each group, respectively
 for(i in all_groups){
 	# like the above operation, but need provide 'group' and 'select_group'
-	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, taxa_number = 1000, add_data = env_data_16S)
+	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, filter_thres = 0.0005)
 	test$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
 	sesbeta_each[[i]] <- test$res_ses_betampd
 }
@@ -562,17 +587,41 @@ t1$res_process
 pander::pander(t1$res_process)
 ```
 
+The cal_tNST function can be used to calculate normalized stochasticity ratio based on the NST package [@Ning_general_2019].
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_tNST(group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
+# result: t1$res_tNST
+t1$res_tNST$index.grp
+```
+
+```{r, echo = FALSE}
+t1$cal_tNST(group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
+pander::pander(t1$res_tNST$index.grp)
+```
+
+
+```{r, echo = TRUE, eval = FALSE}
+# test the NST difference between each pair of groups
+t1$cal_tNST_test(method = "nst.boot")
+```
+
+For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal_NTI and cal_NRI, respectively.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_NRI(null.model = "taxa.labels", abundance.weighted = FALSE, runs = 999)
+t1$cal_NTI(null.model = "taxa.labels", abundance.weighted = TRUE, runs = 999)
+```
+
 
 ### Key points
 
   + trans_nullmodel$new: filter_thres parameter for the filtering of taxa with relative low abundance
-  + cal_rcbray(): if you just need rcbray, ignore other phylogenetic operations
+  + cal_rcbray(): if only need rcbray, ignore other phylogenetic operations
  
 ### Other function
 
   + cal_Cscore(): calculates the (normalised) mean number of checkerboard combinations (C-score) using C.score
-  + cal_NRI(): calculates Nearest Relative Index (NRI)
-  + cal_NTI(): calculates Nearest Taxon Index (NTI)
 
 
 ## trans_classifier class

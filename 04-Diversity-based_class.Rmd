@@ -11,97 +11,119 @@ Creating the object of trans_alpha class can invoke the alpha_diversity data sto
 
 ### Example
 
-The trans_alpha object have two data frame: alpha_data and alpha_stat.
+Creating trans_alpha object have two return data.frame with prefix 'data_': data_alpha and data_stat.
+The data_alpha is used for the following differential test and plotting.
+
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-# return t1$alpha_stat
-t1$alpha_stat[1:5, ]
+# return t1$data_stat
+t1$data_stat[1:5, ]
 ```
 
 ```{r, echo = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-pander::pander(t1$alpha_stat[1:5, ])
+pander::pander(t1$data_stat[1:5, ])
 ```
 
-Then, we test the differences among groups using Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for groups = 2),
-Dunn's Kruskal-Wallis Multiple Comparisons (for cases with groups > 2) and anova with multiple comparisons.
+Then, we test the differences among groups using Kruskal-Wallis Rank Sum Test (overall test when groups > 2), Wilcoxon Rank Sum Tests (for paired groups),
+Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups > 2) and anova with multiple comparisons.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "KW")
-# return t1$res_alpha_diff
-t1$res_alpha_diff[1:5, ]
+# return t1$res_diff
+t1$res_diff[1:5, ]
 ```
 
 ```{r, echo = FALSE}
 suppressWarnings(t1$cal_diff(method = "KW"))
-pander::pander(t1$res_alpha_diff[1:5, 1:5])
+pander::pander(t1$res_diff[1:5, c(1:2, 4:7)])
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "KW_dunn")
-# return t1$res_alpha_diff
-t1$res_alpha_diff[1:5, ]
+# return t1$res_diff
+t1$res_diff[1:5, ]
 ```
 
 ```{r, echo = FALSE}
 t1$cal_diff(method = "KW_dunn")
-pander::pander(t1$res_alpha_diff[1:5, c(1, 3:6)])
+pander::pander(t1$res_diff[1:5, c(1, 3:8)])
 ```
-
 
 ```{r, echo = TRUE, eval = FALSE}
-t1$cal_diff(method = "anova")
-# return t1$res_alpha_diff
-t1$res_alpha_diff
+# more options
+t1$cal_diff(method = "wilcox")
+t1$cal_diff(method = "t.test")
 ```
 
+Then, let's try to use anova.
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "anova")
+# return t1$res_diff
+t1$res_diff
+```
 
 ```{r, echo = FALSE}
 t1$cal_diff(method = "anova")
-pander::pander(t1$res_alpha_diff)
+pander::pander(t1$res_diff)
 ```
 
-Now, let us plot the mean and se of alpha diversity for each group, and add the duncan.test (agricolae package) result.
+The multi-factor analysis of variance is also supported. 
+It is notable that the result res_diff will be a list instead of a data.frame when anova_set is provided.
+
 ```{r, echo = TRUE, eval = FALSE}
-t1$plot_alpha(add_letter = T, measure = "Chao1", use_boxplot = FALSE)
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", anova_set = "Group+Type")
+# now the result t1$res_diff is a list
+# see the help document for the usage of anova_set
+```
+
+
+From v0.8.0, the plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
+Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "anova")
+t1$plot_alpha(measure = "Chao1")
+t1$plot_alpha(measure = "Chao1", order_x_mean = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_alpha_letter.png")
 ```
 
-We can also use the boxplot to show the paired comparisons directly.
+
 ```{r, echo = TRUE, eval = FALSE}
 t1$plot_alpha(pair_compare = TRUE, measure = "Chao1", shape = "Group")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha.png")
+knitr::include_graphics("Images/plot_alpha_wilcox.png")
 ```
 
-The multi-factor analysis of variance is also supported. 
-It is notable that the result res_alpha_diff will be a list instead of a data.frame.
+Let's try to remove the ns in the label by operating the object$res_diff file.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-t1$cal_diff(method = "anova", anova_set = "Group+Type")
-# now the result t1$res_alpha_diff is a list
-# see the help document for the usage of anova_set
+t1$res_diff %<>% base::subset(Significance != "ns")
+g1 <- t1$plot_alpha(measure = "Chao1", xtext_size = 15)
 ```
 
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_alpha_wilcox_nons.png")
+```
 
 ### Key points
 
   + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
   + cal_diff: anova_set parameter can be used for multi-factor analysis of variance
-
+  + plot_alpha: the significance label comes from the object$res_diff
 
 ## trans_beta class
 
 　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
-As beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011],
-So we encapsulate some commonly-used approaches according to the research of microbial community ecology[@Ramette_Multivariate_2007].
+Beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011],
+So we encapsulate some commonly-used approaches in microbial ecology[@Ramette_Multivariate_2007].
 Note that the parts related with "Environmental interpretation" are placed into the trans_env class.
 When needed, the beta_diversity list in microtable object will be invoked for transformation and ploting using trans_beta class.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
@@ -113,7 +135,7 @@ We first show the ordination using PCoA.
 
 ```{r, echo = TRUE, eval = TRUE}
 # we first create an trans_beta object
-# measure parameter can invoke the distance matrix of bray in dataset$beta_diversity
+# measure parameter can invoke the distance matrix in dataset$beta_diversity
 t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
@@ -122,13 +144,33 @@ t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)
-# plot the PCoA result
-t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellipse = TRUE)
+# plot the PCoA result with confidence ellipse
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_ordination.png")
 ```
+
+Try other intresting options in the plotting.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$plot_ordination(plot_color = "Type", plot_type = "point")
+t1$plot_ordination(plot_color = "Group", point_size = 5, point_alpha = .2, plot_type = c("point", "ellipse"), ellipse_chull_fill = FALSE)
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "chull"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "chull", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("chull", "centroid"))
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "chull", "centroid"), add_sample_label = "SampleID")
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = "centroid")
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = "centroid", centroid_segment_alpha = 0.9, centroid_segment_size = 1, centroid_segment_linetype = 1)
+t1$plot_ordination(plot_type = c("point", "centroid"), plot_color = "Type", centroid_segment_linetype = 1)
+t1$plot_ordination(plot_color = "Saline", point_size = 5, point_alpha = .2, plot_type = c("point", "chull"), ellipse_chull_fill = FALSE, ellipse_chull_alpha = 0.1)
+t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) + geom_vline(xintercept = 0, linetype = 2) + geom_hline(yintercept = 0, linetype = 2)
+```
+
+
 
 Then we plot and compare the group distances.
 
@@ -168,35 +210,37 @@ knitr::include_graphics("Images/plot_clustering.png")
 perMANOVA[@Anderson_Austral_2001] is often used in the differential test of distances among groups.
 
 ```{r, echo = TRUE, eval = FALSE}
-# manova for all groups
-t1$cal_manova(cal_manova_all = TRUE)
+# manova for all groups when manova_all = TRUE
+t1$cal_manova(manova_all = TRUE)
 t1$res_manova
 ```
 
 ```{r, echo = FALSE}
-t1$cal_manova(cal_manova_all = TRUE)
+t1$cal_manova(manova_all = TRUE)
 pander::pander(t1$res_manova)
 ```
 
+The parameter manova_all = FALSE can be used to calculate significance for each paired group.
 ```{r, echo = TRUE, eval = FALSE}
 # manova for each paired groups
-t1$cal_manova(cal_manova_paired = TRUE)
+t1$cal_manova(manova_all = FALSE)
 t1$res_manova
 ```
 
 ```{r, echo = FALSE}
-t1$cal_manova(cal_manova_paired = TRUE)
+t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
 
+The parameter manova_set has the priority. If manova_set is provided, manova_all parameter will be ignored.
 ```{r, echo = TRUE, eval = FALSE}
-# manova for specified group set: here "Group + Type"
-t1$cal_manova(cal_manova_set = "Group + Type")
+# manova for specified group set: such as "Group + Type"
+t1$cal_manova(manova_set = "Group + Type")
 t1$res_manova
 ```
 
 ```{r, echo = FALSE}
-t1$cal_manova(cal_manova_set = "Group + Type")
+t1$cal_manova(manova_set = "Group + Type")
 pander::pander(t1$res_manova)
 ```
 
@@ -204,7 +248,7 @@ pander::pander(t1$res_manova)
 PERMDISP[@Anderson_Navigating_2011] is also implemented to check multivariate homogeneity of groups dispersions (variances).
 
 ```{r, echo = TRUE}
-# PERMDISP for the whole comparison and for each paired groups
+# for the whole comparison and for each paired groups
 t1$cal_betadisper()
 t1$res_betadisper
 ```
@@ -215,7 +259,7 @@ For the explanation of statistical methods in microbial ecology, please read htt
 
   + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
   + cal_ordination(): PCoA, PCA and NMDS approaches are all available
-  + cal_manova(): cal_manova function can be used for paired comparisons, holistic test and multi-factor test
+  + cal_manova(): cal_manova function can be used for paired comparisons, overall test and multi-factor test
   + plot_group_distance(): hide_ns and pair_compare_filter_select parameters can be used to control the significance labels shown in the plot
 
 

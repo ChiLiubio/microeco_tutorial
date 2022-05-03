@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Introduction | Tutorial for R microeco package (v0.7.5)</title>
+  <title>Chapter 2 Introduction | Tutorial for R microeco package (v0.8.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.7.5)" />
+  <meta property="og:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.8.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.7.5)" />
+  <meta name="twitter:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.8.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-04-21" />
+<meta name="date" content="2022-05-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.7.5)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.8.0)</a>
           </h1>
         </div>
 
@@ -317,7 +317,7 @@ div.csl-indent {
 <div id="intro" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Introduction<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse communtiy ecology data fast.
+The main goal of developing this package is to help users analyse microbial communtiy data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
@@ -325,21 +325,23 @@ It is notable that, beside the demonstration in the tutorial, users can also sav
 apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
 So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
-Before starting the specific usage of each class, let’s first learn several key points.</p>
+Before starting the specific usage of each class, let’s first introduce several key points.</p>
 <div id="framework" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Framework<a href="intro.html#framework" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This is a framework for users to fast understand the design of the microeco package.</p>
+<p>This is a rough framework for users to fast understand the design of the microeco package.</p>
 <p><img src="Images/microeco_framework.png" width="8000px" style="display: block; margin: auto;" /></p>
 <p>The stored ‘Functions’ and ‘Files’ represent that you can access those functions or files in R6 object using $ operator
 as we show in the figure. An example is the function <code>dataset$cal_alphadiv()</code> and its return result <code>dataset$alpha_diversity</code>.
-The dataset is a microtable object.</p>
+The dataset is a microtable object.
+Generally, the return files of functions are named with the prefix ‘res_’ to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
+Except for microtable class, the transformed data in creating object is also generally named with the prefix ‘data_.’</p>
 </div>
 <div id="r6-class" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> R6 Class<a href="intro.html#r6-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>All the classes in microeco package depend on the R6 class <span class="citation">(<a href="#ref-R6_Winston" role="doc-biblioref">Chang 2020</a>)</span>.
-R6 uses the encapsulated object-oriented programming paradigm,
+<p>All the main classes in microeco package depend on the R6 class <span class="citation">(<a href="#ref-R6_Winston" role="doc-biblioref">Chang 2020</a>)</span>.
+R6 uses the encapsulated object-oriented (OO) programming paradigm,
 which means that R6 is a profoundly different OO system from S3 and S4 because it is built on encapsulated objects, rather than generic functions.
-If you are interested in the class features, read more from ‘Advanced R’ book (<a href="https://adv-r.hadley.nz/" class="uri">https://adv-r.hadley.nz/</a>).</p>
+If the user is interested in the class features, read more from ‘Advanced R’ book (<a href="https://adv-r.hadley.nz/" class="uri">https://adv-r.hadley.nz/</a>).</p>
 <ul>
 <li><p>A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace.
 This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().</p></li>
@@ -349,13 +351,13 @@ This influences how we think about naming. The methods belong to objects, not ge
 </div>
 <div id="help" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Help<a href="intro.html#help" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The use of help documents in the microeco package may be a little different from other packages we often used.
-If you wish to see one of help documents of functions, you should search the name of the class (not the name of the function)
-and click the link of each function.</p>
+<p>The usage of help documents in the microeco package may be a little different from other packages we often used.
+If you wish to see the help document of a function, you should search the name of the class it belongs to (not the name of the function)
+and click the link of the function.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="intro.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first install microeco, see https://github.com/ChiLiubio/microeco</span></span>
 <span id="cb1-2"><a href="intro.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load package microeco</span></span>
 <span id="cb1-3"><a href="intro.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this can show all the functions and the detailed descriptions in the microtable class</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this can show all the functions and the detailed descriptions of the microtable class</span></span>
 <span id="cb2-2"><a href="intro.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># same with: help(microtable)</span></span>
 <span id="cb2-3"><a href="intro.html#cb2-3" aria-hidden="true" tabindex="-1"></a>?microtable</span></code></pre></div>
 </div>
@@ -382,9 +384,9 @@ In addition, some packages, e.g. SpiecEasi, are released on github and can not 
 <p>We show several packages that are published in CRAN and not installed automatically.</p>
 <table>
 <colgroup>
-<col width="14%" />
-<col width="33%" />
-<col width="52%" />
+<col width="13%" />
+<col width="35%" />
+<col width="50%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -430,46 +432,56 @@ In addition, some packages, e.g. SpiecEasi, are released on github and can not 
 <td align="left">multiple comparisons in anova</td>
 </tr>
 <tr class="even">
-<td align="left">gridExtra</td>
-<td align="left">trans_diff class</td>
-<td align="left">merge plots</td>
-</tr>
-<tr class="odd">
 <td align="left">picante</td>
 <td align="left">cal_alphadiv()</td>
 <td align="left">Faith’s phylogenetic alpha diversity</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pheatmap</td>
 <td align="left">plot_corr(pheatmap = TRUE)</td>
 <td align="left">correlation heatmap with clustering dendrogram</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">tidytree</td>
 <td align="left">trans_diff class</td>
 <td align="left">plot the taxonomic tree</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">igraph</td>
 <td align="left">trans_network class</td>
 <td align="left">network related operations</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rgexf</td>
 <td align="left">save_network()</td>
 <td align="left">save network with gexf style</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">ggalluvial</td>
 <td align="left">plot_bar(use_alluvium = TRUE)</td>
 <td align="left">alluvial plot</td>
+</tr>
+<tr class="even">
+<td align="left">ggh4x</td>
+<td align="left">plot_bar</td>
+<td align="left">multiple facets</td>
+</tr>
+<tr class="odd">
+<td align="left">FSA</td>
+<td align="left">trans_alpha and trans_diff class</td>
+<td align="left">Dunn’s Kruskal-Wallis Multiple Comparisons</td>
+</tr>
+<tr class="even">
+<td align="left">gridExtra</td>
+<td align="left">trans_diff class</td>
+<td align="left">merge plots</td>
 </tr>
 </tbody>
 </table>
 <p>Then, if you want to install these packages or some of them, you can do like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If a package is not installed, it will be installed from CRAN.</span></span>
 <span id="cb5-2"><a href="intro.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First select the packages of interest</span></span>
-<span id="cb5-3"><a href="intro.html#cb5-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;FSA&quot;</span>)</span>
+<span id="cb5-3"><a href="intro.html#cb5-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;FSA&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>)</span>
 <span id="cb5-4"><a href="intro.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
 <span id="cb5-5"><a href="intro.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
 <span id="cb5-6"><a href="intro.html#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
@@ -499,12 +511,12 @@ You can download Gephi and learn how to use it from <a href="https://gephi.org/u
 <div id="wgcna" class="section level3 hasAnchor" number="2.4.5">
 <h3><span class="header-section-number">2.4.5</span> WGCNA<a href="intro.html#wgcna" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the correlation-based network, when the species number is very large,
-the correlation algorithm in WGCNA is very fast compared to the ‘cor’ option in trans_network.</p>
+the correlation algorithm in WGCNA is very fast.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="tax4fun" class="section level3 hasAnchor" number="2.4.6">
 <h3><span class="header-section-number">2.4.6</span> Tax4Fun<a href="intro.html#tax4fun" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Tax4Fun is an R package used for the prediction of functional potential of prokaryotic communities.</p>
+<p>Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.</p>
 <ol style="list-style-type: decimal">
 <li>install Tax4Fun package</li>
 </ol>
@@ -522,7 +534,7 @@ the correlation algorithm in WGCNA is very fast compared to the ‘cor’ option
 <p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span>.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
-The user do not need to install Tax4Fun2 R package.
+The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (<strong>ignore this if the blast tool has been in the path</strong>) and Ref99NR/Ref100NR database (select one).
 Downlaod blast tools from “<a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" class="uri">ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+</a>” ; e.g. ncbi-blast-****-x64-win64.tar.gz for windows system.
 Note that some errors can come from the latest versions because of memory issue (<a href="https://www.biostars.org/p/413294/" class="uri">https://www.biostars.org/p/413294/</a>).
@@ -543,16 +555,17 @@ Uncompress all the folders. The final folders should be like these structures:</
 　　　|—— Ref99NR.fasta<br />
 　　　|—— Ref99NR.tre</p>
 <p>The path “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.
-The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not added to the path (environmental variable).</p>
+The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not added to the system env path (environmental variable).</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Either seqinr or Biostrings package should be installed for reading and writing fasta file</span></span>
 <span id="cb9-2"><a href="intro.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-3"><a href="intro.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html</span></span>
 <span id="cb9-4"><a href="intro.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
-<span id="cb9-5"><a href="intro.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco if you do not have installed file2meco</span></span>
+<span id="cb9-5"><a href="intro.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco to install file2meco</span></span>
 <span id="cb9-6"><a href="intro.html#cb9-6" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb9-7"><a href="intro.html#cb9-7" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
-<span id="cb9-8"><a href="intro.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or use Biostrings::readDNAStringSet(rep_fasta_path)</span></span>
-<span id="cb9-9"><a href="intro.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then see the help document of microtable class about the rep_fasta in microtable$new().</span></span></code></pre></div>
+<span id="cb9-8"><a href="intro.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or use Biostrings package</span></span>
+<span id="cb9-9"><a href="intro.html#cb9-9" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">readDNAStringSet</span>(rep_fasta_path)</span>
+<span id="cb9-10"><a href="intro.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># also see the help document of microtable class about the rep_fasta parameter in microtable$new().</span></span></code></pre></div>
 </div>
 </div>
 <div id="plotting" class="section level2 hasAnchor" number="2.5">
@@ -562,7 +575,7 @@ We provide some parameters to change the corresponding plot, but it may be far f
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated via github pushing or email (<a href="mailto:liuchi0426@126.com" class="email">liuchi0426@126.com</a>).</p>
+Any contribution of a modified class is also appreciated via Github-Pull requests (<a href="https://github.com/ChiLiubio/microeco_tutorial/pulls" class="uri">https://github.com/ChiLiubio/microeco_tutorial/pulls</a>) or Email (<a href="mailto:liuchi0426@126.com" class="email">liuchi0426@126.com</a>).</p>
 
 </div>
 </div>
@@ -635,6 +648,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

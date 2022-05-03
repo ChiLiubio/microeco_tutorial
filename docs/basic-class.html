@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.7.5)</title>
+  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.7.5)" />
+  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.7.5)" />
+  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-04-21" />
+<meta name="date" content="2022-05-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.7.5)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.8.0)</a>
           </h1>
         </div>
 
@@ -325,14 +325,13 @@ usearch (<a href="https://www.drive5.com/usearch/" class="uri">https://www.drive
 SILVAngs (<a href="https://ngs.arb-silva.de/silvangs/" class="uri">https://ngs.arb-silva.de/silvangs/</a>),
 and RDP (<a href="http://rdp.cme.msu.edu/" class="uri">http://rdp.cme.msu.edu/</a>).
 Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
-(1) OTU/ASV table, i.e. the species-sample abundance table;
-(2) taxonomy table, the taxonomic assignment table;
+(1) OTU/ASV table, i.e. the feature-sample abundance table;
+(2) taxonomic assignment table;
 (3) representative sequences;
 (4) phylogenetic tree;
-(5) metadata. It is generally useful to create a detailed sample information table to store all the sample information,
-including the environmental data.</p>
+(5) metadata. It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).</p>
 <p>　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
-At least, the OTU table (i.e. species-sample abundance table) should be provided for creating microtable object.
+At least, the OTU table (i.e. feature-sample abundance table) should be provided for creating microtable object.
 Thus, the microtable class can recognize the sample information table is missing and create a default sample table according to
 the sample names in otu_table.
 To make the file reading more convenient,
@@ -344,9 +343,9 @@ In this tutorial, we use the data inside the package microeco to show some basic
 <h3><span class="header-section-number">3.1.1</span> Example<a href="basic-class.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
 This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al. <span class="citation">(<a href="#ref-An_Soil_2019" role="doc-biblioref">An et al. 2019</a>)</span>,
-who surveyed soil bacterial communities in Chinese inland wetlands (IW),
+who surveyed soil prokaryotic communities in Chinese inland wetlands (IW),
 coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
-These wetlands include both saline and non-saline samples.
+These wetlands include both saline and non-saline samples (classified for the tutorial).
 The sample information table have 4 columns: “SampleID,” “Group,” “Type” and “Saline.”
 The column “SampleID” is same with the rownames.
 The column “Group” represents the IW, CW and TW.
@@ -354,7 +353,7 @@ The column “Type” represents the sampling region: northeastern region (NE), 
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP).
 The column “Saline” represents the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-It is of course doable to put all the environmental data into sample information table.</p>
+It is of course doable and recommended to put all the environmental data into sample information table.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basic-class.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb10-2"><a href="basic-class.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data; 16S rRNA gene amplicon sequencing dataset</span></span>
 <span id="cb10-3"><a href="basic-class.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
@@ -489,14 +488,15 @@ Crenarchaeotic Group</td>
 </tr>
 </tbody>
 </table>
-<p>Generally, users’ taxonomic table may have some chaotic information, such as NA, unidentified and unknown.
+<p>Generally, users’ taxonomic table have some chaotic information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
 So it is usually necessary to clean this data using the <code>tidy_taxonomy</code> function.
 Another very important result of this operation is to <strong>unify the taxonomic prefix</strong> automatically,
-e.g. transforming D_1__ to p__ for phylum level or adding p__ to phylum directly.</p>
+e.g., transforming D_1__ to p__ for Phylum level or adding p__ to Phylum directly if no prefix is found.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="basic-class.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the taxonomic information unified, very important</span></span>
 <span id="cb17-2"><a href="basic-class.html#cb17-2" aria-hidden="true" tabindex="-1"></a>taxonomy_table_16S <span class="sc">%&lt;&gt;%</span> tidy_taxonomy</span></code></pre></div>
 <p>The rownames of sample_table in microtable object (i.e. sample names) are used for selecting samples/groups in all the related operations in the package.
+Using pure number as sample names is <strong>not recommended</strong> in case of unknown disorder or man-made mistake.
 <strong>Before creating microtable object, make sure that the rownames of sample information table are sample names</strong>.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="basic-class.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(sample_info_16S)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
@@ -626,7 +626,7 @@ The user can also directly integrate those data into the sample information tabl
 <pre><code>## [1] &quot;phylo&quot;</code></pre>
 <p>Then, we create an object of microtable class.
 This operation is very similar with the package phyloseq<span class="citation">(<a href="#ref-Mcmurdie_phyloseq_2013" role="doc-biblioref">Mcmurdie and Holmes 2013</a>)</span>, but in microeco it is more brief.
-The otu_table in the microtable class must be the species-sample format: rownames - OTU/ASV/other names; colnames - sample names.
+The otu_table in the microtable class must be the feature-sample format: rownames - OTU/ASV/pathway/other names; colnames - sample names.
 <strong>The colnames in otu_table must have overlap with rownames of sample_table</strong>.
 Otherwise, the following check can filter all the samples of otu_table because of no same sample names between otu_table and sample_table.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="basic-class.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R6 class, &#39;$new&#39; is the original method used to create a new object of class</span></span>
@@ -667,7 +667,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <span id="cb36-2"><a href="basic-class.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation to filter tax_table.</span></span>
 <span id="cb36-3"><a href="basic-class.html#cb36-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span></code></pre></div>
 <pre><code>## Total 34 taxa are removed from tax_table ...</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
 <pre><code>## microtable class:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
@@ -685,7 +685,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="basic-class.html#cb42-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10316 37087</code></pre>
 <p>Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
-it is optional perform the resampling to make the sequence number equal for each sample.
+it is optional to perform the resampling to make the sequence number equal for each sample.
 The function <code>rarefy_samples</code> can invoke the function <code>tidy_dataset</code> automatically before and after the rarefying.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basic-class.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, use 10000 sequences in each sample</span></span>
 <span id="cb44-2"><a href="basic-class.html#cb44-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
@@ -783,8 +783,8 @@ For the definition of each alpha diversity index, please see <a href="http://sci
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="basic-class.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save dataset$alpha_diversity to a directory</span></span>
 <span id="cb59-2"><a href="basic-class.html#cb59-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_alphadiv</span>(<span class="at">dirpath =</span> <span class="st">&quot;alpha_diversity&quot;</span>)</span></code></pre></div>
 <p>Let’s go on to beta diversity with function <code>cal_betadiv()</code>.
-We provide four most frequently used indexes: Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="basic-class.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not want to calculate unifrac metrics, use unifrac = FALSE</span></span>
+If method parameter is not provided, the function automatically calculates Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac matrixes.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="basic-class.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unifrac = FALSE means do not calculate unifrac metric</span></span>
 <span id="cb60-2"><a href="basic-class.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require GUniFrac package installed</span></span>
 <span id="cb60-3"><a href="basic-class.html#cb60-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb60-4"><a href="basic-class.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return dataset$beta_diversity</span></span>
@@ -825,7 +825,7 @@ the class can not recognize this modification, the user should use <code>tidy_da
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="basic-class.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone a complete dataset named test</span></span>
 <span id="cb70-2"><a href="basic-class.html#cb70-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
 <span id="cb70-3"><a href="basic-class.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-4"><a href="basic-class.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># add the rownames of tax_table as the last column of tax_table directly; very useful in some analysis, e.g. OTU/ASV biomarker finding.</span></span>
+<span id="cb70-4"><a href="basic-class.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># add the rownames of tax_table as the last column of tax_table directly; useful in some analysis, e.g. biomarker finding at OTU/ASV level.</span></span>
 <span id="cb70-5"><a href="basic-class.html#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
 <span id="cb70-6"><a href="basic-class.html#cb70-6" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">add_rownames2taxonomy</span>(<span class="at">use_name =</span> <span class="st">&quot;OTU&quot;</span>)</span>
 <span id="cb70-7"><a href="basic-class.html#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
@@ -859,7 +859,7 @@ the class can not recognize this modification, the user should use <code>tidy_da
 <li>otu_table: rownames must be feature names; colnames must be sample names</li>
 <li><code>microtable</code> class: creating microtable object requires at least one file input (otu_table)</li>
 <li><code>tidy_taxonomy()</code>: necessary to make taxonomic table have unified format</li>
-<li><code>tidy_dataset()</code>: necessary to clean files in microtable object</li>
+<li><code>tidy_dataset()</code>: necessary to trim files in microtable object</li>
 <li><code>add_rownames2taxonomy()</code>: add the rownames of tax_table as the last column of tax_table</li>
 <li><code>cal_abund()</code>: powerful and flexible to cope with complex cases in tax_table, see the parameters</li>
 <li>taxa_abund: taxa_abund is a list stored in microtable object and have several data frame</li>
@@ -953,6 +953,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

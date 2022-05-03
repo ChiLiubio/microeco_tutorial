@@ -13,27 +13,26 @@ data(sample_info_ITS)
 data(otu_table_ITS)
 data(taxonomy_table_ITS)
 # create microtable object
-dataset <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
+meco_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
 # remove the taxa not assigned in the Kingdom "k__Fungi"
-dataset$tax_table %<>% base::subset(Kingdom == "k__Fungi")
+meco_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
 # use tidy_dataset() to make OTUs and samples information consistent across files
-dataset$tidy_dataset()
+meco_fungi$tidy_dataset()
 # create trans_network object
-t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
+t1 <- trans_network$new(dataset = meco_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
 # create correlation network 
 t1$cal_network(COR_p_thres = 0.05, COR_cut = 0.6)
 # add modules
 t1$cal_module()
-# calculate node topological properties
-t1$get_node_table()
-node_type_table <- t1$res_node_table
+# convert module info to microtable object
+meco_module <- t1$trans_comm(use_col = "module")
 # create trans_func object
-t2 <- trans_func$new(dataset)
+t2 <- trans_func$new(meco_module)
 # identify species traits, automatically select database for prokaryotes or fungi
 # fungi_database = "FungalTraits" for the FungalTraits database
 t2$cal_spe_func(fungi_database = "FUNGuild")
 # calculate abundance-unweighted functional redundancy of each trait for each network module
-t2$cal_spe_func_perc(use_community = FALSE, node_type_table = node_type_table)
+t2$cal_spe_func_perc(abundance_weighted = FALSE)
 # plot the functional redundancy of network modules
 t2$plot_spe_func_perc(select_samples = paste0("M", 1:10))
 ```
@@ -66,7 +65,7 @@ test$tidy_dataset()
 # rel = FALSE donot use relative abundance, use the raw RPK
 test$cal_abund(select_cols = 1:3, rel = FALSE)
 test1 <- trans_abund$new(test, taxrank = "Level.2", ntaxa = 10)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -81,7 +80,7 @@ test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", use_colors = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -94,7 +93,7 @@ Let's run LEfSe to find some functional biomarkers to differentiate two groups.
 # functional biomarker
 test$cal_abund(select_cols = 1:3, rel = TRUE)
 test1 <- trans_diff$new(test, method = "lefse", group = "Group")
-test1$plot_lefse_bar(LDA_score = 3)
+test1$plot_diff_bar(threshold = 3)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -129,8 +128,7 @@ data2 <- trans_func$new(data1)
 # Select NJC19 database
 data2$cal_spe_func(prok_database = "NJC19")
 # get the trait percentage data
-data2$cal_spe_func_perc(use_community = TRUE)
-
+data2$cal_spe_func_perc(abundance_weighted = FALSE)
 # inset the trait percentage result into taxa_abund of microtable object
 data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
 # use trans_abund to plot
@@ -144,9 +142,15 @@ knitr::include_graphics("Images/plot_mouse_NJC19.png")
 
 
 
+```{r, echo = TRUE, eval = FALSE}
+# differential abundance test of the traits percentage and use random forest to find biomarkers
+t1 <- trans_diff$new(dataset = data1, method = "rf", group = "donor_status", taxa_level = "Trait")
+t1$plot_diff_bar(use_number = 1:30)
+```
 
-
-
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_mouse_NJC19_rf.png")
+```
 
 
 

@@ -74,9 +74,9 @@ If you want to reorder the groups, **assign the factors may be the most simplest
 
 ```{r, echo = TRUE}
 data(dataset)
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = dataset, measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
-t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellipse = TRUE)
+t1$plot_ordination(plot_color = "Group")
 ```
 
 Then we assign factors to the 'Group' in sample_table of dataset.
@@ -85,9 +85,9 @@ We can find the changed group order in the legend and colors in the plot.
 ```{r, echo = TRUE}
 dataset$sample_table$Group %<>% factor(., levels = c("IW", "TW", "CW"))
 str(dataset$sample_table)
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = dataset, measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
-t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_group_ellipse = TRUE)
+t1$plot_ordination(plot_color = "Group")
 ```
 
 
