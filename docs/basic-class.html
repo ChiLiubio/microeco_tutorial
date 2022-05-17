@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)</title>
+  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)" />
+  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.8.0)" />
+  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-03" />
+<meta name="date" content="2022-05-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.8.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.9.0)</a>
           </h1>
         </div>
 
@@ -356,21 +356,24 @@ In this dataset, the environmental factor table is separated from the sample inf
 It is of course doable and recommended to put all the environmental data into sample information table.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basic-class.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb10-2"><a href="basic-class.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data; 16S rRNA gene amplicon sequencing dataset</span></span>
-<span id="cb10-3"><a href="basic-class.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb10-4"><a href="basic-class.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb10-5"><a href="basic-class.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
-<span id="cb10-6"><a href="basic-class.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use phylogenetic tree to calculate phylogeny-based alpha and beta metrics</span></span>
-<span id="cb10-7"><a href="basic-class.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(phylo_tree_16S)</span>
-<span id="cb10-8"><a href="basic-class.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load the environmental data which is detached from sample table</span></span>
-<span id="cb10-9"><a href="basic-class.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
-<span id="cb10-10"><a href="basic-class.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># use pipe operator in magrittr package</span></span>
-<span id="cb10-11"><a href="basic-class.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb10-12"><a href="basic-class.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
-<span id="cb10-13"><a href="basic-class.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb10-14"><a href="basic-class.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># make the plotting background same with the tutorial</span></span>
-<span id="cb10-15"><a href="basic-class.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-16"><a href="basic-class.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code></pre></div>
-<p>Make sure that the data types of sample_table, otu_table and tax_table are all data.frame as the following part shows.</p>
+<span id="cb10-3"><a href="basic-class.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># metadata table</span></span>
+<span id="cb10-4"><a href="basic-class.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb10-5"><a href="basic-class.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># feature table</span></span>
+<span id="cb10-6"><a href="basic-class.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb10-7"><a href="basic-class.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># taxonomic assignment table</span></span>
+<span id="cb10-8"><a href="basic-class.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb10-9"><a href="basic-class.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use phylogenetic tree to calculate phylogeny-based alpha and beta metrics</span></span>
+<span id="cb10-10"><a href="basic-class.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(phylo_tree_16S)</span>
+<span id="cb10-11"><a href="basic-class.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load the environmental data table if it is not in sample table</span></span>
+<span id="cb10-12"><a href="basic-class.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
+<span id="cb10-13"><a href="basic-class.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use pipe operator in magrittr package</span></span>
+<span id="cb10-14"><a href="basic-class.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb10-15"><a href="basic-class.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed is used to fix the random number generation to make the results repeatable</span></span>
+<span id="cb10-16"><a href="basic-class.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb10-17"><a href="basic-class.html#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># make the plotting background same with the tutorial</span></span>
+<span id="cb10-18"><a href="basic-class.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-19"><a href="basic-class.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code></pre></div>
+<p>Make sure that the data types of sample_table, otu_table and tax_table are all data.frame format as the following part shows.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="basic-class.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(otu_table_16S)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="basic-class.html#cb13-1" aria-hidden="true" tabindex="-1"></a>otu_table_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
@@ -794,7 +797,7 @@ If method parameter is not provided, the function automatically calculates Bray-
 </div>
 <div id="other-examples" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> Other examples<a href="basic-class.html#other-examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>From v0.7.0, the microtable$new has a new parameter auto_tidy. if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
+<p>In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use <code>tidy_dataset</code> function to manually trim the microtable object.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="basic-class.html#cb61-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">FALSE</span>)</span>

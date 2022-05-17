@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v0.8.0)</title>
+  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v0.9.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.8.0)" />
+  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.9.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.8.0)" />
+  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.9.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-03" />
+<meta name="date" content="2022-05-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.8.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.9.0)</a>
           </h1>
         </div>
 
@@ -361,10 +361,16 @@ As a premise, the <strong>taxa_abund list in the object of microtable class must
 <span id="cb79-2"><a href="composition-based-class.html#cb79-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">40</span>)</span>
 <span id="cb79-3"><a href="composition-based-class.html#cb79-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_heatmap</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">xtext_keep =</span> <span class="cn">FALSE</span>, <span class="at">withmargin =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="Images/plot_heatmap.png" width="750px" style="display: block; margin: auto;" /></p>
+<p>Line chart is very useful to show the abundance change of taxa along time, space or other gradients.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="composition-based-class.html#cb80-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">5</span>)</span>
+<span id="cb80-2"><a href="composition-based-class.html#cb80-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_line</span>()</span>
+<span id="cb80-3"><a href="composition-based-class.html#cb80-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">5</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)</span>
+<span id="cb80-4"><a href="composition-based-class.html#cb80-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_line</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.3</span>), <span class="at">xtext_type_hor =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Images/plot_line_type.png" width="750px" style="display: block; margin: auto;" /></p>
 <p>Then, we show the pie chart with the group mean values.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="composition-based-class.html#cb80-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">6</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb80-2"><a href="composition-based-class.html#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="co"># all pie chart in one row</span></span>
-<span id="cb80-3"><a href="composition-based-class.html#cb80-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_pie</span>(<span class="at">facet_nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="composition-based-class.html#cb81-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">6</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb81-2"><a href="composition-based-class.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="co"># all pie chart in one row</span></span>
+<span id="cb81-3"><a href="composition-based-class.html#cb81-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_pie</span>(<span class="at">facet_nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Images/plot_pie.png" width="600px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="key-points-1" class="section level3 hasAnchor" number="4.1.2">
@@ -385,49 +391,49 @@ As a premise, the <strong>taxa_abund list in the object of microtable class must
 <p>This part can be performed using samples or groups at OTU/ASV level or higher taxonomic level.
 To analyze the unique and shared OTUs of groups,
 we first merge samples according to the “Group” column of sample_table.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="composition-based-class.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># merge samples as one community for each group</span></span>
-<span id="cb81-2"><a href="composition-based-class.html#cb81-2" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb81-3"><a href="composition-based-class.html#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset1 is a new microtable object</span></span>
-<span id="cb81-4"><a href="composition-based-class.html#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_venn object</span></span>
-<span id="cb81-5"><a href="composition-based-class.html#cb81-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1, <span class="at">ratio =</span> <span class="cn">NULL</span>)</span>
-<span id="cb81-6"><a href="composition-based-class.html#cb81-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="composition-based-class.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># merge samples as one community for each group</span></span>
+<span id="cb82-2"><a href="composition-based-class.html#cb82-2" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb82-3"><a href="composition-based-class.html#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset1 is a new microtable object</span></span>
+<span id="cb82-4"><a href="composition-based-class.html#cb82-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_venn object</span></span>
+<span id="cb82-5"><a href="composition-based-class.html#cb82-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1, <span class="at">ratio =</span> <span class="cn">NULL</span>)</span>
+<span id="cb82-6"><a href="composition-based-class.html#cb82-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>()</span></code></pre></div>
 <p><img src="Images/trans_venn_0.png" width="500px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="composition-based-class.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create venn plot with more information</span></span>
-<span id="cb82-2"><a href="composition-based-class.html#cb82-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1, <span class="at">ratio =</span> <span class="st">&quot;seqratio&quot;</span>)</span>
-<span id="cb82-3"><a href="composition-based-class.html#cb82-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>()</span>
-<span id="cb82-4"><a href="composition-based-class.html#cb82-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The integer is OTU number</span></span>
-<span id="cb82-5"><a href="composition-based-class.html#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The percentage data is the sequence number/total sequence number</span></span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="composition-based-class.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create venn plot with more information</span></span>
+<span id="cb83-2"><a href="composition-based-class.html#cb83-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1, <span class="at">ratio =</span> <span class="st">&quot;seqratio&quot;</span>)</span>
+<span id="cb83-3"><a href="composition-based-class.html#cb83-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>()</span>
+<span id="cb83-4"><a href="composition-based-class.html#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The integer is OTU number</span></span>
+<span id="cb83-5"><a href="composition-based-class.html#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The percentage data is the sequence number/total sequence number</span></span></code></pre></div>
 <p><img src="Images/trans_venn_1.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>When the groups are too many to show with venn plot, using petal plot is better.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="composition-based-class.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use &quot;Type&quot; column in sample_table</span></span>
-<span id="cb83-2"><a href="composition-based-class.html#cb83-2" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Type&quot;</span>)</span>
-<span id="cb83-3"><a href="composition-based-class.html#cb83-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span>
-<span id="cb83-4"><a href="composition-based-class.html#cb83-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">petal_plot =</span> <span class="cn">TRUE</span>, <span class="at">petal_center_size =</span> <span class="dv">50</span>, <span class="at">petal_r =</span> <span class="fl">1.5</span>, <span class="at">petal_a =</span> <span class="dv">3</span>, <span class="at">petal_move_xy =</span> <span class="fl">3.8</span>, <span class="at">petal_color_center =</span> <span class="st">&quot;#BEBADA&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="composition-based-class.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use &quot;Type&quot; column in sample_table</span></span>
+<span id="cb84-2"><a href="composition-based-class.html#cb84-2" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Type&quot;</span>)</span>
+<span id="cb84-3"><a href="composition-based-class.html#cb84-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span>
+<span id="cb84-4"><a href="composition-based-class.html#cb84-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">petal_plot =</span> <span class="cn">TRUE</span>, <span class="at">petal_center_size =</span> <span class="dv">50</span>, <span class="at">petal_r =</span> <span class="fl">1.5</span>, <span class="at">petal_a =</span> <span class="dv">3</span>, <span class="at">petal_move_xy =</span> <span class="fl">3.8</span>, <span class="at">petal_color_center =</span> <span class="st">&quot;#BEBADA&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_venn_2.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups<span class="citation">(<a href="#ref-Mendes_Deciphering_2011" role="doc-biblioref">Mendes et al. 2011</a>)</span>.
 So, it is interesting to further analyze the composition of unique and shared species.
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="composition-based-class.html#cb84-1" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb84-2"><a href="composition-based-class.html#cb84-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="composition-based-class.html#cb85-1" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb85-2"><a href="composition-based-class.html#cb85-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span></code></pre></div>
 <pre><code>## The details of each venn part is stored in object$data_details ...</code></pre>
 <pre><code>## The venn summary table used for plot is stored in object$data_summary ...</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="composition-based-class.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transform venn results to the sample-species table, here do not consider abundance, only use presence/absence.</span></span>
-<span id="cb87-2"><a href="composition-based-class.html#cb87-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_comm</span>(<span class="at">use_frequency =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb87-3"><a href="composition-based-class.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 is a new microtable class, each part is considered a sample</span></span>
-<span id="cb87-4"><a href="composition-based-class.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t2)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="composition-based-class.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transform venn results to the sample-species table, here do not consider abundance, only use presence/absence.</span></span>
+<span id="cb88-2"><a href="composition-based-class.html#cb88-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_comm</span>(<span class="at">use_frequency =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-3"><a href="composition-based-class.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 is a new microtable class, each part is considered a sample</span></span>
+<span id="cb88-4"><a href="composition-based-class.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t2)</span></code></pre></div>
 <pre><code>## [1] &quot;microtable&quot; &quot;R6&quot;</code></pre>
 <p>We use bar plot to show the composition at the Genus level.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="composition-based-class.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate taxa abundance, that is, the frequency</span></span>
-<span id="cb89-2"><a href="composition-based-class.html#cb89-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb89-3"><a href="composition-based-class.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="co"># transform and plot</span></span>
-<span id="cb89-4"><a href="composition-based-class.html#cb89-4" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t2, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
-<span id="cb89-5"><a href="composition-based-class.html#cb89-5" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;part&quot;</span>, <span class="at">legend_text_italic =</span> T, <span class="at">ylab_title =</span> <span class="st">&quot;Frequency (%)&quot;</span>, <span class="at">xtext_type_hor =</span> <span class="cn">FALSE</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>),</span>
-<span id="cb89-6"><a href="composition-based-class.html#cb89-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_x =</span> <span class="fu">c</span>(<span class="st">&quot;IW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;TW&quot;</span>, <span class="st">&quot;IW-CW&quot;</span>, <span class="st">&quot;IW-TW&quot;</span>, <span class="st">&quot;CW-TW&quot;</span>, <span class="st">&quot;IW-CW-TW&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="composition-based-class.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate taxa abundance, that is, the frequency</span></span>
+<span id="cb90-2"><a href="composition-based-class.html#cb90-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb90-3"><a href="composition-based-class.html#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="co"># transform and plot</span></span>
+<span id="cb90-4"><a href="composition-based-class.html#cb90-4" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t2, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
+<span id="cb90-5"><a href="composition-based-class.html#cb90-5" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;part&quot;</span>, <span class="at">legend_text_italic =</span> T, <span class="at">ylab_title =</span> <span class="st">&quot;Frequency (%)&quot;</span>, <span class="at">xtext_type_hor =</span> <span class="cn">FALSE</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>),</span>
+<span id="cb90-6"><a href="composition-based-class.html#cb90-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_x =</span> <span class="fu">c</span>(<span class="st">&quot;IW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;TW&quot;</span>, <span class="st">&quot;IW-CW&quot;</span>, <span class="st">&quot;IW-TW&quot;</span>, <span class="st">&quot;CW-TW&quot;</span>, <span class="st">&quot;IW-CW-TW&quot;</span>))</span></code></pre></div>
 <p><img src="Images/trans_venn_bar.png" width="650px" style="display: block; margin: auto;" /></p>
 <p>We also try to use pie chart to show the compositions at the Phylum level.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="composition-based-class.html#cb90-1" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t2, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
-<span id="cb90-2"><a href="composition-based-class.html#cb90-2" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_pie</span>(<span class="at">facet_nrow =</span> <span class="dv">3</span>, <span class="at">color_values =</span> <span class="fu">rev</span>(<span class="fu">c</span>(RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Dark2&quot;</span>), <span class="st">&quot;grey50&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="composition-based-class.html#cb91-1" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t2, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
+<span id="cb91-2"><a href="composition-based-class.html#cb91-2" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_pie</span>(<span class="at">facet_nrow =</span> <span class="dv">3</span>, <span class="at">color_values =</span> <span class="fu">rev</span>(<span class="fu">c</span>(RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Dark2&quot;</span>), <span class="st">&quot;grey50&quot;</span>)))</span></code></pre></div>
 <p><img src="Images/trans_venn_pie.png" width="800px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="key-points-2" class="section level3 hasAnchor" number="4.2.2">

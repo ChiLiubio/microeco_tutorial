@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.8.0)},
+  pdftitle={Tutorial for R microeco package (v0.9.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.8.0)}
+\title{Tutorial for R microeco package (v0.9.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-05-03}
+\date{2022-05-17}
 
 \begin{document}
 \maketitle
@@ -177,8 +177,8 @@ This is a rough framework for users to fast understand the design of the microec
 
 \begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
 
-The stored `Functions' and `Files' represent that you can access those functions or files in R6 object using \$ operator
-as we show in the figure. An example is the function \texttt{dataset\$cal\_alphadiv()} and its return result \texttt{dataset\$alpha\_diversity}.
+The stored `Functions' and `Files' represent that the user can access those functions or files in R6 object using \$ operator
+as shown in the figure. An example is the function \texttt{dataset\$cal\_alphadiv()} and its return result \texttt{dataset\$alpha\_diversity}.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix `res\_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
 Except for microtable class, the transformed data in creating object is also generally named with the prefix `data\_'.
@@ -194,7 +194,7 @@ If the user is interested in the class features, read more from `Advanced R' boo
 \begin{itemize}
 \item
   A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace.
-  This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object\$method().
+  This influences how we think about naming. The methods belong to objects, not generics, and the user can call them like object\$method().
 \item
   R6's reference semantics allow methods to simultaneously return a value and modify an object.
 \item
@@ -205,7 +205,7 @@ If the user is interested in the class features, read more from `Advanced R' boo
 \section{Help}\label{help}}
 
 The usage of help documents in the microeco package may be a little different from other packages we often used.
-If you wish to see the help document of a function, you should search the name of the class it belongs to (not the name of the function)
+If the user wish to see the help document of a function, please search the name of the class it belongs to (not the name of the function)
 and click the link of the function.
 
 \begin{Shaded}
@@ -232,7 +232,7 @@ and click the link of the function.
 
 To keep the start and use of microeco package simplified,
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
-So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
+So the question is that the user may encounter an error when using a class or function that invoke an additional package like this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -496,12 +496,15 @@ It is of course doable and recommended to put all the environmental data into sa
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(microeco)}
 \CommentTok{\# load the example data; 16S rRNA gene amplicon sequencing dataset}
+\CommentTok{\# metadata table}
 \FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\CommentTok{\# feature table}
 \FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\CommentTok{\# taxonomic assignment table}
 \FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
 \CommentTok{\# use phylogenetic tree to calculate phylogeny{-}based alpha and beta metrics}
 \FunctionTok{data}\NormalTok{(phylo\_tree\_16S)}
-\CommentTok{\# load the environmental data which is detached from sample table}
+\CommentTok{\# load the environmental data table if it is not in sample table}
 \FunctionTok{data}\NormalTok{(env\_data\_16S)}
 \CommentTok{\# use pipe operator in magrittr package}
 \FunctionTok{library}\NormalTok{(magrittr)}
@@ -513,7 +516,7 @@ It is of course doable and recommended to put all the environmental data into sa
 \end{Highlighting}
 \end{Shaded}
 
-Make sure that the data types of sample\_table, otu\_table and tax\_table are all data.frame as the following part shows.
+Make sure that the data types of sample\_table, otu\_table and tax\_table are all data.frame format as the following part shows.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -963,7 +966,7 @@ If method parameter is not provided, the function automatically calculates Bray-
 \hypertarget{other-examples}{%
 \subsection{Other examples}\label{other-examples}}
 
-From v0.7.0, the microtable\$new has a new parameter auto\_tidy. if auto\_tidy = TRUE, the function can automatically use tidy\_dataset to make all files uniform.
+In microtable\$new, if auto\_tidy = TRUE, the function can automatically use tidy\_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use \texttt{tidy\_dataset} function to manually trim the microtable object.
 
@@ -1196,6 +1199,19 @@ Then we show the heatmap with the high abundant genera.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=750px]{Images/plot_heatmap} \end{center}
+
+Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{()}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.3}\NormalTok{), }\AttributeTok{xtext\_type\_hor =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=750px]{Images/plot_line_type} \end{center}
 
 Then, we show the pie chart with the group mean values.
 
@@ -1926,6 +1942,8 @@ Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
 As an example, we only use the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
+\textbf{Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data.}.
+\textbf{Please see the tidy\_taxonomy function of microtable part to solve this issue.}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1980,8 +1998,31 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 
 \begin{center}\includegraphics[width=800px]{Images/plot_rf_diff_abund} \end{center}
 
+For v0.9.0, the significance label can also be added in the abundance plot controlled by add\_sig parameter and other related parameters.
+Now adding label support all the differential test methods.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# filter something not needed to show}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Significance }\SpecialCharTok{\%in\%} \StringTok{"***"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{add\_sig\_label =} \StringTok{"Significance"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_wilcox} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{coord\_flip =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_anova} \end{center}
+
 For other details of methods, please see the document with \texttt{help(trans\_diff)}.
-Those are some examples.
+Try to run those examples.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2044,7 +2085,7 @@ Please check the final part for other network construction methods.
 \begin{Highlighting}[]
 \CommentTok{\# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco\_tutorial/intro.html\#spieceasi for the installation}
 \CommentTok{\# SparCC is very slow, so consider filtering more species with low abundance}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{,  }\AttributeTok{nThreads =} \DecValTok{4}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2312,7 +2353,7 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"beemStatic"}\NormalTok{)}
-\CommentTok{\# modules for the directed network}
+\CommentTok{\# method for the directed network}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2555,7 +2596,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May 03 22:39:41 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Tue May 17 17:17:22 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2572,9 +2613,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6539 & 0.387 & 0.364 \\
-CW & 435 & 0.5632 & 0.2964 & 0.2867 \\
-TW & 435 & 0.6247 & 0.4166 & 0.4001 \\
+IW & 435 & 0.6536 & 0.3874 & 0.3637 \\
+CW & 435 & 0.5624 & 0.2955 & 0.2861 \\
+TW & 435 & 0.6243 & 0.4162 & 0.3997 \\
 \bottomrule
 \end{longtable}
 
@@ -3332,16 +3373,6 @@ Please check out the dependence part \url{https://chiliubio.github.io/microeco_t
 \CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation description}
 \CommentTok{\# and provide the file path of SILVA123}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning in write.table(otu_file, file = output, append = TRUE, quote = FALSE, :
-## appending column names to file
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{\# return two files: t1$tax4fun\_KO: KO file; t1$tax4fun\_path: pathway file.}
 \CommentTok{\# t1$tax4fun\_KO$Tax4FunProfile[1:5, 1:2]}
 \end{Highlighting}
@@ -4004,7 +4035,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-263-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-269-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4041,7 +4072,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-264-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-270-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

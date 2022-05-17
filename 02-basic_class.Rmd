@@ -45,12 +45,15 @@ It is of course doable and recommended to put all the environmental data into sa
 ```{r, echo = TRUE}
 library(microeco)
 # load the example data; 16S rRNA gene amplicon sequencing dataset
+# metadata table
 data(sample_info_16S)
+# feature table
 data(otu_table_16S)
+# taxonomic assignment table
 data(taxonomy_table_16S)
 # use phylogenetic tree to calculate phylogeny-based alpha and beta metrics
 data(phylo_tree_16S)
-# load the environmental data which is detached from sample table
+# load the environmental data table if it is not in sample table
 data(env_data_16S)
 # use pipe operator in magrittr package
 library(magrittr)
@@ -61,7 +64,7 @@ library(ggplot2)
 theme_set(theme_bw())
 ```
 
-Make sure that the data types of sample_table, otu_table and tax_table are all data.frame as the following part shows.
+Make sure that the data types of sample_table, otu_table and tax_table are all data.frame format as the following part shows.
 
 ```{r, echo = TRUE}
 class(otu_table_16S)
@@ -183,13 +186,11 @@ dataset$tidy_dataset()
 print(dataset)
 ```
 
-
 Then let's use sample_sums() to check the sequence numbers in each sample.
 
 ```{r, echo = TRUE}
 dataset$sample_sums() %>% range
 ```
-
 
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 it is optional to perform the resampling to make the sequence number equal for each sample.
@@ -267,7 +268,7 @@ dataset$save_betadiv(dirpath = "beta_diversity")
 
 ### Other examples
 
-From v0.7.0, the microtable$new has a new parameter auto_tidy. if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
+In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use `tidy_dataset` function to manually trim the microtable object.
 

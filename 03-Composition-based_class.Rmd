@@ -92,6 +92,19 @@ t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE)
 knitr::include_graphics("Images/plot_heatmap.png")
 ```
 
+Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5)
+t1$plot_line()
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, group = "Type")
+t1$plot_line(position = position_dodge(0.3), xtext_type_hor = TRUE)
+```
+
+```{r, out.width = "750px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_line_type.png")
+```
+
 Then, we show the pie chart with the group mean values.
 
 ```{r, echo = TRUE, eval = FALSE}

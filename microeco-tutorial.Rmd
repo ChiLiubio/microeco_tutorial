@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.8.0)"
+title: "Tutorial for R microeco package (v0.9.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -58,8 +58,8 @@ This is a rough framework for users to fast understand the design of the microec
 knitr::include_graphics("Images/microeco_framework.png")
 ```
 
-The stored 'Functions' and 'Files' represent that you can access those functions or files in R6 object using $ operator 
-as we show in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
+The stored 'Functions' and 'Files' represent that the user can access those functions or files in R6 object using $ operator 
+as shown in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix 'res_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
 Except for microtable class, the transformed data in creating object is also generally named with the prefix 'data_'.
@@ -73,7 +73,7 @@ which means that R6 is a profoundly different OO system from S3 and S4 because i
 If the user is interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
-This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
+This influences how we think about naming. The methods belong to objects, not generics, and the user can call them like object$method().
 
   + R6’s reference semantics allow methods to simultaneously return a value and modify an object.
   
@@ -82,7 +82,7 @@ This influences how we think about naming. The methods belong to objects, not ge
 ## Help
 
 The usage of help documents in the microeco package may be a little different from other packages we often used.
-If you wish to see the help document of a function, you should search the name of the class it belongs to (not the name of the function) 
+If the user wish to see the help document of a function, please search the name of the class it belongs to (not the name of the function) 
 and click the link of the function.
 
 ```{r, echo = TRUE}
@@ -102,7 +102,7 @@ library(microeco)
 ### Important packages
 To keep the start and use of microeco package simplified, 
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
-So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
+So the question is that the user may encounter an error when using a class or function that invoke an additional package like this:
 
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
@@ -295,12 +295,15 @@ It is of course doable and recommended to put all the environmental data into sa
 ```{r, echo = TRUE}
 library(microeco)
 # load the example data; 16S rRNA gene amplicon sequencing dataset
+# metadata table
 data(sample_info_16S)
+# feature table
 data(otu_table_16S)
+# taxonomic assignment table
 data(taxonomy_table_16S)
 # use phylogenetic tree to calculate phylogeny-based alpha and beta metrics
 data(phylo_tree_16S)
-# load the environmental data which is detached from sample table
+# load the environmental data table if it is not in sample table
 data(env_data_16S)
 # use pipe operator in magrittr package
 library(magrittr)
@@ -311,7 +314,7 @@ library(ggplot2)
 theme_set(theme_bw())
 ```
 
-Make sure that the data types of sample_table, otu_table and tax_table are all data.frame as the following part shows.
+Make sure that the data types of sample_table, otu_table and tax_table are all data.frame format as the following part shows.
 
 ```{r, echo = TRUE}
 class(otu_table_16S)
@@ -433,13 +436,11 @@ dataset$tidy_dataset()
 print(dataset)
 ```
 
-
 Then let's use sample_sums() to check the sequence numbers in each sample.
 
 ```{r, echo = TRUE}
 dataset$sample_sums() %>% range
 ```
-
 
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 it is optional to perform the resampling to make the sequence number equal for each sample.
@@ -517,7 +518,7 @@ dataset$save_betadiv(dirpath = "beta_diversity")
 
 ### Other examples
 
-From v0.7.0, the microtable$new has a new parameter auto_tidy. if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
+In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use `tidy_dataset` function to manually trim the microtable object.
 
@@ -684,6 +685,19 @@ t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE)
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_heatmap.png")
+```
+
+Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5)
+t1$plot_line()
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, group = "Type")
+t1$plot_line(position = position_dodge(0.3), xtext_type_hor = TRUE)
+```
+
+```{r, out.width = "750px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_line_type.png")
 ```
 
 Then, we show the pie chart with the group mean values.
@@ -1172,6 +1186,8 @@ Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
 As an example, we only use the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
+**Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data.**.
+**Please see the tidy_taxonomy function of microtable part to solve this issue.**.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clade_label_level 5 represent phylum level in this analysis
@@ -1226,9 +1242,32 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 knitr::include_graphics("Images/plot_rf_diff_abund.png")
 ```
 
+For v0.9.0, the significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+Now adding label support all the differential test methods.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+# filter something not needed to show
+t1$res_diff %<>% subset(Significance %in% "***")
+t1$plot_diff_abund(use_number = 1:20, add_sig = T, add_sig_label = "Significance")
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_diff_abund_siglabel_wilcox.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
+```
+
 
 For other details of methods, please see the document with `help(trans_diff)`.
-Those are some examples.
+Try to run those examples.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
@@ -1278,7 +1317,7 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU",
 ```{r, echo = TRUE, eval=FALSE}
 # SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the installation
 # SparCC is very slow, so consider filtering more species with low abundance
-t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001, SparCC_simu_num = 100)
+t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001,  nThreads = 4, SparCC_simu_num = 100)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -1494,7 +1533,7 @@ Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic p
 ```{r, echo = TRUE, eval=FALSE}
 t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.001)
 t1$cal_network(network_method = "beemStatic")
-# modules for the directed network
+# method for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
 

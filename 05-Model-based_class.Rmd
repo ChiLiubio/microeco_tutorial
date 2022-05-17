@@ -85,6 +85,8 @@ Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
 As an example, we only use the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
+**Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data.**.
+**Please see the tidy_taxonomy function of microtable part to solve this issue.**.
 
 ```{r, echo = TRUE, eval = FALSE}
 # clade_label_level 5 represent phylum level in this analysis
@@ -139,9 +141,32 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 knitr::include_graphics("Images/plot_rf_diff_abund.png")
 ```
 
+For v0.9.0, the significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+Now adding label support all the differential test methods.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+# filter something not needed to show
+t1$res_diff %<>% subset(Significance %in% "***")
+t1$plot_diff_abund(use_number = 1:20, add_sig = T, add_sig_label = "Significance")
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_diff_abund_siglabel_wilcox.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
+```
+
 
 For other details of methods, please see the document with `help(trans_diff)`.
-Those are some examples.
+Try to run those examples.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
@@ -191,7 +216,7 @@ t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU",
 ```{r, echo = TRUE, eval=FALSE}
 # SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the installation
 # SparCC is very slow, so consider filtering more species with low abundance
-t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001, SparCC_simu_num = 100)
+t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001,  nThreads = 4, SparCC_simu_num = 100)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -407,7 +432,7 @@ Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic p
 ```{r, echo = TRUE, eval=FALSE}
 t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.001)
 t1$cal_network(network_method = "beemStatic")
-# modules for the directed network
+# method for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
 

@@ -19,8 +19,8 @@ This is a rough framework for users to fast understand the design of the microec
 knitr::include_graphics("Images/microeco_framework.png")
 ```
 
-The stored 'Functions' and 'Files' represent that you can access those functions or files in R6 object using $ operator 
-as we show in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
+The stored 'Functions' and 'Files' represent that the user can access those functions or files in R6 object using $ operator 
+as shown in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix 'res_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
 Except for microtable class, the transformed data in creating object is also generally named with the prefix 'data_'.
@@ -34,7 +34,7 @@ which means that R6 is a profoundly different OO system from S3 and S4 because i
 If the user is interested in the class features, read more from 'Advanced R' book (https://adv-r.hadley.nz/).
 
   + A generic is a regular function, so it lives in the global namespace. An R6 method belongs to an object so it lives in a local namespace. 
-This influences how we think about naming. The methods belong to objects, not generics, and you can call them like object$method().
+This influences how we think about naming. The methods belong to objects, not generics, and the user can call them like object$method().
 
   + R6’s reference semantics allow methods to simultaneously return a value and modify an object.
   
@@ -43,7 +43,7 @@ This influences how we think about naming. The methods belong to objects, not ge
 ## Help
 
 The usage of help documents in the microeco package may be a little different from other packages we often used.
-If you wish to see the help document of a function, you should search the name of the class it belongs to (not the name of the function) 
+If the user wish to see the help document of a function, please search the name of the class it belongs to (not the name of the function) 
 and click the link of the function.
 
 ```{r, echo = TRUE}
@@ -63,7 +63,7 @@ library(microeco)
 ### Important packages
 To keep the start and use of microeco package simplified, 
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
-So the question is that you may encounter an error when using a class or function that invoke an additional package like this:
+So the question is that the user may encounter an error when using a class or function that invoke an additional package like this:
 
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
