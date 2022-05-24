@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.9.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-05-17}
+\date{2022-05-24}
 
 \begin{document}
 \maketitle
@@ -2051,6 +2051,10 @@ Try to run those examples.
 \begin{itemize}
 \tightlist
 \item
+  trans\_diff\(new: In trans_diff\)new, p\_adjust\_method = NULL can shut down the p value adjustment for method != ``metastat'' or ``anova''.
+  This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
+  where the results need to be compared with that from Galaxy server or other LEfSe python version.
+\item
   trans\_diff\$new: this class have a strict requirement on the taxonomic information, make sure tidy\_taxonomy() function has been performed before creating your dataset
 \item
   trans\_diff\$new: creating this class will invoke taxa\_abund stored in microtable object
@@ -2596,7 +2600,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May 17 17:17:22 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Tue May 24 11:28:13 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2613,9 +2617,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6536 & 0.3874 & 0.3637 \\
-CW & 435 & 0.5624 & 0.2955 & 0.2861 \\
-TW & 435 & 0.6243 & 0.4162 & 0.3997 \\
+IW & 435 & 0.6539 & 0.386 & 0.364 \\
+CW & 435 & 0.5632 & 0.2956 & 0.2867 \\
+TW & 435 & 0.6245 & 0.4152 & 0.3999 \\
 \bottomrule
 \end{longtable}
 
@@ -3630,7 +3634,8 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \CommentTok{\# taxa biomarker}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{4}\SpecialCharTok{:}\DecValTok{9}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# p\_adjust\_method = NULL shut down the p value adjustment}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{threshold =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}

@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-17" />
+<meta name="date" content="2022-05-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -403,8 +403,9 @@ Currently, it supports both the MetaCyc (<a href="https://metacyc.org/" class="u
 <span id="cb235-31"><a href="file2meco-package.html#cb235-31" aria-hidden="true" tabindex="-1"></a><span class="co"># taxa biomarker</span></span>
 <span id="cb235-32"><a href="file2meco-package.html#cb235-32" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb235-33"><a href="file2meco-package.html#cb235-33" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Phylum <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
-<span id="cb235-34"><a href="file2meco-package.html#cb235-34" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb235-35"><a href="file2meco-package.html#cb235-35" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">2</span>)</span></code></pre></div>
+<span id="cb235-34"><a href="file2meco-package.html#cb235-34" aria-hidden="true" tabindex="-1"></a><span class="co"># p_adjust_method = NULL shut down the p value adjustment</span></span>
+<span id="cb235-35"><a href="file2meco-package.html#cb235-35" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span>
+<span id="cb235-36"><a href="file2meco-package.html#cb235-36" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">2</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="file2meco-package.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use KEGG pathway based HUMAnN result</span></span>
 <span id="cb236-2"><a href="file2meco-package.html#cb236-2" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_HUMAnN_KEGG_abund.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
 <span id="cb236-3"><a href="file2meco-package.html#cb236-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">humann2meco</span>(<span class="at">abund_table =</span> abund_file_path, <span class="at">db =</span> <span class="st">&quot;KEGG&quot;</span>, <span class="at">sample_data =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>

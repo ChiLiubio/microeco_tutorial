@@ -100,7 +100,8 @@ test1$plot_diff_bar(use_number = 1:20)
 # taxa biomarker
 test$cal_abund(select_cols = 4:9, rel = TRUE)
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
-test1 <- trans_diff$new(test, method = "lefse", group = "Group")
+# p_adjust_method = NULL shut down the p value adjustment
+test1 <- trans_diff$new(test, method = "lefse", group = "Group", p_adjust_method = NULL)
 test1$plot_diff_bar(threshold = 2)
 ```
 

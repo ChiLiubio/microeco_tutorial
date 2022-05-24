@@ -189,6 +189,9 @@ t1 <- trans_diff$new(dataset = dataset, method = "mseq", group = "Group")
 
 ### Key points
 
+  + trans_diff$new: In trans_diff$new, p_adjust_method = NULL can shut down the p value adjustment for method != "metastat" or "anova". 
+    This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and 
+	where the results need to be compared with that from Galaxy server or other LEfSe python version.
   + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before creating your dataset
   + trans_diff$new: creating this class will invoke taxa_abund stored in microtable object
   + trans_diff$plot_diff_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
