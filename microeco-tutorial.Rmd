@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.9.0)"
+title: "Tutorial for R microeco package (v0.10.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -1124,7 +1124,7 @@ The metagenomeSeq method is implemented to find significant feature between two 
 
 ### Example
 
-From v0.8.0, all the differential test result is stored in the object$res_diff.
+All the differential test result is stored in the object$res_diff.
 Let's first run metastat example.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1154,7 +1154,7 @@ t1 <- trans_diff$new(dataset = dataset, method = "lefse", group = "Group", alpha
 # see t1$res_diff for the result
 # From v0.8.0, threshold is used for the LDA score selection.
 t1$plot_diff_bar(threshold = 4)
-# we show 20 taxa with the highest LDA
+# we show 20 taxa with the highest LDA (log10)
 t1$plot_diff_bar(use_number = 1:30, width = 0.8, group_order = c("CW", "IW", "TW"))
 ```
 
@@ -1242,7 +1242,7 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 knitr::include_graphics("Images/plot_rf_diff_abund.png")
 ```
 
-For v0.9.0, the significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
 Now adding label support all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1472,7 +1472,7 @@ t2$save_network("S1.gexf")
 # please use a loop for more samples
 ```
 
-We also add the function `plot_network` from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
+We also add the function `plot_network` to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html and https://kateto.net/network-visualization for more
 details on the network visualization in R.
@@ -1480,14 +1480,14 @@ details on the network visualization in R.
 ```{r, echo = TRUE, eval = FALSE}
 # default parameter represents using igraph plot.igraph function
 t2$plot_network()
-# use ggraph package method
+# use ggraph package method; require ggraph package
 t2$plot_network(method = "ggraph", node_color = "Phylum")
 # use networkD3 package method for the dynamic network visualization in R
 t1$plot_network(method = "networkD3", node_color = "module")
 t1$plot_network(method = "networkD3", node_color = "Phylum")
 ```
 
-From v0.8.0, the trans_comm function can be used to transform the node classification to a new microtable object for other analysis.
+The trans_comm function can be used to transform the node classification to a new microtable object for other analysis.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use_col is used to select a column of t1$res_node_table
@@ -1502,17 +1502,18 @@ SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Infe
 See https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the package installation.
 
 ```{r, echo = TRUE, eval=FALSE}
-# cal_cor select NA
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.0005)
-# require SpiecEasi package  https://github.com/zdk123/SpiecEasi
-t1$cal_network(network_method = "SpiecEasi")
+# cal_cor select NULL from v0.10.0
+t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0.001)
+# require SpiecEasi package installed https://github.com/zdk123/SpiecEasi
+# please see SpiecEasi::spiec.easi for available model parameters
+t1$cal_network(network_method = "SpiecEasi", SpiecEasi_method = "mb")
 # see t1$res_network
 ```
 
 The third network construction approach: julia package FlashWeave[@Tackmann_Rapid_2019].
 This is a probabilistic graph-based method to obtain the conditional independence.
-It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
-If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package, 
+It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence.
+To repeat the following code, please first install julia language in your computer and the FlashWeave package, 
 and add the julia in the computer path.
 
 1. download and install julia from https://julialang.org/downloads/  
@@ -1520,10 +1521,12 @@ and add the julia in the computer path.
 3. Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in https://github.com/meringlab/FlashWeave.jl  
 
 ```{r, echo = TRUE, eval=FALSE}
-# cal_cor select NA
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0)
+# cal_cor select NULL
+t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0)
 # require Julia in the computer path, and the package FlashWeave
-t1$cal_network(network_method = "FlashWeave")
+# different with the direct parameter passing of 'SpiecEasi' network_method, FlashWeave_other_para is used to pass parameters to Julia FlashWeave
+# assign FlashWeave_tempdir parameter can change the temporary working directory
+t1$cal_network(network_method = "FlashWeave", FlashWeave_other_para = "alpha=0.01,sensitive=true,heterogeneous=true")
 # see t1$res_network
 ```
 
@@ -1534,7 +1537,8 @@ So the network from this approach is a directed network.
 Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0.001)
+# require beemStatic package installed
 t1$cal_network(network_method = "beemStatic")
 # method for the directed network
 t1$cal_module(method = "cluster_optimal")
@@ -1913,6 +1917,7 @@ t2$al_train(method = "svmRadial", tuneLength = 15)
 
 
 
+ 
 
 <!--chapter:end:05-Model-based_class.Rmd-->
 

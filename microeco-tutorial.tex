@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.9.0)},
+  pdftitle={Tutorial for R microeco package (v0.10.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.9.0)}
+\title{Tutorial for R microeco package (v0.10.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-05-24}
+\date{2022-05-28}
 
 \begin{document}
 \maketitle
@@ -717,7 +717,7 @@ Otherwise, the following check can filter all the samples of otu\_table because 
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 \end{verbatim}
@@ -731,7 +731,7 @@ Otherwise, the following check can filter all the samples of otu\_table because 
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13628 rows and 7 columns
@@ -759,7 +759,7 @@ Then, we remove OTUs which are not assigned in the Kingdom "k\_\_Archaea" or "k\
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13330 rows and 7 columns
@@ -787,7 +787,7 @@ We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chlorop
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
@@ -804,7 +804,7 @@ To make the OTU and sample information consistent across all files in the datase
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13296 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
@@ -978,7 +978,7 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 \end{verbatim}
@@ -991,7 +991,7 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns
 \end{verbatim}
@@ -1004,7 +1004,7 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns
 \end{verbatim}
@@ -1017,7 +1017,7 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 8864 rows and 10 columns
 \end{verbatim}
@@ -1864,7 +1864,7 @@ The metagenomeSeq method is implemented to find significant feature between two 
 \hypertarget{example-5}{%
 \subsection{Example}\label{example-5}}
 
-From v0.8.0, all the differential test result is stored in the object\$res\_diff.
+All the differential test result is stored in the object\$res\_diff.
 Let's first run metastat example.
 
 \begin{Shaded}
@@ -1897,7 +1897,7 @@ LEfSe combines the non-parametric test and linear discriminant analysis \citep{S
 \CommentTok{\# see t1$res\_diff for the result}
 \CommentTok{\# From v0.8.0, threshold is used for the LDA score selection.}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{threshold =} \DecValTok{4}\NormalTok{)}
-\CommentTok{\# we show 20 taxa with the highest LDA}
+\CommentTok{\# we show 20 taxa with the highest LDA (log10)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.8}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -1998,7 +1998,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 
 \begin{center}\includegraphics[width=800px]{Images/plot_rf_diff_abund} \end{center}
 
-For v0.9.0, the significance label can also be added in the abundance plot controlled by add\_sig parameter and other related parameters.
+The significance label can also be added in the abundance plot controlled by add\_sig parameter and other related parameters.
 Now adding label support all the differential test methods.
 
 \begin{Shaded}
@@ -2279,7 +2279,7 @@ In this function, you should provide the nodes you need using the node parameter
 \end{Highlighting}
 \end{Shaded}
 
-We also add the function \texttt{plot\_network} from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
+We also add the function \texttt{plot\_network} to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See \url{https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html} and \url{https://kateto.net/network-visualization} for more
 details on the network visualization in R.
@@ -2288,7 +2288,7 @@ details on the network visualization in R.
 \begin{Highlighting}[]
 \CommentTok{\# default parameter represents using igraph plot.igraph function}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{()}
-\CommentTok{\# use ggraph package method}
+\CommentTok{\# use ggraph package method; require ggraph package}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"ggraph"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"Phylum"}\NormalTok{)}
 \CommentTok{\# use networkD3 package method for the dynamic network visualization in R}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"networkD3"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"module"}\NormalTok{)}
@@ -2296,7 +2296,7 @@ details on the network visualization in R.
 \end{Highlighting}
 \end{Shaded}
 
-From v0.8.0, the trans\_comm function can be used to transform the node classification to a new microtable object for other analysis.
+The trans\_comm function can be used to transform the node classification to a new microtable object for other analysis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2312,18 +2312,19 @@ See \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#spieceasi} fo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NA}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
-\CommentTok{\# require SpiecEasi package  https://github.com/zdk123/SpiecEasi}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
+\CommentTok{\# cal\_cor select NULL from v0.10.0}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# require SpiecEasi package installed https://github.com/zdk123/SpiecEasi}
+\CommentTok{\# please see SpiecEasi::spiec.easi for available model parameters}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{SpiecEasi\_method =} \StringTok{"mb"}\NormalTok{)}
 \CommentTok{\# see t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
 
 The third network construction approach: julia package FlashWeave\citep{Tackmann_Rapid_2019}.
 This is a probabilistic graph-based method to obtain the conditional independence.
-It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
-If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
+It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence.
+To repeat the following code, please first install julia language in your computer and the FlashWeave package,
 and add the julia in the computer path.
 
 \begin{enumerate}
@@ -2339,10 +2340,12 @@ and add the julia in the computer path.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NA}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
+\CommentTok{\# cal\_cor select NULL}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
 \CommentTok{\# require Julia in the computer path, and the package FlashWeave}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"FlashWeave"}\NormalTok{)}
+\CommentTok{\# different with the direct parameter passing of \textquotesingle{}SpiecEasi\textquotesingle{} network\_method, FlashWeave\_other\_para is used to pass parameters to Julia FlashWeave}
+\CommentTok{\# assign FlashWeave\_tempdir parameter can change the temporary working directory}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"FlashWeave"}\NormalTok{, }\AttributeTok{FlashWeave\_other\_para =} \StringTok{"alpha=0.01,sensitive=true,heterogeneous=true"}\NormalTok{)}
 \CommentTok{\# see t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
@@ -2355,7 +2358,8 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# require beemStatic package installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"beemStatic"}\NormalTok{)}
 \CommentTok{\# method for the directed network}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
@@ -2600,7 +2604,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May 24 11:28:13 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sat May 28 11:07:06 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2617,9 +2621,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6539 & 0.386 & 0.364 \\
-CW & 435 & 0.5632 & 0.2956 & 0.2867 \\
-TW & 435 & 0.6245 & 0.4152 & 0.3999 \\
+IW & 435 & 0.6542 & 0.3873 & 0.3642 \\
+CW & 435 & 0.5626 & 0.2948 & 0.2863 \\
+TW & 435 & 0.6246 & 0.4162 & 0.4 \\
 \bottomrule
 \end{longtable}
 
@@ -2881,7 +2885,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 15 columns
 ## otu_table have 12766 rows and 90 columns
 ## tax_table have 12766 rows and 7 columns
@@ -3417,7 +3421,7 @@ Now, we use pathway file to analyze the abundance of pathway.
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 284 rows and 90 columns
 ## tax_table have 444 rows and 3 columns
@@ -3444,7 +3448,7 @@ Now, we need to trim data and calculate abundance.
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 282 rows and 90 columns
 ## tax_table have 282 rows and 3 columns
@@ -3983,7 +3987,7 @@ For example, if we want to analyze samples from `CW' and `IW', respectively, we 
 \end{Shaded}
 
 \begin{verbatim}
-## microtable class:
+## microtable-class object:
 ## sample_table have 30 rows and 4 columns
 ## otu_table have 9727 rows and 30 columns
 ## tax_table have 9727 rows and 7 columns

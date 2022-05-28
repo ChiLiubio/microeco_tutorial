@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)</title>
+  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.10.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)" />
+  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.10.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.9.0)" />
+  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.10.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-24" />
+<meta name="date" content="2022-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.9.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.10.0)</a>
           </h1>
         </div>
 
@@ -641,13 +641,13 @@ Otherwise, the following check can filter all the samples of otu_table because o
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="basic-class.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generally add the metadata</span></span>
 <span id="cb29-2"><a href="basic-class.html#cb29-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> otu_table_16S, <span class="at">sample_table =</span> sample_info_16S)</span>
 <span id="cb29-3"><a href="basic-class.html#cb29-3" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns</code></pre>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="basic-class.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a microtable object with more information</span></span>
 <span id="cb31-2"><a href="basic-class.html#cb31-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)</span>
 <span id="cb31-3"><a href="basic-class.html#cb31-3" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13628 rows and 7 columns
@@ -660,7 +660,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <p>Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria".</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="basic-class.html#cb34-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Kingdom <span class="sc">==</span> <span class="st">&quot;k__Archaea&quot;</span> <span class="sc">|</span> Kingdom <span class="sc">==</span> <span class="st">&quot;k__Bacteria&quot;</span>)</span>
 <span id="cb34-2"><a href="basic-class.html#cb34-2" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13330 rows and 7 columns
@@ -671,7 +671,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <span id="cb36-3"><a href="basic-class.html#cb36-3" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))</span></code></pre></div>
 <pre><code>## Total 34 taxa are removed from tax_table ...</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basic-class.html#cb38-1" aria-hidden="true" tabindex="-1"></a>dataset</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
@@ -679,7 +679,7 @@ For example, see the phylo_tree parameter of microtable$new() for reading phylog
 <p>To make the OTU and sample information consistent across all files in the dataset object, we use function <code>tidy_dataset</code> to trim the dataset.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basic-class.html#cb40-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
 <span id="cb40-2"><a href="basic-class.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset)</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 13296 rows and 90 columns
 ## tax_table have 13296 rows and 7 columns
@@ -802,22 +802,22 @@ Then, all other functions in microtable will also do this. But if the user chang
 the class can not recognize this modification, the user should use <code>tidy_dataset</code> function to manually trim the microtable object.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="basic-class.html#cb61-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb61-2"><a href="basic-class.html#cb61-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns</code></pre>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="basic-class.html#cb63-1" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb63-2"><a href="basic-class.html#cb63-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns</code></pre>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="basic-class.html#cb65-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]</span>
 <span id="cb65-2"><a href="basic-class.html#cb65-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns</code></pre>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="basic-class.html#cb67-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
 <span id="cb67-2"><a href="basic-class.html#cb67-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 8864 rows and 10 columns</code></pre>
 <p>The phylogenetic tree can be read with <code>read.tree</code> function in ape package.</p>

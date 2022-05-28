@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Explainable class | Tutorial for R microeco package (v0.9.0)</title>
+  <title>Chapter 7 Explainable class | Tutorial for R microeco package (v0.10.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.9.0)" />
+  <meta property="og:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.10.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.9.0)" />
+  <meta name="twitter:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.10.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-24" />
+<meta name="date" content="2022-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.9.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.10.0)</a>
           </h1>
         </div>
 
@@ -335,7 +335,7 @@ To show this operation, we first merge additional table into sample_table to gen
 <span id="cb185-2"><a href="explainable-class.html#cb185-2" aria-hidden="true" tabindex="-1"></a>new_test<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(new_test<span class="sc">$</span>sample_table, env_data_16S[<span class="fu">rownames</span>(new_test<span class="sc">$</span>sample_table), ])</span>
 <span id="cb185-3"><a href="explainable-class.html#cb185-3" aria-hidden="true" tabindex="-1"></a><span class="co"># now new_test$sample_table has the whole data</span></span>
 <span id="cb185-4"><a href="explainable-class.html#cb185-4" aria-hidden="true" tabindex="-1"></a>new_test</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 15 columns
 ## otu_table have 12766 rows and 90 columns
 ## tax_table have 12766 rows and 7 columns
@@ -936,7 +936,7 @@ Please check out the dependence part <a href="https://chiliubio.github.io/microe
 <span id="cb224-7"><a href="explainable-class.html#cb224-7" aria-hidden="true" tabindex="-1"></a><span class="co"># further create a microtable object, familiar?</span></span>
 <span id="cb224-8"><a href="explainable-class.html#cb224-8" aria-hidden="true" tabindex="-1"></a>func1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> pathway_file, <span class="at">tax_table =</span> Tax4Fun2_KEGG<span class="sc">$</span>ptw_desc, <span class="at">sample_table =</span> t1<span class="sc">$</span>sample_table)</span>
 <span id="cb224-9"><a href="explainable-class.html#cb224-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 284 rows and 90 columns
 ## tax_table have 444 rows and 3 columns</code></pre>
@@ -946,7 +946,7 @@ Please check out the dependence part <a href="https://chiliubio.github.io/microe
 <span id="cb226-3"><a href="explainable-class.html#cb226-3" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$taxa_abund ...</code></pre>
 <div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="explainable-class.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
-<pre><code>## microtable class:
+<pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 282 rows and 90 columns
 ## tax_table have 282 rows and 3 columns

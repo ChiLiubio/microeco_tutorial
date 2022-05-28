@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v0.9.0)</title>
+  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v0.10.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.9.0)" />
+  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.10.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.9.0)" />
+  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.10.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco and mecodev packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-24" />
+<meta name="date" content="2022-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,7 +306,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.9.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.10.0)</a>
           </h1>
         </div>
 
@@ -335,7 +335,7 @@ and are mainly used for the identification of biomarkers at all taxonomic levels
 The metagenomeSeq method is implemented to find significant feature between two groups at feature level (OTU/ASV) directly.</p>
 <div id="example-5" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Example<a href="model-based-class.html#example-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>From v0.8.0, all the differential test result is stored in the object$res_diff.
+<p>All the differential test result is stored in the object$res_diff.
 Let’s first run metastat example.</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="model-based-class.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metastat analysis at Genus level</span></span>
 <span id="cb123-2"><a href="model-based-class.html#cb123-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;metastat&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>)</span>
@@ -352,7 +352,7 @@ For the abundance plotting, the user should use select_group to select the requi
 <span id="cb125-2"><a href="model-based-class.html#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_diff for the result</span></span>
 <span id="cb125-3"><a href="model-based-class.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="co"># From v0.8.0, threshold is used for the LDA score selection.</span></span>
 <span id="cb125-4"><a href="model-based-class.html#cb125-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">4</span>)</span>
-<span id="cb125-5"><a href="model-based-class.html#cb125-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we show 20 taxa with the highest LDA</span></span>
+<span id="cb125-5"><a href="model-based-class.html#cb125-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we show 20 taxa with the highest LDA (log10)</span></span>
 <span id="cb125-6"><a href="model-based-class.html#cb125-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span></code></pre></div>
 <p><img src="Images/plot_lefse_bar.png" width="700px" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="model-based-class.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show part of the table</span></span>
@@ -447,7 +447,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.</p>
 <span id="cb130-11"><a href="model-based-class.html#cb130-11" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> g2 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span>
 <span id="cb130-12"><a href="model-based-class.html#cb130-12" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(g1, g2, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fl">1.7</span>))</span></code></pre></div>
 <p><img src="Images/plot_rf_diff_abund.png" width="800px" style="display: block; margin: auto;" /></p>
-<p>For v0.9.0, the significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+<p>The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
 Now adding label support all the differential test methods.</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="model-based-class.html#cb131-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb131-2"><a href="model-based-class.html#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter something not needed to show</span></span>
@@ -693,33 +693,34 @@ In this function, you should provide the nodes you need using the node parameter
 <span id="cb148-7"><a href="model-based-class.html#cb148-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>()</span>
 <span id="cb148-8"><a href="model-based-class.html#cb148-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;S1.gexf&quot;</span>)</span>
 <span id="cb148-9"><a href="model-based-class.html#cb148-9" aria-hidden="true" tabindex="-1"></a><span class="co"># please use a loop for more samples</span></span></code></pre></div>
-<p>We also add the function <code>plot_network</code> from v0.7.5 to directly plot the network in R, including the static network and dynamic network.
+<p>We also add the function <code>plot_network</code> to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See <a href="https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html" class="uri">https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html</a> and <a href="https://kateto.net/network-visualization" class="uri">https://kateto.net/network-visualization</a> for more
 details on the network visualization in R.</p>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="model-based-class.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># default parameter represents using igraph plot.igraph function</span></span>
 <span id="cb149-2"><a href="model-based-class.html#cb149-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>()</span>
-<span id="cb149-3"><a href="model-based-class.html#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use ggraph package method</span></span>
+<span id="cb149-3"><a href="model-based-class.html#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use ggraph package method; require ggraph package</span></span>
 <span id="cb149-4"><a href="model-based-class.html#cb149-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;ggraph&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
 <span id="cb149-5"><a href="model-based-class.html#cb149-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use networkD3 package method for the dynamic network visualization in R</span></span>
 <span id="cb149-6"><a href="model-based-class.html#cb149-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;module&quot;</span>)</span>
 <span id="cb149-7"><a href="model-based-class.html#cb149-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span></code></pre></div>
-<p>From v0.8.0, the trans_comm function can be used to transform the node classification to a new microtable object for other analysis.</p>
+<p>The trans_comm function can be used to transform the node classification to a new microtable object for other analysis.</p>
 <div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="model-based-class.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use_col is used to select a column of t1$res_node_table</span></span>
 <span id="cb150-2"><a href="model-based-class.html#cb150-2" aria-hidden="true" tabindex="-1"></a>microtable_module <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_comm</span>(<span class="at">use_col =</span> <span class="st">&quot;module&quot;</span>, <span class="at">abundance =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb150-3"><a href="model-based-class.html#cb150-3" aria-hidden="true" tabindex="-1"></a>microtable_module</span></code></pre></div>
 <p><strong>Then let’s show other implemented network construction approaches</strong>:
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package <span class="citation">(<a href="#ref-Kurtz_Sparse_2015" role="doc-biblioref">Kurtz et al. 2015</a>)</span>.
 See <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi</a> for the package installation.</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="model-based-class.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
-<span id="cb151-2"><a href="model-based-class.html#cb151-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb151-3"><a href="model-based-class.html#cb151-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require SpiecEasi package  https://github.com/zdk123/SpiecEasi</span></span>
-<span id="cb151-4"><a href="model-based-class.html#cb151-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span>
-<span id="cb151-5"><a href="model-based-class.html#cb151-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="model-based-class.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NULL from v0.10.0</span></span>
+<span id="cb151-2"><a href="model-based-class.html#cb151-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NULL</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb151-3"><a href="model-based-class.html#cb151-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require SpiecEasi package installed https://github.com/zdk123/SpiecEasi</span></span>
+<span id="cb151-4"><a href="model-based-class.html#cb151-4" aria-hidden="true" tabindex="-1"></a><span class="co"># please see SpiecEasi::spiec.easi for available model parameters</span></span>
+<span id="cb151-5"><a href="model-based-class.html#cb151-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>, <span class="at">SpiecEasi_method =</span> <span class="st">&quot;mb&quot;</span>)</span>
+<span id="cb151-6"><a href="model-based-class.html#cb151-6" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
 <p>The third network construction approach: julia package FlashWeave<span class="citation">(<a href="#ref-Tackmann_Rapid_2019" role="doc-biblioref">Tackmann, Matias Rodrigues, and Mering 2019</a>)</span>.
 This is a probabilistic graph-based method to obtain the conditional independence.
-It predicts ecological interactions among microbes (direct association) from large-scale compositional abundance data through statistical co-occurrence.
-If you want to use this method like the following code, you should first install julia language in your computer and the FlashWeave package,
+It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence.
+To repeat the following code, please first install julia language in your computer and the FlashWeave package,
 and add the julia in the computer path.</p>
 <ol style="list-style-type: decimal">
 <li>download and install julia from <a href="https://julialang.org/downloads/" class="uri">https://julialang.org/downloads/</a><br />
@@ -727,20 +728,23 @@ and add the julia in the computer path.</p>
 <li>Put julia in the computer env PATH, such as your_directory_path</li>
 <li>Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in <a href="https://github.com/meringlab/FlashWeave.jl" class="uri">https://github.com/meringlab/FlashWeave.jl</a></li>
 </ol>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="model-based-class.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NA</span></span>
-<span id="cb152-2"><a href="model-based-class.html#cb152-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="dv">0</span>)</span>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="model-based-class.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cal_cor select NULL</span></span>
+<span id="cb152-2"><a href="model-based-class.html#cb152-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NULL</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="dv">0</span>)</span>
 <span id="cb152-3"><a href="model-based-class.html#cb152-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require Julia in the computer path, and the package FlashWeave</span></span>
-<span id="cb152-4"><a href="model-based-class.html#cb152-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;FlashWeave&quot;</span>)</span>
-<span id="cb152-5"><a href="model-based-class.html#cb152-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
+<span id="cb152-4"><a href="model-based-class.html#cb152-4" aria-hidden="true" tabindex="-1"></a><span class="co"># different with the direct parameter passing of &#39;SpiecEasi&#39; network_method, FlashWeave_other_para is used to pass parameters to Julia FlashWeave</span></span>
+<span id="cb152-5"><a href="model-based-class.html#cb152-5" aria-hidden="true" tabindex="-1"></a><span class="co"># assign FlashWeave_tempdir parameter can change the temporary working directory</span></span>
+<span id="cb152-6"><a href="model-based-class.html#cb152-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;FlashWeave&quot;</span>, <span class="at">FlashWeave_other_para =</span> <span class="st">&quot;alpha=0.01,sensitive=true,heterogeneous=true&quot;</span>)</span>
+<span id="cb152-7"><a href="model-based-class.html#cb152-7" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_network</span></span></code></pre></div>
 <p>The fourth method implemented: beemStatic package <span class="citation">(<a href="#ref-Li_BEEMStatic_2021" role="doc-biblioref">Li et al. 2021</a>)</span>.
 This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
 which is typically used in the microbial time-series data.
 So the network from this approach is a directed network.
 Please see <a href="https://github.com/CSB5/BEEM-static" class="uri">https://github.com/CSB5/BEEM-static</a> for installing the R beemStatic package.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="model-based-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NA</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb153-2"><a href="model-based-class.html#cb153-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;beemStatic&quot;</span>)</span>
-<span id="cb153-3"><a href="model-based-class.html#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="co"># method for the directed network</span></span>
-<span id="cb153-4"><a href="model-based-class.html#cb153-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_optimal&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="model-based-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="cn">NULL</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb153-2"><a href="model-based-class.html#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require beemStatic package installed</span></span>
+<span id="cb153-3"><a href="model-based-class.html#cb153-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;beemStatic&quot;</span>)</span>
+<span id="cb153-4"><a href="model-based-class.html#cb153-4" aria-hidden="true" tabindex="-1"></a><span class="co"># method for the directed network</span></span>
+<span id="cb153-5"><a href="model-based-class.html#cb153-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_optimal&quot;</span>)</span></code></pre></div>
 </div>
 <div id="key-points-6" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Key points<a href="model-based-class.html#key-points-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -959,7 +963,7 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <span id="cb165-2"><a href="model-based-class.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="co"># result: t1$res_tNST</span></span>
 <span id="cb165-3"><a href="model-based-class.html#cb165-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_tNST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Tue May 24 11:25:29 2022. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Sat May 28 11:03:39 2022. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_tNST ...</code></pre>
 <table style="width:74%;">
 <colgroup>
@@ -982,23 +986,23 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.6539</td>
-<td align="center">0.3866</td>
-<td align="center">0.364</td>
+<td align="center">0.6542</td>
+<td align="center">0.3874</td>
+<td align="center">0.3642</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5631</td>
-<td align="center">0.2965</td>
-<td align="center">0.2866</td>
+<td align="center">0.5626</td>
+<td align="center">0.2956</td>
+<td align="center">0.2863</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6245</td>
-<td align="center">0.4164</td>
-<td align="center">0.3999</td>
+<td align="center">0.6246</td>
+<td align="center">0.4162</td>
+<td align="center">0.4001</td>
 </tr>
 </tbody>
 </table>
