@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-05-28" />
+<meta name="date" content="2022-05-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -565,7 +565,12 @@ The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not ad
 <span id="cb9-7"><a href="intro.html#cb9-7" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
 <span id="cb9-8"><a href="intro.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or use Biostrings package</span></span>
 <span id="cb9-9"><a href="intro.html#cb9-9" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">readDNAStringSet</span>(rep_fasta_path)</span>
-<span id="cb9-10"><a href="intro.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># also see the help document of microtable class about the rep_fasta parameter in microtable$new().</span></span></code></pre></div>
+<span id="cb9-10"><a href="intro.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># try to create a microtable object with rep_fasta</span></span>
+<span id="cb9-11"><a href="intro.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;otu_table_16S&quot;</span>)</span>
+<span id="cb9-12"><a href="intro.html#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># In microtable class, all the taxa names should be necessarily included in rep_fasta</span></span>
+<span id="cb9-13"><a href="intro.html#cb9-13" aria-hidden="true" tabindex="-1"></a>otu_table_16S <span class="ot">&lt;-</span> otu_table_16S[<span class="fu">rownames</span>(otu_table_16S) <span class="sc">%in%</span> <span class="fu">names</span>(rep_fasta), ]</span>
+<span id="cb9-14"><a href="intro.html#cb9-14" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> otu_table_16S, <span class="at">rep_fasta =</span> rep_fasta)</span>
+<span id="cb9-15"><a href="intro.html#cb9-15" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
 </div>
 </div>
 <div id="plotting" class="section level2 hasAnchor" number="2.5">

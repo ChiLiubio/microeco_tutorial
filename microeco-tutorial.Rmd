@@ -234,7 +234,12 @@ rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 rep_fasta <- seqinr::read.fasta(rep_fasta_path)
 # or use Biostrings package
 rep_fasta <- Biostrings::readDNAStringSet(rep_fasta_path)
-# also see the help document of microtable class about the rep_fasta parameter in microtable$new().
+# try to create a microtable object with rep_fasta
+data("otu_table_16S")
+# In microtable class, all the taxa names should be necessarily included in rep_fasta
+otu_table_16S <- otu_table_16S[rownames(otu_table_16S) %in% names(rep_fasta), ]
+test <- microtable$new(otu_table = otu_table_16S, rep_fasta = rep_fasta)
+test
 ```
 
 ## Plotting
@@ -2334,25 +2339,21 @@ knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
 
 Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
-If you want to use Tax4Fun2 method, you must add the representative fasta file to the microtable object.
-Please check out https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
+If the user want to use Tax4Fun2 method, the representative fasta file is necessary to be added in the microtable object.
+Please check out https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 to see
+how to read fasta file with `read.fasta` of seqinr package or `readDNAStringSet` of Biostrings package.
+Please also see https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for downloading ncbi-blast and Ref99NR/Ref100NR.
+For windows system, ncbi-blast-2.5.0+ is recommended since other versions can not operate well.
+
 
 ```{r, echo = TRUE, eval = FALSE}
-# create a microtable object with the fasta file
-data(sample_info_16S)
-data(otu_table_16S)
-data(taxonomy_table_16S)
-# representative sequences are necessary for this analysis
-# use read.fasta() of seqinr package or readDNAStringSet() of Biostrings package to read fasta file
-# https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2  for the reading example
-data(rep_fasta_16S)
+# first delete the dataset created before
+rm(dataset)
+# load the example dataset in microeco package as there is the rep_fasta object in it
+load(dataset)
+dataset
 
-use_dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, rep_fasta = rep_fasta_16S)
-use_dataset$filter_pollution(taxa = c("mitochondria", "chloroplast"))
-use_dataset$tidy_dataset()
-use_dataset
-
-t1 <- trans_func$new(use_dataset)
+t1 <- trans_func$new(dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
 # https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation
@@ -2364,11 +2365,11 @@ t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_dat
 # prepare feature table and metadata
 data(Tax4Fun2_KEGG)
 # create a microtable object for pathways
-func2 <- microtable$new(otu_table = t1$res_tax4fun2_pathway, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = use_dataset$sample_table)
+func2 <- microtable$new(otu_table = t1$res_tax4fun2_pathway, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = dataset$sample_table)
 func2$tidy_dataset()
 func2$cal_abund()
 
-# calculate functional gene redundancies
+# calculate functional redundancies
 t1$cal_tax4fun2_FRI()
 ```
 

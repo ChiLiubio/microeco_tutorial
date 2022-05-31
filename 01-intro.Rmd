@@ -195,7 +195,12 @@ rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 rep_fasta <- seqinr::read.fasta(rep_fasta_path)
 # or use Biostrings package
 rep_fasta <- Biostrings::readDNAStringSet(rep_fasta_path)
-# also see the help document of microtable class about the rep_fasta parameter in microtable$new().
+# try to create a microtable object with rep_fasta
+data("otu_table_16S")
+# In microtable class, all the taxa names should be necessarily included in rep_fasta
+otu_table_16S <- otu_table_16S[rownames(otu_table_16S) %in% names(rep_fasta), ]
+test <- microtable$new(otu_table = otu_table_16S, rep_fasta = rep_fasta)
+test
 ```
 
 ## Plotting
