@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.10.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-05-31}
+\date{2022-06-23}
 
 \begin{document}
 \maketitle
@@ -173,7 +173,7 @@ Before starting the specific usage of each class, let's first introduce several 
 \hypertarget{framework}{%
 \section{Framework}\label{framework}}
 
-This is a rough framework for users to fast understand the design of the microeco package.
+This is a rough framework for users to fast understand the design of microeco package.
 
 \begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
 
@@ -472,7 +472,7 @@ Although the formats of results may be distinctive across various tools, the mai
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
 At least, the OTU table (i.e.~feature-sample abundance table) should be provided for creating microtable object.
-Thus, the microtable class can recognize the sample information table is missing and create a default sample table according to
+Thus, the microtable class can determine that the sample information table is missing and create a default sample table according to
 the sample names in otu\_table.
 To make the file reading more convenient,
 we also build another R package file2meco (\url{https://github.com/ChiLiubio/file2meco}) to read the output files of some tools into microtable object.
@@ -1444,10 +1444,10 @@ Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups \textg
 Comparison & Measure & Group & P.unadj & P.adj & Significance \\
 \midrule
 \endhead
-IW - CW - TW & Observed & IW & 0.155 & 0.2481 & ns \\
-IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
-IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
-IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
+IW - CW - TW & Observed & IW & 0.155 & 0.2713 & ns \\
+IW - CW - TW & Chao1 & IW & 0.01696 & 0.05936 & ns \\
+IW - CW - TW & ACE & IW & 0.01333 & 0.05936 & ns \\
+IW - CW - TW & Shannon & IW & 0.5319 & 0.7446 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 \bottomrule
 \end{longtable}
@@ -1515,22 +1515,21 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.10}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.13}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.09}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.07}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.11}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.11}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.15}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.10}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.13}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.14}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.11}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.08}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.13}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.13}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.17}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}@{}}
 \toprule
-~ & Observed & Chao1 & ACE & Shannon & Simpson & InvSimpson & Fisher & Coverage \\
+~ & Observed & Chao1 & ACE & Shannon & Simpson & InvSimpson & Fisher \\
 \midrule
 \endhead
-\textbf{IW} & a & a & a & a & a & a & a & b \\
-\textbf{TW} & a & ab & b & a & a & a & a & a \\
-\textbf{CW} & a & b & b & a & a & a & a & a \\
+\textbf{IW} & a & a & a & a & a & a & a \\
+\textbf{TW} & a & ab & b & a & a & a & a \\
+\textbf{CW} & a & b & b & a & a & a & a \\
 \bottomrule
 \end{longtable}
 
@@ -2609,7 +2608,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May 31 10:17:04 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Jun 23 13:38:18 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2626,9 +2625,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6536 & 0.3871 & 0.3637 \\
-CW & 435 & 0.5627 & 0.2957 & 0.2864 \\
-TW & 435 & 0.6246 & 0.4163 & 0.4 \\
+IW & 435 & 0.6538 & 0.3879 & 0.3638 \\
+CW & 435 & 0.563 & 0.2962 & 0.2865 \\
+TW & 435 & 0.6246 & 0.4161 & 0.4001 \\
 \bottomrule
 \end{longtable}
 
@@ -2896,7 +2895,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 ## tax_table have 12766 rows and 7 columns
 ## phylo_tree have 12766 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -3993,7 +3992,7 @@ For example, if we want to analyze samples from `CW' and `IW', respectively, we 
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
