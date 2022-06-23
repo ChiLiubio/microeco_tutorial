@@ -1,7 +1,7 @@
 # Introduction {#intro}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbial communtiy data fast.
+The main goal of developing this package is to help users analyse microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
@@ -68,7 +68,7 @@ So the question is that the user may encounter an error when using a class or fu
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
 data(dataset)
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.0005)
+t1 <- trans_network$new(dataset = dataset, filter_thres = 0.001)
 t1$cal_network(network_method = "SpiecEasi")
 ```
 
@@ -82,9 +82,9 @@ In addition, some packages, e.g. SpiecEasi, are released on github and can not b
 
 The solutions:
 
-1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
+1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
+2. Install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
 
 We show several packages that are published in CRAN and not installed automatically.
 
@@ -101,7 +101,8 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x", "FSA", "gridExtra")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", 
+    "ggalluvial", "ggh4x", "FSA", "gridExtra", "aplot")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -110,7 +111,7 @@ for(x in packages){
 }
 ```
 
-There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
+There are also some packages that are useful in some functions. These packages may be R packages published in Bioconductor or Github,
 or packages written by other languages.
 
 ### ggtree
@@ -120,24 +121,11 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 BiocManager::install("ggtree")
 ```
 
-### SpiecEasi
-
-The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
-The package can be installed from Github https://github.com/zdk123/SpiecEasi
-
 ### Gephi
 Gephi is an excellent network visualization tool and used to open the saved network file, 
 i.e. network.gexf in the [tutorial](https://chiliubio.github.io/microeco_tutorial/model-based-class.html#trans_network-class).
 You can download Gephi and learn how to use it from https://gephi.org/users/download/
 
-
-### WGCNA
-In the correlation-based network, when the species number is very large,
-the correlation algorithm in WGCNA is very fast.
-
-```{r, echo = TRUE, eval = FALSE}
-install.packages("WGCNA", dependencies = TRUE)
-```
 
 ### Tax4Fun
 Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.

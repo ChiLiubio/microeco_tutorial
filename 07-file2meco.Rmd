@@ -202,5 +202,32 @@ meco_dataset <- phyloseq2meco(GlobalPatterns)
 meco_dataset
 ```
 
+## PICRUSt2
+
+PICRUSt2 [@Douglas_PICRUSt2_2020] contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt. 
+We do not create a special file conversion function for PICRUSt2 
+as it is very easy to transform the output pathway files of PICRUSt2 to microtable class. 
+There are two example files of PICRUSt2 output in file2meco package used to show the operation.
+
+```{r, echo = TRUE, eval = FALSE}
+# MetaCyc pathway output
+tmp_file_path <- system.file("extdata", "example_PICRUSt2_MetaCyc_path_abun_unstrat.tsv", package="file2meco")
+pathway_table <- read.delim(tmp_file_path, row.names = 1)
+data("MetaCyc_pathway_map")
+tmp <- microtable$new(otu_table = pathway_table, tax_table = MetaCyc_pathway_map)
+tmp$tidy_dataset()
+tmp
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# KEGG pathway output
+tmp_file_path <- system.file("extdata", "example_PICRUSt2_KEGG_path_abun_unstrat.tsv", package="file2meco")
+pathway_table <- read.delim(tmp_file_path, row.names = 1)
+data("Tax4Fun2_KEGG")
+tmp <- microtable$new(otu_table = pathway_table, tax_table = Tax4Fun2_KEGG$ptw_desc)
+tmp$tidy_dataset()
+tmp
+```
+
 
 

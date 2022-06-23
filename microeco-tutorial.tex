@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.10.1)},
+  pdftitle={Tutorial for R microeco package (v0.11.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -122,7 +122,7 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Tutorial for R microeco package (v0.10.1)}
+\title{Tutorial for R microeco package (v0.11.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
 \date{2022-06-23}
 
@@ -160,7 +160,7 @@ and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extend
 \chapter{Introduction}\label{intro}}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbial communtiy data fast.
+The main goal of developing this package is to help users analyse microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
@@ -238,7 +238,7 @@ So the question is that the user may encounter an error when using a class or fu
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -257,9 +257,9 @@ The solutions:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
+  Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 \item
-  install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
+  Install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
 \end{enumerate}
 
 We show several packages that are published in CRAN and not installed automatically.
@@ -300,6 +300,8 @@ FSA & trans\_alpha and trans\_diff class & Dunn's Kruskal-Wallis Multiple Compar
 \hline
 gridExtra & trans\_diff class & merge plots\\
 \hline
+aplot & trans\_venn, trans\_env & merge plots\\
+\hline
 \end{tabular}
 
 Then, if you want to install these packages or some of them, you can do like this:
@@ -308,7 +310,8 @@ Then, if you want to install these packages or some of them, you can do like thi
 \begin{Highlighting}[]
 \CommentTok{\# If a package is not installed, it will be installed from CRAN.}
 \CommentTok{\# First select the packages of interest}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -318,7 +321,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \end{Highlighting}
 \end{Shaded}
 
-There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
+There are also some packages that are useful in some functions. These packages may be R packages published in Bioconductor or Github,
 or packages written by other languages.
 
 \hypertarget{ggtree}{%
@@ -333,30 +336,12 @@ Plotting the cladogram from LEfSe result requires the ggtree package in biocondu
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{spieceasi}{%
-\subsection{SpiecEasi}\label{spieceasi}}
-
-The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
-The package can be installed from Github \url{https://github.com/zdk123/SpiecEasi}
-
 \hypertarget{gephi}{%
 \subsection{Gephi}\label{gephi}}
 
 Gephi is an excellent network visualization tool and used to open the saved network file,
 i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/model-based-class.html\#trans_network-class}{tutorial}.
 You can download Gephi and learn how to use it from \url{https://gephi.org/users/download/}
-
-\hypertarget{wgcna}{%
-\subsection{WGCNA}\label{wgcna}}
-
-In the correlation-based network, when the species number is very large,
-the correlation algorithm in WGCNA is very fast.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \hypertarget{tax4fun}{%
 \subsection{Tax4Fun}\label{tax4fun}}
@@ -1295,6 +1280,21 @@ When the groups are too many to show with venn plot, using petal plot is better.
 
 \begin{center}\includegraphics[width=500px]{Images/trans_venn_2} \end{center}
 
+Another way to plot the results is to use plot\_bar function, which is especially useful for a large number of samples/groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{tmp}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp)}
+\CommentTok{\# only show some sets with large intersection numbers}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{data\_summary }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.[, }\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textgreater{}} \DecValTok{20}\NormalTok{, ]}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/plot_venn_bar_type} \end{center}
+
 Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups\citep{Mendes_Deciphering_2011}.
 So, it is interesting to further analyze the composition of unique and shared species.
@@ -2082,31 +2082,54 @@ Please check the final part for other network construction methods.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# The parameter cal\_cor in trans\_network is used for selecting the correlation calculation method.}
-\CommentTok{\# Use R base cor.test, a little slow}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"base"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\CommentTok{\# The parameter cor\_method in trans\_network is used for selecting the correlation calculation method.}
+\CommentTok{\# default pearson or spearman correlation invoke R base cor.test, a little slow}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# return t1$res\_cor\_p list, containing two tables: correlation coefficient table and p value table}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco\_tutorial/intro.html\#spieceasi for the installation}
-\CommentTok{\# SparCC is very slow, so consider filtering more species with low abundance}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"SparCC"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{,  }\AttributeTok{nThreads =} \DecValTok{4}\NormalTok{, }\AttributeTok{SparCC\_simu\_num =} \DecValTok{100}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Those are other available correlation/association options,
+such as Bray--Curtis (1-dissimilarity), SparCC \citep{Friedman_Inferring_2012}, CCLasso \citep{Fang_CCLasso_2015},
+Pearson or Spearman with data normalization based on NetCoMi package \citep{Peschel_NetCoMi_2021}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# When the OTU number is large, using cal\_cor = "WGCNA" will be faster}
-\CommentTok{\# require WGCNA package, see https://chiliubio.github.io/microeco\_tutorial/intro.html\#wgcna for the installation}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\CommentTok{\# use Bray–Curtis index (1{-}dissimilarity)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation using WGCNA package (https://cran.r{-}project.org/web/packages/WGCNA/index.html)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Spearman correlation using WGCNA package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Spearman correlation using NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"NetCoMi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# CCLasso method based on NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"cclasso"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# CCREPE method based on NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"ccrepe"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We use Spearman correlation based on WGCNA package (use\_WGCNA\_pearson\_spearman = TRUE) to show all the following operations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require WGCNA package. If not installed, use install.packages("WGCNA", dependencies = TRUE)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 The parameter COR\_cut can be used to select the correlation threshold.
-Furthermore, COR\_optimization = TRUE can be used to find the optimized coefficient threshold instead of the COR\_cut based on the RMT theory \citep{Deng_Molecular_2012}.
+Furthermore, COR\_optimization = TRUE can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues)
+instead of the COR\_cut based on the RMT theory \citep{Deng_Molecular_2012}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2120,7 +2143,7 @@ Furthermore, COR\_optimization = TRUE can be used to find the optimized coeffici
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# add modules for this undirected network}
+\CommentTok{\# \# modularity for this undirected network with igraph cluster\_fast\_greedy function}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_fast\_greedy"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2211,9 +2234,11 @@ get node properties table, edge properties table and adjacency matrix from netwo
 \end{Highlighting}
 \end{Shaded}
 
+Then, let's plot the node classification in terms of the within-module connectivity and among-module connectivity.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# plot node roles in terms of the within{-}module connectivity and among{-}module connectivity}
+\CommentTok{\# add\_label = TRUE can be used to directly add text label for points}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2292,9 +2317,11 @@ details on the network visualization in R.
 \begin{Highlighting}[]
 \CommentTok{\# default parameter represents using igraph plot.igraph function}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{()}
-\CommentTok{\# use ggraph package method; require ggraph package}
+\CommentTok{\# use ggraph method; require ggraph package}
+\CommentTok{\# If ggraph is not installed; first install it with command: install.packages("ggraph")}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"ggraph"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"Phylum"}\NormalTok{)}
 \CommentTok{\# use networkD3 package method for the dynamic network visualization in R}
+\CommentTok{\# If networkD3 is not installed; first install it with command: install.packages("networkD3")}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"networkD3"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"module"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"networkD3"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"Phylum"}\NormalTok{)}
 \end{Highlighting}
@@ -2305,31 +2332,55 @@ The trans\_comm function can be used to transform the node classification to a n
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use\_col is used to select a column of t1$res\_node\_table}
-\NormalTok{microtable\_module }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{trans\_comm}\NormalTok{(}\AttributeTok{use\_col =} \StringTok{"module"}\NormalTok{, }\AttributeTok{abundance =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{microtable\_module}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{trans\_comm}\NormalTok{(}\AttributeTok{use\_col =} \StringTok{"module"}\NormalTok{, }\AttributeTok{abundance =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{tmp}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{otu\_table[tmp}\SpecialCharTok{$}\NormalTok{otu\_table }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\NormalTok{tmp2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
+\NormalTok{tmp2}\SpecialCharTok{$}\NormalTok{data\_abund}\SpecialCharTok{$}\NormalTok{Sample }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{rownames}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{sample\_table))}
+\NormalTok{tmp2}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{xtext\_type\_hor =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Paired"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"OTUs ratio (\%)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Then let's show other implemented network construction approaches}:
-SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package \citep{Kurtz_Sparse_2015}.
-See \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#spieceasi} for the package installation.
+The function cal\_sum\_links can sum the links (edge) number from one taxa to another or within the same taxa.
+The function plot\_sum\_links() is used to show the result from the function cal\_sum\_links().
+This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
+In terms of `Phylum' level in the tutorial, the function cal\_sum\_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
+So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
+For example, in terms of Proteobacteria, there are roughly total 900 edges associated with the OTUs in Proteobacteria,
+in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NULL from v0.10.0}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_sum\_links}\NormalTok{(}\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
+\CommentTok{\# require chorddiag package; see https://github.com/mattflor/chorddiag}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
+
+\textbf{Then let's show other implemented network construction approaches}:\\
+SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach of SpiecEasi R package \citep{Kurtz_Sparse_2015}
+has two network construction approaches based on graph model, which relies on algorithms for sparse neighborhood and inverse covariance selection.
+See \url{https://github.com/zdk123/SpiecEasi} for the package installation.
+It is very slow for SpiecEasi\_method = `glasso' when there is a large number (such as hundreds to thousands) according to our test experience.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# require SpiecEasi package installed https://github.com/zdk123/SpiecEasi}
-\CommentTok{\# please see SpiecEasi::spiec.easi for available model parameters}
+\CommentTok{\# also see SpiecEasi::spiec.easi for available model parameters}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{SpiecEasi\_method =} \StringTok{"mb"}\NormalTok{)}
 \CommentTok{\# see t1$res\_network}
 \end{Highlighting}
 \end{Shaded}
 
-The third network construction approach: julia package FlashWeave\citep{Tackmann_Rapid_2019}.
+Another network construction approach comes from julia package FlashWeave \citep{Tackmann_Rapid_2019}.
 This is a probabilistic graph-based method to obtain the conditional independence.
 It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence.
-To repeat the following code, please first install julia language in your computer and the FlashWeave package,
-and add the julia in the computer path.
+To repeat the following code, please first install julia language in your computer and the FlashWeave package, and add the julia in the computer path.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -2344,8 +2395,7 @@ and add the julia in the computer path.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# cal\_cor select NULL}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
 \CommentTok{\# require Julia in the computer path, and the package FlashWeave}
 \CommentTok{\# different with the direct parameter passing of \textquotesingle{}SpiecEasi\textquotesingle{} network\_method, FlashWeave\_other\_para is used to pass parameters to Julia FlashWeave}
 \CommentTok{\# assign FlashWeave\_tempdir parameter can change the temporary working directory}
@@ -2354,7 +2404,7 @@ and add the julia in the computer path.
 \end{Highlighting}
 \end{Shaded}
 
-The fourth method implemented: beemStatic package \citep{Li_BEEMStatic_2021}.
+The final method we want to show comes from beemStatic package \citep{Li_BEEMStatic_2021}.
 This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
 which is typically used in the microbial time-series data.
 So the network from this approach is a directed network.
@@ -2362,10 +2412,10 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# require beemStatic package installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"beemStatic"}\NormalTok{)}
-\CommentTok{\# method for the directed network}
+\CommentTok{\# we use cluster\_optimal method for the directed network}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2608,7 +2658,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Jun 23 13:38:18 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Jun 23 15:37:55 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2625,9 +2675,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6538 & 0.3879 & 0.3638 \\
-CW & 435 & 0.563 & 0.2962 & 0.2865 \\
-TW & 435 & 0.6246 & 0.4161 & 0.4001 \\
+IW & 435 & 0.6538 & 0.388 & 0.3638 \\
+CW & 435 & 0.5629 & 0.2958 & 0.2864 \\
+TW & 435 & 0.6245 & 0.4163 & 0.4 \\
 \bottomrule
 \end{longtable}
 
@@ -2944,25 +2994,24 @@ IW - CW & Precipitation & CW & 5.239e-09 & *** \\
 IW - TW & Precipitation & IW & 0.07758 & ns \\
 CW - TW & Precipitation & CW & 4.002e-07 & *** \\
 IW - CW & TOC & IW & 0.4687 & ns \\
-IW - TW & TOC & TW & 0.643 & ns \\
-CW - TW & TOC & TW & 0.06771 & ns \\
-IW - CW & NH4 & CW & 0.1842 & ns \\
-IW - TW & NH4 & TW & 0.05499 & ns \\
-CW - TW & NH4 & CW & 0.4776 & ns \\
-IW - CW & NO3 & IW & 0.05499 & ns \\
-IW - TW & NO3 & IW & 0.03071 & * \\
-CW - TW & NO3 & CW & 0.8258 & ns \\
-IW - CW & pH & CW & 0.5567 & ns \\
-IW - TW & pH & TW & 0.05722 & ns \\
-CW - TW & pH & TW & 0.0001527 & *** \\
-IW - CW & Conductivity & CW & 2.649e-09 & *** \\
-IW - TW & Conductivity & TW & 1.187e-05 & *** \\
-CW - TW & Conductivity & CW & 3.551e-07 & *** \\
-IW - CW & TN & IW & 0.05651 & ns \\
-IW - TW & TN & TW & 0.9705 & ns \\
-CW - TW & TN & TW & 0.04214 & * \\
 \bottomrule
 \end{longtable}
+
+Let's perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# place all the plots into a list}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{colnames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env))\{}
+\NormalTok{    tmp[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =}\NormalTok{ i, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{5}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{plot.margin =} \FunctionTok{unit}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\StringTok{"cm"}\NormalTok{))}
+\NormalTok{\}}
+\NormalTok{gridExtra}\SpecialCharTok{::}\FunctionTok{arrangeGrob}\NormalTok{(}\AttributeTok{grobs =}\NormalTok{ tmp, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=750px]{Images/plot_env_diff_all} \end{center}
 
 Then we show the autocorrelations among variables.
 
@@ -3754,6 +3803,38 @@ Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversi
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{picrust2}{%
+\section{PICRUSt2}\label{picrust2}}
+
+PICRUSt2 \citep{Douglas_PICRUSt2_2020} contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt.
+We do not create a special file conversion function for PICRUSt2
+as it is very easy to transform the output pathway files of PICRUSt2 to microtable class.
+There are two example files of PICRUSt2 output in file2meco package used to show the operation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# MetaCyc pathway output}
+\NormalTok{tmp\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_PICRUSt2\_MetaCyc\_path\_abun\_unstrat.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{pathway\_table }\OtherTok{\textless{}{-}} \FunctionTok{read.delim}\NormalTok{(tmp\_file\_path, }\AttributeTok{row.names =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"MetaCyc\_pathway\_map"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ pathway\_table, }\AttributeTok{tax\_table =}\NormalTok{ MetaCyc\_pathway\_map)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{tmp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# KEGG pathway output}
+\NormalTok{tmp\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_PICRUSt2\_KEGG\_path\_abun\_unstrat.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{pathway\_table }\OtherTok{\textless{}{-}} \FunctionTok{read.delim}\NormalTok{(tmp\_file\_path, }\AttributeTok{row.names =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"Tax4Fun2\_KEGG"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ pathway\_table, }\AttributeTok{tax\_table =}\NormalTok{ Tax4Fun2\_KEGG}\SpecialCharTok{$}\NormalTok{ptw\_desc)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{tmp}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{other-dataset}{%
 \chapter{Other dataset}\label{other-dataset}}
 
@@ -4043,7 +4124,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-269-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-276-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4080,7 +4161,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-270-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-277-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
@@ -4182,40 +4263,6 @@ The output is also a microtable object.
 \CommentTok{\# returned test2 is another transformed microtable object}
 \end{Highlighting}
 \end{Shaded}
-
-\hypertarget{trans_netchord}{%
-\section{trans\_netchord}\label{trans_netchord}}
-
-The class trans\_netchord is developed to sum and plot the links number from one taxa to another or in the same taxa in the network.
-The input dataset must be a trans\_network object.
-Creating the trans\_netchord object can sum the links (edge) number from one taxa to another or in the same taxa.
-The function plot\_sum\_links() is used to show the result from the function cal\_sum\_links().
-This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
-In terms of ``Phylum'' level in the tutorial,
-the function cal\_sum\_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
-So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
-For example, in terms of Proteobacteria,
-there are roughly total 900 edges associated with the OTUs in Proteobacteria,
-in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Let\textquotesingle{}s first create a network}
-\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
-\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
-\FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
-\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S)}
-\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.7}\NormalTok{)}
-\CommentTok{\# trans\_netchord}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_netchord}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
-\CommentTok{\# require chorddiag package (https://github.com/mattflor/chorddiag)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
 
 \hypertarget{trans_ts}{%
 \section{trans\_ts}\label{trans_ts}}

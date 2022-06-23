@@ -45,8 +45,24 @@ t1$res_diff[, c(1, 2, 4, 6, 7)]
 ```
 ```{r, echo = FALSE}
 t1$cal_diff(group = "Group", method = "wilcox")
-pander::pander(t1$res_diff[, c(1, 2, 4, 6, 7)])
+pander::pander(t1$res_diff[1:7, c(1, 2, 4, 6, 7)])
 ```
+
+Let’s perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "anova", group = "Group")
+# place all the plots into a list
+tmp <- list()
+for(i in colnames(t1$data_env)){
+    tmp[[i]] <- t1$plot_diff(measure = i, add_sig_text_size = 5, xtext_size = 12) + theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
+}
+gridExtra::arrangeGrob(grobs = tmp, ncol = 3)
+```
+```{r, out.width = "750px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_env_diff_all.png")
+```
+
 
 Then we show the autocorrelations among variables.
 

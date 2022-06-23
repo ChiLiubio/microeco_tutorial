@@ -173,6 +173,21 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
+Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
+
+```{r, echo = TRUE, eval = FALSE}
+tmp <- dataset$merge_samples(use_group = "Type")
+tmp
+t1 <- trans_venn$new(dataset = tmp)
+# only show some sets with large intersection numbers
+t1$data_summary %<>% .[.[, 1] > 20, ]
+t1$plot_bar()
+```
+
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_venn_bar_type.png")
+```
+
 Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
 So, it is interesting to further analyze the composition of unique and shared species. 

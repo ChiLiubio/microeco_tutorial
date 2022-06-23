@@ -39,39 +39,6 @@ test2 <- test1$convert(method = "log")
 ```
 
 
-## trans_netchord
-The class trans_netchord is developed to sum and plot the links number from one taxa to another or in the same taxa in the network.
-The input dataset must be a trans_network object.
-Creating the trans_netchord object can sum the links (edge) number from one taxa to another or in the same taxa.
-The function plot_sum_links() is used to show the result from the function cal_sum_links(). 
-This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
-In terms of "Phylum" level in the tutorial, 
-the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
-So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
-For example, in terms of Proteobacteria,
-there are roughly total 900 edges associated with the OTUs in Proteobacteria, 
-in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
-
-
-```{r, echo = TRUE, eval = FALSE}
-# Let's first create a network
-data(sample_info_16S)
-data(otu_table_16S)
-data(taxonomy_table_16S)
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S)
-dataset$tidy_dataset()
-t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
-t1$cal_network(p_thres = 0.01, COR_cut = 0.7)
-# trans_netchord
-test1 <- trans_netchord$new(dataset = t1, taxa_level = "Phylum")
-# require chorddiag package (https://github.com/mattflor/chorddiag)
-test1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
-```
-
-```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_sum_links.png")
-```
-
 ## trans_ts
 
 The class trans_ts is designed for the time series data analysis.

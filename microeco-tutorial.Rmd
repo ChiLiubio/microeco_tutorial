@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.10.1)"
+title: "Tutorial for R microeco package (v0.11.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -40,7 +40,7 @@ and mecodev package (https://github.com/ChiLiubio/mecodev) for some extending ap
 # Introduction {#intro}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbial communtiy data fast.
+The main goal of developing this package is to help users analyse microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
 make users conveniently remember, search and use.
@@ -107,7 +107,7 @@ So the question is that the user may encounter an error when using a class or fu
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
 data(dataset)
-t1 <- trans_network$new(dataset = dataset, cal_cor = NA, taxa_level = "OTU", filter_thres = 0.0005)
+t1 <- trans_network$new(dataset = dataset, filter_thres = 0.001)
 t1$cal_network(network_method = "SpiecEasi")
 ```
 
@@ -121,9 +121,9 @@ In addition, some packages, e.g. SpiecEasi, are released on github and can not b
 
 The solutions:
 
-1. install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
+1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
+2. Install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
 
 We show several packages that are published in CRAN and not installed automatically.
 
@@ -140,7 +140,8 @@ Then, if you want to install these packages or some of them, you can do like thi
 ```{r, echo = TRUE, eval = FALSE}
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", "ggalluvial", "ggh4x", "FSA", "gridExtra")
+packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", 
+    "ggalluvial", "ggh4x", "FSA", "gridExtra", "aplot")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -149,7 +150,7 @@ for(x in packages){
 }
 ```
 
-There are also some packages that are useful in some functions. These packages may be R packages published in bioconductor or github,
+There are also some packages that are useful in some functions. These packages may be R packages published in Bioconductor or Github,
 or packages written by other languages.
 
 ### ggtree
@@ -159,24 +160,11 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 BiocManager::install("ggtree")
 ```
 
-### SpiecEasi
-
-The R package SpiecEasi can be used for the network construction using SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach.
-The package can be installed from Github https://github.com/zdk123/SpiecEasi
-
 ### Gephi
 Gephi is an excellent network visualization tool and used to open the saved network file, 
 i.e. network.gexf in the [tutorial](https://chiliubio.github.io/microeco_tutorial/model-based-class.html#trans_network-class).
 You can download Gephi and learn how to use it from https://gephi.org/users/download/
 
-
-### WGCNA
-In the correlation-based network, when the species number is very large,
-the correlation algorithm in WGCNA is very fast.
-
-```{r, echo = TRUE, eval = FALSE}
-install.packages("WGCNA", dependencies = TRUE)
-```
 
 ### Tax4Fun
 Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.
@@ -773,6 +761,21 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
+Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
+
+```{r, echo = TRUE, eval = FALSE}
+tmp <- dataset$merge_samples(use_group = "Type")
+tmp
+t1 <- trans_venn$new(dataset = tmp)
+# only show some sets with large intersection numbers
+t1$data_summary %<>% .[.[, 1] > 20, ]
+t1$plot_bar()
+```
+
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_venn_bar_type.png")
+```
+
 Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
 So, it is interesting to further analyze the composition of unique and shared species. 
@@ -1316,26 +1319,49 @@ This is only intended to show some operations conveniently.
 Please check the final part for other network construction methods.
 
 ```{r, echo = TRUE, eval=FALSE}
-# The parameter cal_cor in trans_network is used for selecting the correlation calculation method.
-# Use R base cor.test, a little slow
-t1 <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
+# The parameter cor_method in trans_network is used for selecting the correlation calculation method.
+# default pearson or spearman correlation invoke R base cor.test, a little slow
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", filter_thres = 0.001)
 # return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table
 ```
 
-```{r, echo = TRUE, eval=FALSE}
-# SparCC method, require SpiecEasi package, see https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the installation
-# SparCC is very slow, so consider filtering more species with low abundance
-t1 <- trans_network$new(dataset = dataset, cal_cor = "SparCC", taxa_level = "OTU", filter_thres = 0.001,  nThreads = 4, SparCC_simu_num = 100)
-```
+Those are other available correlation/association options, 
+such as Bray–Curtis (1-dissimilarity), SparCC [@Friedman_Inferring_2012], CCLasso [@Fang_CCLasso_2015], 
+Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_NetCoMi_2021].
 
 ```{r, echo = TRUE, eval=FALSE}
-# When the OTU number is large, using cal_cor = "WGCNA" will be faster
-# require WGCNA package, see https://chiliubio.github.io/microeco_tutorial/intro.html#wgcna for the installation
-t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
+# use Bray–Curtis index (1-dissimilarity)
+t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
+# Pearson correlation
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
+# Pearson correlation using WGCNA package (https://cran.r-project.org/web/packages/WGCNA/index.html)
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+# Spearman correlation using WGCNA package
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+# Spearman correlation using NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
+t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.001)
+# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
+t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
+# CCLasso method based on NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "cclasso", filter_thres = 0.001)
+# CCREPE method based on NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres = 0.001)
 ```
 
-The parameter COR_cut can be used to select the correlation threshold.
-Furthermore, COR_optimization = TRUE can be used to find the optimized coefficient threshold instead of the COR_cut based on the RMT theory [@Deng_Molecular_2012].
+We use Spearman correlation based on WGCNA package (use_WGCNA_pearson_spearman = TRUE) to show all the following operations.
+
+```{r, echo = TRUE, eval=FALSE}
+# require WGCNA package. If not installed, use install.packages("WGCNA", dependencies = TRUE)
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
+```
+
+The parameter COR_cut can be used to select the correlation threshold. 
+Furthermore, COR_optimization = TRUE can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues) 
+instead of the COR_cut based on the RMT theory [@Deng_Molecular_2012].
 
 ```{r, echo = TRUE, eval=FALSE}
 # construct network; require igraph package
@@ -1346,7 +1372,7 @@ t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
-# add modules for this undirected network
+# # modularity for this undirected network with igraph cluster_fast_greedy function
 t1$cal_module(method = "cluster_fast_greedy")
 ```
 
@@ -1410,9 +1436,10 @@ t1$get_adjacency_matrix()
 # return t1$res_adjacency_matrix
 ```
 
+Then, let’s plot the node classification in terms of the within-module connectivity and among-module connectivity.
 
 ```{r, echo = TRUE, eval = FALSE}
-# plot node roles in terms of the within-module connectivity and among-module connectivity
+# add_label = TRUE can be used to directly add text label for points
 t1$plot_taxa_roles(use_type = 1)
 ```
 
@@ -1485,9 +1512,11 @@ details on the network visualization in R.
 ```{r, echo = TRUE, eval = FALSE}
 # default parameter represents using igraph plot.igraph function
 t2$plot_network()
-# use ggraph package method; require ggraph package
+# use ggraph method; require ggraph package
+# If ggraph is not installed; first install it with command: install.packages("ggraph")
 t2$plot_network(method = "ggraph", node_color = "Phylum")
 # use networkD3 package method for the dynamic network visualization in R
+# If networkD3 is not installed; first install it with command: install.packages("networkD3")
 t1$plot_network(method = "networkD3", node_color = "module")
 t1$plot_network(method = "networkD3", node_color = "Phylum")
 ```
@@ -1496,38 +1525,61 @@ The trans_comm function can be used to transform the node classification to a ne
 
 ```{r, echo = TRUE, eval = FALSE}
 # use_col is used to select a column of t1$res_node_table
-microtable_module <- t1$trans_comm(use_col = "module", abundance = TRUE)
-microtable_module
+tmp <- t1$trans_comm(use_col = "module", abundance = FALSE)
+tmp
+tmp$otu_table[tmp$otu_table > 0] <- 1
+tmp$tidy_dataset()
+tmp$cal_abund()
+tmp2 <- trans_abund$new(tmp, taxrank = "Phylum", ntaxa = 10)
+tmp2$data_abund$Sample %<>% factor(., levels = rownames(tmp$sample_table))
+tmp2$plot_line(xtext_type_hor = TRUE, color_values = RColorBrewer::brewer.pal(12, "Paired")) + ylab("OTUs ratio (%)")
+```
+
+The function cal_sum_links can sum the links (edge) number from one taxa to another or within the same taxa. 
+The function plot_sum_links() is used to show the result from the function cal_sum_links(). 
+This is very useful to fast see how many nodes are connected between different taxa or within one taxa. 
+In terms of 'Phylum' level in the tutorial, the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum. 
+So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum. 
+For example, in terms of Proteobacteria, there are roughly total 900 edges associated with the OTUs in Proteobacteria, 
+in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_sum_links(taxa_level = "Phylum")
+# require chorddiag package; see https://github.com/mattflor/chorddiag
+t1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_sum_links.png")
 ```
 
 
-
-**Then let's show other implemented network construction approaches**: 
-SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) network in SpiecEasi R package [@Kurtz_Sparse_2015].
-See https://chiliubio.github.io/microeco_tutorial/intro.html#spieceasi for the package installation.
+**Then let's show other implemented network construction approaches**:  
+SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach of SpiecEasi R package [@Kurtz_Sparse_2015]
+has two network construction approaches based on graph model, which relies on algorithms for sparse neighborhood and inverse covariance selection.
+See https://github.com/zdk123/SpiecEasi for the package installation.
+It is very slow for SpiecEasi_method = 'glasso' when there is a large number (such as hundreds to thousands) according to our test experience.
 
 ```{r, echo = TRUE, eval=FALSE}
-# cal_cor select NULL from v0.10.0
-t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require SpiecEasi package installed https://github.com/zdk123/SpiecEasi
-# please see SpiecEasi::spiec.easi for available model parameters
+# also see SpiecEasi::spiec.easi for available model parameters
 t1$cal_network(network_method = "SpiecEasi", SpiecEasi_method = "mb")
 # see t1$res_network
 ```
 
-The third network construction approach: julia package FlashWeave[@Tackmann_Rapid_2019].
-This is a probabilistic graph-based method to obtain the conditional independence.
-It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence.
-To repeat the following code, please first install julia language in your computer and the FlashWeave package, 
-and add the julia in the computer path.
+Another network construction approach comes from julia package FlashWeave [@Tackmann_Rapid_2019].
+This is a probabilistic graph-based method to obtain the conditional independence. 
+It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence. 
+To repeat the following code, please first install julia language in your computer and the FlashWeave package, and add the julia in the computer path.
+
 
 1. download and install julia from https://julialang.org/downloads/  
 2. Put julia in the computer env PATH, such as  your_directory_path\Julia\bin  
 3. Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in https://github.com/meringlab/FlashWeave.jl  
 
 ```{r, echo = TRUE, eval=FALSE}
-# cal_cor select NULL
-t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0)
+t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0)
 # require Julia in the computer path, and the package FlashWeave
 # different with the direct parameter passing of 'SpiecEasi' network_method, FlashWeave_other_para is used to pass parameters to Julia FlashWeave
 # assign FlashWeave_tempdir parameter can change the temporary working directory
@@ -1535,17 +1587,17 @@ t1$cal_network(network_method = "FlashWeave", FlashWeave_other_para = "alpha=0.0
 # see t1$res_network
 ```
 
-The fourth method implemented: beemStatic package [@Li_BEEMStatic_2021].
+The final method we want to show comes from beemStatic package [@Li_BEEMStatic_2021].
 This method can be applied to cross-sectional datasets to infer interaction network based on the generalized Lotka-Volterra model,
 which is typically used in the microbial time-series data. 
 So the network from this approach is a directed network.
 Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cal_cor = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require beemStatic package installed
 t1$cal_network(network_method = "beemStatic")
-# method for the directed network
+# we use cluster_optimal method for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
 
@@ -1973,8 +2025,24 @@ t1$res_diff[, c(1, 2, 4, 6, 7)]
 ```
 ```{r, echo = FALSE}
 t1$cal_diff(group = "Group", method = "wilcox")
-pander::pander(t1$res_diff[, c(1, 2, 4, 6, 7)])
+pander::pander(t1$res_diff[1:7, c(1, 2, 4, 6, 7)])
 ```
+
+Let’s perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(method = "anova", group = "Group")
+# place all the plots into a list
+tmp <- list()
+for(i in colnames(t1$data_env)){
+    tmp[[i]] <- t1$plot_diff(measure = i, add_sig_text_size = 5, xtext_size = 12) + theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
+}
+gridExtra::arrangeGrob(grobs = tmp, ncol = 3)
+```
+```{r, out.width = "750px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_env_diff_all.png")
+```
+
 
 Then we show the autocorrelations among variables.
 
@@ -2588,6 +2656,33 @@ meco_dataset <- phyloseq2meco(GlobalPatterns)
 meco_dataset
 ```
 
+## PICRUSt2
+
+PICRUSt2 [@Douglas_PICRUSt2_2020] contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt. 
+We do not create a special file conversion function for PICRUSt2 
+as it is very easy to transform the output pathway files of PICRUSt2 to microtable class. 
+There are two example files of PICRUSt2 output in file2meco package used to show the operation.
+
+```{r, echo = TRUE, eval = FALSE}
+# MetaCyc pathway output
+tmp_file_path <- system.file("extdata", "example_PICRUSt2_MetaCyc_path_abun_unstrat.tsv", package="file2meco")
+pathway_table <- read.delim(tmp_file_path, row.names = 1)
+data("MetaCyc_pathway_map")
+tmp <- microtable$new(otu_table = pathway_table, tax_table = MetaCyc_pathway_map)
+tmp$tidy_dataset()
+tmp
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# KEGG pathway output
+tmp_file_path <- system.file("extdata", "example_PICRUSt2_KEGG_path_abun_unstrat.tsv", package="file2meco")
+pathway_table <- read.delim(tmp_file_path, row.names = 1)
+data("Tax4Fun2_KEGG")
+tmp <- microtable$new(otu_table = pathway_table, tax_table = Tax4Fun2_KEGG$ptw_desc)
+tmp$tidy_dataset()
+tmp
+```
+
 
 
 
@@ -2936,39 +3031,6 @@ test2 <- test1$convert(method = "log")
 # returned test2 is another transformed microtable object
 ```
 
-
-## trans_netchord
-The class trans_netchord is developed to sum and plot the links number from one taxa to another or in the same taxa in the network.
-The input dataset must be a trans_network object.
-Creating the trans_netchord object can sum the links (edge) number from one taxa to another or in the same taxa.
-The function plot_sum_links() is used to show the result from the function cal_sum_links(). 
-This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
-In terms of "Phylum" level in the tutorial, 
-the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
-So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
-For example, in terms of Proteobacteria,
-there are roughly total 900 edges associated with the OTUs in Proteobacteria, 
-in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.
-
-
-```{r, echo = TRUE, eval = FALSE}
-# Let's first create a network
-data(sample_info_16S)
-data(otu_table_16S)
-data(taxonomy_table_16S)
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S)
-dataset$tidy_dataset()
-t1 <- trans_network$new(dataset = dataset, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
-t1$cal_network(p_thres = 0.01, COR_cut = 0.7)
-# trans_netchord
-test1 <- trans_netchord$new(dataset = t1, taxa_level = "Phylum")
-# require chorddiag package (https://github.com/mattflor/chorddiag)
-test1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
-```
-
-```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_sum_links.png")
-```
 
 ## trans_ts
 
