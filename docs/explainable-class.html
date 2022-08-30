@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-06-23" />
+<meta name="date" content="2022-08-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -629,12 +629,12 @@ please use <strong>add_abund_table parameter</strong> in the cal_cor function.</
 <p>　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
 As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice.
-Several software are often used for this goal, such as PICRUSt<span class="citation">(<a href="#ref-Langille_Predictive_2013" role="doc-biblioref">Langille et al. 2013</a>)</span>, Tax4Fun<span class="citation">(<a href="#ref-Aßhauer_Tax4Fun_2015" role="doc-biblioref">Aßhauer et al. 2015</a>)</span> and FAPROTAX<span class="citation">(<a href="#ref-Louca_High_2016" role="doc-biblioref">Stilianos Louca et al. 2016</a>; <a href="#ref-Louca_Decoupling_2016" role="doc-biblioref">S. Louca, Parfrey, and Doebeli 2016</a>)</span>.
+Several software are often used for this goal, such as PICRUSt <span class="citation">(<a href="#ref-Langille_Predictive_2013" role="doc-biblioref">Langille et al. 2013</a>)</span>, Tax4Fun <span class="citation">(<a href="#ref-Aßhauer_Tax4Fun_2015" role="doc-biblioref">Aßhauer et al. 2015</a>)</span> and FAPROTAX <span class="citation">(<a href="#ref-Louca_High_2016" role="doc-biblioref">Stilianos Louca et al. 2016</a>; <a href="#ref-Louca_Decoupling_2016" role="doc-biblioref">S. Louca, Parfrey, and Doebeli 2016</a>)</span>.
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
 In addition, it is also important to obtain the traits or functions for each taxa, not just the whole profile of communities.
 FAPROTAX database is a collection of the traits and functions of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
-The NJC19 database<span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span> is also available for animal-associated prokaryotic data, such as human gut microbiota.
+The NJC19 database <span class="citation">(<a href="#ref-Lim_Large_2020" role="doc-biblioref">Lim et al. 2020</a>)</span> is also available for animal-associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild <span class="citation">(<a href="#ref-Nguyen_FUNGuild_2016" role="doc-biblioref">Nguyen et al. 2016</a>)</span> and FungalTraits <span class="citation">(<a href="#ref-Polme_FungalTraits_2020" role="doc-biblioref">Põlme et al. 2020</a>)</span> databases to predict the fungal traits.
 The idea identifying prokaryotic traits and functional redundancy was initially inspired by our another study <span class="citation">(<a href="#ref-Liu_Microbial_2022" role="doc-biblioref">Liu et al. 2022</a>)</span>.</p>
 <div id="example-9" class="section level3 hasAnchor" number="7.2.1">
@@ -762,7 +762,7 @@ The idea identifying prokaryotic traits and functional redundancy was initially 
 <span id="cb224-3"><a href="explainable-class.html#cb224-3" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t2<span class="sc">$</span>res_spe_func_perc, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
 <span id="cb224-4"><a href="explainable-class.html#cb224-4" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Images/plot_func_perc_corr.png" width="800px" style="display: block; margin: auto;" /></p>
-<p>Tax4Fun requires a strict input file format associated with the taxonomic information.
+<p>Tax4Fun <span class="citation">(<a href="#ref-Aßhauer_Tax4Fun_2015" role="doc-biblioref">Aßhauer et al. 2015</a>)</span> requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
 Please check out the dependence part <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun</a> for installing Tax4Fun package and download SILVA123 ref data.</p>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="explainable-class.html#cb225-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>

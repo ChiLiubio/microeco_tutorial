@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.11.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-06-23}
+\date{2022-08-30}
 
 \begin{document}
 \maketitle
@@ -381,10 +381,10 @@ It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach impleme
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (\textbf{ignore this if the blast tool has been in the path}) and Ref99NR/Ref100NR database (select one).
-Downlaod blast tools from ``\url{ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
+Download blast tools from ``\url{ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
 Note that some errors can come from the latest versions because of memory issue (\url{https://www.biostars.org/p/413294/}).
 An easy solution is to use previous version (such as 2.5.0).
-Downlaod Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}'' .
+Download Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}'' .
 Uncompress all the folders. The final folders should be like these structures:
 
 blast tools:\\
@@ -2658,7 +2658,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Jun 23 15:37:55 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Aug 30 09:45:49 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2675,9 +2675,9 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 group & size & ST.i.bray & NST.i.bray & MST.i.bray \\
 \midrule
 \endhead
-IW & 435 & 0.6538 & 0.388 & 0.3638 \\
-CW & 435 & 0.5629 & 0.2958 & 0.2864 \\
-TW & 435 & 0.6245 & 0.4163 & 0.4 \\
+IW & 435 & 0.654 & 0.3872 & 0.364 \\
+CW & 435 & 0.5627 & 0.2952 & 0.2863 \\
+TW & 435 & 0.6247 & 0.4164 & 0.4002 \\
 \bottomrule
 \end{longtable}
 
@@ -3282,12 +3282,12 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
 As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice.
-Several software are often used for this goal, such as PICRUSt\citep{Langille_Predictive_2013}, Tax4Fun\citep{Aßhauer_Tax4Fun_2015} and FAPROTAX\citep{Louca_High_2016, Louca_Decoupling_2016}.
+Several software are often used for this goal, such as PICRUSt \citep{Langille_Predictive_2013}, Tax4Fun \citep{Aßhauer_Tax4Fun_2015} and FAPROTAX \citep{Louca_High_2016, Louca_Decoupling_2016}.
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
 In addition, it is also important to obtain the traits or functions for each taxa, not just the whole profile of communities.
 FAPROTAX database is a collection of the traits and functions of prokaryotes based on the known research results published in books and literatures.
 We match the taxonomic information of prokaryotes against this database to predict the traits of prokaryotes on biogeochemical roles.
-The NJC19 database\citep{Lim_Large_2020} is also available for animal-associated prokaryotic data, such as human gut microbiota.
+The NJC19 database \citep{Lim_Large_2020} is also available for animal-associated prokaryotic data, such as human gut microbiota.
 We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to predict the fungal traits.
 The idea identifying prokaryotic traits and functional redundancy was initially inspired by our another study \citep{Liu_Microbial_2022}.
 
@@ -3424,7 +3424,7 @@ Then we also take an example to show the percentages of the OTUs for each trait 
 
 \begin{center}\includegraphics[width=800px]{Images/plot_func_perc_corr} \end{center}
 
-Tax4Fun requires a strict input file format associated with the taxonomic information.
+Tax4Fun \citep{Aßhauer_Tax4Fun_2015} requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
 Please check out the dependence part \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun} for installing Tax4Fun package and download SILVA123 ref data.
 
@@ -3873,7 +3873,7 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \CommentTok{\# calculate abundance{-}unweighted functional redundancy of each trait for each network module}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# plot the functional redundancy of network modules}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{select\_samples =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
