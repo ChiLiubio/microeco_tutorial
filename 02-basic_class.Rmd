@@ -25,7 +25,7 @@ Currently, those tools/softwares include not only commonly-used QIIME [@Caporaso
 but also some metagenomic tools, such as HUMAnN [@Franzosa_Species_2018] and kraken2 [@Wood_Improved_2019].
 In this tutorial, we use the data inside the package microeco to show some basic operations.
 
-### Example
+### Prepare the example data
 
 　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
 This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al. [@An_Soil_2019], 
@@ -45,19 +45,20 @@ It is of course doable and recommended to put all the environmental data into sa
 ```{r, echo = TRUE}
 library(microeco)
 # load the example data; 16S rRNA gene amplicon sequencing dataset
-# metadata table
+# metadata table; data.frame
 data(sample_info_16S)
-# feature table
+# feature table; data.frame
 data(otu_table_16S)
-# taxonomic assignment table
+# taxonomic assignment table; data.frame
 data(taxonomy_table_16S)
-# use phylogenetic tree to calculate phylogeny-based alpha and beta metrics
+# phylogenetic tree; not necessary; use for the phylogenetic analysis
+# Newick format; use read.tree function of ape package to read a tree
 data(phylo_tree_16S)
 # load the environmental data table if it is not in sample table
 data(env_data_16S)
 # use pipe operator in magrittr package
 library(magrittr)
-# set.seed is used to fix the random number generation to make the results repeatable
+# fix the random number generation to make the results repeatable
 set.seed(123)
 # make the plotting background same with the tutorial
 library(ggplot2)
@@ -154,19 +155,44 @@ dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_
 dataset
 ```
 
-If the users want to know more details on microtable class, 
-please see the help document of the class using the following help command.
-For example, see the phylo_tree parameter of microtable$new() for reading phylogenetic tree.
+### How to read your files to microtable object?
+
+The above-mentioned example data are directly loaded from microeco package.
+So the question is __how to read your data to create a microtable object?__  
+There are two ways:
+
+▲ 1. __Use file2meco package__  
+R package file2meco (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html) is designed to directly read the output files of some famous tools into microtable object.
+Currently, it supports QIIME [@Caporaso_QIIME_2010], QIIME2[@Bolyen_Reproducible_2019], 
+HUMAnN [@Franzosa_Species_2018], MetaPhlAn [@Truong_MeTApHLaN2_2015], kraken2 [@Wood_Improved_2019], phyloseq [@Mcmurdie_phyloseq_2013], etc.
+Please read the tutorial of file2meco package for more detailed information (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html).
+
+▲ 2. __Other cases__  
+To read other files (not supported by file2meco package) into microtable object, 
+there should be two steps to create the microtable object:  
+__I) read files to R__  
+The required format of microtable\$new parameters, __otu_table__, __sample_table__ and __tax_table__, are all the data.frame, which is the most frequently-used data format in R.
+So no matter what the format the files are, they should be first read into R with some functions, such as `read.table` and `read.csv`.
+If the user want to perform phylogenetic analysis, please also read your phylogenetic tree using `read.tree` function of ape package and 
+provide the tree to the __phylo_tree__ parameter of microtable\$new function like the above example.  
+__II) create the microtable object__  
+Then the user can create the microtable object like the operation in the last section.
+Please also see the help document of the microtable class for detailed descriptions using the following help command.
 
 ```{r, echo = TRUE, eval = FALSE}
 # search the class name, not the function name
 ?microtable
+# then see microtable$new()
 ```
 
+### Functions in microtable class
 
 Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria". 
 ```{r, echo = TRUE}
+# use R subset function to filter taxa in tax_table
 dataset$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
+# another way with grepl function
+dataset$tax_table %<>% .[grepl("Bacteria|Archaea", .$Kingdom), ]
 dataset
 ```
 
