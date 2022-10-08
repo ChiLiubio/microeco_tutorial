@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.11.0)"
+title: "Tutorial for R microeco package (v0.12.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "The tutorial for R microeco, file2meco and mecodev packages"
+description: "The tutorial for R microeco, file2meco, meconetcomp and mecodev packages"
 ---
 
 
@@ -97,6 +97,10 @@ library(microeco)
 ?microtable
 ```
 
+## RTools
+For Windows system, RTools (https://cran.r-project.org/bin/windows/Rtools/) is necessary to install some R packages from source, such as R packages deposited in GitHub.
+
+
 ## Dependence
 
 ### Important packages
@@ -123,9 +127,13 @@ The solutions:
 
 1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. Install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
+2. Install the packages in advance. This is recommended if the user is interest in most of the methods of microeco package and want to run a large number of examples in tutorial.
 
-We show several packages that are published in CRAN and not installed automatically.
+
+### CRAN packages
+
+We show some packages that are published in CRAN and not installed automatically.
+Those packages are needed to reproduce some parts of the tutorial.
 
 ```{r, echo = FALSE, eval = TRUE}
 pre_pac <- read.delim("prerequite_packages.tsv")
@@ -141,7 +149,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
 packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", 
-    "ggalluvial", "ggh4x", "FSA", "gridExtra", "aplot", "NST")
+    "ggalluvial", "ggh4x", "FSA", "gridExtra", "aplot", "NST", "GGally")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -149,9 +157,6 @@ for(x in packages){
 	}
 }
 ```
-
-There are also some packages that are useful in some functions. These packages may be R packages published in Bioconductor or Github,
-or packages written by other languages.
 
 ### ggtree
 Plotting the cladogram from LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
@@ -230,6 +235,8 @@ test <- microtable$new(otu_table = otu_table_16S, rep_fasta = rep_fasta)
 test
 ```
 
+
+
 ## Plotting
 Most of the plotting in the package rely on the ggplot2 package system.
 We provide some parameters to change the corresponding plot, but it may be far from enough.
@@ -237,6 +244,7 @@ The user can also assign the output a name and use the ggplot2-style grammers to
 Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
 Of course, the user can also directly modify the class and reload them to use.
 Any contribution of a modified class is also appreciated via Github-Pull requests (https://github.com/ChiLiubio/microeco_tutorial/pulls) or Email (liuchi0426@126.com).
+
 
 
 <!--chapter:end:01-intro.Rmd-->
@@ -661,8 +669,8 @@ The alluvial plot is also implemented in the plot_bar function with use_alluvium
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
-# select another color palette
-t1$plot_bar(use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+# bar_type = "notfull" can discard 'others'; select another color palette
+t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
@@ -944,7 +952,7 @@ t1$cal_diff(method = "anova", anova_set = "Group+Type")
 ```
 
 
-From v0.8.0, the plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
+The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
 Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -976,6 +984,19 @@ g1 <- t1$plot_alpha(measure = "Chao1", xtext_size = 15)
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_alpha_wilcox_nons.png")
 ```
+
+From the v0.12.0, the trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
+t1$cal_diff(method = "wilcox")
+t1$plot_alpha(measure = "Shannon")
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_alpha_wilcox_bygroup.png")
+```
+
 
 ### Key points
 
@@ -1016,7 +1037,7 @@ t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("po
 knitr::include_graphics("Images/plot_ordination.png")
 ```
 
-Try other intresting options in the plotting.
+Try other interesting options in the plotting.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$plot_ordination(plot_color = "Type", plot_type = "point")
@@ -1140,47 +1161,20 @@ We group all the classes with complex models into the type 'Model-based class'.
 
 ## trans_diff class
 
-　Differential abundance test is a very important part in the microbial community data analysis.
+　Differential abundance test is a very important part in the microbial community data analysis [@Nearing_Microbiome_2022].
 It can be used to find the significant taxa in determining the community differences across groups.
-With the field development, there are also some wrapped methods to better capture the important biomarkers,
+There are also several wrapped methods to better capture the important biomarkers,
 such as the combination of machine-learning and differential abundance test.
 Currently, trans_diff class have several famous approaches to perform this analysis: 
 metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], RF (random forest + differential test), metagenomeSeq[@Paulson_Differential_2013],
 Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each paired group) and 
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
-t.test and anova.
-Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
-It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
-LEfSe and RF in this class are both the wrapped method (i.e. the combination of machine-learning and differential abundance test)
-and are mainly used for the identification of biomarkers at all taxonomic levels.
-The metagenomeSeq method is implemented to find significant feature between two groups at feature level (OTU/ASV) directly.
+t.test, ANOVA, ANCOMBC [@Lin_Analysis_2020] and ALDEx2 [@Fernandes_Unifying_2014].
 
 
 ### Example
 
 All the differential test result is stored in the object$res_diff.
-Let's first run metastat example.
-
-```{r, echo = TRUE, eval = FALSE}
-# metastat analysis at Genus level
-t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
-# t1$res_diff is the differential test result
-# t1$res_abund is the group abundance
-```
-
-Because the example 'Group' in sample_table has three groups, 
-the metastat can run the comparisons for each paired group. So there are three pairs in t1$res_diff$Comparison.
-For the abundance plotting, the user should use select_group to select the required pair.
-
-```{r, echo = TRUE, eval = FALSE}
-# select_group should be one of groups in t1$res_diff$Comparison
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
-```
-
-```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_metastat_1.png")
-```
-
 LEfSe combines the non-parametric test and linear discriminant analysis [@Segata_Metagenomic_2011].
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1253,7 +1247,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_lab
 knitr::include_graphics("Images/plot_lefse_cladogram_1.png")
 ```
 
-The third approach is rf, which depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
+The 'rf' method depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
 The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
 MeanDecreaseGini is selected as the indicator value in the analysis.
 
@@ -1299,9 +1293,31 @@ t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
 ```
 
+Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
+It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
 
-For other details of methods, please see the document with `help(trans_diff)`.
-Try to run those examples.
+```{r, echo = TRUE, eval = FALSE}
+# metastat analysis at Genus level
+t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
+# t1$res_diff is the differential test result
+# t1$res_abund is the group abundance
+```
+
+Because the example 'Group' in sample_table has three groups, 
+the metastat can run the comparisons for each paired group. So there are three pairs in t1\$res_diff\$Comparison.
+For the abundance plotting, the user should use select_group to select the required pair.
+
+```{r, echo = TRUE, eval = FALSE}
+# select_group should be one of groups in t1$res_diff$Comparison
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+```
+
+```{r, out.width = "650px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_metastat_1.png")
+```
+
+
+The following are the examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.test' and 'anova'.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
@@ -1318,13 +1334,54 @@ t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa
 # anova
 t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
 t1$res_diff
-# zero-inflated log-normal model-based differential test method from metagenomeSeq package
-t1 <- trans_diff$new(dataset = dataset, method = "mseq", group = "Group")
 ```
+
+The method 'metagenomeSeq' and 'ANCOMBC' depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method 'ALDEx2_t' and 'ALDEx2_kw' depend on the ALDEx2 package.
+These three packages are all deposited on the Bioconductor.
+
+```{r, echo = TRUE, eval = FALSE}
+# zero-inflated log-normal model-based differential test method from metagenomeSeq package
+# please first install metagenomeSeq package
+if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("metagenomeSeq")
+t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
+t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
+t1$plot_diff_bar(use_number = 1:20)
+```
+
+
+```{r, echo = TRUE, eval = FALSE}
+# ANCOMBC method
+BiocManager::install("ANCOMBC")
+t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
+t1$plot_diff_bar(use_number = 1:20)
+```
+
+
+```{r, echo = TRUE, eval = FALSE}
+# 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see the description of the methods
+BiocManager::install("ALDEx2")
+# 'ALDEx2_t'
+t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
+t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"))
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", add_sig = TRUE)
+t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
+# ALDEx2_kw
+t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_kw", group = "Group", taxa_level = "Phylum")
+t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
+t1$plot_diff_bar(use_number = 1:20)
+t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
+```
+
 
 ### Key points
 
-  + trans_diff$new: In trans_diff$new, p_adjust_method = NULL can shut down the p value adjustment for method != "metastat" or "anova". 
+  + trans_diff\$new: In trans_diff\$new, p_adjust_method = NULL can shut down the p value adjustment for method != "metastat" or "anova". 
     This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and 
 	where the results need to be compared with that from Galaxy server or other LEfSe python version.
   + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before creating your dataset
@@ -1360,7 +1417,9 @@ Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_N
 t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
 # Pearson correlation
 t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
-# Pearson correlation using WGCNA package (https://cran.r-project.org/web/packages/WGCNA/index.html)
+# Pearson correlation using WGCNA package
+# install WGCNA package
+if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
 t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
 # Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
 t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
@@ -1381,7 +1440,7 @@ t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres =
 We use Spearman correlation based on WGCNA package (use_WGCNA_pearson_spearman = TRUE) to show all the following operations.
 
 ```{r, echo = TRUE, eval=FALSE}
-# require WGCNA package. If not installed, use install.packages("WGCNA", dependencies = TRUE)
+# require WGCNA package; installation command: install.packages("WGCNA", repos = BiocManager::repositories())
 t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
 ```
 
@@ -2067,6 +2126,18 @@ gridExtra::arrangeGrob(grobs = tmp, ncol = 3)
 ```
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_env_diff_all.png")
+```
+
+
+From the v0.12.0, the trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(group = "Type", by_group = "Group", method = "anova")
+t1$plot_diff(measure = "pH", add_sig_text_size = 5)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_env_diff_bygroup.png")
 ```
 
 

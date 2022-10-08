@@ -64,6 +64,18 @@ knitr::include_graphics("Images/plot_env_diff_all.png")
 ```
 
 
+From the v0.12.0, the trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_diff(group = "Type", by_group = "Group", method = "anova")
+t1$plot_diff(measure = "pH", add_sig_text_size = 5)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_env_diff_bygroup.png")
+```
+
+
 Then we show the autocorrelations among variables.
 
 ```{r, echo = TRUE, eval = FALSE}

@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.11.0)},
+  pdftitle={Tutorial for R microeco package (v0.12.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.11.0)}
+\title{Tutorial for R microeco package (v0.12.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-09-15}
+\date{2022-10-08}
 
 \begin{document}
 \maketitle
@@ -224,6 +224,11 @@ and click the link of the function.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{rtools}{%
+\section{RTools}\label{rtools}}
+
+For Windows system, RTools (\url{https://cran.r-project.org/bin/windows/Rtools/}) is necessary to install some R packages from source, such as R packages deposited in GitHub.
+
 \hypertarget{dependence}{%
 \section{Dependence}\label{dependence}}
 
@@ -259,10 +264,14 @@ The solutions:
 \item
   Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 \item
-  Install the packages in advance. This is recommended if the user is interest in most of the methods in the microeco package and want to run a large number of examples in tutorial.
+  Install the packages in advance. This is recommended if the user is interest in most of the methods of microeco package and want to run a large number of examples in tutorial.
 \end{enumerate}
 
-We show several packages that are published in CRAN and not installed automatically.
+\hypertarget{cran-packages}{%
+\subsection{CRAN packages}\label{cran-packages}}
+
+We show some packages that are published in CRAN and not installed automatically.
+Those packages are needed to reproduce some parts of the tutorial.
 
 \begin{tabular}{l|l|l}
 \hline
@@ -311,7 +320,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \CommentTok{\# If a package is not installed, it will be installed from CRAN.}
 \CommentTok{\# First select the packages of interest}
 \NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{)}
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -320,9 +329,6 @@ Then, if you want to install these packages or some of them, you can do like thi
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
-
-There are also some packages that are useful in some functions. These packages may be R packages published in Bioconductor or Github,
-or packages written by other languages.
 
 \hypertarget{ggtree}{%
 \subsection{ggtree}\label{ggtree}}
@@ -1229,8 +1235,8 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
 \CommentTok{\# require ggalluvial package}
 \CommentTok{\# use\_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering}
-\CommentTok{\# select another color palette}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_type\_hor =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
+\CommentTok{\# bar\_type = "notfull" can discard \textquotesingle{}others\textquotesingle{}; select another color palette}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_type\_hor =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1636,17 +1642,17 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1184}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1447}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1053}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0789}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1316}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1316}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1711}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1184}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1467}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0800}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1733}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1200}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
-~
+Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Observed
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -1664,9 +1670,9 @@ Fisher
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{IW} & a & a & a & a & a & a & a \\
-\textbf{TW} & a & ab & b & a & a & a & a \\
-\textbf{CW} & a & b & b & a & a & a & a \\
+IW & a & a & a & a & a & a & a \\
+TW & a & ab & b & a & a & a & a \\
+CW & a & b & b & a & a & a & a \\
 \bottomrule()
 \end{longtable}
 
@@ -1682,7 +1688,7 @@ It is notable that the result res\_diff will be a list instead of a data.frame w
 \end{Highlighting}
 \end{Shaded}
 
-From v0.8.0, the plot\_alpha function add the significance label by searching the results in \textbf{object\$res\_diff} instead of calculating the significance again.
+The plot\_alpha function add the significance label by searching the results in \textbf{object\$res\_diff} instead of calculating the significance again.
 Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
 
 \begin{Shaded}
@@ -1713,6 +1719,18 @@ Let's try to remove the ns in the label by operating the object\$res\_diff file.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox_nons} \end{center}
+
+From the v0.12.0, the trans\_alpha class supports the differential test of groups within each group by using the by\_group parameter.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox_bygroup} \end{center}
 
 \hypertarget{key-points-3}{%
 \subsection{Key points}\label{key-points-3}}
@@ -1763,7 +1781,7 @@ We first show the ordination using PCoA.
 
 \begin{center}\includegraphics[width=650px]{Images/plot_ordination} \end{center}
 
-Try other intresting options in the plotting.
+Try other interesting options in the plotting.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2049,49 +2067,20 @@ We group all the classes with complex models into the type `Model-based class'.
 \hypertarget{trans_diff-class}{%
 \section{trans\_diff class}\label{trans_diff-class}}
 
-　Differential abundance test is a very important part in the microbial community data analysis.
+　Differential abundance test is a very important part in the microbial community data analysis \citep{Nearing_Microbiome_2022}.
 It can be used to find the significant taxa in determining the community differences across groups.
-With the field development, there are also some wrapped methods to better capture the important biomarkers,
+There are also several wrapped methods to better capture the important biomarkers,
 such as the combination of machine-learning and differential abundance test.
 Currently, trans\_diff class have several famous approaches to perform this analysis:
 metastat\citep{White_Statistical_2009}, LEfSe\citep{Segata_Metagenomic_2011}, RF (random forest + differential test), metagenomeSeq\citep{Paulson_Differential_2013},
 Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Tests (for each paired group) and
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups \textgreater{} 2),
-t.test and anova.
-Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
-It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
-LEfSe and RF in this class are both the wrapped method (i.e.~the combination of machine-learning and differential abundance test)
-and are mainly used for the identification of biomarkers at all taxonomic levels.
-The metagenomeSeq method is implemented to find significant feature between two groups at feature level (OTU/ASV) directly.
+t.test, ANOVA, ANCOMBC \citep{Lin_Analysis_2020} and ALDEx2 \citep{Fernandes_Unifying_2014}.
 
 \hypertarget{example-4}{%
 \subsection{Example}\label{example-4}}
 
 All the differential test result is stored in the object\$res\_diff.
-Let's first run metastat example.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# metastat analysis at Genus level}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metastat"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
-\CommentTok{\# t1$res\_diff is the differential test result}
-\CommentTok{\# t1$res\_abund is the group abundance}
-\end{Highlighting}
-\end{Shaded}
-
-Because the example `Group' in sample\_table has three groups,
-the metastat can run the comparisons for each paired group. So there are three pairs in t1\(res_diff\)Comparison.
-For the abundance plotting, the user should use select\_group to select the required pair.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# select\_group should be one of groups in t1$res\_diff$Comparison}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=650px]{Images/plot_metastat_1} \end{center}
-
 LEfSe combines the non-parametric test and linear discriminant analysis \citep{Segata_Metagenomic_2011}.
 
 \begin{Shaded}
@@ -2186,7 +2175,7 @@ At this time, you can select the taxa that you want to show in the plot manually
 
 \begin{center}\includegraphics[width=1000px]{Images/plot_lefse_cladogram_1} \end{center}
 
-The third approach is rf, which depends on the random forest\citep{Beck_Machine_2014, Yatsunenko_Human_2012} and the non-parametric test.
+The `rf' method depends on the random forest\citep{Beck_Machine_2014, Yatsunenko_Human_2012} and the non-parametric test.
 The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
 MeanDecreaseGini is selected as the indicator value in the analysis.
 
@@ -2232,8 +2221,32 @@ Now adding label support all the differential test methods.
 
 \begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_anova} \end{center}
 
-For other details of methods, please see the document with \texttt{help(trans\_diff)}.
-Try to run those examples.
+Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
+It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# metastat analysis at Genus level}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metastat"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\CommentTok{\# t1$res\_diff is the differential test result}
+\CommentTok{\# t1$res\_abund is the group abundance}
+\end{Highlighting}
+\end{Shaded}
+
+Because the example `Group' in sample\_table has three groups,
+the metastat can run the comparisons for each paired group. So there are three pairs in t1\$res\_diff\$Comparison.
+For the abundance plotting, the user should use select\_group to select the required pair.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# select\_group should be one of groups in t1$res\_diff$Comparison}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/plot_metastat_1} \end{center}
+
+The following are the examples for the methods `KW', `KW\_dunn', `wilcox', `t.test' and `anova'.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2251,8 +2264,52 @@ Try to run those examples.
 \CommentTok{\# anova}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+The method `metagenomeSeq' and `ANCOMBC' depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method `ALDEx2\_t' and `ALDEx2\_kw' depend on the ALDEx2 package.
+These three packages are all deposited on the Bioconductor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# zero{-}inflated log{-}normal model{-}based differential test method from metagenomeSeq package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"mseq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# please first install metagenomeSeq package}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"metagenomeSeq"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ANCOMBC method}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ANCOMBC"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{} and \textquotesingle{}ALDEx2\_kw\textquotesingle{} methods; use ?trans\_diff to see the description of the methods}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ALDEx2"}\NormalTok{)}
+\CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{}}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\CommentTok{\# ALDEx2\_kw}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_kw"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2262,7 +2319,7 @@ Try to run those examples.
 \begin{itemize}
 \tightlist
 \item
-  trans\_diff\(new: In trans_diff\)new, p\_adjust\_method = NULL can shut down the p value adjustment for method != ``metastat'' or ``anova''.
+  trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = NULL can shut down the p value adjustment for method != ``metastat'' or ``anova''.
   This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
   where the results need to be compared with that from Galaxy server or other LEfSe python version.
 \item
@@ -2306,7 +2363,9 @@ Pearson or Spearman with data normalization based on NetCoMi package \citep{Pesc
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# Pearson correlation}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Pearson correlation using WGCNA package (https://cran.r{-}project.org/web/packages/WGCNA/index.html)}
+\CommentTok{\# Pearson correlation using WGCNA package}
+\CommentTok{\# install WGCNA package}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
@@ -2329,7 +2388,7 @@ We use Spearman correlation based on WGCNA package (use\_WGCNA\_pearson\_spearma
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# require WGCNA package. If not installed, use install.packages("WGCNA", dependencies = TRUE)}
+\CommentTok{\# require WGCNA package; installation command: install.packages("WGCNA", repos = BiocManager::repositories())}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2899,7 +2958,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Sep 15 14:47:21 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Oct  8 17:42:23 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -2929,9 +2988,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3875 & 0.3639 & 9.112 \\
-CW & 435 & 0.563 & 0.2957 & 0.2865 & 14.34 \\
-TW & 435 & 0.6244 & 0.4161 & 0.3999 & 9.834 \\
+IW & 435 & 0.6539 & 0.3866 & 0.3639 & 9.109 \\
+CW & 435 & 0.5626 & 0.2965 & 0.2862 & 14.47 \\
+TW & 435 & 0.6244 & 0.4162 & 0.3999 & 9.824 \\
 \bottomrule()
 \end{longtable}
 
@@ -3276,6 +3335,17 @@ Let's perform the anova and show the letters in the box plot. We use list to sto
 \end{Shaded}
 
 \begin{center}\includegraphics[width=750px]{Images/plot_env_diff_all} \end{center}
+
+From the v0.12.0, the trans\_env class supports the differential test of groups within each group by using the by\_group parameter in cal\_diff function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_env_diff_bygroup} \end{center}
 
 Then we show the autocorrelations among variables.
 
@@ -4416,7 +4486,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-276-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-283-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4453,7 +4523,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-277-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-284-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
