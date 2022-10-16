@@ -17,14 +17,13 @@ dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_
 dataset$tidy_dataset()
 # trans_rarefy class
 t1 <- trans_rarefy$new(dataset, alphadiv = "Shannon", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
 t1$plot_rarefy(color_values = rep("grey", 100), show_point = TRUE, add_fitting = FALSE, show_legend = FALSE)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_trans_rarefy.png")
 ```
-
-
 
 
 ## trans_convert
@@ -53,28 +52,22 @@ The example data 'gut_microb_ts' comes from the article [@Gibbons_twodynamic_201
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# R package beem should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps
+# beem package should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps
 library(mecodev)
 # load the example data in mecodev package; the input must be a microtable object
 # There are several strict requirements on the sample_table; see the document of the class.
 data("gut_microb_ts")
 # generally, using filter_thres to filter the taxa with low abundance is crutial
 # there are only 22 taxa in the example data, we use 0
-t1 <- trans_ts$new(dataset = gut_microb_ts, filter_thres = 0)
-# we use minimal 50 times for iteration
-t1$cal_biomass(min_iter = 50)
+t1 <- trans_ts$new(dataset = gut_microb_ts, filter_thres = 0.005)
+# use minimal 30 times for iteration
+t1$cal_biomass(min_iter = 30)
 # return t1$res_biomass and t1$res_param
-# generate the inferred biological network
-t1$cal_network()
-# Now let's use trans_network class to add the modules
-library(microeco)
-t2 <- trans_network$new(dataset = gut_microb_ts, cal_cor = NA)
-t2$res_network <- t1$res_network
+# t2 is a trans_network object
+t2 <- t1$cal_network()
 # use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network
 t2$cal_module(method = "cluster_optimal")
-plot(t2$res_network)
 ```
-
 
 
 ## trans_gamma
@@ -111,7 +104,6 @@ test1$plot_observed(cor_method = "spearman")
 knitr::include_graphics("Images/plot_gamma_obs.png")
 ```
 
-
 Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
 other than random sampling based on the species log-normal distribution.
 
@@ -122,7 +114,6 @@ test1 <- trans_gamma$new(method = "bray")
 test1$cal_simulation(ncom = 20, ind_vect = c(200, 1000, 2000))
 test1$plot_simulation(add_fitting = FALSE)
 ```
-
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_gamma_simu.png")
