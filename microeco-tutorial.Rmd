@@ -2951,9 +2951,9 @@ knitr::include_graphics("Images/plot_mouse_NJC19_rf.png")
 # Notes
 We show some other important points here.
 
-## clone() function
+## `clone` function
 R6 class has a special copy mechanism which is different from S3 and S4.
-**If you want to copy an object completely, you should use the function clone() instead of direct assignment.**
+**If you want to copy an object completely, you should use the function `clone` instead of direct assignment.**
 
 ```{r, echo = TRUE}
 # use clone to copy completely
@@ -2971,11 +2971,11 @@ identical(t2, t1)
 ```
 
 
-## save() function
+## `save` function
 
-As an R6 object is an encapsulated environment, there is also another very useful advantage, i.e. the data repeatability and communication.
-By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of the intermediate files and can reduce memory spending.
-It is also very convenient to save the analyzed data (i.e. object) to local computer with save() function for back-up and communication with others.
+As an R6 object is an encapsulated environment, there is also another useful advantage, i.e. the data repeatability.
+By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of intermediate files.
+It is also very convenient to save the analyzed data (i.e. object) to local computer with `save` function for back-up and communication with others.
 This is also the recommended way to send data for testing in 'Github Issues'.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2988,6 +2988,27 @@ load("dataset.RData")
 
 The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
 So it is repeatable.
+
+
+## Github Issues
+
+Please write the question/bug/suggestion in 'Github Issues' (https://github.com/ChiLiubio/microeco/issues).
+Several points are recommended.
+
+  + Before creating a 'New issue', please first skim through the 'Issues' including 'Open' and 'Closed'.
+Then go ahead if no similar issue is found or the similar issue is not solved.
+
+  + Please remember to provide your package version when writing a 'New issue'.
+
+  + For the specific issue related with data, please provide the data and scripts for the reproduction.
+If the data has not been published, please provide a toy example or a subset data as far as possible.
+
+  + To provide the data, please use save function as previous part shows (https://chiliubio.github.io/microeco_tutorial/notes.html#save-function), 
+and paste the compressed zip format data.
+
+  + When pasting the script directly, please use \`\`\` at the beginning and end of scripts to mark the code block for the readability 
+as \# can cause format chaos without code tag.
+
 
 
 ## subset of samples
@@ -3082,6 +3103,13 @@ From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL datas
 t1 <- trans_env$new()
 t1 <- trans_alpha$new(dataset = NULL, group = NULL)
 ```
+
+
+
+
+
+
+
 
 
 
