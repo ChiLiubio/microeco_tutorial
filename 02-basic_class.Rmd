@@ -292,6 +292,27 @@ class(dataset$beta_diversity)
 dataset$save_betadiv(dirpath = "beta_diversity")
 ```
 
+
+### subset of samples
+
+We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
+**We recommend user to directly manipulate the sample_table in microtable object.**
+For example, if you want to extract samples of 'CW' group, please do like this: 
+
+```{r, echo = TRUE}
+# remember first clone the whole dataset
+# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function
+group_CW <- clone(dataset)
+# select 'CW'
+group_CW$sample_table <- subset(group_CW$sample_table, Group == "CW")
+# or: group_CW$sample_table <- subset(group_CW$sample_table, grepl("CW", Group))
+# use tidy_dataset to trim all the basic files
+group_CW$tidy_dataset()
+group_CW
+```
+
+
+
 ### Other examples
 
 In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
