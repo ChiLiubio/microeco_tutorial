@@ -86,16 +86,16 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 t1$plot_alpha(measure = "Chao1")
-t1$plot_alpha(measure = "Chao1", order_x_mean = TRUE)
+t1$plot_alpha(measure = "Chao1", order_x_mean = TRUE, add_sig_text_size = 6)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_alpha_letter.png")
 ```
 
-
 ```{r, echo = TRUE, eval = FALSE}
-t1$plot_alpha(pair_compare = TRUE, measure = "Chao1", shape = "Group")
+t1$cal_diff(method = "wilcox")
+t1$plot_alpha(measure = "Chao1", shape = "Group")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
