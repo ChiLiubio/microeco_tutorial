@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.12.0)},
+  pdftitle={Tutorial for R microeco package (v0.13.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.12.0)}
+\title{Tutorial for R microeco package (v0.13.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-11-03}
+\date{2022-11-13}
 
 \begin{document}
 \maketitle
@@ -509,6 +509,15 @@ It is of course doable and recommended to put all the environmental data into sa
 \FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
 \CommentTok{\# make the plotting background same with the tutorial}
 \FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: 程辑包'ggplot2'是用R版本4.2.2 来建造的
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
@@ -1458,7 +1467,7 @@ We use bar plot to show the composition at the Genus level.
 \CommentTok{\# transform and plot}
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t2, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"part"}\NormalTok{, }\AttributeTok{legend\_text\_italic =}\NormalTok{ T, }\AttributeTok{ylab\_title =} \StringTok{"Frequency (\%)"}\NormalTok{, }\AttributeTok{xtext\_type\_hor =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{),}
-    \AttributeTok{order\_x =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW{-}CW"}\NormalTok{, }\StringTok{"IW{-}TW"}\NormalTok{, }\StringTok{"CW{-}TW"}\NormalTok{, }\StringTok{"IW{-}CW{-}TW"}\NormalTok{))}
+    \AttributeTok{order\_x =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW\&CW"}\NormalTok{, }\StringTok{"IW\&TW"}\NormalTok{, }\StringTok{"CW\&TW"}\NormalTok{, }\StringTok{"IW\&CW\&TW"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1709,14 +1718,14 @@ CW & a & b & b & a & a & a & a \\
 \end{longtable}
 
 The multi-factor analysis of variance is also supported.
-It is notable that the result res\_diff will be a list instead of a data.frame when anova\_set is provided.
+It is notable that the result res\_diff will be a list instead of a data.frame when formula is provided.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{anova\_set =} \StringTok{"Group+Type"}\NormalTok{)}
-\CommentTok{\# now the result t1$res\_diff is a list}
-\CommentTok{\# see the help document for the usage of anova\_set}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\CommentTok{\# see the help document for the usage of formula}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1747,7 +1756,7 @@ Let's try to remove the ns in the label by operating the object\$res\_diff file.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ base}\SpecialCharTok{::}\FunctionTok{subset}\NormalTok{(Significance }\SpecialCharTok{!=} \StringTok{"ns"}\NormalTok{)}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{15}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{15}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1773,7 +1782,7 @@ From the v0.12.0, the trans\_alpha class supports the differential test of group
 \item
   trans\_alpha\$new: creating trans\_alpha object can invoke alpha\_diversity in microtable for transformation
 \item
-  cal\_diff: anova\_set parameter can be used for multi-factor analysis of variance
+  cal\_diff: formula parameter can be used for multi-factor analysis of variance
 \item
   plot\_alpha: the significance label comes from the object\$res\_diff
 \end{itemize}
@@ -1839,9 +1848,11 @@ Then we plot and compare the group distances.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# calculate and plot sample distances within groups}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return t1$res\_group\_distance}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{distance\_pair\_stat =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# perform Wilcoxon Rank Sum and Signed Rank Tests}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1851,7 +1862,8 @@ Then we plot and compare the group distances.
 \begin{Highlighting}[]
 \CommentTok{\# calculate and plot sample distances between groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{distance\_pair\_stat =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1974,12 +1986,12 @@ CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
 \bottomrule()
 \end{longtable}
 
-The parameter manova\_set has the priority. If manova\_set is provided, manova\_all parameter will be ignored.
+The parameter mformula has the priority. If mformula is provided, manova\_all parameter will be ignored.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# manova for specified group set: such as "Group + Type"}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_set =} \StringTok{"Group + Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{mformula =} \StringTok{"Group + Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
 \end{Highlighting}
 \end{Shaded}
@@ -2028,9 +2040,8 @@ Pr(\textgreater F)
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{Group} & 2 & 6.121 & 0.1955 & 12.01 & 0.001 \\
-\textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 \\
-\textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 \\
+\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA \\
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
 \bottomrule()
 \end{longtable}
@@ -2319,17 +2330,6 @@ These three packages are all deposited on the Bioconductor.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# ANCOMBC method}
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ANCOMBC"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{} and \textquotesingle{}ALDEx2\_kw\textquotesingle{} methods; use ?trans\_diff to see the description of the methods}
 \NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ALDEx2"}\NormalTok{)}
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{}}
@@ -2343,6 +2343,17 @@ These three packages are all deposited on the Bioconductor.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ANCOMBC method}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ANCOMBC"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2994,7 +3005,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Nov  3 09:51:20 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Nov 13 13:33:48 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3024,9 +3035,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3876 & 0.364 & 9.123 \\
-CW & 435 & 0.563 & 0.2955 & 0.2865 & 14.4 \\
-TW & 435 & 0.6241 & 0.4155 & 0.3995 & 9.943 \\
+IW & 435 & 0.6538 & 0.3876 & 0.3638 & 9.118 \\
+CW & 435 & 0.5627 & 0.2961 & 0.2863 & 14.33 \\
+TW & 435 & 0.6246 & 0.4151 & 0.4 & 9.88 \\
 \bottomrule()
 \end{longtable}
 
@@ -3366,7 +3377,7 @@ Let's perform the anova and show the letters in the box plot. We use list to sto
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{colnames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env))\{}
 \NormalTok{    tmp[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =}\NormalTok{ i, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{5}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{plot.margin =} \FunctionTok{unit}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\StringTok{"cm"}\NormalTok{))}
 \NormalTok{\}}
-\NormalTok{gridExtra}\SpecialCharTok{::}\FunctionTok{arrangeGrob}\NormalTok{(}\AttributeTok{grobs =}\NormalTok{ tmp, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(gridExtra}\SpecialCharTok{::}\FunctionTok{arrangeGrob}\NormalTok{(}\AttributeTok{grobs =}\NormalTok{ tmp, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3463,33 +3474,65 @@ Mantel test can be used to check whether there is significant correlations betwe
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1625}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1875}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1358}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2593}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3210}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1235}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1605}}@{}}
+\caption{Table continues below}\tabularnewline
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
-Variables
+by\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Correlation method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Correlation coefficient
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.value
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.adjusted
+\end{minipage} \\
+\midrule()
+\endfirsthead
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
+by\_group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Correlation method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Correlation coefficient
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.adjusted
+\end{minipage} \\
+\midrule()
+\endhead
+All & pearson & 0.452 & 0.001 & 0.002 \\
+All & pearson & 0.2791 & 0.001 & 0.002 \\
+All & pearson & 0.13 & 0.003 & 0.004 \\
+All & pearson & -0.05539 & 0.926 & 0.926 \\
+All & pearson & 0.06758 & 0.05 & 0.05714 \\
+All & pearson & 0.4085 & 0.001 & 0.002 \\
+All & pearson & 0.2643 & 0.001 & 0.002 \\
+All & pearson & 0.1321 & 0.002 & 0.0032 \\
+\bottomrule()
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.2083}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
 \midrule()
 \endhead
-Temperature & 0.452 & 0.001 & 0.002 & ** \\
-Precipitation & 0.2791 & 0.001 & 0.002 & ** \\
-TOC & 0.13 & 0.003 & 0.004 & ** \\
-NH4 & -0.05539 & 0.926 & 0.926 & \\
-NO3 & 0.06758 & 0.05 & 0.05714 & \\
-pH & 0.4085 & 0.001 & 0.002 & ** \\
-Conductivity & 0.2643 & 0.001 & 0.002 & ** \\
-TN & 0.1321 & 0.002 & 0.0032 & ** \\
+** \\
+** \\
+** \\
+** \\
+** \\
+** \\
 \bottomrule()
 \end{longtable}
 
@@ -3551,7 +3594,7 @@ please use \textbf{other\_taxa parameter} in cal\_cor function.
 \CommentTok{\# then create trans\_env object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \CommentTok{\# use other\_taxa to select taxa you need}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_diff}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -3578,7 +3621,7 @@ Sometimes, if it is necessary to study the correlations between environmental va
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# calculate correlations for different groups using parameter by\_group}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_rf}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_diff}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
 \CommentTok{\# return t1$res\_cor}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
@@ -3789,8 +3832,7 @@ Then we also take an example to show the percentages of the OTUs for each trait 
 \NormalTok{meco\_module\_func }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(meco\_module)}
 \NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
 \NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{select\_samples =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
-\CommentTok{\# M represents module, ordered by the nodes number from high to low}
+\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3980,10 +4022,11 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 \hypertarget{file2meco-package}{%
 \chapter{file2meco package}\label{file2meco-package}}
 
-In the microtable class part, we showed the basic way that how to create microtable object with the example data.
+In the microtable class part, we showed the basic way about how to create microtable object with the example data.
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
 can be easily achieved with the package file2meco (\url{https://github.com/ChiLiubio/file2meco}).
-The functions of file2meco package are mainly developed based on a study involved in complex metagenomic analysis \citep{Liu_Microbial_2022}.
+The idea of creating file2meco package comes from a study involved in complex metagenomic analysis \citep{Liu_Microbial_2022}.
+The following examples are applied to the file2meco package v0.5.0.
 
 \hypertarget{qiime}{%
 \section{QIIME}\label{qiime}}
@@ -4004,10 +4047,10 @@ The qiime1meco() function can be used to construct the microtable object using t
 \CommentTok{\# if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.}
 \NormalTok{rep\_fasta\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"rep.fna"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# contruct microtable object}
-\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path)}
-\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path)}
-\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path)}
-\FunctionTok{qiime1meco}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ otu\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_fasta\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(otu\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(otu\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(otu\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path)}
+\FunctionTok{qiime1meco}\NormalTok{(otu\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_file\_path, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_fasta\_path)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4025,16 +4068,16 @@ The qiime2meco() function is designed to create the microtable object using file
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# construct microtable object}
-\FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path)}
-\FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\FunctionTok{qiime2meco}\NormalTok{(abund\_file\_path)}
+\FunctionTok{qiime2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_table =}\NormalTok{ taxonomy\_file\_path)}
 \CommentTok{\# add phylogenetic tree and fasta for more demonstrations}
 \CommentTok{\# please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd{-}mice/tree.qza}
-\CommentTok{\# the file name is \textquotesingle{}tree.qza\textquotesingle{}}
+\CommentTok{\# the file name is \textquotesingle{}tree.qza\textquotesingle{}; put it into the R working directory}
 \NormalTok{tree\_data }\OtherTok{\textless{}{-}} \StringTok{"tree.qza"}
 \CommentTok{\# please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd{-}mice/dada2\_rep\_set.qza}
-\CommentTok{\# the file name is \textquotesingle{}dada2\_rep\_set.qza\textquotesingle{}}
+\CommentTok{\# the file name is \textquotesingle{}dada2\_rep\_set.qza\textquotesingle{}; put it into the R working directory}
 \NormalTok{rep\_data }\OtherTok{\textless{}{-}} \StringTok{"dada2\_rep\_set.qza"}
-\NormalTok{test1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ tree\_data, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_data, }\AttributeTok{auto\_tidy =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_table =}\NormalTok{ taxonomy\_file\_path, }\AttributeTok{phylo\_tree =}\NormalTok{ tree\_data, }\AttributeTok{rep\_fasta =}\NormalTok{ rep\_data, }\AttributeTok{auto\_tidy =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test1}
 \end{Highlighting}
 \end{Shaded}
@@ -4062,10 +4105,10 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \CommentTok{\# use the raw data files stored inside the package for MetaCyc pathway database based analysis}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_MetaCyc\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# the default db is "MetaCyc"}
-\FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{)}
-\FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{)}
+\FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \CommentTok{\# Let\textquotesingle{}s try more interesting usages with microeco}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# rel = FALSE donot use relative abundance}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
@@ -4094,7 +4137,7 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \begin{Highlighting}[]
 \CommentTok{\# use KEGG pathway based HUMAnN result}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_KEGG\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Level}\FloatTok{.1} \SpecialCharTok{!=} \StringTok{"unclassified"}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \end{Highlighting}
@@ -4124,8 +4167,8 @@ The merged Kraken2 results can be obtained by merge\_metaphlan\_tables.py from M
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_kraken2\_merge.txt"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
-\FunctionTok{mpa2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path)}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -4146,15 +4189,15 @@ The ncyc2meco() function is designed for construct the microtable object using g
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_Ncyc\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
-\FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path)}
-\FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\FunctionTok{ncyc2meco}\NormalTok{(abund\_file\_path)}
+\FunctionTok{ncyc2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Let\textquotesingle{}s try more interesting usages with microeco}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{ncyc2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{ncyc2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# use split\_group = TRUE to calculate the pathway abundance with multipe map correspondance}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_column =} \StringTok{"Pathway"}\NormalTok{)}
@@ -4206,8 +4249,8 @@ Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversi
 
 PICRUSt2 \citep{Douglas_PICRUSt2_2020} contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt.
 We do not create a special file conversion function for PICRUSt2
-as it is very easy to transform the output pathway files of PICRUSt2 to microtable class.
-There are two example files of PICRUSt2 output in file2meco package used to show the operation.
+as it is very easy to convert the output pathway files of PICRUSt2 to microtable object.
+Two example files of PICRUSt2 output in file2meco package were used to show the operation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4296,7 +4339,7 @@ Here, we show some detailed examples using KEGG pathway results.
 \CommentTok{\# use KEGG pathway based HUMAnN result}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_HUMAnN\_KEGG\_abund.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# match\_table parameter can be used to replace sample names}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(}\AttributeTok{abund\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"KEGG"}\NormalTok{, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \CommentTok{\# remove the unclassified pathway in Level.1}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Level}\FloatTok{.1} \SpecialCharTok{!=} \StringTok{"unclassified"}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
@@ -4353,7 +4396,7 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# construct microtable object}
-\NormalTok{data1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\NormalTok{data1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_table =}\NormalTok{ taxonomy\_file\_path)}
 \NormalTok{data1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# revise the species names in tax\_table as the information in the example file is not standard}
 \NormalTok{select\_rows }\OtherTok{\textless{}{-}}\NormalTok{ data1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Species }\SpecialCharTok{!=} \StringTok{"s\_\_"}

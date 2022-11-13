@@ -57,7 +57,7 @@ tmp <- list()
 for(i in colnames(t1$data_env)){
     tmp[[i]] <- t1$plot_diff(measure = i, add_sig_text_size = 5, xtext_size = 12) + theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
 }
-gridExtra::arrangeGrob(grobs = tmp, ncol = 3)
+plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
 ```
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_env_diff_all.png")
@@ -184,7 +184,7 @@ t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
-t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
+t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 t1$plot_cor()
 ```
 
@@ -211,7 +211,7 @@ Sometimes, if it is necessary to study the correlations between environmental va
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group
-t1$cal_cor(by_group = "Group", use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
+t1$cal_cor(by_group = "Group", use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 # return t1$res_cor
 t1$plot_cor()
 ```
@@ -346,8 +346,7 @@ meco_module <- network$trans_comm(use_col = "module")
 meco_module_func <- trans_func$new(meco_module)
 meco_module_func$cal_spe_func(prok_database = "FAPROTAX")
 meco_module_func$cal_spe_func_perc(abundance_weighted = FALSE)
-meco_module_func$plot_spe_func_perc(select_samples = paste0("M", 1:10))
-# M represents module, ordered by the nodes number from high to low
+meco_module_func$plot_spe_func_perc(order_x = paste0("M", 1:10))
 ```
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_func_perc_module.png")

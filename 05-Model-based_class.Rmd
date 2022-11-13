@@ -195,17 +195,6 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 ```
 
-
-```{r, echo = TRUE, eval = FALSE}
-# ANCOMBC method
-BiocManager::install("ANCOMBC")
-t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
-t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
-t1$plot_diff_bar(use_number = 1:20)
-```
-
-
 ```{r, echo = TRUE, eval = FALSE}
 # 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see the description of the methods
 BiocManager::install("ALDEx2")
@@ -221,6 +210,17 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 ```
+
+
+```{r, echo = TRUE, eval = FALSE}
+# ANCOMBC method
+BiocManager::install("ANCOMBC")
+t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
+t1$plot_diff_bar(use_number = 1:20)
+```
+
 
 
 ### Key points

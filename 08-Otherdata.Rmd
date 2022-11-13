@@ -58,7 +58,7 @@ match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", 
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
 # match_table parameter can be used to replace sample names
-test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
+test <- humann2meco(abund_file_path, db = "KEGG", sample_table = sample_file_path, match_table = match_file_path)
 # remove the unclassified pathway in Level.1
 test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
@@ -115,7 +115,7 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+data1 <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
 data1$tidy_dataset()
 # revise the species names in tax_table as the information in the example file is not standard
 select_rows <- data1$tax_table$Species != "s__"

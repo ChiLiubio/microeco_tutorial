@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.12.0)"
+title: "Tutorial for R microeco package (v0.13.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -853,7 +853,7 @@ t2$cal_abund()
 # transform and plot
 t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 8)
 t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE, color_values = RColorBrewer::brewer.pal(8, "Set2"),
-	order_x = c("IW", "CW", "TW", "IW-CW", "IW-TW", "CW-TW", "IW-CW-TW"))
+	order_x = c("IW", "CW", "TW", "IW&CW", "IW&TW", "CW&TW", "IW&CW&TW"))
 ```
 
 
@@ -963,13 +963,13 @@ pander::pander(t1$res_diff)
 ```
 
 The multi-factor analysis of variance is also supported. 
-It is notable that the result res_diff will be a list instead of a data.frame when anova_set is provided.
+It is notable that the result res_diff will be a list instead of a data.frame when formula is provided.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-t1$cal_diff(method = "anova", anova_set = "Group+Type")
-# now the result t1$res_diff is a list
-# see the help document for the usage of anova_set
+t1$cal_diff(method = "anova", formula = "Group+Type")
+head(t1$res_diff)
+# see the help document for the usage of formula
 ```
 
 
@@ -999,7 +999,7 @@ Let's try to remove the ns in the label by operating the object$res_diff file.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$res_diff %<>% base::subset(Significance != "ns")
-g1 <- t1$plot_alpha(measure = "Chao1", xtext_size = 15)
+t1$plot_alpha(measure = "Chao1", xtext_size = 15)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -1022,7 +1022,7 @@ knitr::include_graphics("Images/plot_alpha_wilcox_bygroup.png")
 ### Key points
 
   + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
-  + cal_diff: anova_set parameter can be used for multi-factor analysis of variance
+  + cal_diff: formula parameter can be used for multi-factor analysis of variance
   + plot_alpha: the significance label comes from the object$res_diff
 
 ## trans_beta class
@@ -1082,9 +1082,11 @@ Then we plot and compare the group distances.
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate and plot sample distances within groups
-t1$cal_group_distance()
+t1$cal_group_distance(within_group = TRUE)
 # return t1$res_group_distance
-t1$plot_group_distance(distance_pair_stat = TRUE)
+# perform Wilcoxon Rank Sum and Signed Rank Tests
+t1$cal_group_distance_diff(method = "wilcox")
+t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
@@ -1094,7 +1096,8 @@ knitr::include_graphics("Images/plot_group_distance_within.png")
 ```{r, echo = TRUE, eval = FALSE}
 # calculate and plot sample distances between groups
 t1$cal_group_distance(within_group = FALSE)
-t1$plot_group_distance(distance_pair_stat = TRUE)
+t1$cal_group_distance_diff(method = "wilcox")
+t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
@@ -1138,15 +1141,15 @@ t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
 
-The parameter manova_set has the priority. If manova_set is provided, manova_all parameter will be ignored.
+The parameter mformula has the priority. If mformula is provided, manova_all parameter will be ignored.
 ```{r, echo = TRUE, eval = FALSE}
 # manova for specified group set: such as "Group + Type"
-t1$cal_manova(manova_set = "Group + Type")
+t1$cal_manova(mformula = "Group + Type")
 t1$res_manova
 ```
 
 ```{r, echo = FALSE}
-t1$cal_manova(manova_set = "Group + Type")
+t1$cal_manova(mformula = "Group + Type")
 pander::pander(t1$res_manova)
 ```
 
@@ -1372,17 +1375,6 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 ```
 
-
-```{r, echo = TRUE, eval = FALSE}
-# ANCOMBC method
-BiocManager::install("ANCOMBC")
-t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
-t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
-t1$plot_diff_bar(use_number = 1:20)
-```
-
-
 ```{r, echo = TRUE, eval = FALSE}
 # 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see the description of the methods
 BiocManager::install("ALDEx2")
@@ -1398,6 +1390,17 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 ```
+
+
+```{r, echo = TRUE, eval = FALSE}
+# ANCOMBC method
+BiocManager::install("ANCOMBC")
+t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
+t1$plot_diff_bar(use_number = 1:20)
+```
+
 
 
 ### Key points
@@ -2147,7 +2150,7 @@ tmp <- list()
 for(i in colnames(t1$data_env)){
     tmp[[i]] <- t1$plot_diff(measure = i, add_sig_text_size = 5, xtext_size = 12) + theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
 }
-gridExtra::arrangeGrob(grobs = tmp, ncol = 3)
+plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
 ```
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_env_diff_all.png")
@@ -2274,7 +2277,7 @@ t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
-t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
+t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 t1$plot_cor()
 ```
 
@@ -2301,7 +2304,7 @@ Sometimes, if it is necessary to study the correlations between environmental va
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group
-t1$cal_cor(by_group = "Group", use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_rf$Taxa[1:40])
+t1$cal_cor(by_group = "Group", use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 # return t1$res_cor
 t1$plot_cor()
 ```
@@ -2436,8 +2439,7 @@ meco_module <- network$trans_comm(use_col = "module")
 meco_module_func <- trans_func$new(meco_module)
 meco_module_func$cal_spe_func(prok_database = "FAPROTAX")
 meco_module_func$cal_spe_func_perc(abundance_weighted = FALSE)
-meco_module_func$plot_spe_func_perc(select_samples = paste0("M", 1:10))
-# M represents module, ordered by the nodes number from high to low
+meco_module_func$plot_spe_func_perc(order_x = paste0("M", 1:10))
 ```
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_func_perc_module.png")
@@ -2576,11 +2578,11 @@ t1$cal_tax4fun2_FRI()
 
 # file2meco package
 
-In the microtable class part, we showed the basic way that how to create microtable object with the example data.
+In the microtable class part, we showed the basic way about how to create microtable object with the example data.
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq) 
 can be easily achieved with the package file2meco (https://github.com/ChiLiubio/file2meco).
-The functions of file2meco package are mainly developed based on a study involved in complex metagenomic analysis [@Liu_Microbial_2022].
-
+The idea of creating file2meco package comes from a study involved in complex metagenomic analysis [@Liu_Microbial_2022].
+The following examples are applied to the file2meco package v0.5.0.
 
 ## QIIME
 
@@ -2599,10 +2601,10 @@ phylo_file_path <- system.file("extdata", "rep_phylo.tre", package="file2meco")
 # if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.
 rep_fasta_path <- system.file("extdata", "rep.fna", package="file2meco")
 # contruct microtable object
-qiime1meco(otu_table = otu_file_path)
-qiime1meco(otu_table = otu_file_path, sample_data = sample_file_path)
-qiime1meco(otu_table = otu_file_path, sample_data = sample_file_path, phylo_tree = phylo_file_path)
-qiime1meco(otu_table = otu_file_path, sample_data = sample_file_path, phylo_tree = phylo_file_path, rep_fasta = rep_fasta_path)
+qiime1meco(otu_file_path)
+qiime1meco(otu_file_path, sample_table = sample_file_path)
+qiime1meco(otu_file_path, sample_table = sample_file_path, phylo_tree = phylo_file_path)
+qiime1meco(otu_file_path, sample_table = sample_file_path, phylo_tree = phylo_file_path, rep_fasta = rep_fasta_path)
 ```
 
 
@@ -2618,16 +2620,16 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-qiime2meco(ASV_data = abund_file_path)
-qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+qiime2meco(abund_file_path)
+qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
 # add phylogenetic tree and fasta for more demonstrations
 # please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/tree.qza
-# the file name is 'tree.qza'
+# the file name is 'tree.qza'; put it into the R working directory
 tree_data <- "tree.qza"
 # please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/dada2_rep_set.qza
-# the file name is 'dada2_rep_set.qza'
+# the file name is 'dada2_rep_set.qza'; put it into the R working directory
 rep_data <- "dada2_rep_set.qza"
-test1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path, phylo_tree = tree_data, rep_fasta = rep_data, auto_tidy = TRUE)
+test1 <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path, phylo_tree = tree_data, rep_fasta = rep_data, auto_tidy = TRUE)
 test1
 ```
 
@@ -2654,10 +2656,10 @@ match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", 
 # use the raw data files stored inside the package for MetaCyc pathway database based analysis
 abund_file_path <- system.file("extdata", "example_HUMAnN_MetaCyc_abund.tsv", package="file2meco")
 # the default db is "MetaCyc"
-humann2meco(abund_table = abund_file_path, db = "MetaCyc")
-humann2meco(abund_table = abund_file_path, db = "MetaCyc", sample_data = sample_file_path, match_table = match_file_path)
+humann2meco(abund_file_path, db = "MetaCyc")
+humann2meco(abund_file_path, db = "MetaCyc", sample_table = sample_file_path, match_table = match_file_path)
 # Let's try more interesting usages with microeco
-test <- humann2meco(abund_table = abund_file_path, db = "MetaCyc", sample_data = sample_file_path, match_table = match_file_path)
+test <- humann2meco(abund_file_path, db = "MetaCyc", sample_table = sample_file_path, match_table = match_file_path)
 test$tidy_dataset()
 # rel = FALSE donot use relative abundance
 test$cal_abund(select_cols = 1:3, rel = FALSE)
@@ -2685,7 +2687,7 @@ test1$plot_diff_bar(threshold = 2)
 ```{r, echo = TRUE, eval = FALSE}
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
-test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
+test <- humann2meco(abund_file_path, db = "KEGG", sample_table = sample_file_path, match_table = match_file_path)
 test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
 ```
@@ -2711,8 +2713,8 @@ The merged Kraken2 results can be obtained by merge_metaphlan_tables.py from Met
 abund_file_path <- system.file("extdata", "example_kraken2_merge.txt", package="file2meco")
 sample_file_path <- system.file("extdata", "example_metagenome_sample_info.tsv", package="file2meco")
 match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", package="file2meco")
-mpa2meco(abund_table = abund_file_path)
-test <- mpa2meco(abund_table = abund_file_path, sample_data = sample_file_path, match_table = match_file_path)
+mpa2meco(abund_file_path)
+test <- mpa2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path)
 test$tidy_dataset()
 ```
 
@@ -2732,13 +2734,13 @@ library(magrittr)
 abund_file_path <- system.file("extdata", "example_Ncyc_table.tsv", package="file2meco")
 sample_file_path <- system.file("extdata", "example_metagenome_sample_info.tsv", package="file2meco")
 match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", package="file2meco")
-ncyc2meco(abund_table = abund_file_path)
-ncyc2meco(abund_table = abund_file_path, sample_data = sample_file_path, match_table = match_file_path)
+ncyc2meco(abund_file_path)
+ncyc2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # Let's try more interesting usages with microeco
-test <- ncyc2meco(abund_table = abund_file_path, sample_data = sample_file_path, match_table = match_file_path)
+test <- ncyc2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path)
 test$tidy_dataset()
 # use split_group = TRUE to calculate the pathway abundance with multipe map correspondance
 test$cal_abund(select_cols = 1:2, rel = TRUE, split_group = TRUE, split_column = "Pathway")
@@ -2782,8 +2784,8 @@ meco_dataset
 
 PICRUSt2 [@Douglas_PICRUSt2_2020] contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt. 
 We do not create a special file conversion function for PICRUSt2 
-as it is very easy to transform the output pathway files of PICRUSt2 to microtable class. 
-There are two example files of PICRUSt2 output in file2meco package used to show the operation.
+as it is very easy to convert the output pathway files of PICRUSt2 to microtable object. 
+Two example files of PICRUSt2 output in file2meco package were used to show the operation.
 
 ```{r, echo = TRUE, eval = FALSE}
 # MetaCyc pathway output
@@ -2870,7 +2872,7 @@ match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", 
 # use KEGG pathway based HUMAnN result
 abund_file_path <- system.file("extdata", "example_HUMAnN_KEGG_abund.tsv", package="file2meco")
 # match_table parameter can be used to replace sample names
-test <- humann2meco(abund_table = abund_file_path, db = "KEGG", sample_data = sample_file_path, match_table = match_file_path)
+test <- humann2meco(abund_file_path, db = "KEGG", sample_table = sample_file_path, match_table = match_file_path)
 # remove the unclassified pathway in Level.1
 test$tax_table %<>% subset(Level.1 != "unclassified")
 test$tidy_dataset()
@@ -2927,7 +2929,7 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-data1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+data1 <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
 data1$tidy_dataset()
 # revise the species names in tax_table as the information in the example file is not standard
 select_rows <- data1$tax_table$Species != "s__"
