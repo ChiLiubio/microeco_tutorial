@@ -693,7 +693,11 @@ t1$plot_bar(others_color = "grey70", facet = "Group", facet2 = "Type", xtext_kee
 knitr::include_graphics("Images/plot_bar_facet2.png")
 ```
 
-
+The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by tidy_taxonomy function), 
+as those unknown taxa are generally meaningless.
+However sometimes, these unknown taxa may be important for users.
+For example, if you want to isolate some unknown species, you need to check the abundance of those unknown taxa.
+At this time, please see this topic (https://github.com/ChiLiubio/microeco/issues/165) to resolve the issue that how to show unknown taxa with hierarchical taxonomy classification.
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.
 
 ```{r, echo = TRUE, eval = FALSE}

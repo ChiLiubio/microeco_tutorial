@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-11-27" />
+<meta name="date" content="2022-11-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -341,7 +341,12 @@ As a premise, the <strong>taxa_abund list in the object of microtable class must
 <span id="cb78-2"><a href="composition-based-class.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require package ggh4x, first run install.packages(&quot;ggh4x&quot;) if not installed</span></span>
 <span id="cb78-3"><a href="composition-based-class.html#cb78-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">others_color =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">facet2 =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">xtext_keep =</span> <span class="cn">FALSE</span>, <span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>, <span class="at">barwidth =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Images/plot_bar_facet2.png" width="750px" style="display: block; margin: auto;" /></p>
-<p>The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.</p>
+<p>The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by tidy_taxonomy function),
+as those unknown taxa are generally meaningless.
+However sometimes, these unknown taxa may be important for users.
+For example, if you want to isolate some unknown species, you need to check the abundance of those unknown taxa.
+At this time, please see this topic (<a href="https://github.com/ChiLiubio/microeco/issues/165" class="uri">https://github.com/ChiLiubio/microeco/issues/165</a>) to resolve the issue that how to show unknown taxa with hierarchical taxonomy classification.
+The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="composition-based-class.html#cb79-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
 <span id="cb79-2"><a href="composition-based-class.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggalluvial package</span></span>
 <span id="cb79-3"><a href="composition-based-class.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering</span></span>
