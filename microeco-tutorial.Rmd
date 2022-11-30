@@ -2607,12 +2607,19 @@ can be easily achieved with the package file2meco (https://github.com/ChiLiubio/
 The idea of creating file2meco package comes from a study involved in complex metagenomic analysis [@Liu_Microbial_2022].
 The following examples are applied to the file2meco package v0.5.0.
 
+```{r, echo = TRUE, eval = FALSE}
+# install file2meco
+# https://github.com/ChiLiubio/file2meco
+if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+install.packages("file2meco", repos = BiocManager::repositories())
+```
+
+
 ## QIIME
 
 The qiime1meco() function can be used to construct the microtable object using the raw OTU file from QIIME 1 [@Caporaso_QIIME_2010].
 
 ```{r, echo = TRUE, eval = FALSE}
-# see https://github.com/ChiLiubio/file2meco for file2meco installation
 library(file2meco)
 # see the help document
 ?qiime1meco
