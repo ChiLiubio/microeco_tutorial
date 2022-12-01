@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.13.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-11-30}
+\date{2022-12-01}
 
 \begin{document}
 \maketitle
@@ -516,15 +516,6 @@ It is of course doable and recommended to put all the environmental data into sa
 \FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
 \CommentTok{\# make the plotting background same with the tutorial}
 \FunctionTok{library}\NormalTok{(ggplot2)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: 程辑包'ggplot2'是用R版本4.2.2 来建造的
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
@@ -2241,6 +2232,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 \CommentTok{\# nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \CommentTok{\# plot the MeanDecreaseGini bar}
+\CommentTok{\# group\_order is designed to sort the groups}
 \NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
 \CommentTok{\# plot the abundance using same taxa in g1}
 \NormalTok{g2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{select\_taxa =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{plot\_diff\_bar\_taxa)}
@@ -2768,6 +2760,9 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \end{Highlighting}
 \end{Shaded}
 
+For the comparison of different networks from trans\_network class,
+please see the package meconetcomp (\url{https://github.com/ChiLiubio/meconetcomp}).
+
 \hypertarget{key-points-6}{%
 \subsection{Key points}\label{key-points-6}}
 
@@ -3022,7 +3017,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Nov 30 16:08:40 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Dec  1 19:36:23 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3052,9 +3047,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3861 & 0.3637 & 9.093 \\
-CW & 435 & 0.5628 & 0.2956 & 0.2863 & 14.3 \\
-TW & 435 & 0.6248 & 0.4169 & 0.4002 & 9.854 \\
+IW & 435 & 0.6536 & 0.3866 & 0.3637 & 9.124 \\
+CW & 435 & 0.5628 & 0.2958 & 0.2864 & 14.28 \\
+TW & 435 & 0.6246 & 0.4154 & 0.4001 & 9.865 \\
 \bottomrule()
 \end{longtable}
 
@@ -4107,13 +4102,13 @@ The qiime2meco() function is designed to create the microtable object using file
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{humann-metagenomic-results}{%
-\section{HUMAnN metagenomic results}\label{humann-metagenomic-results}}
+\hypertarget{humann}{%
+\section{HUMAnN}\label{humann}}
 
 Many methods in microeco package can be used not only for the traditional species abundance data, i.e.~species-sample table,
-but also for other data, such as metagenomic and metabolomic data.
+but also for other data, such as metagenomic data.
 HUMAnN \citep{Franzosa_Species_2018} is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
-The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
+The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN3 (\url{https://huttenhower.sph.harvard.edu/humann}).
 Certainly, it can also be used for the whole community profile of metabolic pathways when needed.
 Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pathway abundance file input directly.
 

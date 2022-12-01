@@ -1296,6 +1296,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
 t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
 # plot the MeanDecreaseGini bar
+# group_order is designed to sort the groups
 g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
 # plot the abundance using same taxa in g1
 g2 <- t1$plot_diff_abund(group_order = c("TW", "CW", "IW"), select_taxa = t1$plot_diff_bar_taxa)
@@ -1738,6 +1739,9 @@ t1$cal_network(network_method = "beemStatic")
 # we use cluster_optimal method for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
+
+For the comparison of different networks from trans_network class,
+please see the package meconetcomp (https://github.com/ChiLiubio/meconetcomp).
 
 
 ### Key points
@@ -2666,12 +2670,12 @@ test1
 ```
 
 
-## HUMAnN metagenomic results
+## HUMAnN
 
 Many methods in microeco package can be used not only for the traditional species abundance data, i.e. species-sample table,
-but also for other data, such as metagenomic and metabolomic data.
+but also for other data, such as metagenomic data.
 HUMAnN [@Franzosa_Species_2018] is an excellent tool for functional profiling analysis of metagenomes and metatranscriptomes at species-level.
-The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN2 and HUMAnN3 (https://huttenhower.sph.harvard.edu/humann).
+The humann2meco() function can be used to create the microtable object using metagenomic analysis files from HUMAnN3 (https://huttenhower.sph.harvard.edu/humann).
 Certainly, it can also be used for the whole community profile of metabolic pathways when needed.
 Currently, it supports both the MetaCyc (https://metacyc.org/) and KEGG pathway abundance file input directly.
 

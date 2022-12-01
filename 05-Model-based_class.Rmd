@@ -100,6 +100,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
 t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
 # plot the MeanDecreaseGini bar
+# group_order is designed to sort the groups
 g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
 # plot the abundance using same taxa in g1
 g2 <- t1$plot_diff_abund(group_order = c("TW", "CW", "IW"), select_taxa = t1$plot_diff_bar_taxa)
@@ -542,6 +543,9 @@ t1$cal_network(network_method = "beemStatic")
 # we use cluster_optimal method for the directed network
 t1$cal_module(method = "cluster_optimal")
 ```
+
+For the comparison of different networks from trans_network class,
+please see the package meconetcomp (https://github.com/ChiLiubio/meconetcomp).
 
 
 ### Key points
