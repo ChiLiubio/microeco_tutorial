@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-12-01" />
+<meta name="date" content="2022-12-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -800,9 +800,9 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 </tr>
 </tbody>
 </table>
-<p>The parameter mformula has the priority. If mformula is provided, manova_all parameter will be ignored.</p>
+<p>The parameter manova_set has higher priority than manova_all. If manova_set is provided, manova_all parameter will be disabled.</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="diversity-based-class.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: such as &quot;Group + Type&quot;</span></span>
-<span id="cb120-2"><a href="diversity-based-class.html#cb120-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">mformula =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
+<span id="cb120-2"><a href="diversity-based-class.html#cb120-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
 <span id="cb120-3"><a href="diversity-based-class.html#cb120-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table style="width:79%;">
@@ -831,18 +831,26 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <td align="center">2</td>
 <td align="center">6.121</td>
 <td align="center">0.1955</td>
-<td align="center">10.57</td>
+<td align="center">12.01</td>
 <td align="center">0.001</td>
 </tr>
 <tr class="even">
+<td align="center"><strong>Type</strong></td>
+<td align="center">3</td>
+<td align="center">3.783</td>
+<td align="center">0.1208</td>
+<td align="center">4.949</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="odd">
 <td align="center"><strong>Residual</strong></td>
-<td align="center">87</td>
-<td align="center">25.18</td>
-<td align="center">0.8045</td>
+<td align="center">84</td>
+<td align="center">21.4</td>
+<td align="center">0.6836</td>
 <td align="center">NA</td>
 <td align="center">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"><strong>Total</strong></td>
 <td align="center">89</td>
 <td align="center">31.3</td>

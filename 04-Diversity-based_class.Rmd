@@ -248,15 +248,15 @@ t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
 
-The parameter mformula has the priority. If mformula is provided, manova_all parameter will be ignored.
+The parameter manova_set has higher priority than manova_all. If manova_set is provided, manova_all parameter will be disabled.
 ```{r, echo = TRUE, eval = FALSE}
 # manova for specified group set: such as "Group + Type"
-t1$cal_manova(mformula = "Group + Type")
+t1$cal_manova(manova_set = "Group + Type")
 t1$res_manova
 ```
 
 ```{r, echo = FALSE}
-t1$cal_manova(mformula = "Group + Type")
+t1$cal_manova(manova_set = "Group + Type")
 pander::pander(t1$res_manova)
 ```
 

@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.13.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-12-01}
+\date{2022-12-04}
 
 \begin{document}
 \maketitle
@@ -1989,12 +1989,12 @@ CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
 \bottomrule()
 \end{longtable}
 
-The parameter mformula has the priority. If mformula is provided, manova\_all parameter will be ignored.
+The parameter manova\_set has higher priority than manova\_all. If manova\_set is provided, manova\_all parameter will be disabled.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# manova for specified group set: such as "Group + Type"}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{mformula =} \StringTok{"Group + Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_set =} \StringTok{"Group + Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
 \end{Highlighting}
 \end{Shaded}
@@ -2043,8 +2043,9 @@ Pr(\textgreater F)
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 \\
-\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 12.01 & 0.001 \\
+\textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 \\
+\textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA \\
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
 \bottomrule()
 \end{longtable}
@@ -3017,7 +3018,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Dec  1 19:36:23 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Dec  4 10:44:43 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3047,9 +3048,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3866 & 0.3637 & 9.124 \\
-CW & 435 & 0.5628 & 0.2958 & 0.2864 & 14.28 \\
-TW & 435 & 0.6246 & 0.4154 & 0.4001 & 9.865 \\
+IW & 435 & 0.6538 & 0.3871 & 0.3638 & 9.143 \\
+CW & 435 & 0.5627 & 0.2952 & 0.2863 & 14.33 \\
+TW & 435 & 0.6242 & 0.415 & 0.3997 & 9.857 \\
 \bottomrule()
 \end{longtable}
 
