@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2022-12-04" />
+<meta name="date" content="2022-12-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -328,6 +328,13 @@ The following examples are applied to the file2meco package v0.5.0.</p>
 <span id="cb242-2"><a href="file2meco-package.html#cb242-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/ChiLiubio/file2meco</span></span>
 <span id="cb242-3"><a href="file2meco-package.html#cb242-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
 <span id="cb242-4"><a href="file2meco-package.html#cb242-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;file2meco&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span></code></pre></div>
+<p>▲ Trouble shooting:<br />
+• The files in the following examples all come from the package file2meco and are found by the function <code>system.file</code> automatically irrespective of Operating System.
+When the user imports a file, please donot use this function.
+The first thing should be to make sure that R can find your input file.
+The user should either provide a full path to the import function or only the file name after putting the file into the R working directory.
+For the latter one, if the user does not know where the working directory is,
+please use the function <code>getwd</code> to find the working directory or directly create a new project in the target directory with RStudio [File –&gt; New Project].</p>
 <div id="qiime" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> QIIME<a href="file2meco-package.html#qiime" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The qiime1meco() function can be used to construct the microtable object using the raw OTU file from QIIME 1 <span class="citation">(<a href="#ref-Caporaso_QIIME_2010" role="doc-biblioref">Caporaso et al. 2010</a>)</span>.</p>

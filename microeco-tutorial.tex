@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.13.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-12-04}
+\date{2022-12-06}
 
 \begin{document}
 \maketitle
@@ -2090,7 +2090,7 @@ PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivaria
 ## TW 0.0566190 0.0050319
 \end{verbatim}
 
-For the explanation of statistical methods in microbial ecology, please read \url{http://mb3is.megx.net/gustame}
+For the explanation of statistical methods in microbial ecology, please read the references \citep{Ramette_Multivariate_2007, Buttigieg_guide_2014}.
 
 \hypertarget{key-points-4}{%
 \subsection{Key points}\label{key-points-4}}
@@ -3018,7 +3018,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Dec  4 10:44:43 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Dec  6 11:11:41 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3048,9 +3048,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3871 & 0.3638 & 9.143 \\
-CW & 435 & 0.5627 & 0.2952 & 0.2863 & 14.33 \\
-TW & 435 & 0.6242 & 0.415 & 0.3997 & 9.857 \\
+IW & 435 & 0.6536 & 0.3869 & 0.3637 & 9.126 \\
+CW & 435 & 0.5627 & 0.2961 & 0.2863 & 14.39 \\
+TW & 435 & 0.6242 & 0.4159 & 0.3997 & 9.847 \\
 \bottomrule()
 \end{longtable}
 
@@ -4049,6 +4049,14 @@ The following examples are applied to the file2meco package v0.5.0.
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
+
+▲ Trouble shooting:\\
+• The files in the following examples all come from the package file2meco and are found by the function \texttt{system.file} automatically irrespective of Operating System.
+When the user imports a file, please donot use this function.
+The first thing should be to make sure that R can find your input file.
+The user should either provide a full path to the import function or only the file name after putting the file into the R working directory.
+For the latter one, if the user does not know where the working directory is,
+please use the function \texttt{getwd} to find the working directory or directly create a new project in the target directory with RStudio {[}File --\textgreater{} New Project{]}.
 
 \hypertarget{qiime}{%
 \section{QIIME}\label{qiime}}

@@ -1178,7 +1178,7 @@ t1$cal_betadisper()
 t1$res_betadisper
 ```
 
-For the explanation of statistical methods in microbial ecology, please read http://mb3is.megx.net/gustame
+For the explanation of statistical methods in microbial ecology, please read the references [@Ramette_Multivariate_2007; @Buttigieg_guide_2014].
 
 ### Key points
 
@@ -2619,6 +2619,14 @@ The following examples are applied to the file2meco package v0.5.0.
 if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 install.packages("file2meco", repos = BiocManager::repositories())
 ```
+▲ Trouble shooting:  
+• The files in the following examples all come from the package file2meco and are found by the function `system.file` automatically irrespective of Operating System.
+When the user imports a file, please donot use this function.
+The first thing should be to make sure that R can find your input file.
+The user should either provide a full path to the import function or only the file name after putting the file into the R working directory.
+For the latter one, if the user does not know where the working directory is,
+please use the function `getwd` to find the working directory or directly create a new project in the target directory with RStudio [File --> New Project].
+
 
 
 ## QIIME
