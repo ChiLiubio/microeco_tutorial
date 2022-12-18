@@ -3021,7 +3021,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Dec 18 13:16:18 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Dec 18 20:17:39 2022. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3051,9 +3051,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3868 & 0.3638 & 9.125 \\
-CW & 435 & 0.5628 & 0.2961 & 0.2864 & 14.32 \\
-TW & 435 & 0.6247 & 0.4173 & 0.4001 & 9.858 \\
+IW & 435 & 0.654 & 0.3875 & 0.364 & 9.113 \\
+CW & 435 & 0.563 & 0.2964 & 0.2866 & 14.32 \\
+TW & 435 & 0.6245 & 0.416 & 0.3999 & 9.891 \\
 \bottomrule()
 \end{longtable}
 
@@ -4680,7 +4680,7 @@ From v0.7.0, trans\_alpha, trans\_env and trans\_venn classes can accept NULL da
 \hypertarget{mecodev-package}{%
 \chapter{mecodev package}\label{mecodev-package}}
 
-The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed to develop more classes for data analysis based on the microeco package.
+The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed for more extended analysis approaches based on the microeco package.
 
 \hypertarget{trans_rarefy}{%
 \section{trans\_rarefy}\label{trans_rarefy}}
@@ -4707,18 +4707,25 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 
 \begin{center}\includegraphics[width=550px]{Images/plot_trans_rarefy} \end{center}
 
-\hypertarget{trans_convert}{%
-\section{trans\_convert}\label{trans_convert}}
+\hypertarget{trans_norm}{%
+\section{trans\_norm}\label{trans_norm}}
 
-The class trans\_convert provide several data transformation approaches for the microtable object.
+The class trans\_norm provide several data normalization approaches for the microtable object.
 The output is also a microtable object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mecodev)}
 \FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_convert}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
-\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{convert}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
-\CommentTok{\# returned test2 is another transformed microtable object}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
+\CommentTok{\# Centered log{-}ratio normalization}
+\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CLR"}\NormalTok{)}
+\CommentTok{\# returned test2 is another microtable object}
+\CommentTok{\# Cumulative sum scaling normalization. Require metagenomeSeq package to be installed.}
+\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CCS"}\NormalTok{)}
+\CommentTok{\# log transformation}
+\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4737,7 +4744,21 @@ The example data `gut\_microb\_ts' comes from the article \citep{Gibbons_twodyna
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# beem package should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps}
+\CommentTok{\# install the necessary packages}
+\CommentTok{\# For windows system:}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{, }\AttributeTok{repos =} \StringTok{"http://R{-}Forge.R{-}project.org"}\NormalTok{)}
+\CommentTok{\# For linux or mac}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{)}
+\CommentTok{\# Then install the following packages}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lokern"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"monomvn"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"pspline"}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}csb5/beem\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(mecodev)}
 \CommentTok{\# load the example data in mecodev package; the input must be a microtable object}
 \CommentTok{\# There are several strict requirements on the sample\_table; see the document of the class.}

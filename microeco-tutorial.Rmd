@@ -3170,12 +3170,11 @@ t1 <- trans_alpha$new(dataset = NULL, group = NULL)
 <!--chapter:end:09-Notes.Rmd-->
 
 # mecodev package
-The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed to develop more classes for data analysis based on the microeco package.
+The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed for more extended analysis approaches based on the microeco package.
 
 ## trans_rarefy
 The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether 
 the sequencing depth is enough to cover all the so-called species in the microbial community.
-
 
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
@@ -3197,15 +3196,22 @@ knitr::include_graphics("Images/plot_trans_rarefy.png")
 ```
 
 
-## trans_convert
-The class trans_convert provide several data transformation approaches for the microtable object.
+## trans_norm
+The class trans_norm provide several data normalization approaches for the microtable object.
 The output is also a microtable object.
 
 ```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(mecodev)
 data(dataset)
-test1 <- trans_convert$new(dataset = dataset)
-test2 <- test1$convert(method = "log")
-# returned test2 is another transformed microtable object
+test1 <- trans_norm$new(dataset = dataset)
+# Centered log-ratio normalization
+test2 <- test1$norm(method = "CLR")
+# returned test2 is another microtable object
+# Cumulative sum scaling normalization. Require metagenomeSeq package to be installed.
+test2 <- test1$norm(method = "CCS")
+# log transformation
+test2 <- test1$norm(method = "log")
 ```
 
 
@@ -3221,9 +3227,20 @@ and analyzing community stability (see [@Li_expectation_2019] and the references
 Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package [@Li_expectation_2019].
 The example data 'gut_microb_ts' comes from the article [@Gibbons_twodynamic_2017].
 
+```{r, echo = TRUE, eval = FALSE}
+# install the necessary packages
+# For windows system:
+install.packages("doMC", repos = "http://R-Forge.R-project.org")
+# For linux or mac
+install.packages("doMC")
+# Then install the following packages
+install.packages("lokern")
+install.packages("monomvn")
+install.packages("pspline")
+devtools::install_github('csb5/beem')
+```
 
 ```{r, echo = TRUE, eval = FALSE}
-# beem package should be first installed; see https://github.com/ChiLiubio/mecodev for installation steps
 library(mecodev)
 # load the example data in mecodev package; the input must be a microtable object
 # There are several strict requirements on the sample_table; see the document of the class.
