@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.13.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2022-12-18}
+\date{2023-01-14}
 
 \begin{document}
 \maketitle
@@ -147,7 +147,8 @@ microbiome (\url{https://github.com/microbiome/microbiome}), microbiomeSeq (\url
 ampvis2 (\url{https://github.com/KasperSkytte/ampvis2}), MicrobiomeR(\url{https://github.com/vallenderlab/MicrobiomeR}),
 theseus \citep{Price_theseus_2018}, rANOMALY \citep{Theil_rANOMALY_2021},
 tidyMicro \citep{Carpenter_tidyMicro_2021}, microbial (\url{https://github.com/guokai8/microbial}),
-amplicon (\url{https://github.com/microbiota/amplicon})
+amplicon (\url{https://github.com/microbiota/amplicon}),
+MicrobiotaProcess (\url{https://github.com/YuLab-SMU/MicrobiotaProcess})
 and so on.
 In addition, some web tools associated with R language are also useful for microbial community data analysis,
 such as Shiny-phyloseq \citep{McMurdie_Shiny_2015}, MicrobiomeExplorer \citep{Reeder_MicrobiomeExplorer_2021},
@@ -176,7 +177,7 @@ Before starting the specific usage of each class, let's first introduce several 
 
 This is a rough framework for users to fast understand the design of microeco package.
 
-\begin{center}\includegraphics[width=8000px]{Images/microeco_framework} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/microeco_framework} \end{center}
 
 The stored `Functions' and `Files' represent that the user can access those functions or files in R6 object using \$ operator
 as shown in the figure. An example is the function \texttt{dataset\$cal\_alphadiv()} and its return result \texttt{dataset\$alpha\_diversity}.
@@ -2764,8 +2765,8 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \hypertarget{network-comparison}{%
 \subsection{Network comparison}\label{network-comparison}}
 
-For the comparison of different networks from trans\_network class,
-please use the package meconetcomp (\url{https://github.com/ChiLiubio/meconetcomp}).
+To compare different networks from trans\_network class,
+please see the meconetcomp package part (\url{https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html}).
 
 \hypertarget{key-points-6}{%
 \subsection{Key points}\label{key-points-6}}
@@ -3021,7 +3022,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Dec 18 20:17:39 2022. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Jan 14 21:30:17 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3051,9 +3052,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3875 & 0.364 & 9.113 \\
-CW & 435 & 0.563 & 0.2964 & 0.2866 & 14.32 \\
-TW & 435 & 0.6245 & 0.416 & 0.3999 & 9.891 \\
+IW & 435 & 0.6539 & 0.3876 & 0.364 & 9.06 \\
+CW & 435 & 0.5628 & 0.2962 & 0.2864 & 14.31 \\
+TW & 435 & 0.6245 & 0.4169 & 0.4 & 9.844 \\
 \bottomrule()
 \end{longtable}
 
@@ -4824,6 +4825,258 @@ other than random sampling based on the species log-normal distribution.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=600px]{Images/plot_gamma_simu} \end{center}
+
+\hypertarget{meconetcomp-package}{%
+\chapter{meconetcomp package}\label{meconetcomp-package}}
+
+To facilitate microbial co-occurrence network comparison,
+R package meconetcomp (\url{https://github.com/ChiLiubio/meconetcomp}) was developed.
+The basic strategy is to use R list to put into all the trans\_network objects and perform the following analysis.
+The flow chart and following contents are adapted from the published article \citep{Liu_meconetcomp_2023}.
+For more details, please see the online paper (\url{https://doi.org/10.1002/imt2.71}).
+
+\begin{center}\includegraphics[width=650px]{Images/meconetcomp} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install the required packages}
+\CommentTok{\# aplot: one dependency of the trans\_venn class of microeco package}
+\CommentTok{\# agricolae: for Duncan\textquotesingle{}s new multiple range test}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"meconetcomp"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{)}
+\CommentTok{\# Now check or install}
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
+        \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(meconetcomp)}
+\CommentTok{\# use pipe operator in magrittr package}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(igraph)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\CommentTok{\# load soil amplicon sequencing dataset}
+\FunctionTok{data}\NormalTok{(soil\_amp)}
+\end{Highlighting}
+\end{Shaded}
+
+First reconstruct three correlation networks for the three groups `IW', `TW' and `CW' as the example.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# first create a list}
+\NormalTok{soil\_amp\_network }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\CommentTok{\# select samples of "IW" group}
+\CommentTok{\# use clone to get a deep copy of soil\_amp (R6 object)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(soil\_amp)}
+\CommentTok{\# change sample\_table directly}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Group }\SpecialCharTok{==} \StringTok{"IW"}\NormalTok{)}
+\CommentTok{\# trim all files in the object}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# use filter\_thres parameter to filter the feature with low relative abundance}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\CommentTok{\# COR\_p\_thres represents the p value threshold}
+\CommentTok{\# COR\_cut denotes the correlation coefficient threshold}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}
+\CommentTok{\# put the network into the list}
+\NormalTok{soil\_amp\_network}\SpecialCharTok{$}\NormalTok{IW }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
+\CommentTok{\# select samples of "TW" group}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(soil\_amp)}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Group }\SpecialCharTok{==} \StringTok{"TW"}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}
+\NormalTok{soil\_amp\_network}\SpecialCharTok{$}\NormalTok{TW }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
+\CommentTok{\# select samples of "CW" group}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(soil\_amp)}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Group }\SpecialCharTok{==} \StringTok{"CW"}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.01}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}
+\NormalTok{soil\_amp\_network}\SpecialCharTok{$}\NormalTok{CW }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
+\CommentTok{\# Now we have the list soil\_amp\_network}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{network-modularity-for-all-networks}{%
+\section{Network modularity for all networks}\label{network-modularity-for-all-networks}}
+
+The function cal\_module in meconetcomp package is designed to partition modules for all the networks in the list.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{soil\_amp\_network }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{undirected\_method =} \StringTok{"cluster\_fast\_greedy"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{network-topological-attributes-for-all-networks}{%
+\section{Network topological attributes for all networks}\label{network-topological-attributes-for-all-networks}}
+
+we extracted all the res\_network\_attr tables in the networks and merged them into one final table by using cal\_network\_attr function in meconetcomp package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{cal\_network\_attr}\NormalTok{(soil\_amp\_network)}
+\CommentTok{\# tmp is a data.frame object}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{node-and-edge-properties-extraction-for-all-networks}{%
+\section{Node and edge properties extraction for all networks}\label{node-and-edge-properties-extraction-for-all-networks}}
+
+The get\_node\_table and get\_edge\_table functions of meconetcomp package can be used to directly extract node and edge properties for all the networks.
+The return table is stored in each network object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{soil\_amp\_network }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{get\_node\_table}\NormalTok{(}\AttributeTok{node\_roles =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ get\_edge\_table}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compare-nodes-across-networks}{%
+\section{Compare nodes across networks}\label{compare-nodes-across-networks}}
+
+The nodes in all the networks can be converted to a new microtable object by using the node\_comp function of meconetcomp package.
+Then, it is easy to analyse the nodes overlap with trans\_venn class.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# obtain the node distributions by searching the res\_node\_table in the object}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{node\_comp}\NormalTok{(soil\_amp\_network, }\AttributeTok{property =} \StringTok{"name"}\NormalTok{)}
+\CommentTok{\# obtain nodes intersection}
+\NormalTok{tmp1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{ratio =} \StringTok{"numratio"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{fill\_color =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_node\_overlap.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
+\CommentTok{\# calculate jaccard distance to reflect the overall differences of networks}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{method =} \StringTok{"jaccard"}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{jaccard}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compare-edges-across-networks}{%
+\section{Compare edges across networks}\label{compare-edges-across-networks}}
+
+The pipeline of studying edges overlap is similar with the above operations of nodes comparison.
+The edge\_comp function of meconetcomp package is used to convert edges distribution to a new microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# get the edge distributions across networks}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{edge\_comp}\NormalTok{(soil\_amp\_network)}
+\CommentTok{\# obtain edges intersection}
+\NormalTok{tmp1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{ratio =} \StringTok{"numratio"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{fill\_color =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_edge\_overlap.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
+\CommentTok{\# calculate jaccard distance}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{method =} \StringTok{"jaccard"}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{jaccard}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{extract-overlapped-edges-of-networks-to-a-new-network}{%
+\section{Extract overlapped edges of networks to a new network}\label{extract-overlapped-edges-of-networks-to-a-new-network}}
+
+Then we extracted the subset of edges according to the intersections of edges across networks,
+which can be accomplished with the subset\_network function in meconetcomp package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# first obtain edges distribution and intersection}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{edge\_comp}\NormalTok{(soil\_amp\_network)}
+\NormalTok{tmp1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp)}
+\CommentTok{\# convert intersection result to a microtable object}
+\NormalTok{tmp2 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{trans\_comm}\NormalTok{()}
+\CommentTok{\# extract the intersection of all the three networks ("IW", "TW" and "CW")}
+\CommentTok{\# please use colnames(tmp2$otu\_table) to find the required name}
+\NormalTok{Intersec\_all }\OtherTok{\textless{}{-}} \FunctionTok{subset\_network}\NormalTok{(soil\_amp\_network, }\AttributeTok{venn =}\NormalTok{ tmp2, }\AttributeTok{name =} \StringTok{"IW\&TW\&CW"}\NormalTok{)}
+\CommentTok{\# Intersec\_all is a trans\_network object}
+\CommentTok{\# for example, save Intersec\_all as gexf format}
+\NormalTok{Intersec\_all}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\StringTok{"Intersec\_all.gexf"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compare-phylogenetic-distances-of-paired-nodes-in-edges}{%
+\section{Compare phylogenetic distances of paired nodes in edges}\label{compare-phylogenetic-distances-of-paired-nodes-in-edges}}
+
+The edge\_node\_distance class (R6 class) in meconetcomp package is designed to compare the distribution of distance values of paired nodes in all the edges across networks.
+Here, we indicated the phylogenetic distance distributions and performed the differential test among networks.
+The input parameter dis\_matrix can be any symmetric matrix with both the column names and row names (i.e.~feature names).
+So it is also feasible to compare other properties of features, such as Levin's niche overlap.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter useless features to speed up the calculation}
+\NormalTok{node\_names }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(}\FunctionTok{lapply}\NormalTok{(soil\_amp\_network, }\ControlFlowTok{function}\NormalTok{(x)\{}\FunctionTok{colnames}\NormalTok{(x}\SpecialCharTok{$}\NormalTok{data\_abund)\})))}
+\NormalTok{filter\_soil\_amp }\OtherTok{\textless{}{-}}\NormalTok{ microeco}\SpecialCharTok{::}\FunctionTok{clone}\NormalTok{(soil\_amp)}
+\NormalTok{filter\_soil\_amp}\SpecialCharTok{$}\NormalTok{otu\_table }\OtherTok{\textless{}{-}}\NormalTok{ filter\_soil\_amp}\SpecialCharTok{$}\NormalTok{otu\_table[node\_names, ]}
+\NormalTok{filter\_soil\_amp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# obtain phylogenetic distance matrix}
+\NormalTok{phylogenetic\_distance\_soil }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{cophenetic}\NormalTok{(filter\_soil\_amp}\SpecialCharTok{$}\NormalTok{phylo\_tree))}
+\CommentTok{\# use both the positive and negative labels}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ edge\_node\_distance}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{network\_list =}\NormalTok{ soil\_amp\_network, }\AttributeTok{dis\_matrix =}\NormalTok{ phylogenetic\_distance\_soil, }\AttributeTok{label =} \FunctionTok{c}\NormalTok{(}\StringTok{"+"}\NormalTok{, }\StringTok{"{-}"}\NormalTok{))}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\CommentTok{\# visualization}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"none"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{5}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Phylogenetic distance"}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_phylo\_distance.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
+
+\CommentTok{\# show different modules with at least 10 nodes and positive edges}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ edge\_node\_distance}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{network\_list =}\NormalTok{ soil\_amp\_network, }\AttributeTok{dis\_matrix =}\NormalTok{ phylogenetic\_distance\_soil, }
+    \AttributeTok{label =} \StringTok{"+"}\NormalTok{, }\AttributeTok{with\_module =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{module\_thres =} \DecValTok{10}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"none"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{5}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Phylogenetic distance"}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_phylo\_distance\_modules.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compare-node-sources-of-edges-across-networks}{%
+\section{Compare node sources of edges across networks}\label{compare-node-sources-of-edges-across-networks}}
+
+To know which taxa constitute the nodes in edges is important in understanding species co-occurrence patterns and answering ecological questions.
+In this part, as an instance, we used edge\_tax\_comp function of meconetcomp package to get the sums of node sources (at Phylum level) in the positive edges.
+In other words, how many linked nodes of positive edges come from different phyla or the same phyla.
+Then, to make the results comparable, the ratio was calculated with the positive edge number as denominator.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{soil\_amp\_network\_edgetax }\OtherTok{\textless{}{-}} \FunctionTok{edge\_tax\_comp}\NormalTok{(soil\_amp\_network, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{label =} \StringTok{"+"}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# filter the features with small number}
+\NormalTok{soil\_amp\_network\_edgetax }\OtherTok{\textless{}{-}}\NormalTok{ soil\_amp\_network\_edgetax[}\FunctionTok{apply}\NormalTok{(soil\_amp\_network\_edgetax, }\DecValTok{1}\NormalTok{, mean) }\SpecialCharTok{\textgreater{}} \FloatTok{0.01}\NormalTok{, ]}
+\CommentTok{\# visualization}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ pheatmap}\SpecialCharTok{::}\FunctionTok{pheatmap}\NormalTok{(soil\_amp\_network\_edgetax, }\AttributeTok{display\_numbers =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_edge\_tax\_comp.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{compare-topological-properties-of-sub-networks}{%
+\section{Compare topological properties of sub-networks}\label{compare-topological-properties-of-sub-networks}}
+
+In this part, we extracted the sub-networks according to the OTU existed in each sample of soil\_amp dataset for each network in soil\_amp\_network.
+Then, the global topological properties of sub-networks were calculated.
+All the operations were encapsulated into the subnet\_property function of meconetcomp package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# calculate global properties of all sub{-}networks}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{subnet\_property}\NormalTok{(soil\_amp\_network)}
+\CommentTok{\# then prepare the data for the correlation analysis}
+\CommentTok{\# use sample names (second column) as rownames}
+\FunctionTok{rownames}\NormalTok{(tmp) }\OtherTok{\textless{}{-}}\NormalTok{ tmp[, }\DecValTok{2}\NormalTok{]}
+\CommentTok{\# delete first two columns (network name and sample name)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ tmp[, }\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{)]}
+\CommentTok{\# load ready{-}made abiotic factor and diversity table}
+\FunctionTok{data}\NormalTok{(soil\_measure\_diversity)}
+\NormalTok{tmp1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ soil\_amp, }\AttributeTok{add\_data =}\NormalTok{ soil\_measure\_diversity)}
+\NormalTok{tmp1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{add\_abund\_table =}\NormalTok{ tmp, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\CommentTok{\# generate correlation heatmap}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_subnet\_property.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{other-examples-1}{%
 \chapter{Other examples}\label{other-examples-1}}
