@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.13.0)"
+title: "Tutorial for R microeco package (v0.14.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -575,6 +575,18 @@ group_CW$tidy_dataset()
 group_CW
 ```
 
+### filter features
+
+Please use filter_taxa function to filter the features with low abundance or occurrence frequency.
+For other operations on the features, please directly manipulate the otu_table of your microtable object.
+
+```{r, echo = TRUE}
+# It is better to have a backup before filtering features
+dataset_filter <- clone(dataset)
+# mean relative abundance threshold 0.0001
+# occurrence frequency 0.1; 10% samples have the target features
+dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
+```
 
 
 ### Other examples
@@ -686,10 +698,11 @@ t1$plot_bar(others_color = "grey70", facet = "Group", xtext_keep = FALSE, legend
 knitr::include_graphics("Images/plot_bar.png")
 ```
 
+Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
+
 ```{r, echo = TRUE, eval = FALSE}
-# two facets example
 # require package ggh4x, first run install.packages("ggh4x") if not installed
-t1$plot_bar(others_color = "grey70", facet = "Group", facet2 = "Type", xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
+t1$plot_bar(others_color = "grey70", facet = c("Group", "Type"), xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
@@ -2233,6 +2246,16 @@ t1$plot_ordination(plot_color = "Group")
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_rda_dbrda.png")
 ```
+
+From v0.14.0, the function `cal_ordination_anova` is implemented to check the significance of the ordination model instead of the encapsulation in `cal_ordination`.
+Furthermore, the function `cal_ordination_envfit` can be used to get the contribution of each variables to the model.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_ordination_anova()
+t1$cal_ordination_envfit()
+```
+
+Then, let's try to do RDA at the Genus level.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus

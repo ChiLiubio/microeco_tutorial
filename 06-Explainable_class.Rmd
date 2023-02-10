@@ -110,6 +110,16 @@ t1$plot_ordination(plot_color = "Group")
 knitr::include_graphics("Images/plot_rda_dbrda.png")
 ```
 
+From v0.14.0, the function `cal_ordination_anova` is implemented to check the significance of the ordination model instead of the encapsulation in `cal_ordination`.
+Furthermore, the function `cal_ordination_envfit` can be used to get the contribution of each variables to the model.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_ordination_anova()
+t1$cal_ordination_envfit()
+```
+
+Then, let's try to do RDA at the Genus level.
+
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus
 t1$cal_ordination(method = "RDA", taxa_level = "Genus")

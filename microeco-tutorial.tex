@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.13.0)},
+  pdftitle={Tutorial for R microeco package (v0.14.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.13.0)}
+\title{Tutorial for R microeco package (v0.14.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-01-14}
+\date{2023-02-10}
 
 \begin{document}
 \maketitle
@@ -1082,6 +1082,38 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
+\hypertarget{filter-features}{%
+\subsection{filter features}\label{filter-features}}
+
+Please use filter\_taxa function to filter the features with low abundance or occurrence frequency.
+For other operations on the features, please directly manipulate the otu\_table of your microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# It is better to have a backup before filtering features}
+\NormalTok{dataset\_filter }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\CommentTok{\# mean relative abundance threshold 0.0001}
+\CommentTok{\# occurrence frequency 0.1; 10\% samples have the target features}
+\NormalTok{dataset\_filter}\SpecialCharTok{$}\FunctionTok{filter\_taxa}\NormalTok{(}\AttributeTok{rel\_abund =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{freq =} \FloatTok{0.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 10647 features filtered based on the abundance ...
+\end{verbatim}
+
+\begin{verbatim}
+## freq smaller than 1; first convert it to an integer ...
+\end{verbatim}
+
+\begin{verbatim}
+## Use converted freq integer: 9 for the following filtering ...
+\end{verbatim}
+
+\begin{verbatim}
+## 6309 features filtered based on the occurrence...
+\end{verbatim}
+
 \hypertarget{other-examples}{%
 \subsection{Other examples}\label{other-examples}}
 
@@ -1258,11 +1290,12 @@ As the sample number is large, we do not show the sample names in x axis and add
 
 \begin{center}\includegraphics[width=750px]{Images/plot_bar} \end{center}
 
+Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# two facets example}
 \CommentTok{\# require package ggh4x, first run install.packages("ggh4x") if not installed}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{facet2 =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{xtext\_keep =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{barwidth =} \DecValTok{1}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{), }\AttributeTok{xtext\_keep =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{barwidth =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3022,7 +3055,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Jan 14 21:30:17 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Feb 10 23:35:37 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3052,9 +3085,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3876 & 0.364 & 9.06 \\
-CW & 435 & 0.5628 & 0.2962 & 0.2864 & 14.31 \\
-TW & 435 & 0.6245 & 0.4169 & 0.4 & 9.844 \\
+IW & 435 & 0.6537 & 0.388 & 0.3638 & 9.115 \\
+CW & 435 & 0.5631 & 0.2962 & 0.2866 & 14.29 \\
+TW & 435 & 0.6245 & 0.4167 & 0.3999 & 9.873 \\
 \bottomrule()
 \end{longtable}
 
@@ -3447,6 +3480,18 @@ Then let's do the RDA analysis (db-RDA and RDA).
 
 \begin{center}\includegraphics[width=650px]{Images/plot_rda_dbrda} \end{center}
 
+From v0.14.0, the function \texttt{cal\_ordination\_anova} is implemented to check the significance of the ordination model instead of the encapsulation in \texttt{cal\_ordination}.
+Furthermore, the function \texttt{cal\_ordination\_envfit} can be used to get the contribution of each variables to the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination\_anova}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination\_envfit}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Then, let's try to do RDA at the Genus level.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use Genus}
@@ -3749,7 +3794,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \end{Shaded}
 
 \begin{verbatim}
-## FAPROTAX v1.2.4. Please also cite the original FAPROTAX paper: Louca et al. (2016).
+## FAPROTAX v1.2.6. Please also cite the original FAPROTAX paper: Louca et al. (2016).
 \end{verbatim}
 
 \begin{verbatim}
@@ -4582,7 +4627,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the most si
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-286-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-288-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4619,7 +4664,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-287-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-289-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

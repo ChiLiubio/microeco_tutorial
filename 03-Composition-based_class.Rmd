@@ -30,10 +30,11 @@ t1$plot_bar(others_color = "grey70", facet = "Group", xtext_keep = FALSE, legend
 knitr::include_graphics("Images/plot_bar.png")
 ```
 
+Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
+
 ```{r, echo = TRUE, eval = FALSE}
-# two facets example
 # require package ggh4x, first run install.packages("ggh4x") if not installed
-t1$plot_bar(others_color = "grey70", facet = "Group", facet2 = "Type", xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
+t1$plot_bar(others_color = "grey70", facet = c("Group", "Type"), xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = 1)
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
