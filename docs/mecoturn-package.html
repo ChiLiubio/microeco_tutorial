@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 mecoturn package | Tutorial for R microeco package (v0.14.0)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 mecoturn package | Tutorial for R microeco package (v0.14.0)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 mecoturn package | Tutorial for R microeco package (v0.14.0)" />
+  
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  
+
+<meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
+
+
+<meta name="date" content="2023-02-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="meconetcomp-package.html"/>
+<link rel="next" href="other-examples-1.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#framework"><i class="fa fa-check"></i><b>2.1</b> Framework</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.2</b> R6 Class</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.3</b> Help</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#rtools"><i class="fa fa-check"></i><b>2.4</b> RTools</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.5</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="intro.html"><a href="intro.html#important-packages"><i class="fa fa-check"></i><b>2.5.1</b> Important packages</a></li>
+<li class="chapter" data-level="2.5.2" data-path="intro.html"><a href="intro.html#cran-packages"><i class="fa fa-check"></i><b>2.5.2</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.5.3" data-path="intro.html"><a href="intro.html#ggtree"><i class="fa fa-check"></i><b>2.5.3</b> ggtree</a></li>
+<li class="chapter" data-level="2.5.4" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.5.4</b> Gephi</a></li>
+<li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
+<li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#prepare-the-example-data"><i class="fa fa-check"></i><b>3.1.1</b> Prepare the example data</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#how-to-read-your-files-to-microtable-object"><i class="fa fa-check"></i><b>3.1.2</b> How to read your files to microtable object?</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#functions-in-microtable-class"><i class="fa fa-check"></i><b>3.1.3</b> Functions in microtable class</a></li>
+<li class="chapter" data-level="3.1.4" data-path="basic-class.html"><a href="basic-class.html#subset-of-samples"><i class="fa fa-check"></i><b>3.1.4</b> subset of samples</a></li>
+<li class="chapter" data-level="3.1.5" data-path="basic-class.html"><a href="basic-class.html#filter-features"><i class="fa fa-check"></i><b>3.1.5</b> filter features</a></li>
+<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.6</b> Other examples</a></li>
+<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.7</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example"><i class="fa fa-check"></i><b>4.1.1</b> Example</a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.2.1</b> Example</a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-2"><i class="fa fa-check"></i><b>5.1.1</b> Example</a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.2.1</b> Example</a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-4"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.2.1</b> Example</a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#network-comparison"><i class="fa fa-check"></i><b>6.2.2</b> Network comparison</a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.3</b> Key points</a></li>
+<li class="chapter" data-level="6.2.4" data-path="model-based-class.html"><a href="model-based-class.html#other-functions"><i class="fa fa-check"></i><b>6.2.4</b> Other functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.3.1</b> Example</a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points</a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="model-based-class.html"><a href="model-based-class.html#trans_classifier-class"><i class="fa fa-check"></i><b>6.4</b> trans_classifier class</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="model-based-class.html"><a href="model-based-class.html#dependencies"><i class="fa fa-check"></i><b>6.4.1</b> Dependencies</a></li>
+<li class="chapter" data-level="6.4.2" data-path="model-based-class.html"><a href="model-based-class.html#examples"><i class="fa fa-check"></i><b>6.4.2</b> Examples</a></li>
+<li class="chapter" data-level="6.4.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-8"><i class="fa fa-check"></i><b>6.4.3</b> Key points</a></li>
+<li class="chapter" data-level="6.4.4" data-path="model-based-class.html"><a href="model-based-class.html#other-function-1"><i class="fa fa-check"></i><b>6.4.4</b> Other function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-7"><i class="fa fa-check"></i><b>7.1.1</b> Example</a></li>
+<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-9"><i class="fa fa-check"></i><b>7.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-10"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="file2meco-package.html"><a href="file2meco-package.html"><i class="fa fa-check"></i><b>8</b> file2meco package</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime"><i class="fa fa-check"></i><b>8.1</b> QIIME</a></li>
+<li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2</a></li>
+<li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
+<li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2</a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
+<li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
+<li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>9</b> Other dataset</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>9.1</b> Fungi data</a></li>
+<li class="chapter" data-level="9.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>9.2</b> Metagenomic data</a></li>
+<li class="chapter" data-level="9.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>9.3</b> Gut microbiome</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>10</b> Notes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="notes.html"><a href="notes.html#clone-function"><i class="fa fa-check"></i><b>10.1</b> <code>clone</code> function</a></li>
+<li class="chapter" data-level="10.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>10.2</b> <code>save</code> function</a></li>
+<li class="chapter" data-level="10.3" data-path="notes.html"><a href="notes.html#github-issues"><i class="fa fa-check"></i><b>10.3</b> Github Issues</a></li>
+<li class="chapter" data-level="10.4" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>10.4</b> change object</a></li>
+<li class="chapter" data-level="10.5" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>10.5</b> group order</a></li>
+<li class="chapter" data-level="10.6" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>10.6</b> add layers to plot</a></li>
+<li class="chapter" data-level="10.7" data-path="notes.html"><a href="notes.html#colors-for-many-groups"><i class="fa fa-check"></i><b>10.7</b> colors for many groups</a></li>
+<li class="chapter" data-level="10.8" data-path="notes.html"><a href="notes.html#customized-data-input"><i class="fa fa-check"></i><b>10.8</b> customized data input</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>11</b> mecodev package</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>11.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="11.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_norm"><i class="fa fa-check"></i><b>11.2</b> trans_norm</a></li>
+<li class="chapter" data-level="11.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>11.3</b> trans_ts</a></li>
+<li class="chapter" data-level="11.4" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>11.4</b> trans_gamma</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html"><i class="fa fa-check"></i><b>12</b> meconetcomp package</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-modularity-for-all-networks"><i class="fa fa-check"></i><b>12.1</b> Network modularity for all networks</a></li>
+<li class="chapter" data-level="12.2" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-topological-attributes-for-all-networks"><i class="fa fa-check"></i><b>12.2</b> Network topological attributes for all networks</a></li>
+<li class="chapter" data-level="12.3" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#node-and-edge-properties-extraction-for-all-networks"><i class="fa fa-check"></i><b>12.3</b> Node and edge properties extraction for all networks</a></li>
+<li class="chapter" data-level="12.4" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-nodes-across-networks"><i class="fa fa-check"></i><b>12.4</b> Compare nodes across networks</a></li>
+<li class="chapter" data-level="12.5" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-edges-across-networks"><i class="fa fa-check"></i><b>12.5</b> Compare edges across networks</a></li>
+<li class="chapter" data-level="12.6" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#extract-overlapped-edges-of-networks-to-a-new-network"><i class="fa fa-check"></i><b>12.6</b> Extract overlapped edges of networks to a new network</a></li>
+<li class="chapter" data-level="12.7" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges"><i class="fa fa-check"></i><b>12.7</b> Compare phylogenetic distances of paired nodes in edges</a></li>
+<li class="chapter" data-level="12.8" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks"><i class="fa fa-check"></i><b>12.8</b> Compare node sources of edges across networks</a></li>
+<li class="chapter" data-level="12.9" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks"><i class="fa fa-check"></i><b>12.9</b> Compare topological properties of sub-networks</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="mecoturn-package.html"><a href="mecoturn-package.html"><i class="fa fa-check"></i><b>13</b> mecoturn package</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="mecoturn-package.html"><a href="mecoturn-package.html#betaturn-class"><i class="fa fa-check"></i><b>13.1</b> betaturn class</a></li>
+<li class="chapter" data-level="13.2" data-path="mecoturn-package.html"><a href="mecoturn-package.html#taxaturn-class"><i class="fa fa-check"></i><b>13.2</b> taxaturn class</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="other-examples-1.html"><a href="other-examples-1.html"><i class="fa fa-check"></i><b>14</b> Other examples</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="other-examples-1.html"><a href="other-examples-1.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>14.1</b> Custom taxa order in bar plot</a></li>
+<li class="chapter" data-level="14.2" data-path="other-examples-1.html"><a href="other-examples-1.html#the-importance-of-tidy_taxonomy-function"><i class="fa fa-check"></i><b>14.2</b> The importance of tidy_taxonomy function</a></li>
+<li class="chapter" data-level="14.3" data-path="other-examples-1.html"><a href="other-examples-1.html#show-the-abundance-of-unknown-taxa"><i class="fa fa-check"></i><b>14.3</b> Show the abundance of unknown taxa</a></li>
+<li class="chapter" data-level="14.4" data-path="other-examples-1.html"><a href="other-examples-1.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>14.4</b> Question of prefix in the taxa</a></li>
+<li class="chapter" data-level="14.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>14.5</b> The use of phylogenetic tree</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.14.0)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mecoturn-package" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">Chapter 13</span> mecoturn package<a href="mecoturn-package.html#mecoturn-package" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The mecoturn package is designed to study microbial turnover along plant compartments originally (<a href="https://github.com/ChiLiubio/mecoturn" class="uri">https://github.com/ChiLiubio/mecoturn</a>).
+Generally speaking, it can be used in any case associated with a gradient.</p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="mecoturn-package.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required packages</span></span>
+<span id="cb304-2"><a href="mecoturn-package.html#cb304-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;mecoturn&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;lmerTest&quot;</span>, <span class="st">&quot;betareg&quot;</span>)</span>
+<span id="cb304-3"><a href="mecoturn-package.html#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
+<span id="cb304-4"><a href="mecoturn-package.html#cb304-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb304-5"><a href="mecoturn-package.html#cb304-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb304-6"><a href="mecoturn-package.html#cb304-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb304-7"><a href="mecoturn-package.html#cb304-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div id="betaturn-class" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> betaturn class<a href="mecoturn-package.html#betaturn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The betaturn class is used to study the turnover of communities, i.e. beta diversity along a gradient <span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span>.
+The pipeline consists of the steps of dissimilarity matrix generation, matrix conversion, differential test and visualization.
+Creating betaturn object can generate the dissimilarity matrix stored in the object.
+The example data <code>wheat_16S</code> is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
+In <code>wheat_16S$sample_table</code>, the <code>Type</code> column represents the niches, i.e. plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
+The <code>Plant_ID</code> column denotes each unique plant individual that the samples belong to.
+The <code>Region</code> column means the sampling region of those plants. Each region has five plant individuals.</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="mecoturn-package.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
+<span id="cb305-2"><a href="mecoturn-package.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb305-3"><a href="mecoturn-package.html#cb305-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
+<span id="cb305-4"><a href="mecoturn-package.html#cb305-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document of betaturn</span></span>
+<span id="cb305-5"><a href="mecoturn-package.html#cb305-5" aria-hidden="true" tabindex="-1"></a>?betaturn</span>
+<span id="cb305-6"><a href="mecoturn-package.html#cb305-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use &#39;bray&#39;, i.e. Bray-Curtis dissimilarity, as the example</span></span>
+<span id="cb305-7"><a href="mecoturn-package.html#cb305-7" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> betaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
+<pre><code>## The distance matrix is stored in object$beta_diversity list ...</code></pre>
+<p>The matrix conversion is the core step in the betaturn class.
+It has two cases: <code>within_group = TRUE</code> and <code>within_group = FALSE</code>.
+The case <code>within_group = FALSE</code> means the distance conversion is carried out between any two elements of <code>Type</code> column (<code>group</code> parameter).
+The parameter <code>by_group</code> is used to constrain the conversion, i.e. the conversion is performed for each plant.</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="mecoturn-package.html#cb307-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span></code></pre></div>
+<pre><code>## The result is stored in object$res_group_distance ...</code></pre>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="mecoturn-package.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
+<pre><code>##       Value    Type          Plant_ID
+## 1 0.7844286 S vs RS Northwest_Wheat_1
+## 2 0.7922857 S vs RS Northwest_Wheat_2
+## 3 0.6602857 S vs RS Northwest_Wheat_3
+## 4 0.8028571 S vs RS Northwest_Wheat_4
+## 5 0.7151429 S vs RS Northwest_Wheat_5
+## 6 0.6704286 S vs RS      East_Wheat_1</code></pre>
+<p>The combinations of <code>Type</code> may be not well-organized. We use <code>ordered_group</code> parameter to sort them and <code>sep</code> parameter to assign the direction.</p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="mecoturn-package.html#cb311-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>)</span></code></pre></div>
+<pre><code>## The result is stored in object$res_group_distance ...</code></pre>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="mecoturn-package.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
+<pre><code>##       Value    Type          Plant_ID
+## 1 0.7844286 S -&gt; RS Northwest_Wheat_1
+## 2 0.7922857 S -&gt; RS Northwest_Wheat_2
+## 3 0.6602857 S -&gt; RS Northwest_Wheat_3
+## 4 0.8028571 S -&gt; RS Northwest_Wheat_4
+## 5 0.7151429 S -&gt; RS Northwest_Wheat_5
+## 6 0.6704286 S -&gt; RS      East_Wheat_1</code></pre>
+<p>The <code>cal_group_distance_diff</code> function can be used to perform the statistical analysis.</p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="mecoturn-package.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon rank sum test</span></span>
+<span id="cb315-2"><a href="mecoturn-package.html#cb315-2" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb315-3"><a href="mecoturn-package.html#cb315-3" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test by adding by_ID</span></span>
+<span id="cb315-4"><a href="mecoturn-package.html#cb315-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span>
+<span id="cb315-5"><a href="mecoturn-package.html#cb315-5" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot</span></span>
+<span id="cb315-6"><a href="mecoturn-package.html#cb315-6" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
+<p>The parameter <code>add_cols</code> can be used to add other columns in <code>sample_table</code> to the final table when <code>within_group = FALSE</code>.
+This is especially useful when the statistical analysis will be performed for different groups.</p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="mecoturn-package.html#cb316-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb316-2"><a href="mecoturn-package.html#cb316-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
+<span id="cb316-3"><a href="mecoturn-package.html#cb316-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon test for each region</span></span>
+<span id="cb316-4"><a href="mecoturn-package.html#cb316-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb316-5"><a href="mecoturn-package.html#cb316-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
+<p>Then let’s use linear mixed-effects model to check the random effects of plants.
+For the usages of the <code>formula</code> in linear mixed-effects model (lme4 package), see <a href="https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html" class="uri">https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html</a></p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="mecoturn-package.html#cb317-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb317-2"><a href="mecoturn-package.html#cb317-2" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept and slope of Region</span></span>
+<span id="cb317-3"><a href="mecoturn-package.html#cb317-3" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 + Type| Region)&quot;</span>)</span>
+<span id="cb317-4"><a href="mecoturn-package.html#cb317-4" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID</span></span>
+<span id="cb317-5"><a href="mecoturn-package.html#cb317-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Plant_ID)&quot;</span>)</span>
+<span id="cb317-6"><a href="mecoturn-package.html#cb317-6" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID nested in Region</span></span>
+<span id="cb317-7"><a href="mecoturn-package.html#cb317-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Region/Plant_ID)&quot;</span>)</span>
+<span id="cb317-8"><a href="mecoturn-package.html#cb317-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance_diff</span></code></pre></div>
+<p>Another case <code>within_group = TURE</code> means the distance conversion is performed according to each element of the group.
+For example, when <code>group = "Region"</code>, any two samples within an element of <code>"Region"</code> column will be combined.
+In this scenario, by_group parameter is designed to generate the additional combinations related to other columns.</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="mecoturn-package.html#cb318-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>, <span class="at">group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">by_group =</span> <span class="fu">c</span>(<span class="st">&quot;Type&quot;</span>, <span class="st">&quot;Plant_ID&quot;</span>))</span>
+<span id="cb318-2"><a href="mecoturn-package.html#cb318-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
+<span id="cb318-3"><a href="mecoturn-package.html#cb318-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the combinations not coming from the same plant</span></span>
+<span id="cb318-4"><a href="mecoturn-package.html#cb318-4" aria-hidden="true" tabindex="-1"></a>all_plants <span class="ot">&lt;-</span> <span class="fu">unique</span>(wheat_16S<span class="sc">$</span>sample_table<span class="sc">$</span>Plant_ID)</span>
+<span id="cb318-5"><a href="mecoturn-package.html#cb318-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Plant_ID <span class="sc">%in%</span> <span class="fu">paste0</span>(all_plants, <span class="st">&quot; vs &quot;</span>, all_plants), ]</span>
+<span id="cb318-6"><a href="mecoturn-package.html#cb318-6" aria-hidden="true" tabindex="-1"></a><span class="co"># compare values across regions</span></span>
+<span id="cb318-7"><a href="mecoturn-package.html#cb318-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
+<span id="cb318-8"><a href="mecoturn-package.html#cb318-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">add_sig_text_size =</span> <span class="fl">5.6</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>)</span></code></pre></div>
+</div>
+<div id="taxaturn-class" class="section level2 hasAnchor" number="13.2">
+<h2><span class="header-section-number">13.2</span> taxaturn class<a href="mecoturn-package.html#taxaturn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The taxaturn class refers to microbial abundance change along a gradient.
+Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="mecoturn-package.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study the abundance change of phyla by comparing the mean abundances without the consideration of plants</span></span>
+<span id="cb319-2"><a href="mecoturn-package.html#cb319-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="cn">NULL</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
+<pre><code>## No taxa_abund found. First calculate it with cal_abund function ...</code></pre>
+<pre><code>## Taxa abundance data is stored in object$res_abund ...</code></pre>
+<pre><code>## Abundance change data is stored in object$res_change ...</code></pre>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="mecoturn-package.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                 Taxa    Direction   Change
+## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease
+## 2  p__Actinobacteria S -&gt; RS -&gt; R Increase
+## 3 p__Armatimonadetes S -&gt; RS -&gt; R Decrease
+## 4   p__Bacteroidetes S -&gt; RS -&gt; R      +|-
+## 5     p__Chloroflexi S -&gt; RS -&gt; R Decrease
+## 6   p__Cyanobacteria S -&gt; RS -&gt; R Decrease</code></pre>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="mecoturn-package.html#cb325-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<pre><code>## Raw differential test results are stored in object$res_diff_raw ...</code></pre>
+<pre><code>## Differential test results have been added into object$res_change ...</code></pre>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="mecoturn-package.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                 Taxa    Direction   Change S -&gt; RS | Significance
+## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
+## 2  p__Actinobacteria S -&gt; RS -&gt; R Increase                     ns
+## 3 p__Armatimonadetes S -&gt; RS -&gt; R Decrease                      *
+## 4   p__Bacteroidetes S -&gt; RS -&gt; R      +|-                     ns
+## 5     p__Chloroflexi S -&gt; RS -&gt; R Decrease                    ***
+## 6   p__Cyanobacteria S -&gt; RS -&gt; R Decrease                     ns
+##   RS -&gt; R | Significance
+## 1                    ***
+## 2                    ***
+## 3                     **
+## 4                     ns
+## 5                    ***
+## 6                     **</code></pre>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="mecoturn-package.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the abundance change by summarizing the results for each plant individual</span></span>
+<span id="cb330-2"><a href="mecoturn-package.html#cb330-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
+<pre><code>## No taxa_abund found. First calculate it with cal_abund function ...</code></pre>
+<pre><code>## Taxa abundance data is stored in object$res_abund ...</code></pre>
+<pre><code>## Abundance change data is stored in object$res_change ...</code></pre>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="mecoturn-package.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                 Taxa    Direction   Change
+## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease
+## 2  p__Actinobacteria S -&gt; RS -&gt; R         
+## 3 p__Armatimonadetes S -&gt; RS -&gt; R         
+## 4   p__Bacteroidetes S -&gt; RS -&gt; R         
+## 5     p__Chloroflexi S -&gt; RS -&gt; R         
+## 6   p__Cyanobacteria S -&gt; RS -&gt; R</code></pre>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="mecoturn-package.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test</span></span>
+<span id="cb336-2"><a href="mecoturn-package.html#cb336-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<pre><code>## Raw differential test results are stored in object$res_diff_raw ...</code></pre>
+<pre><code>## Differential test results have been added into object$res_change ...</code></pre>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="mecoturn-package.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                 Taxa    Direction   Change S -&gt; RS | Significance
+## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
+## 2  p__Actinobacteria S -&gt; RS -&gt; R                              ns
+## 3 p__Armatimonadetes S -&gt; RS -&gt; R                              **
+## 4   p__Bacteroidetes S -&gt; RS -&gt; R                               *
+## 5     p__Chloroflexi S -&gt; RS -&gt; R                             ***
+## 6   p__Cyanobacteria S -&gt; RS -&gt; R                              ns
+##   RS -&gt; R | Significance
+## 1                    ***
+## 2                     **
+## 3                    ***
+## 4                     ns
+## 5                    ***
+## 6                    ***</code></pre>
+<p>The upper operations can also be applied to different groups.</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="mecoturn-package.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for each region without the consideration of plants</span></span>
+<span id="cb341-2"><a href="mecoturn-package.html#cb341-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="cn">NULL</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb341-3"><a href="mecoturn-package.html#cb341-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span>
+<span id="cb341-4"><a href="mecoturn-package.html#cb341-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span>
+<span id="cb341-5"><a href="mecoturn-package.html#cb341-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span>
+<span id="cb341-6"><a href="mecoturn-package.html#cb341-6" aria-hidden="true" tabindex="-1"></a><span class="co"># for each region with the consideration of plants</span></span>
+<span id="cb341-7"><a href="mecoturn-package.html#cb341-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb341-8"><a href="mecoturn-package.html#cb341-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span>
+<span id="cb341-9"><a href="mecoturn-package.html#cb341-9" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test</span></span>
+<span id="cb341-10"><a href="mecoturn-package.html#cb341-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span>
+<span id="cb341-11"><a href="mecoturn-package.html#cb341-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span>
+<span id="cb341-12"><a href="mecoturn-package.html#cb341-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot</span>(<span class="at">point_size =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>Then let’s show the linear mixed-effects models.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="mecoturn-package.html#cb342-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb342-2"><a href="mecoturn-package.html#cb342-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 + Type | Region)&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>)</span>
+<span id="cb342-3"><a href="mecoturn-package.html#cb342-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span></code></pre></div>
+<p>For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data,
+which is not normally distributed or homoscedastic generally.
+Beta regression is suitable for the proportion data (bound at 0 and 1).
+It can be conducted with the betareg function in the betareg package <span class="citation">(<a href="#ref-Betaregression_2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span> and has been implemented in the mecoturn package.</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="mecoturn-package.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for all samples</span></span>
+<span id="cb343-2"><a href="mecoturn-package.html#cb343-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb343-3"><a href="mecoturn-package.html#cb343-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;betareg&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type&quot;</span>)</span>
+<span id="cb343-4"><a href="mecoturn-package.html#cb343-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span></code></pre></div>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="mecoturn-package.html#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for different regions</span></span>
+<span id="cb344-2"><a href="mecoturn-package.html#cb344-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb344-3"><a href="mecoturn-package.html#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="co"># measure can designate a taxon</span></span>
+<span id="cb344-4"><a href="mecoturn-package.html#cb344-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;betareg&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>)</span>
+<span id="cb344-5"><a href="mecoturn-package.html#cb344-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span>
+<span id="cb344-6"><a href="mecoturn-package.html#cb344-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot</span>(<span class="at">point_size =</span> <span class="dv">2</span>, <span class="at">select_taxon =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>), <span class="at">rect_fill =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Anderson_Navigating_2011" class="csl-entry">
+Anderson, M. J., T. O. Crist, J. M. Chase, M. Vellend, B. D. Inouye, A. L. Freestone, N. J. Sanders, et al. 2011. <span>“Navigating the Multiple Meanings of Beta Diversity: A Roadmap for the Practicing Ecologist.”</span> Journal Article. <em>Ecology Letters</em> 14 (1): 19–28. <a href="https://doi.org/10.1111/j.1461-0248.2010.01552.x">https://doi.org/10.1111/j.1461-0248.2010.01552.x</a>.
+</div>
+<div id="ref-Betaregression_2010" class="csl-entry">
+Cribari-Neto, Francisco, and Achim Zeileis. 2010. <span>“Beta Regression in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 34 (2): 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">https://doi.org/10.18637/jss.v034.i02</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="meconetcomp-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="other-examples-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/12-mecoturn.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

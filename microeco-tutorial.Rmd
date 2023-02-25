@@ -2318,12 +2318,12 @@ There are too many genera.
 We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance < 0.001.
 
 ```{r, echo = TRUE, eval = FALSE}
-# filter genera that do not have at least one ***
+# filter genera that donot have at least one ***
 t1$plot_cor(filter_feature = c("", "*", "**"))
 ```
 
-Sometimes, if the user want to conduct the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
-please use **other_taxa parameter** in cal_cor function.
+Sometimes, if the user want to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+please use **other_taxa** parameter in cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
@@ -3571,6 +3571,186 @@ ggsave("soil_amp_subnet_property.pdf", g1, width = 11, height = 5)
 
 <!--chapter:end:11-meconetcomp.Rmd-->
 
+# mecoturn package
+
+The mecoturn package is designed to study microbial turnover along plant compartments originally (https://github.com/ChiLiubio/mecoturn).
+Generally speaking, it can be used in any case associated with a gradient. 
+
+
+```{r, echo = TRUE, eval = FALSE}
+# install the required packages
+packages <- c("mecoturn", "agricolae", "lmerTest", "betareg")
+for(x in packages){
+	if(!require(x, character.only = TRUE)) {
+		install.packages(x, dependencies = TRUE)
+	}
+}
+```
+
+## betaturn class
+
+The betaturn class is used to study the turnover of communities, i.e. beta diversity along a gradient [@Anderson_Navigating_2011].
+The pipeline consists of the steps of dissimilarity matrix generation, matrix conversion, differential test and visualization.
+Creating betaturn object can generate the dissimilarity matrix stored in the object.
+The example data `wheat_16S` is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
+In `wheat_16S$sample_table`, the `Type` column represents the niches, i.e. plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
+The `Plant_ID` column denotes each unique plant individual that the samples belong to.
+The `Region` column means the sampling region of those plants. Each region has five plant individuals.
+
+```{r, echo = TRUE, eval = FALSE}
+library(mecoturn)
+library(magrittr)
+data(wheat_16S)
+# see the help document of betaturn
+?betaturn
+# use 'bray', i.e. Bray-Curtis dissimilarity, as the example
+b1 <- betaturn$new(wheat_16S, measure = "bray")
+```
+
+```{r, echo = FALSE, eval = TRUE}
+suppressMessages(library(mecoturn))
+library(magrittr)
+data(wheat_16S)
+b1 <- betaturn$new(wheat_16S, measure = "bray")
+```
+
+The matrix conversion is the core step in the betaturn class.
+It has two cases: `within_group = TRUE` and `within_group = FALSE`.
+The case `within_group = FALSE` means the distance conversion is carried out between any two elements of `Type` column (`group` parameter).
+The parameter `by_group` is used to constrain the conversion, i.e. the conversion is performed for each plant.
+
+```{r, echo = TRUE, eval = TRUE}
+b1$cal_group_distance(group = "Type", within_group = FALSE, by_group = "Plant_ID")
+head(b1$res_group_distance)
+```
+
+The combinations of `Type` may be not well-organized. We use `ordered_group` parameter to sort them and `sep` parameter to assign the direction.
+
+```{r, echo = TRUE, eval = TRUE}
+b1$cal_group_distance(group = "Type", ordered_group = c("S", "RS", "R"), within_group = FALSE, by_group = "Plant_ID", sep = " -> ")
+head(b1$res_group_distance)
+```
+
+The `cal_group_distance_diff` function can be used to perform the statistical analysis.
+
+```{r, echo = TRUE, eval = FALSE}
+# Wilcoxon rank sum test
+b1$cal_group_distance_diff(method = "wilcox")
+# paired Wilcoxon test by adding by_ID
+b1$cal_group_distance_diff(method = "wilcox", by_ID = "Plant_ID")
+# box plot
+b1$plot_group_distance()
+```
+
+The parameter `add_cols` can be used to add other columns in `sample_table` to the final table when `within_group = FALSE`.
+This is especially useful when the statistical analysis will be performed for different groups.
+
+```{r, echo = TRUE, eval = FALSE}
+b1$cal_group_distance(group = "Type", ordered_group = c("S", "RS", "R"), within_group = FALSE, by_group = "Plant_ID", sep = " -> ", add_cols = "Region")
+head(b1$res_group_distance)
+# Wilcoxon test for each region
+b1$cal_group_distance_diff(method = "wilcox", by_group = "Region")
+b1$plot_group_distance()
+```
+
+Then let's use linear mixed-effects model to check the random effects of plants.
+For the usages of the `formula` in linear mixed-effects model (lme4 package), see https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html
+
+```{r, echo = TRUE, eval = FALSE}
+b1$cal_group_distance(group = "Type", ordered_group = c("S", "RS", "R"), within_group = FALSE, by_group = "Plant_ID", sep = " -> ", add_cols = "Region")
+# random intercept and slope of Region
+b1$cal_group_distance_diff(method = "lme", formula = "Type + (1 + Type| Region)")
+# random intercept of Plant_ID
+b1$cal_group_distance_diff(method = "lme", formula = "Type + (1 | Plant_ID)")
+# random intercept of Plant_ID nested in Region
+b1$cal_group_distance_diff(method = "lme", formula = "Type + (1 | Region/Plant_ID)")
+b1$res_group_distance_diff
+```
+
+Another case `within_group = TURE` means the distance conversion is performed according to each element of the group.
+For example, when `group = "Region"`, any two samples within an element of `"Region"` column will be combined.
+In this scenario, by_group parameter is designed to generate the additional combinations related to other columns.
+
+```{r, echo = TRUE, eval = FALSE}
+b1$cal_group_distance(within_group = TRUE, group = "Region", by_group = c("Type", "Plant_ID"))
+head(b1$res_group_distance)
+# filter the combinations not coming from the same plant
+all_plants <- unique(wheat_16S$sample_table$Plant_ID)
+b1$res_group_distance %<>% .[.$Plant_ID %in% paste0(all_plants, " vs ", all_plants), ]
+# compare values across regions
+b1$cal_group_distance_diff(method = "anova")
+b1$plot_group_distance(add_sig_text_size = 5.6, xtext_angle = 30)
+```
+
+## taxaturn class
+
+The taxaturn class refers to microbial abundance change along a gradient.
+Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.
+
+```{r, echo = TRUE, eval = TRUE}
+# study the abundance change of phyla by comparing the mean abundances without the consideration of plants
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = NULL, by_group = NULL, filter_thres = 0.001)
+head(t1$res_change)
+t1$cal_diff(method = "wilcox", p_adjust_method = NULL)
+head(t1$res_change)
+# compare the abundance change by summarizing the results for each plant individual
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = NULL, filter_thres = 0.001)
+head(t1$res_change)
+# paired Wilcoxon test
+t1$cal_diff(method = "wilcox", p_adjust_method = NULL)
+head(t1$res_change)
+```
+
+The upper operations can also be applied to different groups.
+
+```{r, echo = TRUE, eval = FALSE}
+# for each region without the consideration of plants
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = NULL, by_group = "Region", filter_thres = 0.001)
+head(t1$res_change)
+t1$cal_diff(method = "wilcox", p_adjust_method = NULL)
+head(t1$res_change)
+# for each region with the consideration of plants
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = "Region", filter_thres = 0.001)
+head(t1$res_change)
+# paired Wilcoxon test
+t1$cal_diff(method = "wilcox", p_adjust_method = NULL)
+head(t1$res_change)
+t1$plot(point_size = 2)
+```
+
+Then let's show the linear mixed-effects models.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = "Region")
+t1$cal_diff(method = "lme", formula = "Type + (1 + Type | Region)", measure = "p__Proteobacteria")
+t1$res_diff
+```
+
+For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data, 
+which is not normally distributed or homoscedastic generally.
+Beta regression is suitable for the proportion data (bound at 0 and 1).
+It can be conducted with the betareg function in the betareg package [@Betaregression_2010] and has been implemented in the mecoturn package.
+
+
+```{r, echo = TRUE, eval = FALSE}
+# for all samples
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = NULL, filter_thres = 0.001)
+t1$cal_diff(method = "betareg", formula = "Type")
+t1$res_diff
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# for different regions
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = "Region", filter_thres = 0.001)
+# measure can designate a taxon
+t1$cal_diff(method = "betareg", formula = "Type", measure = "p__Proteobacteria")
+t1$res_diff
+t1$plot(point_size = 2, select_taxon = "p__Proteobacteria", plot_type = c("point", "smooth"), rect_fill = FALSE)
+```
+
+
+<!--chapter:end:12-mecoturn.Rmd-->
+
 # Other examples
 
 We've gathered a few tricks to make several issues easier to solve.
@@ -3621,11 +3801,11 @@ One of Issues referred to the basic use of phylogenetic tree in the microeco pac
 
 
 
-<!--chapter:end:12-Other_examples.Rmd-->
+<!--chapter:end:13-Other_examples.Rmd-->
 
 `r if (knitr:::is_html_output()) '
 # References {-}
 '`
 
-<!--chapter:end:13-references.Rmd-->
+<!--chapter:end:14-references.Rmd-->
 

@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.14.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-02-10}
+\date{2023-02-25}
 
 \begin{document}
 \maketitle
@@ -3055,7 +3055,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Feb 10 23:35:37 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Feb 25 22:58:55 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3085,9 +3085,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.388 & 0.3638 & 9.115 \\
-CW & 435 & 0.5631 & 0.2962 & 0.2866 & 14.29 \\
-TW & 435 & 0.6245 & 0.4167 & 0.3999 & 9.873 \\
+IW & 435 & 0.6538 & 0.3876 & 0.3639 & 9.068 \\
+CW & 435 & 0.5625 & 0.2958 & 0.2862 & 14.3 \\
+TW & 435 & 0.6246 & 0.4148 & 0.4 & 9.904 \\
 \bottomrule()
 \end{longtable}
 
@@ -3641,13 +3641,13 @@ We can use the filter\_feature parameter in plot\_cor to filter some taxa that d
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# filter genera that do not have at least one ***}
+\CommentTok{\# filter genera that donot have at least one ***}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{filter\_feature =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{"**"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-Sometimes, if the user want to conduct the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
-please use \textbf{other\_taxa parameter} in cal\_cor function.
+Sometimes, if the user want to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+please use \textbf{other\_taxa} parameter in cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5120,6 +5120,374 @@ All the operations were encapsulated into the subnet\_property function of mecon
 \CommentTok{\# generate correlation heatmap}
 \NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_subnet\_property.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{mecoturn-package}{%
+\chapter{mecoturn package}\label{mecoturn-package}}
+
+The mecoturn package is designed to study microbial turnover along plant compartments originally (\url{https://github.com/ChiLiubio/mecoturn}).
+Generally speaking, it can be used in any case associated with a gradient.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install the required packages}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mecoturn"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"lmerTest"}\NormalTok{, }\StringTok{"betareg"}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
+        \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{betaturn-class}{%
+\section{betaturn class}\label{betaturn-class}}
+
+The betaturn class is used to study the turnover of communities, i.e.~beta diversity along a gradient \citep{Anderson_Navigating_2011}.
+The pipeline consists of the steps of dissimilarity matrix generation, matrix conversion, differential test and visualization.
+Creating betaturn object can generate the dissimilarity matrix stored in the object.
+The example data \texttt{wheat\_16S} is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
+In \texttt{wheat\_16S\$sample\_table}, the \texttt{Type} column represents the niches, i.e.~plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
+The \texttt{Plant\_ID} column denotes each unique plant individual that the samples belong to.
+The \texttt{Region} column means the sampling region of those plants. Each region has five plant individuals.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(mecoturn)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{data}\NormalTok{(wheat\_16S)}
+\CommentTok{\# see the help document of betaturn}
+\NormalTok{?betaturn}
+\CommentTok{\# use \textquotesingle{}bray\textquotesingle{}, i.e. Bray{-}Curtis dissimilarity, as the example}
+\NormalTok{b1 }\OtherTok{\textless{}{-}}\NormalTok{ betaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The distance matrix is stored in object$beta_diversity list ...
+\end{verbatim}
+
+The matrix conversion is the core step in the betaturn class.
+It has two cases: \texttt{within\_group\ =\ TRUE} and \texttt{within\_group\ =\ FALSE}.
+The case \texttt{within\_group\ =\ FALSE} means the distance conversion is carried out between any two elements of \texttt{Type} column (\texttt{group} parameter).
+The parameter \texttt{by\_group} is used to constrain the conversion, i.e.~the conversion is performed for each plant.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{within\_group =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Plant\_ID"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The result is stored in object$res_group_distance ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Value    Type          Plant_ID
+## 1 0.7844286 S vs RS Northwest_Wheat_1
+## 2 0.7922857 S vs RS Northwest_Wheat_2
+## 3 0.6602857 S vs RS Northwest_Wheat_3
+## 4 0.8028571 S vs RS Northwest_Wheat_4
+## 5 0.7151429 S vs RS Northwest_Wheat_5
+## 6 0.6704286 S vs RS      East_Wheat_1
+\end{verbatim}
+
+The combinations of \texttt{Type} may be not well-organized. We use \texttt{ordered\_group} parameter to sort them and \texttt{sep} parameter to assign the direction.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{within\_group =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{sep =} \StringTok{" {-}\textgreater{} "}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The result is stored in object$res_group_distance ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Value    Type          Plant_ID
+## 1 0.7844286 S -> RS Northwest_Wheat_1
+## 2 0.7922857 S -> RS Northwest_Wheat_2
+## 3 0.6602857 S -> RS Northwest_Wheat_3
+## 4 0.8028571 S -> RS Northwest_Wheat_4
+## 5 0.7151429 S -> RS Northwest_Wheat_5
+## 6 0.6704286 S -> RS      East_Wheat_1
+\end{verbatim}
+
+The \texttt{cal\_group\_distance\_diff} function can be used to perform the statistical analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Wilcoxon rank sum test}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\CommentTok{\# paired Wilcoxon test by adding by\_ID}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{)}
+\CommentTok{\# box plot}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+The parameter \texttt{add\_cols} can be used to add other columns in \texttt{sample\_table} to the final table when \texttt{within\_group\ =\ FALSE}.
+This is especially useful when the statistical analysis will be performed for different groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{within\_group =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{sep =} \StringTok{" {-}\textgreater{} "}\NormalTok{, }\AttributeTok{add\_cols =} \StringTok{"Region"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance)}
+\CommentTok{\# Wilcoxon test for each region}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{)}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Then let's use linear mixed-effects model to check the random effects of plants.
+For the usages of the \texttt{formula} in linear mixed-effects model (lme4 package), see \url{https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{within\_group =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{sep =} \StringTok{" {-}\textgreater{} "}\NormalTok{, }\AttributeTok{add\_cols =} \StringTok{"Region"}\NormalTok{)}
+\CommentTok{\# random intercept and slope of Region}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type + (1 + Type| Region)"}\NormalTok{)}
+\CommentTok{\# random intercept of Plant\_ID}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type + (1 | Plant\_ID)"}\NormalTok{)}
+\CommentTok{\# random intercept of Plant\_ID nested in Region}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type + (1 | Region/Plant\_ID)"}\NormalTok{)}
+\NormalTok{b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+Another case \texttt{within\_group\ =\ TURE} means the distance conversion is performed according to each element of the group.
+For example, when \texttt{group\ =\ "Region"}, any two samples within an element of \texttt{"Region"} column will be combined.
+In this scenario, by\_group parameter is designed to generate the additional combinations related to other columns.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{group =} \StringTok{"Region"}\NormalTok{, }\AttributeTok{by\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"Type"}\NormalTok{, }\StringTok{"Plant\_ID"}\NormalTok{))}
+\FunctionTok{head}\NormalTok{(b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance)}
+\CommentTok{\# filter the combinations not coming from the same plant}
+\NormalTok{all\_plants }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(wheat\_16S}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Plant\_ID)}
+\NormalTok{b1}\SpecialCharTok{$}\NormalTok{res\_group\_distance }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{Plant\_ID }\SpecialCharTok{\%in\%} \FunctionTok{paste0}\NormalTok{(all\_plants, }\StringTok{" vs "}\NormalTok{, all\_plants), ]}
+\CommentTok{\# compare values across regions}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\NormalTok{b1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{add\_sig\_text\_size =} \FloatTok{5.6}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{taxaturn-class}{%
+\section{taxaturn class}\label{taxaturn-class}}
+
+The taxaturn class refers to microbial abundance change along a gradient.
+Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# study the abundance change of phyla by comparing the mean abundances without the consideration of plants}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{by\_group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No taxa_abund found. First calculate it with cal_abund function ...
+\end{verbatim}
+
+\begin{verbatim}
+## Taxa abundance data is stored in object$res_abund ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change data is stored in object$res_change ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Taxa    Direction   Change
+## 1   p__Acidobacteria S -> RS -> R Decrease
+## 2  p__Actinobacteria S -> RS -> R Increase
+## 3 p__Armatimonadetes S -> RS -> R Decrease
+## 4   p__Bacteroidetes S -> RS -> R      +|-
+## 5     p__Chloroflexi S -> RS -> R Decrease
+## 6   p__Cyanobacteria S -> RS -> R Decrease
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Raw differential test results are stored in object$res_diff_raw ...
+\end{verbatim}
+
+\begin{verbatim}
+## Differential test results have been added into object$res_change ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Taxa    Direction   Change S -> RS | Significance
+## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
+## 2  p__Actinobacteria S -> RS -> R Increase                     ns
+## 3 p__Armatimonadetes S -> RS -> R Decrease                      *
+## 4   p__Bacteroidetes S -> RS -> R      +|-                     ns
+## 5     p__Chloroflexi S -> RS -> R Decrease                    ***
+## 6   p__Cyanobacteria S -> RS -> R Decrease                     ns
+##   RS -> R | Significance
+## 1                    ***
+## 2                    ***
+## 3                     **
+## 4                     ns
+## 5                    ***
+## 6                     **
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# compare the abundance change by summarizing the results for each plant individual}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No taxa_abund found. First calculate it with cal_abund function ...
+\end{verbatim}
+
+\begin{verbatim}
+## Taxa abundance data is stored in object$res_abund ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change data is stored in object$res_change ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Taxa    Direction   Change
+## 1   p__Acidobacteria S -> RS -> R Decrease
+## 2  p__Actinobacteria S -> RS -> R         
+## 3 p__Armatimonadetes S -> RS -> R         
+## 4   p__Bacteroidetes S -> RS -> R         
+## 5     p__Chloroflexi S -> RS -> R         
+## 6   p__Cyanobacteria S -> RS -> R
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# paired Wilcoxon test}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Raw differential test results are stored in object$res_diff_raw ...
+\end{verbatim}
+
+\begin{verbatim}
+## Differential test results have been added into object$res_change ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 Taxa    Direction   Change S -> RS | Significance
+## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
+## 2  p__Actinobacteria S -> RS -> R                              ns
+## 3 p__Armatimonadetes S -> RS -> R                              **
+## 4   p__Bacteroidetes S -> RS -> R                               *
+## 5     p__Chloroflexi S -> RS -> R                             ***
+## 6   p__Cyanobacteria S -> RS -> R                              ns
+##   RS -> R | Significance
+## 1                    ***
+## 2                     **
+## 3                    ***
+## 4                     ns
+## 5                    ***
+## 6                    ***
+\end{verbatim}
+
+The upper operations can also be applied to different groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for each region without the consideration of plants}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\CommentTok{\# for each region with the consideration of plants}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\CommentTok{\# paired Wilcoxon test}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_change)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{point\_size =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then let's show the linear mixed-effects models.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type + (1 + Type | Region)"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data,
+which is not normally distributed or homoscedastic generally.
+Beta regression is suitable for the proportion data (bound at 0 and 1).
+It can be conducted with the betareg function in the betareg package \citep{Betaregression_2010} and has been implemented in the mecoturn package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for all samples}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"betareg"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for different regions}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# measure can designate a taxon}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"betareg"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{point\_size =} \DecValTok{2}\NormalTok{, }\AttributeTok{select\_taxon =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{, }\AttributeTok{plot\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{, }\StringTok{"smooth"}\NormalTok{), }\AttributeTok{rect\_fill =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
