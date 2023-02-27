@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.14.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-02-25}
+\date{2023-02-27}
 
 \begin{document}
 \maketitle
@@ -3055,7 +3055,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Feb 25 22:58:55 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Mon Feb 27 16:56:40 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3085,9 +3085,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3876 & 0.3639 & 9.068 \\
-CW & 435 & 0.5625 & 0.2958 & 0.2862 & 14.3 \\
-TW & 435 & 0.6246 & 0.4148 & 0.4 & 9.904 \\
+IW & 435 & 0.6539 & 0.3879 & 0.364 & 9.101 \\
+CW & 435 & 0.5631 & 0.2964 & 0.2866 & 14.25 \\
+TW & 435 & 0.6245 & 0.4162 & 0.3999 & 9.878 \\
 \bottomrule()
 \end{longtable}
 
@@ -3597,6 +3597,9 @@ Significance
 ** \\
 \bottomrule()
 \end{longtable}
+
+For the combination of mantel test and correlation heatmap,
+please see another example (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#mantel-test-correlation-heatmap}).
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using Genus level data.
@@ -5532,6 +5535,68 @@ and (\url{https://github.com/ChiLiubio/microeco/issues/15}).
 \section{The use of phylogenetic tree}\label{the-use-of-phylogenetic-tree}}
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (\url{https://github.com/ChiLiubio/microeco/issues/33}).
+
+\hypertarget{mantel-test-correlation-heatmap}{%
+\section{Mantel test + Correlation heatmap}\label{mantel-test-correlation-heatmap}}
+
+Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
+In this example, we show how to extend the mantel test results from \texttt{trans\_env} class with the package ggcor.
+Please install \texttt{ggcor} package according to the document (\url{https://github.com/mj163163/ggcor-1}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# prepare data}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\FunctionTok{data}\NormalTok{(env\_data\_16S)}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\CommentTok{\# extract two phyla to show the steps}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{d1}\SpecialCharTok{$}\NormalTok{tax\_table }\OtherTok{\textless{}{-}}\NormalTok{ d1}\SpecialCharTok{$}\NormalTok{tax\_table[d1}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{==} \StringTok{"p\_\_Proteobacteria"}\NormalTok{, ]}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{()}
+\NormalTok{d2 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{d2}\SpecialCharTok{$}\NormalTok{tax\_table }\OtherTok{\textless{}{-}}\NormalTok{ d2}\SpecialCharTok{$}\NormalTok{tax\_table[d2}\SpecialCharTok{$}\NormalTok{tax\_table}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{==} \StringTok{"p\_\_Bacteroidetes"}\NormalTok{, ]}
+\NormalTok{d2}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{d2}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{()}
+\CommentTok{\# first perform mantel test}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{partial\_mantel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d2, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{partial\_mantel =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# extract a part of the results }
+\NormalTok{x1 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{spec =} \StringTok{"Proteobacteria"}\NormalTok{, t1}\SpecialCharTok{$}\NormalTok{res\_mantel) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)]}
+\NormalTok{x2 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{spec =} \StringTok{"Bacteroidetes"}\NormalTok{, t2}\SpecialCharTok{$}\NormalTok{res\_mantel) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)]}
+\CommentTok{\# rename columns}
+\FunctionTok{colnames}\NormalTok{(x1) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(x2) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"spec"}\NormalTok{, }\StringTok{"env"}\NormalTok{, }\StringTok{"r"}\NormalTok{, }\StringTok{"p.value"}\NormalTok{)}
+\CommentTok{\# generate interval data}
+\NormalTok{x1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{rd =} \FunctionTok{cut}\NormalTok{(r, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.6}\NormalTok{, }\ConstantTok{Inf}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{} 0.3"}\NormalTok{, }\StringTok{"0.3 {-} 0.6"}\NormalTok{, }\StringTok{"\textgreater{}= 0.6"}\NormalTok{)),}
+    \AttributeTok{pd =} \FunctionTok{cut}\NormalTok{(p.value, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, }\FloatTok{0.01}\NormalTok{, }\FloatTok{0.05}\NormalTok{, }\ConstantTok{Inf}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{} 0.01"}\NormalTok{, }\StringTok{"0.01 {-} 0.05"}\NormalTok{, }\StringTok{"\textgreater{}= 0.05"}\NormalTok{)))}
+\NormalTok{x2 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{rd =} \FunctionTok{cut}\NormalTok{(r, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.6}\NormalTok{, }\ConstantTok{Inf}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{} 0.3"}\NormalTok{, }\StringTok{"0.3 {-} 0.6"}\NormalTok{, }\StringTok{"\textgreater{}= 0.6"}\NormalTok{)),}
+    \AttributeTok{pd =} \FunctionTok{cut}\NormalTok{(p.value, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, }\FloatTok{0.01}\NormalTok{, }\FloatTok{0.05}\NormalTok{, }\ConstantTok{Inf}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{} 0.01"}\NormalTok{, }\StringTok{"0.01 {-} 0.05"}\NormalTok{, }\StringTok{"\textgreater{}= 0.05"}\NormalTok{)))}
+
+\CommentTok{\# cobine two tables}
+\NormalTok{plot\_table }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(x1, x2)}
+\CommentTok{\# require ggcor package (https://github.com/mj163163/ggcor{-}1)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(ggcor)}
+\FunctionTok{set\_scale}\NormalTok{()}
+
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{quickcor}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env, }\AttributeTok{type =} \StringTok{"upper"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_square}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{anno\_link}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{colour =}\NormalTok{ pd, }\AttributeTok{size =}\NormalTok{ rd), }\AttributeTok{data =}\NormalTok{ plot\_table) }\SpecialCharTok{+}
+    \FunctionTok{scale\_size\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#D95F02"}\NormalTok{, }\StringTok{"\#1B9E77"}\NormalTok{, }\StringTok{"\#A2A2A288"}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{guides}\NormalTok{(}\AttributeTok{size =} \FunctionTok{guide\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mantel\textquotesingle{}s r"}\NormalTok{, }\AttributeTok{override.aes =} \FunctionTok{list}\NormalTok{(}\AttributeTok{colour =} \StringTok{"grey35"}\NormalTok{), }\AttributeTok{order =} \DecValTok{2}\NormalTok{),}
+        \AttributeTok{colour =} \FunctionTok{guide\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mantel\textquotesingle{}s p"}\NormalTok{, }\AttributeTok{override.aes =} \FunctionTok{list}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{), }\AttributeTok{order =} \DecValTok{1}\NormalTok{),}
+        \AttributeTok{fill =} \FunctionTok{guide\_colorbar}\NormalTok{(}\AttributeTok{title =} \StringTok{"Pearson\textquotesingle{}s r"}\NormalTok{, }\AttributeTok{order =} \DecValTok{3}\NormalTok{))}
+
+\NormalTok{g1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/plot_env_mantel_ggcor} \end{center}
 
   \bibliography{book.bib,packages.bib}
 
