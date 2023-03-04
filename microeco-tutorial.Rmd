@@ -1823,6 +1823,7 @@ If we want to plot the betaNRI, we can use plot_group_distance function in trans
 For example, the results showed that the mean betaNRI of TW is extremely and significantly larger that those in CW and IW,
 revealing that the basal phylogenetic turnover in TW is high.
 
+
 ```{r, echo = TRUE, eval=FALSE}
 # add betaNRI matrix to beta_diversity list
 dataset$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
@@ -1830,8 +1831,10 @@ dataset$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
 t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
 # transform the distance for each group
 t2$cal_group_distance()
+# see the help document for more methods, e.g. "anova" and "KW_dunn"
+t2$cal_group_distance_diff(method = "wilcox")
 # plot the results
-g1 <- t2$plot_group_distance(distance_pair_stat = TRUE)
+g1 <- t2$plot_group_distance()
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -1867,7 +1870,9 @@ test <- test[, -1, drop = FALSE]
 dataset$beta_diversity[["betaNRI"]] <- test
 t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
 t2$cal_group_distance()
-g1 <- t2$plot_group_distance(distance_pair_stat = TRUE)
+# statistical analysis
+t2$cal_group_distance_diff(method = "wilcox")
+g1 <- t2$plot_group_distance()
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 

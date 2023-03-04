@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -906,9 +906,11 @@ revealing that the basal phylogenetic turnover in TW is high.</p>
 <span id="cb169-4"><a href="model-based-class.html#cb169-4" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;betaNRI&quot;</span>)</span>
 <span id="cb169-5"><a href="model-based-class.html#cb169-5" aria-hidden="true" tabindex="-1"></a><span class="co"># transform the distance for each group</span></span>
 <span id="cb169-6"><a href="model-based-class.html#cb169-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_group_distance</span>()</span>
-<span id="cb169-7"><a href="model-based-class.html#cb169-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results</span></span>
-<span id="cb169-8"><a href="model-based-class.html#cb169-8" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">distance_pair_stat =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb169-9"><a href="model-based-class.html#cb169-9" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<span id="cb169-7"><a href="model-based-class.html#cb169-7" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document for more methods, e.g. &quot;anova&quot; and &quot;KW_dunn&quot;</span></span>
+<span id="cb169-8"><a href="model-based-class.html#cb169-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb169-9"><a href="model-based-class.html#cb169-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results</span></span>
+<span id="cb169-10"><a href="model-based-class.html#cb169-10" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span>
+<span id="cb169-11"><a href="model-based-class.html#cb169-11" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Images/plot_betaNRI_one_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
 you should calculate the results for each group, respectively.
@@ -936,8 +938,10 @@ revealing that the strength of variable selection in CW and TW may be similar un
 <span id="cb170-19"><a href="model-based-class.html#cb170-19" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>beta_diversity[[<span class="st">&quot;betaNRI&quot;</span>]] <span class="ot">&lt;-</span> test</span>
 <span id="cb170-20"><a href="model-based-class.html#cb170-20" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;betaNRI&quot;</span>)</span>
 <span id="cb170-21"><a href="model-based-class.html#cb170-21" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_group_distance</span>()</span>
-<span id="cb170-22"><a href="model-based-class.html#cb170-22" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">distance_pair_stat =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb170-23"><a href="model-based-class.html#cb170-23" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<span id="cb170-22"><a href="model-based-class.html#cb170-22" aria-hidden="true" tabindex="-1"></a><span class="co"># statistical analysis</span></span>
+<span id="cb170-23"><a href="model-based-class.html#cb170-23" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb170-24"><a href="model-based-class.html#cb170-24" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span>
+<span id="cb170-25"><a href="model-based-class.html#cb170-25" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Images/plot_betaNRI_each_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover <span class="citation">(<a href="#ref-Stegen_Quantifying_2013" role="doc-biblioref">Stegen et al. 2013</a>)</span>.</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="model-based-class.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># null model run 500 times</span></span>
@@ -1064,7 +1068,7 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <span id="cb177-2"><a href="model-based-class.html#cb177-2" aria-hidden="true" tabindex="-1"></a><span class="co"># result: t1$res_tNST</span></span>
 <span id="cb177-3"><a href="model-based-class.html#cb177-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_tNST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Mon Feb 27 16:53:43 2023. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Sat Mar  4 13:16:11 2023. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_tNST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1089,26 +1093,26 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.6537</td>
-<td align="center">0.3878</td>
-<td align="center">0.3638</td>
-<td align="center">9.13</td>
+<td align="center">0.6543</td>
+<td align="center">0.3871</td>
+<td align="center">0.3643</td>
+<td align="center">9.095</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.563</td>
-<td align="center">0.2956</td>
-<td align="center">0.2866</td>
-<td align="center">14.41</td>
+<td align="center">0.5625</td>
+<td align="center">0.2957</td>
+<td align="center">0.2861</td>
+<td align="center">14.37</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6243</td>
-<td align="center">0.4159</td>
-<td align="center">0.3997</td>
-<td align="center">9.866</td>
+<td align="center">0.6244</td>
+<td align="center">0.4161</td>
+<td align="center">0.4</td>
+<td align="center">9.871</td>
 </tr>
 </tbody>
 </table>

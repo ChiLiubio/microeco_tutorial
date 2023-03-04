@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.14.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-02-27}
+\date{2023-03-04}
 
 \begin{document}
 \maketitle
@@ -2891,8 +2891,10 @@ revealing that the basal phylogenetic turnover in TW is high.
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"betaNRI"}\NormalTok{)}
 \CommentTok{\# transform the distance for each group}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
+\CommentTok{\# see the help document for more methods, e.g. "anova" and "KW\_dunn"}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
 \CommentTok{\# plot the results}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{distance\_pair\_stat =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
 \NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2928,7 +2930,9 @@ revealing that the strength of variable selection in CW and TW may be similar un
 \NormalTok{dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity[[}\StringTok{"betaNRI"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ test}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"betaNRI"}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{distance\_pair\_stat =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# statistical analysis}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
 \NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3055,7 +3059,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Mon Feb 27 16:56:40 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Mar  4 13:19:18 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3085,9 +3089,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3879 & 0.364 & 9.101 \\
-CW & 435 & 0.5631 & 0.2964 & 0.2866 & 14.25 \\
-TW & 435 & 0.6245 & 0.4162 & 0.3999 & 9.878 \\
+IW & 435 & 0.6537 & 0.386 & 0.3637 & 9.149 \\
+CW & 435 & 0.5631 & 0.2959 & 0.2866 & 14.31 \\
+TW & 435 & 0.6246 & 0.4162 & 0.4 & 9.805 \\
 \bottomrule()
 \end{longtable}
 
@@ -5311,7 +5315,11 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change data is stored in object$res_change ...
+## Abundance change along groups is stored in object$res_change_pair ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change summary is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -5383,7 +5391,11 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change data is stored in object$res_change ...
+## Abundance change along groups is stored in object$res_change_pair ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change summary is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}
