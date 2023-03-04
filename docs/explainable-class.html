@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.0)</title>
+  <title>Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.1)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.0)" />
+  <meta property="og:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.1)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.0)" />
+  <meta name="twitter:title" content="Chapter 7 Explainable class | Tutorial for R microeco package (v0.14.1)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
   
@@ -330,7 +330,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.14.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.14.1)</a>
           </h1>
         </div>
 
@@ -653,8 +653,9 @@ please use <strong>add_abund_table parameter</strong> in the cal_cor function.</
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="explainable-class.html#cb223-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
 <span id="cb223-2"><a href="explainable-class.html#cb223-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use add_abund_table parameter to add the extra data table</span></span>
 <span id="cb223-3"><a href="explainable-class.html#cb223-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> dataset<span class="sc">$</span>alpha_diversity)</span>
-<span id="cb223-4"><a href="explainable-class.html#cb223-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s try to use ggplot2 with clustering plot</span></span>
-<span id="cb223-5"><a href="explainable-class.html#cb223-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">cluster_ggplot =</span> <span class="st">&quot;row&quot;</span>)</span></code></pre></div>
+<span id="cb223-4"><a href="explainable-class.html#cb223-4" aria-hidden="true" tabindex="-1"></a><span class="co"># try to use ggplot2 with clustering plot</span></span>
+<span id="cb223-5"><a href="explainable-class.html#cb223-5" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)</span></span>
+<span id="cb223-6"><a href="explainable-class.html#cb223-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">cluster_ggplot =</span> <span class="st">&quot;row&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_corr_alpha_diversity.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>The function plot_scatterfit() in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.</p>
 <div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="explainable-class.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use pH and bray-curtis distance</span></span>
