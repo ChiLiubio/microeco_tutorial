@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-07" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
 <li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
@@ -352,21 +352,22 @@ The dashed line denotes the key objects (input or output of functions) that dese
 usearch (<a href="https://www.drive5.com/usearch/" class="uri">https://www.drive5.com/usearch/</a>), mothur <span class="citation">(<a href="#ref-Schloss_Introducing_2009" role="doc-biblioref">Schloss et al. 2009</a>)</span>,
 SILVAngs (<a href="https://ngs.arb-silva.de/silvangs/" class="uri">https://ngs.arb-silva.de/silvangs/</a>),
 and RDP (<a href="http://rdp.cme.msu.edu/" class="uri">http://rdp.cme.msu.edu/</a>).
-Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
+Although the formats of result files may vary across tools, the main contents can be generally classified into the following parts:
 (1) OTU/ASV table, i.e. the feature-sample abundance table;
 (2) taxonomic assignment table;
 (3) representative sequences;
 (4) phylogenetic tree;
-(5) metadata. It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).</p>
+(5) metadata.
+It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).</p>
 <p>　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
-At least, the OTU table (i.e. feature-sample abundance table) should be provided for creating microtable object.
+At least, the OTU table (i.e. feature-sample abundance table) should be provided to create microtable object.
 Thus, the microtable class can determine that the sample information table is missing and create a default sample table according to
-the sample names in otu_table.
-To make the file reading more convenient,
+sample names in otu_table.
+To make the file input more convenient,
 we also build another R package file2meco (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) to read the output files of some tools into microtable object.
 Currently, those tools/softwares include not only commonly-used QIIME <span class="citation">(<a href="#ref-Caporaso_QIIME_2010" role="doc-biblioref">Caporaso et al. 2010</a>)</span> and QIIME2<span class="citation">(<a href="#ref-Bolyen_Reproducible_2019" role="doc-biblioref">Bolyen et al. 2019</a>)</span>,
-but also some metagenomic tools, such as HUMAnN <span class="citation">(<a href="#ref-Franzosa_Species_2018" role="doc-biblioref">Franzosa et al. 2018</a>)</span> and kraken2 <span class="citation">(<a href="#ref-Wood_Improved_2019" role="doc-biblioref">Wood, Lu, and Langmead 2019</a>)</span>.
-In this tutorial, we use the data inside the package microeco to show some basic operations.</p>
+but also several metagenomic tools, such as HUMAnN <span class="citation">(<a href="#ref-Franzosa_Species_2018" role="doc-biblioref">Franzosa et al. 2018</a>)</span> and kraken2 <span class="citation">(<a href="#ref-Wood_Improved_2019" role="doc-biblioref">Wood, Lu, and Langmead 2019</a>)</span>.
+In this tutorial, the data inside the package was employed to show some basic operations.</p>
 <div id="prepare-the-example-data" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Prepare the example data<a href="basic-class.html#prepare-the-example-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
@@ -374,14 +375,14 @@ This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in C
 who surveyed soil prokaryotic communities in Chinese inland wetlands (IW),
 coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples (classified for the tutorial).
-The sample information table have 4 columns: “SampleID”, “Group”, “Type” and “Saline”.
+The sample information table has 4 columns: “SampleID”, “Group”, “Type” and “Saline”.
 The column “SampleID” is same with the rownames.
 The column “Group” represents the IW, CW and TW.
-The column “Type” represents the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
+The column “Type” means the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP).
-The column “Saline” represents the saline soils and non-saline soils.
+The column “Saline” denotes the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-It is of course doable and recommended to put all the environmental data into sample information table.</p>
+It is also recommended to put all the environmental data into sample information table.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="basic-class.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb9-2"><a href="basic-class.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example data; 16S rRNA gene amplicon sequencing dataset</span></span>
 <span id="cb9-3"><a href="basic-class.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># metadata table; data.frame</span></span>
@@ -402,7 +403,7 @@ It is of course doable and recommended to put all the environmental data into sa
 <span id="cb9-18"><a href="basic-class.html#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># make the plotting background same with the tutorial</span></span>
 <span id="cb9-19"><a href="basic-class.html#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb9-20"><a href="basic-class.html#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code></pre></div>
-<p>Make sure that the data types of sample_table, otu_table and tax_table are all data.frame format as the following part shows.</p>
+<p>Make sure that the data types of sample_table, otu_table and tax_table are all <code>data.frame</code> format as the following part shows.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basic-class.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(otu_table_16S)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="basic-class.html#cb12-1" aria-hidden="true" tabindex="-1"></a>otu_table_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
@@ -520,11 +521,11 @@ Crenarchaeotic Group</td>
 </tr>
 </tbody>
 </table>
-<p>Generally, users’ taxonomic table have some chaotic information, such as NA, unidentified and unknown.
+<p>Generally, users’ taxonomic table has some messy information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
 So it is usually necessary to clean this data using the <code>tidy_taxonomy</code> function.
 Another very important result of this operation is to <strong>unify the taxonomic prefix</strong> automatically,
-e.g., transforming D_1__ to p__ for Phylum level or adding p__ to Phylum directly if no prefix is found.</p>
+e.g., converting D_1__ to p__ for Phylum level or adding p__ to Phylum directly if no prefix is found.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="basic-class.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the taxonomic information unified, very important</span></span>
 <span id="cb16-2"><a href="basic-class.html#cb16-2" aria-hidden="true" tabindex="-1"></a>taxonomy_table_16S <span class="sc">%&lt;&gt;%</span> tidy_taxonomy</span></code></pre></div>
 <p>The rownames of sample_table in microtable object (i.e. sample names) are used for selecting samples/groups in all the related operations in the package.
@@ -693,8 +694,8 @@ Currently, it supports QIIME <span class="citation">(<a href="#ref-Caporaso_QIIM
 HUMAnN <span class="citation">(<a href="#ref-Franzosa_Species_2018" role="doc-biblioref">Franzosa et al. 2018</a>)</span>, MetaPhlAn <span class="citation">(<a href="#ref-Truong_MeTApHLaN2_2015" role="doc-biblioref">Truong et al. 2015</a>)</span>, kraken2 <span class="citation">(<a href="#ref-Wood_Improved_2019" role="doc-biblioref">Wood, Lu, and Langmead 2019</a>)</span>, phyloseq <span class="citation">(<a href="#ref-Mcmurdie_phyloseq_2013" role="doc-biblioref">Mcmurdie and Holmes 2013</a>)</span>, etc.
 Please read the tutorial of file2meco package for more detailed information (<a href="https://chiliubio.github.io/microeco_tutorial/file2meco-package.html" class="uri">https://chiliubio.github.io/microeco_tutorial/file2meco-package.html</a>).</p>
 <p>▲ 2. <strong>Other cases</strong><br />
-To read other files (not supported by file2meco package) into microtable object,
-there should be two steps to create the microtable object:<br />
+To transform customized files to microtable object,
+there should be two steps:<br />
 <strong>I) read files to R</strong><br />
 The required format of microtable$new parameters, <strong>otu_table</strong>, <strong>sample_table</strong> and <strong>tax_table</strong>, are all the data.frame, which is the most frequently-used data format in R.
 So no matter what the format the files are, they should be first read into R with some functions, such as <code>read.table</code> and <code>read.csv</code>.
@@ -751,8 +752,8 @@ The function <code>rarefy_samples</code> can invoke the function <code>tidy_data
 <pre><code>## 530 taxa are removed from the otu_table, as the abundance is 0 ...</code></pre>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="basic-class.html#cb46-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10000 10000</code></pre>
-<p>Then, let’s calculate the taxa abundance at each taxonomic rank using cal_abund().
-This function <strong>return a list called taxa_abund stored in the microtable object</strong>.
+<p>Then, let’s calculate the taxa abundance at each taxonomic rank using <code>cal_abund()</code>.
+This function <strong>generate a list called taxa_abund stored in the microtable object</strong>.
 This list contain several data frame of the abundance information at each taxonomic rank.
 It’s worth noting that the <code>cal_abund()</code> function can be used to <strong>solve more complicated cases with special parameters</strong>,
 such as supporting both the relative and absolute abundance calculation and selecting the partial ‘taxonomic’ columns.
@@ -830,8 +831,7 @@ Those have been shown in file2meco package part (<a href="https://chiliubio.gith
 <p>The function <code>save_abund()</code> can be used to save the taxa abundance file to a local place easily.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="basic-class.html#cb53-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">save_abund</span>(<span class="at">dirpath =</span> <span class="st">&quot;taxa_abund&quot;</span>)</span></code></pre></div>
 <p>Then, let’s calculate the alpha diversity.
-The result is also stored in the object microtable automatically.
-For the definition of each alpha diversity index, please see <a href="http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html" class="uri">http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html</a></p>
+The result is also stored in the object microtable automatically.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="basic-class.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to add Faith&#39;s phylogenetic diversity, use PD = TRUE, this will be a little slow</span></span>
 <span id="cb54-2"><a href="basic-class.html#cb54-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">cal_alphadiv</span>(<span class="at">PD =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## The result is stored in object$alpha_diversity ...</code></pre>
@@ -870,7 +870,7 @@ For example, if you want to extract samples of ‘CW’ group, please do like th
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard</code></pre>
 </div>
 <div id="filter-features" class="section level3 hasAnchor" number="3.1.5">
@@ -1051,6 +1051,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

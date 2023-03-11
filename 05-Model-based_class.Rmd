@@ -1,12 +1,12 @@
 # Model-based class
 
-We group all the classes with complex models into the type 'Model-based class'.
+We group all the classes with complex models into the this section 'Model-based class'.
 
 
 ## trans_diff class
 
 　Differential abundance test is a very important part in the microbial community data analysis [@Nearing_Microbiome_2022].
-It can be used to find the significant taxa in determining the community differences across groups.
+It can find the significant taxa in determining the community differences across groups.
 There are also several wrapped methods to better capture the important biomarkers,
 such as the combination of machine-learning and differential abundance test.
 Currently, trans_diff class have several famous approaches to perform this analysis: 
@@ -56,9 +56,9 @@ knitr::include_graphics("Images/plot_lefse_diff_abund.png")
 
 Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
-As an example, we only use the highest 200 abundant taxa in the tree and 50 differential features.
+As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
-**Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data.**.
+**Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data**.
 **Please see the tidy_taxonomy function of microtable part to solve this issue.**.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -73,8 +73,8 @@ knitr::include_graphics("Images/plot_lefse_cladogram.png")
 
 There may be a problem related with the taxonomic labels in the plot.
 When the levels used are too many, the taxonomic labels may have too much overlap.
-However, if you only indicate the Phylum labels, the taxa in the legend with marked letters are too many.
-At this time, you can select the taxa that you want to show in the plot manually like the following operation.
+However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
+At this time, taxa can be manually choosed to show like the following operation.
 
 ```{r, echo = TRUE, eval = FALSE}
 # choose some taxa according to the positions in the previous picture; those taxa labels have minimum overlap
@@ -116,7 +116,7 @@ knitr::include_graphics("Images/plot_rf_diff_abund.png")
 ```
 
 The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
-Now adding label support all the differential test methods.
+Now adding labels supports all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
@@ -139,7 +139,6 @@ knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
 ```
 
 Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
-It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
 
 ```{r, echo = TRUE, eval = FALSE}
 # metastat analysis at Genus level
@@ -227,9 +226,9 @@ t1$plot_diff_bar(use_number = 1:20)
 ### Key points
 
   + trans_diff\$new: In trans_diff\$new, p_adjust_method = NULL can shut down the p value adjustment for method != "metastat" or "anova". 
-    This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and 
+    This is useful in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and 
 	where the results need to be compared with that from Galaxy server or other LEfSe python version.
-  + trans_diff$new: this class have a strict requirement on the taxonomic information, make sure tidy_taxonomy() function has been performed before creating your dataset
+  + trans_diff$new: this class has a strict requirement on the taxonomic information, make sure `tidy_taxonomy()` function has been performed for the dataset$tax_table
   + trans_diff$new: creating this class will invoke taxa_abund stored in microtable object
   + trans_diff$plot_diff_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
 
@@ -252,7 +251,7 @@ The dashed line denotes the key objects (input or output). The `res_network` ins
 
 We use the correlation-based network to show the main operations for users. 
 This is only intended to show some operations conveniently. 
-**Does not mean we are suggesting this approach in any case**.
+**Do not mean we are suggesting this approach in any case**.
 Please check the final part for other network construction methods.
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -594,7 +593,7 @@ t1$plot_mantel_corr()
 knitr::include_graphics("Images/plot_mantel_corr.png")
 ```
 
-betaNRI(ses.betampd) is used to show the 'basal' phylogenetic turnover[@Liu_Long_term_2017].
+betaNRI(ses.betampd) is used to show the 'basal' phylogenetic turnover.
 Compared to betaNTI, it can capture more turnover information associated with the deep phylogeny.
 It is noted that there are many null models with the development in the several decades of community ecology.
 In the trans_nullmodel class, 
@@ -605,7 +604,7 @@ explore whether the observed phylogenetic turnover significantly differ from nul
 ```{r, echo = TRUE, eval=FALSE}
 # see null.model parameter for other null models
 # null model run 500 times for the example
-t1$cal_ses_betampd(runs=500, abundance.weighted = TRUE)
+t1$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
 # return t1$res_ses_betampd
 ```
 

@@ -5,8 +5,8 @@ since they are mainly used to show the composition information of communities.
 
 
 ## trans_abund class
-　The trans_abund class is used to transform taxonomic abundance data to plots based on the ggplot2 package.
-As a premise, the **taxa_abund list in the object of microtable class must be first calculated**.
+　The trans_abund class has several functions to visualize taxonomic abundance based on the ggplot2 package.
+
 
 ### Example
 
@@ -41,10 +41,10 @@ t1$plot_bar(others_color = "grey70", facet = c("Group", "Type"), xtext_keep = FA
 knitr::include_graphics("Images/plot_bar_facet2.png")
 ```
 
-The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by tidy_taxonomy function), 
+The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by `tidy_taxonomy` function), 
 as those unknown taxa are generally meaningless.
-However sometimes, these unknown taxa may be important for users.
-For example, if you want to isolate some unknown species, you need to check the abundance of those unknown taxa.
+However sometimes, these unknown taxa may be meaningful for users.
+For example, if one want to isolate some unknown species, it is valuable to check the abundance of those unknown taxa.
 At this time, please see this topic (https://github.com/ChiLiubio/microeco/issues/165) to resolve the issue that how to show unknown taxa with hierarchical taxonomy classification.
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.
 
@@ -132,7 +132,7 @@ knitr::include_graphics("Images/plot_pie.png")
 
 ## trans_venn class
 
-The trans_venn class is used for venn analysis, i.e. shared and unique taxa.
+The trans_venn class is developed for venn analysis, i.e. shared and unique taxa across samples/groups.
 
 ### Example
 
@@ -179,6 +179,7 @@ knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
 Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot.
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp <- dataset$merge_samples(use_group = "Type")
@@ -193,7 +194,7 @@ t1$plot_bar()
 knitr::include_graphics("Images/plot_venn_bar_type.png")
 ```
 
-Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
+Generally, after getting the intersection results, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups[@Mendes_Deciphering_2011].
 So, it is interesting to further analyze the composition of unique and shared species. 
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.

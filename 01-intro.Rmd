@@ -1,10 +1,10 @@
 # Introduction {#intro}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbiome data fast.
+The main goal of developing this package is to help users analyze microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
-make users conveniently remember, search and use.
+make users conveniently remember, search and use the classes.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
 apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
@@ -23,7 +23,7 @@ The stored 'Functions' and 'Files' represent that the user can access those func
 as shown in the figure. An example is the function `dataset$cal_alphadiv()` and its return result `dataset$alpha_diversity`.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix 'res_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
-Except for microtable class, the transformed data in creating object is also generally named with the prefix 'data_'.
+Except for microtable class, the transformed data in created object is generally named with the prefix 'data_'.
 
 
 ## R6 Class
@@ -81,20 +81,21 @@ Error in t1$cal_network(network_method = "SpiecEasi"): igraph package not instal
 ```
 
 <br>
-The reason is that network construction require igraph package. We donot put the igraph and some other packages on the "Imports" part of microeco package.
+The reason is that network construction requires igraph package. We donot put the igraph and some other packages on the "Imports" part of microeco package.
 In addition, some packages, e.g. SpiecEasi, are released on github and can not be installed automatically.
 
 The solutions:
 
 1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 
-2. Install the packages in advance. This is recommended if the user is interest in most of the methods of microeco package and want to run a large number of examples in tutorial.
+2. Install the packages in advance. 
+This is recommended if the user is interested in most of the methods of microeco package and want to run a large number of examples in this tutorial.
 
 
 ### CRAN packages
 
 We show some packages that are published in CRAN and not installed automatically.
-Those packages are needed to reproduce some parts of the tutorial.
+Those packages are necessary to reproduce some parts of the tutorial.
 
 ```{r, echo = FALSE, eval = TRUE}
 pre_pac <- read.delim("prerequite_packages.tsv")
@@ -198,12 +199,12 @@ test
 
 
 
-## Plotting
-Most of the plotting in the package rely on the ggplot2 package system.
-We provide some parameters to change the corresponding plot, but it may be far from enough.
+## Plot
+Most of the plots in the package rely on the ggplot2 package system.
+We provide some parameters to optimize the corresponding plot, but it may be far from enough.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
-Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
+Each data table used for visualization is stored in the object and can be saved for the customized analysis.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated via Github-Pull requests (https://github.com/ChiLiubio/microeco_tutorial/pulls) or Email (liuchi0426@126.com).
+Any contribution of a modified class is appreciated via Github-Pull requests (https://github.com/ChiLiubio/microeco_tutorial/pulls) or Email (liuchi0426@126.com).
 
 

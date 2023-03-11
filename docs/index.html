@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-07" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
 <li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
@@ -341,16 +341,16 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Tutorial for R microeco package (v0.14.1)</h1>
 <p class="author"><em>Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li</em></p>
-<p class="date"><em>2023-03-07</em></p>
+<p class="date"><em>2023-03-11</em></p>
 </div>
 <div id="background" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Background<a href="index.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>　R language <span class="citation">(<a href="#ref-R-base" role="doc-biblioref">R Core Team 2016</a>)</span> and its packages ecosystem are wonderful tools for data analysis.
-In the field of microbial community ecology, many packages can be used for the statistical analysis,
+In community ecology, a series of packages are available for statistical analysis,
 such as vegan <span class="citation">(<a href="#ref-Jari_vegan_2019" role="doc-biblioref">Oksanen et al. 2019</a>)</span>, ape <span class="citation">(<a href="#ref-Paradis_ape_2018" role="doc-biblioref">Paradis and Schliep 2018</a>)</span> and picante <span class="citation">(<a href="#ref-Picante_Kembel_2010" role="doc-biblioref">Kembel et al. 2010</a>)</span>.
 However, with the development of the high-throughput sequencing techniques,
-the increasing data amount and complexity of studies make the data mining a challenge.
-There have been some R packages created for the statistics and visualization for microbiome data,
+the increasing data amount and complexity of studies make the data mining in microbiome a challenge.
+There have been some R packages created specifically for the statistics and visualization of microbiome data,
 such as phyloseq <span class="citation">(<a href="#ref-Mcmurdie_phyloseq_2013" role="doc-biblioref">Mcmurdie and Holmes 2013</a>)</span>,
 microbiome (<a href="https://github.com/microbiome/microbiome" class="uri">https://github.com/microbiome/microbiome</a>), microbiomeSeq (<a href="http://www.github.com/umerijaz/microbiomeSeq" class="uri">http://www.github.com/umerijaz/microbiomeSeq</a>),
 ampvis2 (<a href="https://github.com/KasperSkytte/ampvis2" class="uri">https://github.com/KasperSkytte/ampvis2</a>), MicrobiomeR(<a href="https://github.com/vallenderlab/MicrobiomeR" class="uri">https://github.com/vallenderlab/MicrobiomeR</a>),
@@ -359,13 +359,12 @@ tidyMicro <span class="citation">(<a href="#ref-Carpenter_tidyMicro_2021" role="
 amplicon (<a href="https://github.com/microbiota/amplicon" class="uri">https://github.com/microbiota/amplicon</a>),
 MicrobiotaProcess (<a href="https://github.com/YuLab-SMU/MicrobiotaProcess" class="uri">https://github.com/YuLab-SMU/MicrobiotaProcess</a>)
 and so on.
-In addition, some web tools associated with R language are also useful for microbial community data analysis,
+In addition, some web tools associated with R language are also useful for microbiome data analysis,
 such as Shiny-phyloseq <span class="citation">(<a href="#ref-McMurdie_Shiny_2015" role="doc-biblioref">McMurdie and Holmes 2015</a>)</span>, MicrobiomeExplorer <span class="citation">(<a href="#ref-Reeder_MicrobiomeExplorer_2021" role="doc-biblioref">Reeder et al. 2021</a>)</span>,
 animalcules <span class="citation">(<a href="#ref-Zhao_animalcules_2021" role="doc-biblioref">Zhao et al. 2021</a>)</span> and Namco <span class="citation">(<a href="#ref-Dietrich_Namco_2022" role="doc-biblioref">Dietrich et al. 2022</a>)</span>.
-Even so, users still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-So we created the microeco R package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">Liu et al. 2021</a>)</span> for this goal (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
-Besides, we also developed the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) for the data input from some famous tools easily
-and mecodev package (<a href="https://github.com/ChiLiubio/mecodev" class="uri">https://github.com/ChiLiubio/mecodev</a>) for some extending approaches in this field.</p>
+Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
+Based on this background, we created the R microeco package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">Liu et al. 2021</a>)</span> (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
+Besides, we also developed the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) for the data input from some famous tools easily.</p>
 
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -470,6 +469,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

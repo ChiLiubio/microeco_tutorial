@@ -18,22 +18,24 @@ The dashed line denotes the key objects (input or output of functions) that dese
 usearch (https://www.drive5.com/usearch/), mothur [@Schloss_Introducing_2009], 
 SILVAngs (https://ngs.arb-silva.de/silvangs/), 
 and RDP (http://rdp.cme.msu.edu/).
-Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
+Although the formats of result files may vary across tools, the main contents can be generally classified into the following parts:
 (1) OTU/ASV table, i.e. the feature-sample abundance table; 
 (2) taxonomic assignment table;
 (3) representative sequences;
 (4) phylogenetic tree;
-(5) metadata. It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).
+(5) metadata. 
+It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
-At least, the OTU table (i.e. feature-sample abundance table) should be provided for creating microtable object.
+At least, the OTU table (i.e. feature-sample abundance table) should be provided to create microtable object.
 Thus, the microtable class can determine that the sample information table is missing and create a default sample table according to
-the sample names in otu_table.
-To make the file reading more convenient,
+sample names in otu_table.
+To make the file input more convenient,
 we also build another R package file2meco (https://github.com/ChiLiubio/file2meco) to read the output files of some tools into microtable object.
 Currently, those tools/softwares include not only commonly-used QIIME [@Caporaso_QIIME_2010] and QIIME2[@Bolyen_Reproducible_2019], 
-but also some metagenomic tools, such as HUMAnN [@Franzosa_Species_2018] and kraken2 [@Wood_Improved_2019].
-In this tutorial, we use the data inside the package microeco to show some basic operations.
+but also several metagenomic tools, such as HUMAnN [@Franzosa_Species_2018] and kraken2 [@Wood_Improved_2019].
+In this tutorial, the data inside the package was employed to show some basic operations.
+
 
 ### Prepare the example data
 
@@ -42,14 +44,14 @@ This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in C
 who surveyed soil prokaryotic communities in Chinese inland wetlands (IW), 
 coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples (classified for the tutorial).
-The sample information table have 4 columns: "SampleID", "Group", "Type" and "Saline".
+The sample information table has 4 columns: "SampleID", "Group", "Type" and "Saline".
 The column "SampleID" is same with the rownames.
 The column "Group" represents the IW, CW and TW.
-The column "Type" represents the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
+The column "Type" means the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP). 
-The column "Saline" represents the saline soils and non-saline soils.
+The column "Saline" denotes the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-It is of course doable and recommended to put all the environmental data into sample information table.
+It is also recommended to put all the environmental data into sample information table.
 
 
 ```{r, echo = TRUE}
@@ -75,7 +77,7 @@ library(ggplot2)
 theme_set(theme_bw())
 ```
 
-Make sure that the data types of sample_table, otu_table and tax_table are all data.frame format as the following part shows.
+Make sure that the data types of sample_table, otu_table and tax_table are all `data.frame` format as the following part shows.
 
 ```{r, echo = TRUE}
 class(otu_table_16S)
@@ -101,11 +103,11 @@ taxonomy_table_16S[1:5, 1:3]
 pander::pander(taxonomy_table_16S[1:5, 1:3])
 ```
 
-Generally, users' taxonomic table have some chaotic information, such as NA, unidentified and unknown.
+Generally, users' taxonomic table has some messy information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
 So it is usually necessary to clean this data using the `tidy_taxonomy` function.
 Another very important result of this operation is to **unify the taxonomic prefix** automatically,
-e.g., transforming D_1__ to p__ for Phylum level or adding p__ to Phylum directly if no prefix is found.
+e.g., converting D_1__ to p__ for Phylum level or adding p__ to Phylum directly if no prefix is found.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -178,8 +180,8 @@ HUMAnN [@Franzosa_Species_2018], MetaPhlAn [@Truong_MeTApHLaN2_2015], kraken2 [@
 Please read the tutorial of file2meco package for more detailed information (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html).
 
 ▲ 2. __Other cases__  
-To read other files (not supported by file2meco package) into microtable object, 
-there should be two steps to create the microtable object:  
+To transform customized files to microtable object, 
+there should be two steps:  
 __I) read files to R__  
 The required format of microtable\$new parameters, __otu_table__, __sample_table__ and __tax_table__, are all the data.frame, which is the most frequently-used data format in R.
 So no matter what the format the files are, they should be first read into R with some functions, such as `read.table` and `read.csv`.
@@ -238,8 +240,8 @@ dataset$rarefy_samples(sample.size = 10000)
 dataset$sample_sums() %>% range
 ```
 
-Then, let's calculate the taxa abundance at each taxonomic rank using cal_abund().
-This function **return a list called taxa_abund stored in the microtable object**. 
+Then, let's calculate the taxa abundance at each taxonomic rank using `cal_abund()`.
+This function **generate a list called taxa_abund stored in the microtable object**. 
 This list contain several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the `cal_abund()` function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
@@ -270,7 +272,7 @@ dataset$save_abund(dirpath = "taxa_abund")
 
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
-For the definition of each alpha diversity index, please see http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html
+
 
 ```{r, echo = TRUE}
 # If you want to add Faith's phylogenetic diversity, use PD = TRUE, this will be a little slow

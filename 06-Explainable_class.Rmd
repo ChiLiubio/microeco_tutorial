@@ -1,12 +1,12 @@
 # Explainable class
 
 We group trans_env and trans_func classes into 'Explainable class', 
-as the environmental variables and functional data are generally explainable factors.
+as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.
 
 
 ## trans_env class
 There may be some NA (missing value) in the user's env data.
-If so, please add complete_na = TRUE when creating the trans_env object.
+If so, please add `complete_na = TRUE` for interpolation when creating the trans_env object.
 
 ### Example
 
@@ -33,9 +33,9 @@ Now let's use env_cols to select the required columns from sample_table in the m
 t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
 ```
 
-Generally, it is necessary to have a deep understanding on the environmental variables in order to better use more methods.
+Generally, it is beneficial to the understanding on environmental variables in order to better use more methods.
 So, we first show the cal_diff and cal_autocor functions.
-The cal_diff function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff parts.
+The cal_diff function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff class parts.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -301,7 +301,7 @@ knitr::include_graphics("Images/plot_scatterfit_lmgroup.png")
 ## trans_func class
 
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
-because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
+because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities.
 As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice. 
 Several software are often used for this goal, such as PICRUSt [@Langille_Predictive_2013], Tax4Fun [@Aßhauer_Tax4Fun_2015] and FAPROTAX [@Louca_High_2016; @Louca_Decoupling_2016].
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
@@ -407,7 +407,7 @@ pander::pander(t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2])
 
 
 
-Now, we use pathway file to analyze the abundance of pathway.
+We further analyze the abundance of predicted metabolic pathways.
 
 ```{r, echo = TRUE, eval = TRUE}
 # must transpose to taxa row, sample column
@@ -490,7 +490,7 @@ t1$cal_tax4fun2_FRI()
 ### Key points
 
   + blast_tool_path parameter in cal_tax4fun2: if the blast tool has been in 'environment variable' of computer, it is ok to use blast_tool_path = NULL 
-  + blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as 2.5.0).
+  + blast version: tax4fun2 require NCBI blast tool. However, some errors often come from the latest versions (https://www.biostars.org/p/413294/). An easy solution is to use previous version (such as v2.5.0).
 
 
 

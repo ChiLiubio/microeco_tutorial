@@ -6,13 +6,14 @@ It refers to alpha diversity, beta diversity and gamma diversity.
 
 ## trans_alpha class
 
-　Alpha diversity can be transformed and plotted using trans_alpha class.
+　Alpha diversity can be transformed and visualized using trans_alpha class.
 Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.
+
 
 ### Example
 
-Creating trans_alpha object have two return data.frame with prefix 'data_': data_alpha and data_stat.
-The data_alpha is used for the following differential test and plotting.
+Creating trans_alpha object have two return data.frame with prefix 'data_': `data_alpha` and `data_stat`.
+The data_alpha is used for the following differential test and visualization.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -69,8 +70,7 @@ t1$cal_diff(method = "anova")
 pander::pander(t1$res_diff)
 ```
 
-The multi-factor analysis of variance is also supported. 
-It is notable that the result res_diff will be a list instead of a data.frame when formula is provided.
+The multi-factor analysis of variance is also supported with the `formula` parameter, such as two-way anova. 
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
@@ -126,19 +126,27 @@ knitr::include_graphics("Images/plot_alpha_wilcox_bygroup.png")
 ```
 
 
+Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
+
+```{r, echo = TRUE, eval = FALSE}
+# require rcompanion package to be installed
+t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
+```
+
 ### Key points
 
   + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
   + cal_diff: formula parameter can be used for multi-factor analysis of variance
   + plot_alpha: the significance label comes from the object$res_diff
 
+
 ## trans_beta class
 
 　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
-Beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011],
-So we encapsulate some commonly-used approaches in microbial ecology[@Ramette_Multivariate_2007].
-Note that the parts related with "Environmental interpretation" are placed into the trans_env class.
-When needed, the beta_diversity list in microtable object will be invoked for transformation and ploting using trans_beta class.
+Beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011].
+We encapsulate some commonly-used approaches in microbial ecology[@Ramette_Multivariate_2007].
+Note that the part of beta diversity related with environmental factors are placed into the trans_env class.
+The distance matrix in beta_diversity list of microtable object will be invoked for transformation and ploting using trans_beta class when needed.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
 
 
@@ -223,7 +231,7 @@ knitr::include_graphics("Images/plot_clustering.png")
 ```
 
 
-perMANOVA[@Anderson_Austral_2001] is often used in the differential test of distances among groups.
+PerMANOVA[@Anderson_Austral_2001] is often used in the differential test of distances among groups.
 
 ```{r, echo = TRUE, eval = FALSE}
 # manova for all groups when manova_all = TRUE
@@ -276,7 +284,7 @@ For the explanation of statistical methods in microbial ecology, please read the
   + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
   + cal_ordination(): PCoA, PCA and NMDS approaches are all available
   + cal_manova(): cal_manova function can be used for paired comparisons, overall test and multi-factor test
-  + plot_group_distance(): hide_ns and pair_compare_filter_select parameters can be used to control the significance labels shown in the plot
+  + plot_group_distance(): manipulating object$res_group_distance_diff can control what statistical results are presented in the plot.
 
 
 

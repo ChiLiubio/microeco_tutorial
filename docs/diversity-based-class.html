@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-07" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
 <li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
@@ -344,12 +344,12 @@ div.csl-indent {
 It refers to alpha diversity, beta diversity and gamma diversity.</p>
 <div id="trans_alpha-class" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> trans_alpha class<a href="diversity-based-class.html#trans_alpha-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>　Alpha diversity can be transformed and plotted using trans_alpha class.
+<p>　Alpha diversity can be transformed and visualized using trans_alpha class.
 Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.</p>
 <div id="example-2" class="section level3 hasAnchor" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> Example<a href="diversity-based-class.html#example-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Creating trans_alpha object have two return data.frame with prefix ‘data_’: data_alpha and data_stat.
-The data_alpha is used for the following differential test and plotting.</p>
+<p>Creating trans_alpha object have two return data.frame with prefix ‘data_’: <code>data_alpha</code> and <code>data_stat</code>.
+The data_alpha is used for the following differential test and visualization.</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="diversity-based-class.html#cb99-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb99-2"><a href="diversity-based-class.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$data_stat</span></span>
 <span id="cb99-3"><a href="diversity-based-class.html#cb99-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>data_stat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span></code></pre></div>
@@ -448,7 +448,7 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <td align="center">Observed</td>
 <td align="center">IW</td>
 <td align="center">0.155</td>
-<td align="center">0.2713</td>
+<td align="center">0.2481</td>
 <td align="center">ns</td>
 </tr>
 <tr class="even">
@@ -456,23 +456,23 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <td align="center">Chao1</td>
 <td align="center">IW</td>
 <td align="center">0.01696</td>
-<td align="center">0.05936</td>
-<td align="center">ns</td>
+<td align="center">0.04523</td>
+<td align="center">*</td>
 </tr>
 <tr class="odd">
 <td align="center">IW - CW - TW</td>
 <td align="center">ACE</td>
 <td align="center">IW</td>
 <td align="center">0.01333</td>
-<td align="center">0.05936</td>
-<td align="center">ns</td>
+<td align="center">0.04523</td>
+<td align="center">*</td>
 </tr>
 <tr class="even">
 <td align="center">IW - CW - TW</td>
 <td align="center">Shannon</td>
 <td align="center">IW</td>
 <td align="center">0.5319</td>
-<td align="center">0.7446</td>
+<td align="center">0.7092</td>
 <td align="center">ns</td>
 </tr>
 <tr class="odd">
@@ -573,13 +573,14 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <pre><code>## The result is stored in object$res_diff ...</code></pre>
 <table>
 <colgroup>
+<col width="9%" />
+<col width="12%" />
+<col width="9%" />
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="15%" />
 <col width="10%" />
-<col width="14%" />
-<col width="10%" />
-<col width="8%" />
-<col width="13%" />
-<col width="13%" />
-<col width="17%" />
 <col width="12%" />
 </colgroup>
 <thead>
@@ -592,6 +593,7 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <th align="center">Simpson</th>
 <th align="center">InvSimpson</th>
 <th align="center">Fisher</th>
+<th align="center">Coverage</th>
 </tr>
 </thead>
 <tbody>
@@ -604,12 +606,14 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <td align="center">a</td>
 <td align="center">a</td>
 <td align="center">a</td>
+<td align="center">b</td>
 </tr>
 <tr class="even">
 <td align="center">TW</td>
 <td align="center">a</td>
 <td align="center">ab</td>
 <td align="center">b</td>
+<td align="center">a</td>
 <td align="center">a</td>
 <td align="center">a</td>
 <td align="center">a</td>
@@ -624,11 +628,11 @@ Dunn’s Kruskal-Wallis Multiple Comparisons (for paired groups when groups &gt;
 <td align="center">a</td>
 <td align="center">a</td>
 <td align="center">a</td>
+<td align="center">a</td>
 </tr>
 </tbody>
 </table>
-<p>The multi-factor analysis of variance is also supported.
-It is notable that the result res_diff will be a list instead of a data.frame when formula is provided.</p>
+<p>The multi-factor analysis of variance is also supported with the <code>formula</code> parameter, such as two-way anova.</p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="diversity-based-class.html#cb110-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb110-2"><a href="diversity-based-class.html#cb110-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group+Type&quot;</span>)</span>
 <span id="cb110-3"><a href="diversity-based-class.html#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_diff)</span>
@@ -651,6 +655,9 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 <span id="cb114-2"><a href="diversity-based-class.html#cb114-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
 <span id="cb114-3"><a href="diversity-based-class.html#cb114-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_alpha_wilcox_bygroup.png" width="600px" style="display: block; margin: auto;" /></p>
+<p>Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="diversity-based-class.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require rcompanion package to be installed</span></span>
+<span id="cb115-2"><a href="diversity-based-class.html#cb115-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;scheirerRayHare&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group+Type&quot;</span>)</span></code></pre></div>
 </div>
 <div id="key-points-3" class="section level3 hasAnchor" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Key points<a href="diversity-based-class.html#key-points-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -664,59 +671,59 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 <div id="trans_beta-class" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> trans_beta class<a href="diversity-based-class.html#trans_beta-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
-Beta diversity can be defined at different forms<span class="citation">(<a href="#ref-Tuomisto_diversity_2010" role="doc-biblioref">Tuomisto 2010</a>)</span> and can be explored with different ways<span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span>,
-So we encapsulate some commonly-used approaches in microbial ecology<span class="citation">(<a href="#ref-Ramette_Multivariate_2007" role="doc-biblioref">Ramette 2007</a>)</span>.
-Note that the parts related with “Environmental interpretation” are placed into the trans_env class.
-When needed, the beta_diversity list in microtable object will be invoked for transformation and ploting using trans_beta class.
+Beta diversity can be defined at different forms<span class="citation">(<a href="#ref-Tuomisto_diversity_2010" role="doc-biblioref">Tuomisto 2010</a>)</span> and can be explored with different ways<span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span>.
+We encapsulate some commonly-used approaches in microbial ecology<span class="citation">(<a href="#ref-Ramette_Multivariate_2007" role="doc-biblioref">Ramette 2007</a>)</span>.
+Note that the part of beta diversity related with environmental factors are placed into the trans_env class.
+The distance matrix in beta_diversity list of microtable object will be invoked for transformation and ploting using trans_beta class when needed.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.</p>
 <div id="example-3" class="section level3 hasAnchor" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> Example<a href="diversity-based-class.html#example-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We first show the ordination using PCoA.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="diversity-based-class.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we first create an trans_beta object</span></span>
-<span id="cb115-2"><a href="diversity-based-class.html#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="co"># measure parameter can invoke the distance matrix in dataset$beta_diversity</span></span>
-<span id="cb115-3"><a href="diversity-based-class.html#cb115-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="diversity-based-class.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use PCoA as an example, PCA or NMDS is also available</span></span>
-<span id="cb116-2"><a href="diversity-based-class.html#cb116-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span>
-<span id="cb116-3"><a href="diversity-based-class.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$res_ordination is the ordination result list</span></span>
-<span id="cb116-4"><a href="diversity-based-class.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t1<span class="sc">$</span>res_ordination)</span>
-<span id="cb116-5"><a href="diversity-based-class.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the PCoA result with confidence ellipse</span></span>
-<span id="cb116-6"><a href="diversity-based-class.html#cb116-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="diversity-based-class.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we first create an trans_beta object</span></span>
+<span id="cb116-2"><a href="diversity-based-class.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="co"># measure parameter can invoke the distance matrix in dataset$beta_diversity</span></span>
+<span id="cb116-3"><a href="diversity-based-class.html#cb116-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="diversity-based-class.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use PCoA as an example, PCA or NMDS is also available</span></span>
+<span id="cb117-2"><a href="diversity-based-class.html#cb117-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span>
+<span id="cb117-3"><a href="diversity-based-class.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$res_ordination is the ordination result list</span></span>
+<span id="cb117-4"><a href="diversity-based-class.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t1<span class="sc">$</span>res_ordination)</span>
+<span id="cb117-5"><a href="diversity-based-class.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the PCoA result with confidence ellipse</span></span>
+<span id="cb117-6"><a href="diversity-based-class.html#cb117-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>))</span></code></pre></div>
 <p><img src="Images/plot_ordination.png" width="650px" style="display: block; margin: auto;" /></p>
 <p>Try other interesting options in the plotting.</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="diversity-based-class.html#cb117-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;point&quot;</span>)</span>
-<span id="cb117-2"><a href="diversity-based-class.html#cb117-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb117-3"><a href="diversity-based-class.html#cb117-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
-<span id="cb117-4"><a href="diversity-based-class.html#cb117-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
-<span id="cb117-5"><a href="diversity-based-class.html#cb117-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>))</span>
-<span id="cb117-6"><a href="diversity-based-class.html#cb117-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
-<span id="cb117-7"><a href="diversity-based-class.html#cb117-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
-<span id="cb117-8"><a href="diversity-based-class.html#cb117-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>), <span class="at">add_sample_label =</span> <span class="st">&quot;SampleID&quot;</span>)</span>
-<span id="cb117-9"><a href="diversity-based-class.html#cb117-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;centroid&quot;</span>)</span>
-<span id="cb117-10"><a href="diversity-based-class.html#cb117-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;centroid&quot;</span>, <span class="at">centroid_segment_alpha =</span> <span class="fl">0.9</span>, <span class="at">centroid_segment_size =</span> <span class="dv">1</span>, <span class="at">centroid_segment_linetype =</span> <span class="dv">1</span>)</span>
-<span id="cb117-11"><a href="diversity-based-class.html#cb117-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;centroid&quot;</span>), <span class="at">plot_color =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">centroid_segment_linetype =</span> <span class="dv">1</span>)</span>
-<span id="cb117-12"><a href="diversity-based-class.html#cb117-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>, <span class="at">ellipse_chull_alpha =</span> <span class="fl">0.1</span>)</span>
-<span id="cb117-13"><a href="diversity-based-class.html#cb117-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="diversity-based-class.html#cb118-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;point&quot;</span>)</span>
+<span id="cb118-2"><a href="diversity-based-class.html#cb118-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb118-3"><a href="diversity-based-class.html#cb118-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
+<span id="cb118-4"><a href="diversity-based-class.html#cb118-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
+<span id="cb118-5"><a href="diversity-based-class.html#cb118-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>))</span>
+<span id="cb118-6"><a href="diversity-based-class.html#cb118-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
+<span id="cb118-7"><a href="diversity-based-class.html#cb118-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>))</span>
+<span id="cb118-8"><a href="diversity-based-class.html#cb118-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>, <span class="st">&quot;centroid&quot;</span>), <span class="at">add_sample_label =</span> <span class="st">&quot;SampleID&quot;</span>)</span>
+<span id="cb118-9"><a href="diversity-based-class.html#cb118-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;centroid&quot;</span>)</span>
+<span id="cb118-10"><a href="diversity-based-class.html#cb118-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="st">&quot;centroid&quot;</span>, <span class="at">centroid_segment_alpha =</span> <span class="fl">0.9</span>, <span class="at">centroid_segment_size =</span> <span class="dv">1</span>, <span class="at">centroid_segment_linetype =</span> <span class="dv">1</span>)</span>
+<span id="cb118-11"><a href="diversity-based-class.html#cb118-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;centroid&quot;</span>), <span class="at">plot_color =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">centroid_segment_linetype =</span> <span class="dv">1</span>)</span>
+<span id="cb118-12"><a href="diversity-based-class.html#cb118-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>, <span class="at">ellipse_chull_alpha =</span> <span class="fl">0.1</span>)</span>
+<span id="cb118-13"><a href="diversity-based-class.html#cb118-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>Then we plot and compare the group distances.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="diversity-based-class.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
-<span id="cb118-2"><a href="diversity-based-class.html#cb118-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb118-3"><a href="diversity-based-class.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_group_distance</span></span>
-<span id="cb118-4"><a href="diversity-based-class.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform Wilcoxon Rank Sum and Signed Rank Tests</span></span>
-<span id="cb118-5"><a href="diversity-based-class.html#cb118-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb118-6"><a href="diversity-based-class.html#cb118-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="diversity-based-class.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
+<span id="cb119-2"><a href="diversity-based-class.html#cb119-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb119-3"><a href="diversity-based-class.html#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_group_distance</span></span>
+<span id="cb119-4"><a href="diversity-based-class.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform Wilcoxon Rank Sum and Signed Rank Tests</span></span>
+<span id="cb119-5"><a href="diversity-based-class.html#cb119-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb119-6"><a href="diversity-based-class.html#cb119-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_group_distance_within.png" width="500px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="diversity-based-class.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances between groups</span></span>
-<span id="cb119-2"><a href="diversity-based-class.html#cb119-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb119-3"><a href="diversity-based-class.html#cb119-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb119-4"><a href="diversity-based-class.html#cb119-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="diversity-based-class.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances between groups</span></span>
+<span id="cb120-2"><a href="diversity-based-class.html#cb120-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb120-3"><a href="diversity-based-class.html#cb120-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb120-4"><a href="diversity-based-class.html#cb120-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_group_distance_between.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>Clustering plot is also a frequently used method.</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="diversity-based-class.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use replace_name to set the label name, group parameter used to set the color</span></span>
-<span id="cb120-2"><a href="diversity-based-class.html#cb120-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_clustering</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">replace_name =</span> <span class="fu">c</span>(<span class="st">&quot;Saline&quot;</span>, <span class="st">&quot;Type&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="diversity-based-class.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use replace_name to set the label name, group parameter used to set the color</span></span>
+<span id="cb121-2"><a href="diversity-based-class.html#cb121-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_clustering</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">replace_name =</span> <span class="fu">c</span>(<span class="st">&quot;Saline&quot;</span>, <span class="st">&quot;Type&quot;</span>))</span></code></pre></div>
 <p><img src="Images/plot_clustering.png" width="550px" style="display: block; margin: auto;" /></p>
-<p>perMANOVA<span class="citation">(<a href="#ref-Anderson_Austral_2001" role="doc-biblioref">Anderson 2001</a>)</span> is often used in the differential test of distances among groups.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="diversity-based-class.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups when manova_all = TRUE</span></span>
-<span id="cb121-2"><a href="diversity-based-class.html#cb121-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb121-3"><a href="diversity-based-class.html#cb121-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<p>PerMANOVA<span class="citation">(<a href="#ref-Anderson_Austral_2001" role="doc-biblioref">Anderson 2001</a>)</span> is often used in the differential test of distances among groups.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="diversity-based-class.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups when manova_all = TRUE</span></span>
+<span id="cb122-2"><a href="diversity-based-class.html#cb122-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-3"><a href="diversity-based-class.html#cb122-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table style="width:79%;">
 <caption>Permutation test for adonis under reduced model</caption>
@@ -766,9 +773,9 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 </tbody>
 </table>
 <p>The parameter manova_all = FALSE can be used to calculate significance for each paired group.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="diversity-based-class.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for each paired groups</span></span>
-<span id="cb123-2"><a href="diversity-based-class.html#cb123-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb123-3"><a href="diversity-based-class.html#cb123-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="diversity-based-class.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for each paired groups</span></span>
+<span id="cb124-2"><a href="diversity-based-class.html#cb124-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb124-3"><a href="diversity-based-class.html#cb124-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table>
 <colgroup>
@@ -822,9 +829,9 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 </tbody>
 </table>
 <p>The parameter manova_set has higher priority than manova_all. If manova_set is provided, manova_all parameter will be disabled.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="diversity-based-class.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: such as &quot;Group + Type&quot;</span></span>
-<span id="cb125-2"><a href="diversity-based-class.html#cb125-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
-<span id="cb125-3"><a href="diversity-based-class.html#cb125-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="diversity-based-class.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: such as &quot;Group + Type&quot;</span></span>
+<span id="cb126-2"><a href="diversity-based-class.html#cb126-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
+<span id="cb126-3"><a href="diversity-based-class.html#cb126-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table style="width:79%;">
 <caption>Permutation test for adonis under reduced model</caption>
@@ -882,10 +889,10 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 </tbody>
 </table>
 <p>PERMDISP<span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span> is also implemented to check multivariate homogeneity of groups dispersions (variances).</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="diversity-based-class.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for the whole comparison and for each paired groups</span></span>
-<span id="cb127-2"><a href="diversity-based-class.html#cb127-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_betadisper</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="diversity-based-class.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for the whole comparison and for each paired groups</span></span>
+<span id="cb128-2"><a href="diversity-based-class.html#cb128-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_betadisper</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$res_betadisper ...</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="diversity-based-class.html#cb129-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_betadisper</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="diversity-based-class.html#cb130-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_betadisper</span></code></pre></div>
 <pre><code>## 
 ## Permutation test for homogeneity of multivariate dispersions
 ## Permutation: free
@@ -912,7 +919,7 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <li>trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation</li>
 <li>cal_ordination(): PCoA, PCA and NMDS approaches are all available</li>
 <li>cal_manova(): cal_manova function can be used for paired comparisons, overall test and multi-factor test</li>
-<li>plot_group_distance(): hide_ns and pair_compare_filter_select parameters can be used to control the significance labels shown in the plot</li>
+<li>plot_group_distance(): manipulating object$res_group_distance_diff can control what statistical results are presented in the plot.</li>
 </ul>
 
 </div>
@@ -996,6 +1003,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

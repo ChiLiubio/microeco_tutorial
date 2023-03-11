@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.14.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-07}
+\date{2023-03-11}
 
 \begin{document}
 \maketitle
@@ -137,11 +137,11 @@
 \chapter{Background}\label{background}}
 
 　R language \citep{R-base} and its packages ecosystem are wonderful tools for data analysis.
-In the field of microbial community ecology, many packages can be used for the statistical analysis,
+In community ecology, a series of packages are available for statistical analysis,
 such as vegan \citep{Jari_vegan_2019}, ape \citep{Paradis_ape_2018} and picante \citep{Picante_Kembel_2010}.
 However, with the development of the high-throughput sequencing techniques,
-the increasing data amount and complexity of studies make the data mining a challenge.
-There have been some R packages created for the statistics and visualization for microbiome data,
+the increasing data amount and complexity of studies make the data mining in microbiome a challenge.
+There have been some R packages created specifically for the statistics and visualization of microbiome data,
 such as phyloseq \citep{Mcmurdie_phyloseq_2013},
 microbiome (\url{https://github.com/microbiome/microbiome}), microbiomeSeq (\url{http://www.github.com/umerijaz/microbiomeSeq}),
 ampvis2 (\url{https://github.com/KasperSkytte/ampvis2}), MicrobiomeR(\url{https://github.com/vallenderlab/MicrobiomeR}),
@@ -150,22 +150,21 @@ tidyMicro \citep{Carpenter_tidyMicro_2021}, microbial (\url{https://github.com/g
 amplicon (\url{https://github.com/microbiota/amplicon}),
 MicrobiotaProcess (\url{https://github.com/YuLab-SMU/MicrobiotaProcess})
 and so on.
-In addition, some web tools associated with R language are also useful for microbial community data analysis,
+In addition, some web tools associated with R language are also useful for microbiome data analysis,
 such as Shiny-phyloseq \citep{McMurdie_Shiny_2015}, MicrobiomeExplorer \citep{Reeder_MicrobiomeExplorer_2021},
 animalcules \citep{Zhao_animalcules_2021} and Namco \citep{Dietrich_Namco_2022}.
-Even so, users still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-So we created the microeco R package \citep{Liu_microeco_2021} for this goal (\url{https://github.com/ChiLiubio/microeco}).
-Besides, we also developed the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some famous tools easily
-and mecodev package (\url{https://github.com/ChiLiubio/mecodev}) for some extending approaches in this field.
+Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
+Based on this background, we created the R microeco package \citep{Liu_microeco_2021} (\url{https://github.com/ChiLiubio/microeco}).
+Besides, we also developed the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some famous tools easily.
 
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbiome data fast.
+The main goal of developing this package is to help users analyze microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
-make users conveniently remember, search and use.
+make users conveniently remember, search and use the classes.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
 apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
@@ -183,7 +182,7 @@ The stored `Functions' and `Files' represent that the user can access those func
 as shown in the figure. An example is the function \texttt{dataset\$cal\_alphadiv()} and its return result \texttt{dataset\$alpha\_diversity}.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix `res\_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
-Except for microtable class, the transformed data in creating object is also generally named with the prefix `data\_'.
+Except for microtable class, the transformed data in created object is generally named with the prefix `data\_'.
 
 \hypertarget{r6-class}{%
 \section{R6 Class}\label{r6-class}}
@@ -256,7 +255,7 @@ So the question is that the user may encounter an error when using a class or fu
 \end{Highlighting}
 \end{Shaded}
 
-The reason is that network construction require igraph package. We donot put the igraph and some other packages on the ``Imports'' part of microeco package.
+The reason is that network construction requires igraph package. We donot put the igraph and some other packages on the ``Imports'' part of microeco package.
 In addition, some packages, e.g.~SpiecEasi, are released on github and can not be installed automatically.
 
 The solutions:
@@ -266,14 +265,15 @@ The solutions:
 \item
   Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
 \item
-  Install the packages in advance. This is recommended if the user is interest in most of the methods of microeco package and want to run a large number of examples in tutorial.
+  Install the packages in advance.
+  This is recommended if the user is interested in most of the methods of microeco package and want to run a large number of examples in this tutorial.
 \end{enumerate}
 
 \hypertarget{cran-packages}{%
 \subsection{CRAN packages}\label{cran-packages}}
 
 We show some packages that are published in CRAN and not installed automatically.
-Those packages are needed to reproduce some parts of the tutorial.
+Those packages are necessary to reproduce some parts of the tutorial.
 
 \begin{tabular}{l|l|l}
 \hline
@@ -295,7 +295,7 @@ agricolae & cal\_diff() & multiple comparisons in anova\\
 \hline
 picante & cal\_alphadiv() & Faith’s phylogenetic alpha diversity\\
 \hline
-pheatmap & plot\_corr(pheatmap = TRUE) & correlation heatmap with clustering dendrogram\\
+pheatmap & plot\_cor(pheatmap = TRUE) & correlation heatmap with clustering dendrogram\\
 \hline
 tidytree & trans\_diff class & plot the taxonomic tree\\
 \hline
@@ -433,15 +433,15 @@ The blast tool path ``ncbi-blast-2.5.0+/bin'' is also required if it is not adde
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plotting}{%
-\section{Plotting}\label{plotting}}
+\hypertarget{plot}{%
+\section{Plot}\label{plot}}
 
-Most of the plotting in the package rely on the ggplot2 package system.
-We provide some parameters to change the corresponding plot, but it may be far from enough.
+Most of the plots in the package rely on the ggplot2 package system.
+We provide some parameters to optimize the corresponding plot, but it may be far from enough.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
-Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
+Each data table used for visualization is stored in the object and can be saved for the customized analysis.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated via Github-Pull requests (\url{https://github.com/ChiLiubio/microeco_tutorial/pulls}) or Email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
+Any contribution of a modified class is appreciated via Github-Pull requests (\url{https://github.com/ChiLiubio/microeco_tutorial/pulls}) or Email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
 
 \hypertarget{basic-class}{%
 \chapter{Basic class}\label{basic-class}}
@@ -462,22 +462,23 @@ The dashed line denotes the key objects (input or output of functions) that dese
 usearch (\url{https://www.drive5.com/usearch/}), mothur \citep{Schloss_Introducing_2009},
 SILVAngs (\url{https://ngs.arb-silva.de/silvangs/}),
 and RDP (\url{http://rdp.cme.msu.edu/}).
-Although the formats of results may be distinctive across various tools, the main files can be generally classified into the following parts:
+Although the formats of result files may vary across tools, the main contents can be generally classified into the following parts:
 (1) OTU/ASV table, i.e.~the feature-sample abundance table;
 (2) taxonomic assignment table;
 (3) representative sequences;
 (4) phylogenetic tree;
-(5) metadata. It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).
+(5) metadata.
+It is generally useful to create a detailed sample metadata table to store all the sample information (including the environmental data).
 
 　The microtable class is the basic class and designed to store the basic data for all the downstream analysis in the microeco package.
-At least, the OTU table (i.e.~feature-sample abundance table) should be provided for creating microtable object.
+At least, the OTU table (i.e.~feature-sample abundance table) should be provided to create microtable object.
 Thus, the microtable class can determine that the sample information table is missing and create a default sample table according to
-the sample names in otu\_table.
-To make the file reading more convenient,
+sample names in otu\_table.
+To make the file input more convenient,
 we also build another R package file2meco (\url{https://github.com/ChiLiubio/file2meco}) to read the output files of some tools into microtable object.
 Currently, those tools/softwares include not only commonly-used QIIME \citep{Caporaso_QIIME_2010} and QIIME2\citep{Bolyen_Reproducible_2019},
-but also some metagenomic tools, such as HUMAnN \citep{Franzosa_Species_2018} and kraken2 \citep{Wood_Improved_2019}.
-In this tutorial, we use the data inside the package microeco to show some basic operations.
+but also several metagenomic tools, such as HUMAnN \citep{Franzosa_Species_2018} and kraken2 \citep{Wood_Improved_2019}.
+In this tutorial, the data inside the package was employed to show some basic operations.
 
 \hypertarget{prepare-the-example-data}{%
 \subsection{Prepare the example data}\label{prepare-the-example-data}}
@@ -487,14 +488,14 @@ This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in C
 who surveyed soil prokaryotic communities in Chinese inland wetlands (IW),
 coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples (classified for the tutorial).
-The sample information table have 4 columns: ``SampleID'', ``Group'', ``Type'' and ``Saline''.
+The sample information table has 4 columns: ``SampleID'', ``Group'', ``Type'' and ``Saline''.
 The column ``SampleID'' is same with the rownames.
 The column ``Group'' represents the IW, CW and TW.
-The column ``Type'' represents the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
+The column ``Type'' means the sampling region: northeastern region (NE), northwest region (NW), North China area (NC),
 middle-lower reaches of the Yangtze River (YML), southern coastal area (SC), upper reaches of the Yangtze River (YU), Qinghai-Tibet Plateau (QTP).
-The column ``Saline'' represents the saline soils and non-saline soils.
+The column ``Saline'' denotes the saline soils and non-saline soils.
 In this dataset, the environmental factor table is separated from the sample information table.
-It is of course doable and recommended to put all the environmental data into sample information table.
+It is also recommended to put all the environmental data into sample information table.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -521,7 +522,7 @@ It is of course doable and recommended to put all the environmental data into sa
 \end{Highlighting}
 \end{Shaded}
 
-Make sure that the data types of sample\_table, otu\_table and tax\_table are all data.frame format as the following part shows.
+Make sure that the data types of sample\_table, otu\_table and tax\_table are all \texttt{data.frame} format as the following part shows.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -612,11 +613,11 @@ Crenarchaeotic Group & c\_\_ \\
 \bottomrule()
 \end{longtable}
 
-Generally, users' taxonomic table have some chaotic information, such as NA, unidentified and unknown.
+Generally, users' taxonomic table has some messy information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
 So it is usually necessary to clean this data using the \texttt{tidy\_taxonomy} function.
 Another very important result of this operation is to \textbf{unify the taxonomic prefix} automatically,
-e.g., transforming D\_1\_\_ to p\_\_ for Phylum level or adding p\_\_ to Phylum directly if no prefix is found.
+e.g., converting D\_1\_\_ to p\_\_ for Phylum level or adding p\_\_ to Phylum directly if no prefix is found.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -799,8 +800,8 @@ HUMAnN \citep{Franzosa_Species_2018}, MetaPhlAn \citep{Truong_MeTApHLaN2_2015}, 
 Please read the tutorial of file2meco package for more detailed information (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html}).
 
 ▲ 2. \textbf{Other cases}\\
-To read other files (not supported by file2meco package) into microtable object,
-there should be two steps to create the microtable object:\\
+To transform customized files to microtable object,
+there should be two steps:\\
 \textbf{I) read files to R}\\
 The required format of microtable\$new parameters, \textbf{otu\_table}, \textbf{sample\_table} and \textbf{tax\_table}, are all the data.frame, which is the most frequently-used data format in R.
 So no matter what the format the files are, they should be first read into R with some functions, such as \texttt{read.table} and \texttt{read.csv}.
@@ -927,8 +928,8 @@ The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_data
 ## [1] 10000 10000
 \end{verbatim}
 
-Then, let's calculate the taxa abundance at each taxonomic rank using cal\_abund().
-This function \textbf{return a list called taxa\_abund stored in the microtable object}.
+Then, let's calculate the taxa abundance at each taxonomic rank using \texttt{cal\_abund()}.
+This function \textbf{generate a list called taxa\_abund stored in the microtable object}.
 This list contain several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the \texttt{cal\_abund()} function can be used to \textbf{solve more complicated cases with special parameters},
 such as supporting both the relative and absolute abundance calculation and selecting the partial `taxonomic' columns.
@@ -1004,7 +1005,6 @@ The function \texttt{save\_abund()} can be used to save the taxa abundance file 
 
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
-For the definition of each alpha diversity index, please see \url{http://scikit-bio.org/docs/latest/generated/skbio.diversity.alpha.html}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1078,7 +1078,7 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -1253,8 +1253,7 @@ since they are mainly used to show the composition information of communities.
 \hypertarget{trans_abund-class}{%
 \section{trans\_abund class}\label{trans_abund-class}}
 
-　The trans\_abund class is used to transform taxonomic abundance data to plots based on the ggplot2 package.
-As a premise, the \textbf{taxa\_abund list in the object of microtable class must be first calculated}.
+　The trans\_abund class has several functions to visualize taxonomic abundance based on the ggplot2 package.
 
 \hypertarget{example}{%
 \subsection{Example}\label{example}}
@@ -1301,10 +1300,10 @@ Two or more facets are supported with the facet parameter from v0.14.0 by provid
 
 \begin{center}\includegraphics[width=750px]{Images/plot_bar_facet2} \end{center}
 
-The default operation can filter all the unclassified taxa (i.e.~p\_\_ or g\_\_ in tax\_table that has been processed by tidy\_taxonomy function),
+The default operation can filter all the unclassified taxa (i.e.~p\_\_ or g\_\_ in tax\_table that has been processed by \texttt{tidy\_taxonomy} function),
 as those unknown taxa are generally meaningless.
-However sometimes, these unknown taxa may be important for users.
-For example, if you want to isolate some unknown species, you need to check the abundance of those unknown taxa.
+However sometimes, these unknown taxa may be meaningful for users.
+For example, if one want to isolate some unknown species, it is valuable to check the abundance of those unknown taxa.
 At this time, please see this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}) to resolve the issue that how to show unknown taxa with hierarchical taxonomy classification.
 The alluvial plot is also implemented in the plot\_bar function with use\_alluvium parameter.
 
@@ -1400,7 +1399,7 @@ Then, we show the pie chart with the group mean values.
 \hypertarget{trans_venn-class}{%
 \section{trans\_venn class}\label{trans_venn-class}}
 
-The trans\_venn class is used for venn analysis, i.e.~shared and unique taxa.
+The trans\_venn class is developed for venn analysis, i.e.~shared and unique taxa across samples/groups.
 
 \hypertarget{example-1}{%
 \subsection{Example}\label{example-1}}
@@ -1448,6 +1447,7 @@ When the groups are too many to show with venn plot, using petal plot is better.
 \begin{center}\includegraphics[width=500px]{Images/trans_venn_2} \end{center}
 
 Another way to plot the results is to use plot\_bar function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1462,7 +1462,7 @@ Another way to plot the results is to use plot\_bar function, which is especiall
 
 \begin{center}\includegraphics[width=800px]{Images/plot_venn_bar_type} \end{center}
 
-Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
+Generally, after getting the intersection results, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups\citep{Mendes_Deciphering_2011}.
 So, it is interesting to further analyze the composition of unique and shared species.
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.
@@ -1541,14 +1541,14 @@ It refers to alpha diversity, beta diversity and gamma diversity.
 \hypertarget{trans_alpha-class}{%
 \section{trans\_alpha class}\label{trans_alpha-class}}
 
-　Alpha diversity can be transformed and plotted using trans\_alpha class.
+　Alpha diversity can be transformed and visualized using trans\_alpha class.
 Creating the object of trans\_alpha class can invoke the alpha\_diversity data stored in the microtable object.
 
 \hypertarget{example-2}{%
 \subsection{Example}\label{example-2}}
 
-Creating trans\_alpha object have two return data.frame with prefix `data\_': data\_alpha and data\_stat.
-The data\_alpha is used for the following differential test and plotting.
+Creating trans\_alpha object have two return data.frame with prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
+The data\_alpha is used for the following differential test and visualization.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1635,10 +1635,10 @@ Significance
 \end{minipage} \\
 \midrule()
 \endhead
-IW - CW - TW & Observed & IW & 0.155 & 0.2713 & ns \\
-IW - CW - TW & Chao1 & IW & 0.01696 & 0.05936 & ns \\
-IW - CW - TW & ACE & IW & 0.01333 & 0.05936 & ns \\
-IW - CW - TW & Shannon & IW & 0.5319 & 0.7446 & ns \\
+IW - CW - TW & Observed & IW & 0.155 & 0.2481 & ns \\
+IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
+IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
+IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 \bottomrule()
 \end{longtable}
@@ -1720,14 +1720,15 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1467}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0800}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1733}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1200}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0930}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1279}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0930}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0698}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1163}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1163}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1512}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1047}}
+  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1279}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 Group
@@ -1745,17 +1746,18 @@ Simpson
 InvSimpson
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Fisher
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Coverage
 \end{minipage} \\
 \midrule()
 \endhead
-IW & a & a & a & a & a & a & a \\
-TW & a & ab & b & a & a & a & a \\
-CW & a & b & b & a & a & a & a \\
+IW & a & a & a & a & a & a & a & b \\
+TW & a & ab & b & a & a & a & a & a \\
+CW & a & b & b & a & a & a & a & a \\
 \bottomrule()
 \end{longtable}
 
-The multi-factor analysis of variance is also supported.
-It is notable that the result res\_diff will be a list instead of a data.frame when formula is provided.
+The multi-factor analysis of variance is also supported with the \texttt{formula} parameter, such as two-way anova.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1811,6 +1813,15 @@ From the v0.12.0, the trans\_alpha class supports the differential test of group
 
 \begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox_bygroup} \end{center}
 
+Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require rcompanion package to be installed}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"scheirerRayHare"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{key-points-3}{%
 \subsection{Key points}\label{key-points-3}}
 
@@ -1828,10 +1839,10 @@ From the v0.12.0, the trans\_alpha class supports the differential test of group
 \section{trans\_beta class}\label{trans_beta-class}}
 
 　The trans\_beta class is developed for the beta diversity analysis, i.e.~the dissimilarities among samples.
-Beta diversity can be defined at different forms\citep{Tuomisto_diversity_2010} and can be explored with different ways\citep{Anderson_Navigating_2011},
-So we encapsulate some commonly-used approaches in microbial ecology\citep{Ramette_Multivariate_2007}.
-Note that the parts related with ``Environmental interpretation'' are placed into the trans\_env class.
-When needed, the beta\_diversity list in microtable object will be invoked for transformation and ploting using trans\_beta class.
+Beta diversity can be defined at different forms\citep{Tuomisto_diversity_2010} and can be explored with different ways\citep{Anderson_Navigating_2011}.
+We encapsulate some commonly-used approaches in microbial ecology\citep{Ramette_Multivariate_2007}.
+Note that the part of beta diversity related with environmental factors are placed into the trans\_env class.
+The distance matrix in beta\_diversity list of microtable object will be invoked for transformation and ploting using trans\_beta class when needed.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
 
 \hypertarget{example-3}{%
@@ -1917,7 +1928,7 @@ Clustering plot is also a frequently used method.
 
 \begin{center}\includegraphics[width=550px]{Images/plot_clustering} \end{center}
 
-perMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of distances among groups.
+PerMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of distances among groups.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2138,19 +2149,19 @@ For the explanation of statistical methods in microbial ecology, please read the
 \item
   cal\_manova(): cal\_manova function can be used for paired comparisons, overall test and multi-factor test
 \item
-  plot\_group\_distance(): hide\_ns and pair\_compare\_filter\_select parameters can be used to control the significance labels shown in the plot
+  plot\_group\_distance(): manipulating object\$res\_group\_distance\_diff can control what statistical results are presented in the plot.
 \end{itemize}
 
 \hypertarget{model-based-class}{%
 \chapter{Model-based class}\label{model-based-class}}
 
-We group all the classes with complex models into the type `Model-based class'.
+We group all the classes with complex models into the this section `Model-based class'.
 
 \hypertarget{trans_diff-class}{%
 \section{trans\_diff class}\label{trans_diff-class}}
 
 　Differential abundance test is a very important part in the microbial community data analysis \citep{Nearing_Microbiome_2022}.
-It can be used to find the significant taxa in determining the community differences across groups.
+It can find the significant taxa in determining the community differences across groups.
 There are also several wrapped methods to better capture the important biomarkers,
 such as the combination of machine-learning and differential abundance test.
 Currently, trans\_diff class have several famous approaches to perform this analysis:
@@ -2222,9 +2233,9 @@ Then, we plot the abundance of biomarkers detected by LEfSe.
 
 Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
-As an example, we only use the highest 200 abundant taxa in the tree and 50 differential features.
+As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
-\textbf{Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data.}.
+\textbf{Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data}.
 \textbf{Please see the tidy\_taxonomy function of microtable part to solve this issue.}.
 
 \begin{Shaded}
@@ -2239,8 +2250,8 @@ We only show the full taxonomic label at Phylum level and use letters at other l
 
 There may be a problem related with the taxonomic labels in the plot.
 When the levels used are too many, the taxonomic labels may have too much overlap.
-However, if you only indicate the Phylum labels, the taxa in the legend with marked letters are too many.
-At this time, you can select the taxa that you want to show in the plot manually like the following operation.
+However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
+At this time, taxa can be manually choosed to show like the following operation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2282,7 +2293,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 \begin{center}\includegraphics[width=800px]{Images/plot_rf_diff_abund} \end{center}
 
 The significance label can also be added in the abundance plot controlled by add\_sig parameter and other related parameters.
-Now adding label support all the differential test methods.
+Now adding labels supports all the differential test methods.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2305,7 +2316,6 @@ Now adding label support all the differential test methods.
 \begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_anova} \end{center}
 
 Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
-It can be used for the comparisons of taxonomic abundance between any paired groups at any taxonomic level.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2403,10 +2413,10 @@ These three packages are all deposited on the Bioconductor.
 \tightlist
 \item
   trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = NULL can shut down the p value adjustment for method != ``metastat'' or ``anova''.
-  This can be used in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
+  This is useful in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
   where the results need to be compared with that from Galaxy server or other LEfSe python version.
 \item
-  trans\_diff\$new: this class have a strict requirement on the taxonomic information, make sure tidy\_taxonomy() function has been performed before creating your dataset
+  trans\_diff\(new: this class has a strict requirement on the taxonomic information, make sure `tidy_taxonomy()` function has been performed for the dataset\)tax\_table
 \item
   trans\_diff\$new: creating this class will invoke taxa\_abund stored in microtable object
 \item
@@ -2429,7 +2439,7 @@ The dashed line denotes the key objects (input or output). The \texttt{res\_netw
 
 We use the correlation-based network to show the main operations for users.
 This is only intended to show some operations conveniently.
-\textbf{Does not mean we are suggesting this approach in any case}.
+\textbf{Do not mean we are suggesting this approach in any case}.
 Please check the final part for other network construction methods.
 
 \begin{Shaded}
@@ -2862,7 +2872,7 @@ We first check the phylogenetic signal.
 
 \begin{center}\includegraphics[width=600px]{Images/plot_mantel_corr} \end{center}
 
-betaNRI(ses.betampd) is used to show the `basal' phylogenetic turnover\citep{Liu_Long_term_2017}.
+betaNRI(ses.betampd) is used to show the `basal' phylogenetic turnover.
 Compared to betaNTI, it can capture more turnover information associated with the deep phylogeny.
 It is noted that there are many null models with the development in the several decades of community ecology.
 In the trans\_nullmodel class,
@@ -2874,7 +2884,7 @@ explore whether the observed phylogenetic turnover significantly differ from nul
 \begin{Highlighting}[]
 \CommentTok{\# see null.model parameter for other null models}
 \CommentTok{\# null model run 500 times for the example}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betampd}\NormalTok{(}\AttributeTok{runs=}\DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betampd}\NormalTok{(}\AttributeTok{runs =} \DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return t1$res\_ses\_betampd}
 \end{Highlighting}
 \end{Shaded}
@@ -3059,7 +3069,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Mar  7 11:31:31 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Mar 11 10:17:45 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3089,9 +3099,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3872 & 0.3638 & 9.082 \\
-CW & 435 & 0.5627 & 0.296 & 0.2863 & 14.33 \\
-TW & 435 & 0.6247 & 0.4154 & 0.4001 & 9.867 \\
+IW & 435 & 0.654 & 0.387 & 0.364 & 9.097 \\
+CW & 435 & 0.5627 & 0.2956 & 0.2863 & 14.34 \\
+TW & 435 & 0.6247 & 0.416 & 0.4001 & 9.836 \\
 \bottomrule()
 \end{longtable}
 
@@ -3315,13 +3325,13 @@ For other machine-learning models, please use method parameter in cal\_train fun
 \chapter{Explainable class}\label{explainable-class}}
 
 We group trans\_env and trans\_func classes into `Explainable class',
-as the environmental variables and functional data are generally explainable factors.
+as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.
 
 \hypertarget{trans_env-class}{%
 \section{trans\_env class}\label{trans_env-class}}
 
 There may be some NA (missing value) in the user's env data.
-If so, please add complete\_na = TRUE when creating the trans\_env object.
+If so, please add \texttt{complete\_na\ =\ TRUE} for interpolation when creating the trans\_env object.
 
 \hypertarget{example-7}{%
 \subsection{Example}\label{example-7}}
@@ -3359,7 +3369,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 ## tax_table have 12766 rows and 7 columns
 ## phylo_tree have 12766 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -3375,9 +3385,9 @@ Now let's use env\_cols to select the required columns from sample\_table in the
 ## Env data is stored in object$data_env ...
 \end{verbatim}
 
-Generally, it is necessary to have a deep understanding on the environmental variables in order to better use more methods.
+Generally, it is beneficial to the understanding on environmental variables in order to better use more methods.
 So, we first show the cal\_diff and cal\_autocor functions.
-The cal\_diff function is used to test the significance of variables across groups like we have shown in trans\_alpha and trans\_diff parts.
+The cal\_diff function is used to test the significance of variables across groups like we have shown in trans\_alpha and trans\_diff class parts.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3773,7 +3783,7 @@ The function plot\_scatterfit() in trans\_env class is designed for the scatter 
 \section{trans\_func class}\label{trans_func-class}}
 
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
-because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities and to infer the underlying mechanisms.
+because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities.
 As metagenomic sequencing is complicated and expensive, using amplicon sequencing data to predict functional profiles is an alternative choice.
 Several software are often used for this goal, such as PICRUSt \citep{Langille_Predictive_2013}, Tax4Fun \citep{Aßhauer_Tax4Fun_2015} and FAPROTAX \citep{Louca_High_2016, Louca_Decoupling_2016}.
 These tools are great to be used for the prediction of functional profiles based on the prokaryotic communities from sequencing results.
@@ -3967,7 +3977,7 @@ K00002; alcohol dehydrogenase
 \bottomrule()
 \end{longtable}
 
-Now, we use pathway file to analyze the abundance of pathway.
+We further analyze the abundance of predicted metabolic pathways.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4086,7 +4096,7 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 \item
   blast\_tool\_path parameter in cal\_tax4fun2: if the blast tool has been in `environment variable' of computer, it is ok to use blast\_tool\_path = NULL
 \item
-  blast version: tax4fun2 require NCBI blast tool. However, some errors can come from the latest versions (\url{https://www.biostars.org/p/413294/}). An easy solution is to use previous version (such as 2.5.0).
+  blast version: tax4fun2 require NCBI blast tool. However, some errors often come from the latest versions (\url{https://www.biostars.org/p/413294/}). An easy solution is to use previous version (such as v2.5.0).
 \end{itemize}
 
 \hypertarget{file2meco-package}{%
@@ -4374,6 +4384,8 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
 \CommentTok{\# load ITS data}
 \FunctionTok{data}\NormalTok{(sample\_info\_ITS)}
 \FunctionTok{data}\NormalTok{(otu\_table\_ITS)}
@@ -4566,12 +4578,12 @@ This is also the recommended way to send data for testing in `Github Issues'.
 \begin{Highlighting}[]
 \CommentTok{\# save \textquotesingle{}dataset\textquotesingle{} to local computer}
 \FunctionTok{save}\NormalTok{(dataset, }\AttributeTok{file =} \StringTok{"dataset.RData"}\NormalTok{)}
-\CommentTok{\# dataset.RData can be compressed into zip format for the upload in \textquotesingle{}Github Issues\textquotesingle{}}
 \CommentTok{\# load the data by others in their R project}
 \FunctionTok{load}\NormalTok{(}\StringTok{"dataset.RData"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
+The \texttt{dataset.RData} can be compressed into zip format for the upload in `Github Issues' (\url{https://github.com/ChiLiubio/microeco/issues}).
 The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
 So it is repeatable.
 
@@ -4584,7 +4596,7 @@ Several points are recommended.
 \begin{itemize}
 \item
   Before creating a `New issue', please first skim through the `Issues' including `Open' and `Closed'.
-  Then go ahead if no similar issue is found or the similar issue is not solved.
+  Then go ahead if no similar issue is found or the similar issue has not been addressed.
 \item
   Please remember to provide your package version when writing a `New issue'.
 \item
@@ -4615,7 +4627,7 @@ All the classes are set public, meaning that you can \textbf{change, add or remo
 \hypertarget{group-order}{%
 \section{group order}\label{group-order}}
 
-If you want to reorder the groups, \textbf{assign the factors may be the simplest way.}
+If the user want to reorder the groups, \textbf{assigning factors may be the simplest way.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4635,7 +4647,7 @@ If you want to reorder the groups, \textbf{assign the factors may be the simples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-288-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-289-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4672,7 +4684,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-289-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-290-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

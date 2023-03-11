@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-07" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
 <li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
@@ -344,8 +344,7 @@ div.csl-indent {
 since they are mainly used to show the composition information of communities.</p>
 <div id="trans_abund-class" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> trans_abund class<a href="composition-based-class.html#trans_abund-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>　The trans_abund class is used to transform taxonomic abundance data to plots based on the ggplot2 package.
-As a premise, the <strong>taxa_abund list in the object of microtable class must be first calculated</strong>.</p>
+<p>　The trans_abund class has several functions to visualize taxonomic abundance based on the ggplot2 package.</p>
 <div id="example" class="section level3 hasAnchor" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Example<a href="composition-based-class.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We first show the bar plot example.</p>
@@ -362,10 +361,10 @@ As a premise, the <strong>taxa_abund list in the object of microtable class must
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="composition-based-class.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require package ggh4x, first run install.packages(&quot;ggh4x&quot;) if not installed</span></span>
 <span id="cb81-2"><a href="composition-based-class.html#cb81-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">others_color =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">facet =</span> <span class="fu">c</span>(<span class="st">&quot;Group&quot;</span>, <span class="st">&quot;Type&quot;</span>), <span class="at">xtext_keep =</span> <span class="cn">FALSE</span>, <span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>, <span class="at">barwidth =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Images/plot_bar_facet2.png" width="750px" style="display: block; margin: auto;" /></p>
-<p>The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by tidy_taxonomy function),
+<p>The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by <code>tidy_taxonomy</code> function),
 as those unknown taxa are generally meaningless.
-However sometimes, these unknown taxa may be important for users.
-For example, if you want to isolate some unknown species, you need to check the abundance of those unknown taxa.
+However sometimes, these unknown taxa may be meaningful for users.
+For example, if one want to isolate some unknown species, it is valuable to check the abundance of those unknown taxa.
 At this time, please see this topic (<a href="https://github.com/ChiLiubio/microeco/issues/165" class="uri">https://github.com/ChiLiubio/microeco/issues/165</a>) to resolve the issue that how to show unknown taxa with hierarchical taxonomy classification.
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.</p>
 <div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="composition-based-class.html#cb82-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
@@ -414,7 +413,7 @@ The alluvial plot is also implemented in the plot_bar function with use_alluvium
 </div>
 <div id="trans_venn-class" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> trans_venn class<a href="composition-based-class.html#trans_venn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The trans_venn class is used for venn analysis, i.e. shared and unique taxa.</p>
+<p>The trans_venn class is developed for venn analysis, i.e. shared and unique taxa across samples/groups.</p>
 <div id="example-1" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Example<a href="composition-based-class.html#example-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This part can be performed using samples or groups at OTU/ASV level or higher taxonomic level.
@@ -439,7 +438,8 @@ we first merge samples according to the “Group” column of sample_table.</p>
 <span id="cb90-3"><a href="composition-based-class.html#cb90-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(dataset1)</span>
 <span id="cb90-4"><a href="composition-based-class.html#cb90-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">petal_plot =</span> <span class="cn">TRUE</span>, <span class="at">petal_center_size =</span> <span class="dv">50</span>, <span class="at">petal_r =</span> <span class="fl">1.5</span>, <span class="at">petal_a =</span> <span class="dv">3</span>, <span class="at">petal_move_xy =</span> <span class="fl">3.8</span>, <span class="at">petal_color_center =</span> <span class="st">&quot;#BEBADA&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_venn_2.png" width="500px" style="display: block; margin: auto;" /></p>
-<p>Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.</p>
+<p>Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot.</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="composition-based-class.html#cb91-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Type&quot;</span>)</span>
 <span id="cb91-2"><a href="composition-based-class.html#cb91-2" aria-hidden="true" tabindex="-1"></a>tmp</span>
 <span id="cb91-3"><a href="composition-based-class.html#cb91-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp)</span>
@@ -447,7 +447,7 @@ we first merge samples according to the “Group” column of sample_table.</p>
 <span id="cb91-5"><a href="composition-based-class.html#cb91-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>data_summary <span class="sc">%&lt;&gt;%</span> .[.[, <span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">20</span>, ]</span>
 <span id="cb91-6"><a href="composition-based-class.html#cb91-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_bar</span>()</span></code></pre></div>
 <p><img src="Images/plot_venn_bar_type.png" width="800px" style="display: block; margin: auto;" /></p>
-<p>Generally, after getting the venn plot, we do not know who those shared or unique taxa are.
+<p>Generally, after getting the intersection results, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups<span class="citation">(<a href="#ref-Mendes_Deciphering_2011" role="doc-biblioref">Mendes et al. 2011</a>)</span>.
 So, it is interesting to further analyze the composition of unique and shared species.
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.</p>
@@ -549,6 +549,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

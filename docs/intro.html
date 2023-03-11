@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-07" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.5</b> Tax4Fun</a></li>
 <li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plotting"><i class="fa fa-check"></i><b>2.6</b> Plotting</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
 <ul>
@@ -341,10 +341,10 @@ div.csl-indent {
 <div id="intro" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Introduction<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyse microbiome data fast.
+The main goal of developing this package is to help users analyze microbiome data fast.
 So a series of commonly-used and cutting-edge approaches are implemented.
 To facilitate the data mining, the whole structure of microeco package are highly modularized to
-make users conveniently remember, search and use.
+make users conveniently remember, search and use the classes.
 It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
 apply those files to other tools according to the format requirement.
 Main files stored in the object of each class are the frequently-used data.frame format.
@@ -358,7 +358,7 @@ Before starting the specific usage of each class, let’s first introduce severa
 as shown in the figure. An example is the function <code>dataset$cal_alphadiv()</code> and its return result <code>dataset$alpha_diversity</code>.
 The dataset is a microtable object.
 Generally, the return files of functions are named with the prefix ‘res_’ to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
-Except for microtable class, the transformed data in creating object is also generally named with the prefix ‘data_’.</p>
+Except for microtable class, the transformed data in created object is generally named with the prefix ‘data_’.</p>
 </div>
 <div id="r6-class" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> R6 Class<a href="intro.html#r6-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -402,18 +402,19 @@ So the question is that the user may encounter an error when using a class or fu
 <span id="cb3-4"><a href="intro.html#cb3-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="intro.html#cb4-1" aria-hidden="true" tabindex="-1"></a>Error in t1$cal_network(network_method = &quot;SpiecEasi&quot;): igraph package not installed ...</span></code></pre></div>
 <p><br>
-The reason is that network construction require igraph package. We donot put the igraph and some other packages on the “Imports” part of microeco package.
+The reason is that network construction requires igraph package. We donot put the igraph and some other packages on the “Imports” part of microeco package.
 In addition, some packages, e.g. SpiecEasi, are released on github and can not be installed automatically.</p>
 <p>The solutions:</p>
 <ol style="list-style-type: decimal">
 <li><p>Install the package when encounter such an error. Actually, it’s very easy to install the packages from CRAN or bioconductor or github. Just try it.</p></li>
-<li><p>Install the packages in advance. This is recommended if the user is interest in most of the methods of microeco package and want to run a large number of examples in tutorial.</p></li>
+<li><p>Install the packages in advance.
+This is recommended if the user is interested in most of the methods of microeco package and want to run a large number of examples in this tutorial.</p></li>
 </ol>
 </div>
 <div id="cran-packages" class="section level3 hasAnchor" number="2.5.2">
 <h3><span class="header-section-number">2.5.2</span> CRAN packages<a href="intro.html#cran-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We show some packages that are published in CRAN and not installed automatically.
-Those packages are needed to reproduce some parts of the tutorial.</p>
+Those packages are necessary to reproduce some parts of the tutorial.</p>
 <table>
 <colgroup>
 <col width="13%" />
@@ -470,7 +471,7 @@ Those packages are needed to reproduce some parts of the tutorial.</p>
 </tr>
 <tr class="odd">
 <td align="left">pheatmap</td>
-<td align="left">plot_corr(pheatmap = TRUE)</td>
+<td align="left">plot_cor(pheatmap = TRUE)</td>
 <td align="left">correlation heatmap with clustering dendrogram</td>
 </tr>
 <tr class="even">
@@ -598,14 +599,14 @@ The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not ad
 <span id="cb8-15"><a href="intro.html#cb8-15" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
 </div>
 </div>
-<div id="plotting" class="section level2 hasAnchor" number="2.6">
-<h2><span class="header-section-number">2.6</span> Plotting<a href="intro.html#plotting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Most of the plotting in the package rely on the ggplot2 package system.
-We provide some parameters to change the corresponding plot, but it may be far from enough.
+<div id="plot" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Plot<a href="intro.html#plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Most of the plots in the package rely on the ggplot2 package system.
+We provide some parameters to optimize the corresponding plot, but it may be far from enough.
 The user can also assign the output a name and use the ggplot2-style grammers to modify it.
-Each data table used for plotting is stored in the object and can be saved for the customized analysis and plotting.
+Each data table used for visualization is stored in the object and can be saved for the customized analysis.
 Of course, the user can also directly modify the class and reload them to use.
-Any contribution of a modified class is also appreciated via Github-Pull requests (<a href="https://github.com/ChiLiubio/microeco_tutorial/pulls" class="uri">https://github.com/ChiLiubio/microeco_tutorial/pulls</a>) or Email (<a href="mailto:liuchi0426@126.com" class="email">liuchi0426@126.com</a>).</p>
+Any contribution of a modified class is appreciated via Github-Pull requests (<a href="https://github.com/ChiLiubio/microeco_tutorial/pulls" class="uri">https://github.com/ChiLiubio/microeco_tutorial/pulls</a>) or Email (<a href="mailto:liuchi0426@126.com" class="email">liuchi0426@126.com</a>).</p>
 
 </div>
 </div>
@@ -678,6 +679,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
