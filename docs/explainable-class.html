@@ -611,10 +611,13 @@ Furthermore, the function <code>cal_ordination_envfit</code> can be used to get 
 <p>For the combination of mantel test and correlation heatmap,
 please see another example (<a href="https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#mantel-test-correlation-heatmap" class="uri">https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#mantel-test-correlation-heatmap</a>).</p>
 <p>The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-Let’s first perform a correlation heatmap using Genus level data.</p>
+Let’s first perform a correlation heatmap using relative abundance data at Genus level with the <code>cal_cor</code> function.
+The parameter <code>p_adjust_type</code> can control the p value adjustment type.
+The default <code>p_adjust_type = "Env"</code> means p adjustment is performed for each environmental variable separately.
+If the user needs to adjust p values for all the results together, please use <code>p_adjust_type = "Type"</code>.</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="explainable-class.html#cb214-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span></code></pre></div>
 <pre><code>## Env data is stored in object$data_env ...</code></pre>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="explainable-class.html#cb216-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">p_adjust_method =</span> <span class="st">&quot;fdr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="explainable-class.html#cb216-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">p_adjust_method =</span> <span class="st">&quot;fdr&quot;</span>, <span class="at">p_adjust_type =</span> <span class="st">&quot;Env&quot;</span>)</span></code></pre></div>
 <pre><code>## The correlation result is stored in object$res_cor ...</code></pre>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="explainable-class.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_cor</span></span></code></pre></div>
 <p>Then, we can plot the correlation results using plot_cor function.</p>
@@ -624,7 +627,7 @@ Let’s first perform a correlation heatmap using Genus level data.</p>
 We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance &lt; 0.001.</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="explainable-class.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter genera that donot have at least one ***</span></span>
 <span id="cb220-2"><a href="explainable-class.html#cb220-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">filter_feature =</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;**&quot;</span>))</span></code></pre></div>
-<p>Sometimes, if the user want to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+<p>Sometimes, if the user wants to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
 please use <strong>other_taxa</strong> parameter in cal_cor function.</p>
 <div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="explainable-class.html#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first create trans_diff object as a demonstration</span></span>
 <span id="cb221-2"><a href="explainable-class.html#cb221-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">rf_taxa_level =</span> <span class="st">&quot;Genus&quot;</span>)</span>

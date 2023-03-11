@@ -166,11 +166,15 @@ please see another example (https://chiliubio.github.io/microeco_tutorial/other-
 
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
-Let's first perform a correlation heatmap using Genus level data.
+Let's first perform a correlation heatmap using relative abundance data at Genus level with the `cal_cor` function.
+The parameter `p_adjust_type` can control the p value adjustment type. 
+The default `p_adjust_type = "Env"` means p adjustment is performed for each environmental variable separately.
+If the user needs to adjust p values for all the results together, please use `p_adjust_type = "Type"`.
+
 
 ```{r, echo = TRUE}
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
-t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr")
+t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
 ```
 
@@ -189,8 +193,9 @@ We can use the filter_feature parameter in plot_cor to filter some taxa that do 
 t1$plot_cor(filter_feature = c("", "*", "**"))
 ```
 
-Sometimes, if the user want to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
+Sometimes, if the user wants to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
 please use **other_taxa** parameter in cal_cor function.
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
