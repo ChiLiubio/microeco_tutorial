@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-11" />
+<meta name="date" content="2023-03-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -185,8 +185,9 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#functions-in-microtable-class"><i class="fa fa-check"></i><b>3.1.3</b> Functions in microtable class</a></li>
 <li class="chapter" data-level="3.1.4" data-path="basic-class.html"><a href="basic-class.html#subset-of-samples"><i class="fa fa-check"></i><b>3.1.4</b> subset of samples</a></li>
 <li class="chapter" data-level="3.1.5" data-path="basic-class.html"><a href="basic-class.html#filter-features"><i class="fa fa-check"></i><b>3.1.5</b> filter features</a></li>
-<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.6</b> Other examples</a></li>
-<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.7</b> Key points</a></li>
+<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#merge-taxa-or-samples"><i class="fa fa-check"></i><b>3.1.6</b> merge taxa or samples</a></li>
+<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.7</b> Other examples</a></li>
+<li class="chapter" data-level="3.1.8" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.8</b> Key points</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
@@ -870,7 +871,7 @@ For example, if you want to extract samples of ‘CW’ group, please do like th
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
 ## Beta diversity: calculated for bray,jaccard</code></pre>
 </div>
 <div id="filter-features" class="section level3 hasAnchor" number="3.1.5">
@@ -887,68 +888,79 @@ For other operations on the features, please directly manipulate the otu_table o
 <pre><code>## Use converted freq integer: 9 for the following filtering ...</code></pre>
 <pre><code>## 6309 features filtered based on the occurrence...</code></pre>
 </div>
-<div id="other-examples" class="section level3 hasAnchor" number="3.1.6">
-<h3><span class="header-section-number">3.1.6</span> Other examples<a href="basic-class.html#other-examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="merge-taxa-or-samples" class="section level3 hasAnchor" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> merge taxa or samples<a href="basic-class.html#merge-taxa-or-samples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Merging taxa according to a specific taxonomic rank level of tax_table can generate a new microtable object.
+In the new microtable object, each feature in otu_table represents one taxon at the output level.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="basic-class.html#cb67-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_taxa</span>(<span class="at">taxa =</span> <span class="st">&quot;Family&quot;</span>)</span>
+<span id="cb67-2"><a href="basic-class.html#cb67-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
+<pre><code>## microtable-class object:
+## sample_table have 90 rows and 4 columns
+## otu_table have 616 rows and 90 columns
+## tax_table have 616 rows and 5 columns</code></pre>
+<p>Similarly, merging samples according to a specific group of sample_table can also generate a new microtable object.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="basic-class.html#cb69-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb69-2"><a href="basic-class.html#cb69-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
+<pre><code>## microtable-class object:
+## sample_table have 3 rows and 1 columns
+## otu_table have 12766 rows and 3 columns
+## tax_table have 12766 rows and 7 columns
+## phylo_tree have 12766 tips</code></pre>
+</div>
+<div id="other-examples" class="section level3 hasAnchor" number="3.1.7">
+<h3><span class="header-section-number">3.1.7</span> Other examples<a href="basic-class.html#other-examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use <code>tidy_dataset</code> function to manually trim the microtable object.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="basic-class.html#cb67-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb67-2"><a href="basic-class.html#cb67-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="basic-class.html#cb71-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb71-2"><a href="basic-class.html#cb71-2" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 13628 rows and 90 columns</code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="basic-class.html#cb69-1" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb69-2"><a href="basic-class.html#cb69-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="basic-class.html#cb73-1" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, ], <span class="at">otu_table =</span> otu_table_16S, <span class="at">auto_tidy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb73-2"><a href="basic-class.html#cb73-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 40 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns</code></pre>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="basic-class.html#cb71-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]</span>
-<span id="cb71-2"><a href="basic-class.html#cb71-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="basic-class.html#cb75-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]</span>
+<span id="cb75-2"><a href="basic-class.html#cb75-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 12747 rows and 40 columns</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="basic-class.html#cb73-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb73-2"><a href="basic-class.html#cb73-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="basic-class.html#cb77-1" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb77-2"><a href="basic-class.html#cb77-2" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 10 rows and 4 columns
 ## otu_table have 8864 rows and 10 columns</code></pre>
 <p>The phylogenetic tree can be read with <code>read.tree</code> function in ape package.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="basic-class.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the example data rep_phylo.tre in file2meco package https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#qiime</span></span>
-<span id="cb75-2"><a href="basic-class.html#cb75-2" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb75-3"><a href="basic-class.html#cb75-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(phylo_file_path)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="basic-class.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the example data rep_phylo.tre in file2meco package https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#qiime</span></span>
+<span id="cb79-2"><a href="basic-class.html#cb79-2" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb79-3"><a href="basic-class.html#cb79-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(phylo_file_path)</span></code></pre></div>
 <p>Other functions and examples are listed here.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="basic-class.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone a complete dataset named test</span></span>
-<span id="cb76-2"><a href="basic-class.html#cb76-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb76-3"><a href="basic-class.html#cb76-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-4"><a href="basic-class.html#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="co"># add the rownames of tax_table as the last column of tax_table directly; useful in some analysis, e.g. biomarker finding at OTU/ASV level.</span></span>
-<span id="cb76-5"><a href="basic-class.html#cb76-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
-<span id="cb76-6"><a href="basic-class.html#cb76-6" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">add_rownames2taxonomy</span>(<span class="at">use_name =</span> <span class="st">&quot;OTU&quot;</span>)</span>
-<span id="cb76-7"><a href="basic-class.html#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
-<span id="cb76-8"><a href="basic-class.html#cb76-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-9"><a href="basic-class.html#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="co"># sum the abundance for each taxa; very useful for taxa abundance checking and filtering</span></span>
-<span id="cb76-10"><a href="basic-class.html#cb76-10" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">taxa_sums</span>()</span>
-<span id="cb76-11"><a href="basic-class.html#cb76-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-12"><a href="basic-class.html#cb76-12" aria-hidden="true" tabindex="-1"></a><span class="co"># merge samples according to a specific group of sample_table to generate a new microtable object</span></span>
-<span id="cb76-13"><a href="basic-class.html#cb76-13" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> test<span class="sc">$</span><span class="fu">merge_samples</span>(<span class="at">use_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb76-14"><a href="basic-class.html#cb76-14" aria-hidden="true" tabindex="-1"></a>test1</span>
-<span id="cb76-15"><a href="basic-class.html#cb76-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-16"><a href="basic-class.html#cb76-16" aria-hidden="true" tabindex="-1"></a><span class="co"># merge taxa according to a specific taxonomic rank level of tax_table to generate a new microtable object</span></span>
-<span id="cb76-17"><a href="basic-class.html#cb76-17" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> test<span class="sc">$</span><span class="fu">merge_taxa</span>(<span class="at">taxa =</span> <span class="st">&quot;Genus&quot;</span>)</span>
-<span id="cb76-18"><a href="basic-class.html#cb76-18" aria-hidden="true" tabindex="-1"></a>test1</span>
-<span id="cb76-19"><a href="basic-class.html#cb76-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-20"><a href="basic-class.html#cb76-20" aria-hidden="true" tabindex="-1"></a><span class="co"># rename feature names in all the files of microtable object</span></span>
-<span id="cb76-21"><a href="basic-class.html#cb76-21" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">rename_taxa</span>(<span class="at">newname_prefix =</span> <span class="st">&quot;new_name_&quot;</span>)</span>
-<span id="cb76-22"><a href="basic-class.html#cb76-22" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(test<span class="sc">$</span>otu_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb76-23"><a href="basic-class.html#cb76-23" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(test<span class="sc">$</span>tax_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb76-24"><a href="basic-class.html#cb76-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-25"><a href="basic-class.html#cb76-25" aria-hidden="true" tabindex="-1"></a><span class="co"># output sample names in microtable object</span></span>
-<span id="cb76-26"><a href="basic-class.html#cb76-26" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">sample_names</span>()[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb76-27"><a href="basic-class.html#cb76-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-28"><a href="basic-class.html#cb76-28" aria-hidden="true" tabindex="-1"></a><span class="co"># output taxa names in microtable object</span></span>
-<span id="cb76-29"><a href="basic-class.html#cb76-29" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">taxa_names</span>()[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="basic-class.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone a complete dataset named test</span></span>
+<span id="cb80-2"><a href="basic-class.html#cb80-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb80-3"><a href="basic-class.html#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="basic-class.html#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="co"># add the rownames of tax_table as the last column of tax_table directly; useful in some analysis, e.g. biomarker finding at OTU/ASV level.</span></span>
+<span id="cb80-5"><a href="basic-class.html#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
+<span id="cb80-6"><a href="basic-class.html#cb80-6" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">add_rownames2taxonomy</span>(<span class="at">use_name =</span> <span class="st">&quot;OTU&quot;</span>)</span>
+<span id="cb80-7"><a href="basic-class.html#cb80-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(test<span class="sc">$</span>tax_table)</span>
+<span id="cb80-8"><a href="basic-class.html#cb80-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-9"><a href="basic-class.html#cb80-9" aria-hidden="true" tabindex="-1"></a><span class="co"># sum the abundance for each taxa; very useful for taxa abundance checking and filtering</span></span>
+<span id="cb80-10"><a href="basic-class.html#cb80-10" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">taxa_sums</span>()</span>
+<span id="cb80-11"><a href="basic-class.html#cb80-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-12"><a href="basic-class.html#cb80-12" aria-hidden="true" tabindex="-1"></a><span class="co"># rename feature names in all the files of microtable object</span></span>
+<span id="cb80-13"><a href="basic-class.html#cb80-13" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">rename_taxa</span>(<span class="at">newname_prefix =</span> <span class="st">&quot;new_name_&quot;</span>)</span>
+<span id="cb80-14"><a href="basic-class.html#cb80-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(test<span class="sc">$</span>otu_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb80-15"><a href="basic-class.html#cb80-15" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(test<span class="sc">$</span>tax_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb80-16"><a href="basic-class.html#cb80-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-17"><a href="basic-class.html#cb80-17" aria-hidden="true" tabindex="-1"></a><span class="co"># output sample names in microtable object</span></span>
+<span id="cb80-18"><a href="basic-class.html#cb80-18" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">sample_names</span>()[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb80-19"><a href="basic-class.html#cb80-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-20"><a href="basic-class.html#cb80-20" aria-hidden="true" tabindex="-1"></a><span class="co"># output taxa names in microtable object</span></span>
+<span id="cb80-21"><a href="basic-class.html#cb80-21" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">taxa_names</span>()[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 </div>
-<div id="key-points" class="section level3 hasAnchor" number="3.1.7">
-<h3><span class="header-section-number">3.1.7</span> Key points<a href="basic-class.html#key-points" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="key-points" class="section level3 hasAnchor" number="3.1.8">
+<h3><span class="header-section-number">3.1.8</span> Key points<a href="basic-class.html#key-points" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>sample_table: rownames of sample_table must be sample names used</li>
 <li>otu_table: rownames must be feature names; colnames must be sample names</li>

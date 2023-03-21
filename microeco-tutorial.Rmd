@@ -151,7 +151,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 # If a package is not installed, it will be installed from CRAN.
 # First select the packages of interest
 packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", 
-    "ggalluvial", "ggh4x", "FSA", "gridExtra", "aplot", "NST", "GGally")
+    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -589,6 +589,23 @@ dataset_filter <- clone(dataset)
 dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
 ```
 
+### merge taxa or samples
+
+Merging taxa according to a specific taxonomic rank level of tax_table can generate a new microtable object.
+In the new microtable object, each feature in otu_table represents one taxon at the output level.
+
+```{r, echo = TRUE}
+test <- dataset$merge_taxa(taxa = "Family")
+test
+```
+
+Similarly, merging samples according to a specific group of sample_table can also generate a new microtable object.
+
+```{r, echo = TRUE}
+test <- dataset$merge_samples(use_group = "Group")
+test
+```
+
 
 ### Other examples
 
@@ -629,14 +646,6 @@ ncol(test$tax_table)
 # sum the abundance for each taxa; very useful for taxa abundance checking and filtering
 test$taxa_sums()
 
-# merge samples according to a specific group of sample_table to generate a new microtable object
-test1 <- test$merge_samples(use_group = "Group")
-test1
-
-# merge taxa according to a specific taxonomic rank level of tax_table to generate a new microtable object
-test1 <- test$merge_taxa(taxa = "Genus")
-test1
-
 # rename feature names in all the files of microtable object
 test$rename_taxa(newname_prefix = "new_name_")
 rownames(test$otu_table)[1:5]
@@ -669,7 +678,7 @@ test$taxa_names()[1:5]
 
 # Composition-based class
 
-The trans_abund class and trans_venn class are grouped into 'Composition-based class', 
+The trans_abund class and trans_venn class are organised into the section 'Composition-based class', 
 since they are mainly used to show the composition information of communities.
 
 
@@ -2007,7 +2016,8 @@ for(x in packages){
 ```
 
 ### Examples
-In this tutorial, we use the example data in file2meco to demonstrate the feature selection, data training and prediction with random forest algorithm.
+In this section, we use the example data in file2meco package (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html) to demonstrate the feature selection, 
+data training and prediction with random forest algorithm.
 
 ```{r, echo = TRUE, eval=FALSE}
 library(file2meco)
@@ -2015,7 +2025,7 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-d1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+d1 <- qiime2meco(feature_table = abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
 d1$cal_abund()
 
 # initialize: use "genotype" as response variable

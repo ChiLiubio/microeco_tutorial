@@ -787,7 +787,8 @@ for(x in packages){
 ```
 
 ### Examples
-In this tutorial, we use the example data in file2meco to demonstrate the feature selection, data training and prediction with random forest algorithm.
+In this section, we use the example data in file2meco package (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html) to demonstrate the feature selection, 
+data training and prediction with random forest algorithm.
 
 ```{r, echo = TRUE, eval=FALSE}
 library(file2meco)
@@ -795,7 +796,7 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-d1 <- qiime2meco(ASV_data = abund_file_path, sample_data = sample_file_path, taxonomy_data = taxonomy_file_path)
+d1 <- qiime2meco(feature_table = abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
 d1$cal_abund()
 
 # initialize: use "genotype" as response variable

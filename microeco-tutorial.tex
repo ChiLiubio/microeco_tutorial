@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.14.1)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-11}
+\date{2023-03-21}
 
 \begin{document}
 \maketitle
@@ -309,9 +309,9 @@ ggh4x & plot\_bar & multiple facets\\
 \hline
 FSA & trans\_alpha and trans\_diff class & Dunn's Kruskal-Wallis Multiple Comparisons\\
 \hline
-gridExtra & trans\_diff class & merge plots\\
+rcompanion & trans\_alpha class & convert asterisk signif to letters\\
 \hline
-aplot & trans\_venn, trans\_env & merge plots\\
+gridExtra & trans\_diff class & merge plots\\
 \hline
 \end{tabular}
 
@@ -322,7 +322,7 @@ Then, if you want to install these packages or some of them, you can do like thi
 \CommentTok{\# If a package is not installed, it will be installed from CRAN.}
 \CommentTok{\# First select the packages of interest}
 \NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{)}
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -1078,7 +1078,7 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -1112,6 +1112,43 @@ For other operations on the features, please directly manipulate the otu\_table 
 
 \begin{verbatim}
 ## 6309 features filtered based on the occurrence...
+\end{verbatim}
+
+\hypertarget{merge-taxa-or-samples}{%
+\subsection{merge taxa or samples}\label{merge-taxa-or-samples}}
+
+Merging taxa according to a specific taxonomic rank level of tax\_table can generate a new microtable object.
+In the new microtable object, each feature in otu\_table represents one taxon at the output level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Family"}\NormalTok{)}
+\NormalTok{test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable-class object:
+## sample_table have 90 rows and 4 columns
+## otu_table have 616 rows and 90 columns
+## tax_table have 616 rows and 5 columns
+\end{verbatim}
+
+Similarly, merging samples according to a specific group of sample\_table can also generate a new microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable-class object:
+## sample_table have 3 rows and 1 columns
+## otu_table have 12766 rows and 3 columns
+## tax_table have 12766 rows and 7 columns
+## phylo_tree have 12766 tips
 \end{verbatim}
 
 \hypertarget{other-examples}{%
@@ -1198,14 +1235,6 @@ Other functions and examples are listed here.
 \CommentTok{\# sum the abundance for each taxa; very useful for taxa abundance checking and filtering}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_sums}\NormalTok{()}
 
-\CommentTok{\# merge samples according to a specific group of sample\_table to generate a new microtable object}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
-\NormalTok{test1}
-
-\CommentTok{\# merge taxa according to a specific taxonomic rank level of tax\_table to generate a new microtable object}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
-\NormalTok{test1}
-
 \CommentTok{\# rename feature names in all the files of microtable object}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{rename\_taxa}\NormalTok{(}\AttributeTok{newname\_prefix =} \StringTok{"new\_name\_"}\NormalTok{)}
 \FunctionTok{rownames}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{otu\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
@@ -1247,7 +1276,7 @@ Other functions and examples are listed here.
 \hypertarget{composition-based-class}{%
 \chapter{Composition-based class}\label{composition-based-class}}
 
-The trans\_abund class and trans\_venn class are grouped into `Composition-based class',
+The trans\_abund class and trans\_venn class are organised into the section `Composition-based class',
 since they are mainly used to show the composition information of communities.
 
 \hypertarget{trans_abund-class}{%
@@ -1635,10 +1664,10 @@ Significance
 \end{minipage} \\
 \midrule()
 \endhead
-IW - CW - TW & Observed & IW & 0.155 & 0.2481 & ns \\
-IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
-IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
-IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
+IW - CW - TW & Observed & IW & 0.155 & 0.2713 & ns \\
+IW - CW - TW & Chao1 & IW & 0.01696 & 0.05936 & ns \\
+IW - CW - TW & ACE & IW & 0.01333 & 0.05936 & ns \\
+IW - CW - TW & Shannon & IW & 0.5319 & 0.7446 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 \bottomrule()
 \end{longtable}
@@ -1720,15 +1749,14 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0930}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1279}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0930}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0698}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1163}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1163}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1512}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1047}}
-  >{\centering\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1279}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1467}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0800}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1733}}
+  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1200}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 Group
@@ -1746,14 +1774,12 @@ Simpson
 InvSimpson
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Fisher
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Coverage
 \end{minipage} \\
 \midrule()
 \endhead
-IW & a & a & a & a & a & a & a & b \\
-TW & a & ab & b & a & a & a & a & a \\
-CW & a & b & b & a & a & a & a & a \\
+IW & a & a & a & a & a & a & a \\
+TW & a & ab & b & a & a & a & a \\
+CW & a & b & b & a & a & a & a \\
 \bottomrule()
 \end{longtable}
 
@@ -3069,7 +3095,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Mar 11 13:55:41 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Mar 21 22:12:06 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3099,9 +3125,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3875 & 0.364 & 9.129 \\
-CW & 435 & 0.5632 & 0.2965 & 0.2867 & 14.37 \\
-TW & 435 & 0.6244 & 0.416 & 0.3998 & 9.874 \\
+IW & 435 & 0.6541 & 0.3867 & 0.3641 & 9.131 \\
+CW & 435 & 0.5628 & 0.2955 & 0.2864 & 14.42 \\
+TW & 435 & 0.6248 & 0.4162 & 0.4003 & 9.873 \\
 \bottomrule()
 \end{longtable}
 
@@ -3168,7 +3194,8 @@ Before starting the examples, make sure those packages have been installed.
 \hypertarget{examples}{%
 \subsection{Examples}\label{examples}}
 
-In this tutorial, we use the example data in file2meco to demonstrate the feature selection, data training and prediction with random forest algorithm.
+In this section, we use the example data in file2meco package (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html}) to demonstrate the feature selection,
+data training and prediction with random forest algorithm.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3177,7 +3204,7 @@ In this tutorial, we use the example data in file2meco to demonstrate the featur
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# construct microtable object}
-\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{ASV\_data =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_data =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_data =}\NormalTok{ taxonomy\_file\_path)}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{qiime2meco}\NormalTok{(}\AttributeTok{feature\_table =}\NormalTok{ abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{taxonomy\_table =}\NormalTok{ taxonomy\_file\_path)}
 \NormalTok{d1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 
 \CommentTok{\# initialize: use "genotype" as response variable}
@@ -3369,7 +3396,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 ## tax_table have 12766 rows and 7 columns
 ## phylo_tree have 12766 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -4650,7 +4677,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-289-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-291-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4687,7 +4714,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-290-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-292-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

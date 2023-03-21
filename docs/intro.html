@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-11" />
+<meta name="date" content="2023-03-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -185,8 +185,9 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#functions-in-microtable-class"><i class="fa fa-check"></i><b>3.1.3</b> Functions in microtable class</a></li>
 <li class="chapter" data-level="3.1.4" data-path="basic-class.html"><a href="basic-class.html#subset-of-samples"><i class="fa fa-check"></i><b>3.1.4</b> subset of samples</a></li>
 <li class="chapter" data-level="3.1.5" data-path="basic-class.html"><a href="basic-class.html#filter-features"><i class="fa fa-check"></i><b>3.1.5</b> filter features</a></li>
-<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.6</b> Other examples</a></li>
-<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.7</b> Key points</a></li>
+<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#merge-taxa-or-samples"><i class="fa fa-check"></i><b>3.1.6</b> merge taxa or samples</a></li>
+<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.7</b> Other examples</a></li>
+<li class="chapter" data-level="3.1.8" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.8</b> Key points</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
@@ -505,13 +506,13 @@ Those packages are necessary to reproduce some parts of the tutorial.</p>
 <td align="left">Dunn’s Kruskal-Wallis Multiple Comparisons</td>
 </tr>
 <tr class="even">
-<td align="left">gridExtra</td>
-<td align="left">trans_diff class</td>
-<td align="left">merge plots</td>
+<td align="left">rcompanion</td>
+<td align="left">trans_alpha class</td>
+<td align="left">convert asterisk signif to letters</td>
 </tr>
 <tr class="odd">
-<td align="left">aplot</td>
-<td align="left">trans_venn, trans_env</td>
+<td align="left">gridExtra</td>
+<td align="left">trans_diff class</td>
 <td align="left">merge plots</td>
 </tr>
 </tbody>
@@ -520,7 +521,7 @@ Those packages are necessary to reproduce some parts of the tutorial.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If a package is not installed, it will be installed from CRAN.</span></span>
 <span id="cb5-2"><a href="intro.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First select the packages of interest</span></span>
 <span id="cb5-3"><a href="intro.html#cb5-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, </span>
-<span id="cb5-4"><a href="intro.html#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;FSA&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;NST&quot;</span>, <span class="st">&quot;GGally&quot;</span>)</span>
+<span id="cb5-4"><a href="intro.html#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;rcompanion&quot;</span>, <span class="st">&quot;FSA&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;NST&quot;</span>, <span class="st">&quot;GGally&quot;</span>)</span>
 <span id="cb5-5"><a href="intro.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
 <span id="cb5-6"><a href="intro.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
 <span id="cb5-7"><a href="intro.html#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>

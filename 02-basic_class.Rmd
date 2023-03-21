@@ -336,6 +336,23 @@ dataset_filter <- clone(dataset)
 dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
 ```
 
+### merge taxa or samples
+
+Merging taxa according to a specific taxonomic rank level of tax_table can generate a new microtable object.
+In the new microtable object, each feature in otu_table represents one taxon at the output level.
+
+```{r, echo = TRUE}
+test <- dataset$merge_taxa(taxa = "Family")
+test
+```
+
+Similarly, merging samples according to a specific group of sample_table can also generate a new microtable object.
+
+```{r, echo = TRUE}
+test <- dataset$merge_samples(use_group = "Group")
+test
+```
+
 
 ### Other examples
 
@@ -375,14 +392,6 @@ ncol(test$tax_table)
 
 # sum the abundance for each taxa; very useful for taxa abundance checking and filtering
 test$taxa_sums()
-
-# merge samples according to a specific group of sample_table to generate a new microtable object
-test1 <- test$merge_samples(use_group = "Group")
-test1
-
-# merge taxa according to a specific taxonomic rank level of tax_table to generate a new microtable object
-test1 <- test$merge_taxa(taxa = "Genus")
-test1
 
 # rename feature names in all the files of microtable object
 test$rename_taxa(newname_prefix = "new_name_")
