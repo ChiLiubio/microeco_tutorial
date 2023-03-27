@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.14.1)},
+  pdftitle={Tutorial for R microeco package (v0.15.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.14.1)}
+\title{Tutorial for R microeco package (v0.15.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-21}
+\date{2023-03-27}
 
 \begin{document}
 \maketitle
@@ -389,7 +389,7 @@ It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach impleme
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (\textbf{ignore this if the blast tool has been in the path}) and Ref99NR/Ref100NR database (select one).
-Download blast tools from ``\url{ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
+Download blast tools from ``\url{https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
 Note that some errors can come from the latest versions because of memory issue (\url{https://www.biostars.org/p/413294/}).
 An easy solution is to use previous version (such as 2.5.0).
 Download Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}'' .
@@ -1003,6 +1003,17 @@ The function \texttt{save\_abund()} can be used to save the taxa abundance file 
 \end{Highlighting}
 \end{Shaded}
 
+All the abundance tables can also be merged into one to save from v0.15.0.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# tab{-}delimited, i.e. map format}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{merge\_all =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# remove those unclassified}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{merge\_all =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{rm\_un =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{rm\_pattern =} \StringTok{"\_\_$|Sedis$"}\NormalTok{, }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 
@@ -1078,7 +1089,7 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -1475,8 +1486,8 @@ When the groups are too many to show with venn plot, using petal plot is better.
 
 \begin{center}\includegraphics[width=500px]{Images/trans_venn_2} \end{center}
 
-Another way to plot the results is to use plot\_bar function, which is especially useful for a large number of samples/groups.
-This way is generally called UpSet plot.
+Another way to plot the results is to use \texttt{plot\_bar} function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot. Please see the help document for more parameters to adjust the plot.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1485,7 +1496,12 @@ This way is generally called UpSet plot.
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp)}
 \CommentTok{\# only show some sets with large intersection numbers}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{data\_summary }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.[, }\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textgreater{}} \DecValTok{20}\NormalTok{, ]}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{()}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{bottom\_height =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{left\_width =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{up\_bar\_fill =} \StringTok{"grey50"}\NormalTok{, }\AttributeTok{left\_bar\_fill =} \StringTok{"grey50"}\NormalTok{, }\AttributeTok{bottom\_point\_color =} \StringTok{"black"}\NormalTok{)}
+\NormalTok{g1}
+\CommentTok{\# g1 is aplot class and can be saved with aplot::ggsave or cowplot::save\_plot function}
+\CommentTok{\# as g1 is comprised of several sub{-}plots, please adjust the details for each sub{-}plot}
+\NormalTok{g1[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{g1[[}\DecValTok{2}\NormalTok{]]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1664,10 +1680,10 @@ Significance
 \end{minipage} \\
 \midrule()
 \endhead
-IW - CW - TW & Observed & IW & 0.155 & 0.2713 & ns \\
-IW - CW - TW & Chao1 & IW & 0.01696 & 0.05936 & ns \\
-IW - CW - TW & ACE & IW & 0.01333 & 0.05936 & ns \\
-IW - CW - TW & Shannon & IW & 0.5319 & 0.7446 & ns \\
+IW - CW - TW & Observed & IW & 0.155 & 0.2481 & ns \\
+IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
+IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
+IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 \bottomrule()
 \end{longtable}
@@ -1684,39 +1700,9 @@ IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1039}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1688}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1169}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1299}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1948}}@{}}
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
-Measure
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Group
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Comparison
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Z
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-P.unadj
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-P.adj
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Significance
-\end{minipage} \\
-\midrule()
-\endhead
-Observed & IW & CW - IW & -1.93 & 0.05364 & 0.1609 & ns \\
-Observed & TW & CW - TW & -1.02 & 0.3075 & 0.615 & ns \\
-Observed & IW & IW - TW & 0.9093 & 0.3632 & 0.3632 & ns \\
-Chao1 & IW & CW - IW & -2.841 & 0.004491 & 0.01347 & * \\
-Chao1 & TW & CW - TW & -1.176 & 0.2395 & 0.2395 & ns \\
-\bottomrule()
-\end{longtable}
+Quitting from lines 999-1001 (microeco-tutorial.Rmd)
+Error in \texttt{{[}.data.frame}(t1\$res\_diff, 1:5, c(1, 3:8)) : 选择了未定义的列
+Calls: local \ldots{} eval\_with\_user\_handlers -\textgreater{} eval -\textgreater{} eval -\textgreater{} -\textgreater{} {[} -\textgreater{} {[}.data.frame
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1749,37 +1735,46 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1467}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1067}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0800}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1733}}
-  >{\centering\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1200}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1944}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
+Measure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Test\_method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Observed
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Chao1
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-ACE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Shannon
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Simpson
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-InvSimpson
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Fisher
+Letter
 \end{minipage} \\
 \midrule()
 \endhead
-IW & a & a & a & a & a & a & a \\
-TW & a & ab & b & a & a & a & a \\
-CW & a & b & b & a & a & a & a \\
+Observed & anova & IW & a \\
+Observed & anova & TW & a \\
+Observed & anova & CW & a \\
+Chao1 & anova & IW & a \\
+Chao1 & anova & TW & ab \\
+Chao1 & anova & CW & b \\
+ACE & anova & IW & a \\
+ACE & anova & TW & b \\
+ACE & anova & CW & b \\
+Shannon & anova & IW & a \\
+Shannon & anova & TW & a \\
+Shannon & anova & CW & a \\
+Simpson & anova & IW & a \\
+Simpson & anova & TW & a \\
+Simpson & anova & CW & a \\
+InvSimpson & anova & IW & a \\
+InvSimpson & anova & TW & a \\
+InvSimpson & anova & CW & a \\
+Fisher & anova & IW & a \\
+Fisher & anova & TW & a \\
+Fisher & anova & CW & a \\
+Coverage & anova & CW & a \\
+Coverage & anova & TW & a \\
+Coverage & anova & IW & b \\
 \bottomrule()
 \end{longtable}
 
@@ -2374,19 +2369,20 @@ The following are the examples for the methods `KW', `KW\_dunn', `wilcox', `t.te
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
 \CommentTok{\# Dunn\textquotesingle{}s Kruskal{-}Wallis Multiple Comparisons when group number \textgreater{} 2; require FSA package}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} IW"}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{coord\_flip =}\NormalTok{ F)}
 \CommentTok{\# Wilcoxon Rank Sum and Signed Rank Tests for all paired groups}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{))}
 \CommentTok{\# t.test}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"t.test"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"all"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# anova}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
-The method `metagenomeSeq' and `ANCOMBC' depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method `metagenomeSeq' and `ancombc2' depend on the metagenomeSeq package and ANCOMBC package, respectively.
 The method `ALDEx2\_t' and `ALDEx2\_kw' depend on the ALDEx2 package.
 These three packages are all deposited on the Bioconductor.
 
@@ -2425,7 +2421,7 @@ These three packages are all deposited on the Bioconductor.
 \begin{Highlighting}[]
 \CommentTok{\# ANCOMBC method}
 \NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ANCOMBC"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
@@ -3095,7 +3091,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Mar 21 22:12:06 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Mon Mar 27 18:31:26 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3125,9 +3121,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6541 & 0.3867 & 0.3641 & 9.131 \\
-CW & 435 & 0.5628 & 0.2955 & 0.2864 & 14.42 \\
-TW & 435 & 0.6248 & 0.4162 & 0.4003 & 9.873 \\
+IW & 435 & 0.6535 & 0.3867 & 0.3636 & 9.142 \\
+CW & 435 & 0.5629 & 0.2961 & 0.2864 & 14.38 \\
+TW & 435 & 0.6245 & 0.416 & 0.4 & 9.874 \\
 \bottomrule()
 \end{longtable}
 
@@ -3328,6 +3324,29 @@ For other machine-learning models, please use method parameter in cal\_train fun
 \end{Highlighting}
 \end{Shaded}
 
+The regression is supported from v0.15.0.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# prepare data}
+\FunctionTok{data}\NormalTok{(env\_data\_16S)}
+\NormalTok{new\_test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{new\_test}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(new\_test}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(new\_test}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\CommentTok{\# pH response variable}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ new\_test, }\AttributeTok{y.response =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_train}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_predict}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_predict}
+\CommentTok{\# feature importance}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{()}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_feature\_imp)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"IncNodePurity"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{key-points-8}{%
 \subsection{Key points}\label{key-points-8}}
 
@@ -3396,7 +3415,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 ## tax_table have 12766 rows and 7 columns
 ## phylo_tree have 12766 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -3755,6 +3774,7 @@ please use \textbf{add\_abund\_table parameter} in the cal\_cor function.
 \begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
 
 The function plot\_scatterfit() in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
+For regression, \texttt{lm\_equation\ =\ FALSE} can be applied to not display the regression equation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4677,7 +4697,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-291-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-293-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4714,7 +4734,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-292-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-294-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

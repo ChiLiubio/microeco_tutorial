@@ -270,6 +270,15 @@ The function `save_abund()` can be used to save the taxa abundance file to a loc
 dataset$save_abund(dirpath = "taxa_abund")
 ```
 
+All the abundance tables can also be merged into one to save from v0.15.0.
+
+```{r, echo = TRUE, eval = FALSE}
+# tab-delimited, i.e. map format
+dataset$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
+# remove those unclassified
+dataset$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
+```
+
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 

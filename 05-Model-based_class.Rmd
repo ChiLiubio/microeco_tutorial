@@ -169,18 +169,19 @@ t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_lev
 t1$plot_diff_abund(use_number = 1:20)
 # Dunn's Kruskal-Wallis Multiple Comparisons when group number > 2; require FSA package
 t1 <- trans_diff$new(dataset = dataset, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - IW", group_order = c("CW", "IW"))
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 # Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
 t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", group_order = c("TW", "CW"))
 # t.test
 t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
 # anova
 t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
-t1$res_diff
+head(t1$res_diff)
 ```
 
-The method 'metagenomeSeq' and 'ANCOMBC' depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method 'metagenomeSeq' and 'ancombc2' depend on the metagenomeSeq package and ANCOMBC package, respectively.
 The method 'ALDEx2_t' and 'ALDEx2_kw' depend on the ALDEx2 package.
 These three packages are all deposited on the Bioconductor.
 
@@ -215,7 +216,7 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 ```{r, echo = TRUE, eval = FALSE}
 # ANCOMBC method
 BiocManager::install("ANCOMBC")
-t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
+t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Family")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 t1$plot_diff_bar(use_number = 1:20)
@@ -906,6 +907,28 @@ For other machine-learning models, please use method parameter in cal_train func
 # use SVM method
 t2$al_train(method = "svmRadial", tuneLength = 15)
 ```
+
+The regression is supported from v0.15.0.
+
+```{r, echo = TRUE, eval=FALSE}
+# prepare data
+data(env_data_16S)
+new_test <- clone(dataset)
+new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
+# pH response variable
+t1 <- trans_classifier$new(dataset = new_test, y.response = "pH", x.predictors = "Genus")
+t1$cal_split(prop.train = 3/4)
+t1$set_trainControl()
+t1$cal_train()
+t1$res_train
+t1$cal_predict()
+t1$res_predict
+# feature importance
+t1$cal_feature_imp()
+head(t1$res_feature_imp)
+t1$plot_feature_imp(use_number = 1:20) + ylab("IncNodePurity")
+```
+
 
 
 ### Key points

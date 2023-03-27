@@ -178,8 +178,8 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
-Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
-This way is generally called UpSet plot.
+Another way to plot the results is to use `plot_bar` function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot. Please see the help document for more parameters to adjust the plot.
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp <- dataset$merge_samples(use_group = "Type")
@@ -187,7 +187,12 @@ tmp
 t1 <- trans_venn$new(dataset = tmp)
 # only show some sets with large intersection numbers
 t1$data_summary %<>% .[.[, 1] > 20, ]
-t1$plot_bar()
+g1 <- t1$plot_bar(left_plot = TRUE, bottom_height = 0.5, left_width = 0.15, up_bar_fill = "grey50", left_bar_fill = "grey50", bottom_point_color = "black")
+g1
+# g1 is aplot class and can be saved with aplot::ggsave or cowplot::save_plot function
+# as g1 is comprised of several sub-plots, please adjust the details for each sub-plot
+g1[[1]]
+g1[[2]]
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}

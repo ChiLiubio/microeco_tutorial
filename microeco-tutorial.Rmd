@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.14.1)"
+title: "Tutorial for R microeco package (v0.15.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -194,7 +194,7 @@ It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach impleme
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (**ignore this if the blast tool has been in the path**) and Ref99NR/Ref100NR database (select one).
-Download blast tools from "ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
+Download blast tools from "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+" ; e.g. ncbi-blast-\*\*\*\*-x64-win64.tar.gz  for windows system.
 Note that some errors can come from the latest versions because of memory issue (https://www.biostars.org/p/413294/). 
 An easy solution is to use previous version (such as 2.5.0).
 Download Ref99NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download"  or Ref100NR.zip from "https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download" .
@@ -521,6 +521,15 @@ The function `save_abund()` can be used to save the taxa abundance file to a loc
 
 ```{r, echo = TRUE, eval = FALSE}
 dataset$save_abund(dirpath = "taxa_abund")
+```
+
+All the abundance tables can also be merged into one to save from v0.15.0.
+
+```{r, echo = TRUE, eval = FALSE}
+# tab-delimited, i.e. map format
+dataset$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
+# remove those unclassified
+dataset$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
 ```
 
 Then, let's calculate the alpha diversity.
@@ -856,8 +865,8 @@ t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a =
 knitr::include_graphics("Images/trans_venn_2.png")
 ```
 
-Another way to plot the results is to use plot_bar function, which is especially useful for a large number of samples/groups.
-This way is generally called UpSet plot.
+Another way to plot the results is to use `plot_bar` function, which is especially useful for a large number of samples/groups.
+This way is generally called UpSet plot. Please see the help document for more parameters to adjust the plot.
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp <- dataset$merge_samples(use_group = "Type")
@@ -865,7 +874,12 @@ tmp
 t1 <- trans_venn$new(dataset = tmp)
 # only show some sets with large intersection numbers
 t1$data_summary %<>% .[.[, 1] > 20, ]
-t1$plot_bar()
+g1 <- t1$plot_bar(left_plot = TRUE, bottom_height = 0.5, left_width = 0.15, up_bar_fill = "grey50", left_bar_fill = "grey50", bottom_point_color = "black")
+g1
+# g1 is aplot class and can be saved with aplot::ggsave or cowplot::save_plot function
+# as g1 is comprised of several sub-plots, please adjust the details for each sub-plot
+g1[[1]]
+g1[[2]]
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -1398,18 +1412,19 @@ t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_lev
 t1$plot_diff_abund(use_number = 1:20)
 # Dunn's Kruskal-Wallis Multiple Comparisons when group number > 2; require FSA package
 t1 <- trans_diff$new(dataset = dataset, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - IW", group_order = c("CW", "IW"))
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 # Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
 t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", group_order = c("TW", "CW"))
 # t.test
 t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
 # anova
 t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
-t1$res_diff
+head(t1$res_diff)
 ```
 
-The method 'metagenomeSeq' and 'ANCOMBC' depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method 'metagenomeSeq' and 'ancombc2' depend on the metagenomeSeq package and ANCOMBC package, respectively.
 The method 'ALDEx2_t' and 'ALDEx2_kw' depend on the ALDEx2 package.
 These three packages are all deposited on the Bioconductor.
 
@@ -1444,7 +1459,7 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 ```{r, echo = TRUE, eval = FALSE}
 # ANCOMBC method
 BiocManager::install("ANCOMBC")
-t1 <- trans_diff$new(dataset = dataset, method = "ANCOMBC", group = "Group", taxa_level = "Family")
+t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Family")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 t1$plot_diff_bar(use_number = 1:20)
@@ -2136,6 +2151,28 @@ For other machine-learning models, please use method parameter in cal_train func
 t2$al_train(method = "svmRadial", tuneLength = 15)
 ```
 
+The regression is supported from v0.15.0.
+
+```{r, echo = TRUE, eval=FALSE}
+# prepare data
+data(env_data_16S)
+new_test <- clone(dataset)
+new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
+# pH response variable
+t1 <- trans_classifier$new(dataset = new_test, y.response = "pH", x.predictors = "Genus")
+t1$cal_split(prop.train = 3/4)
+t1$set_trainControl()
+t1$cal_train()
+t1$res_train
+t1$cal_predict()
+t1$res_predict
+# feature importance
+t1$cal_feature_imp()
+head(t1$res_feature_imp)
+t1$plot_feature_imp(use_number = 1:20) + ylab("IncNodePurity")
+```
+
+
 
 ### Key points
 
@@ -2418,6 +2455,8 @@ knitr::include_graphics("Images/plot_corr_alpha_diversity.png")
 ```
 
 The function plot_scatterfit() in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
+For regression, `lm_equation = FALSE` can be applied to not display the regression equation.
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # use pH and bray-curtis distance
