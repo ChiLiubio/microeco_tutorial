@@ -1594,6 +1594,26 @@ We also try to use pie chart to show the compositions at the Phylum level.
 
 \begin{center}\includegraphics[width=800px]{Images/trans_venn_pie} \end{center}
 
+Other examples:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
+\CommentTok{\# remove left bar in the UpSet plot}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_plot =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# sort samples in the axis according to the number of features}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# raw orders in test$sample\_table}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# manipulate sample\_table to adjust the orders}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\FunctionTok{c}\NormalTok{(}\StringTok{"YML"}\NormalTok{, }\StringTok{"NE"}\NormalTok{, }\StringTok{"NW"}\NormalTok{, }\StringTok{"NC"}\NormalTok{, }\StringTok{"QTP"}\NormalTok{, }\StringTok{"SC"}\NormalTok{), , drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{key-points-2}{%
 \subsection{Key points}\label{key-points-2}}
 
@@ -1627,7 +1647,7 @@ The data\_alpha is used for the following differential test and visualization.
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# return t1$data\_stat}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{data\_stat[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, ]}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_stat)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1641,7 +1661,7 @@ The data\_alpha is used for the following differential test and visualization.
 
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
@@ -1667,6 +1687,7 @@ CW & Chao1 & 30 & 2553 & 338.1 & 61.73 \\
 CW & ACE & 30 & 2716 & 367 & 67.01 \\
 CW & Shannon & 30 & 6.308 & 0.5355 & 0.09777 \\
 CW & Simpson & 30 & 0.9897 & 0.01305 & 0.002382 \\
+CW & InvSimpson & 30 & 198.8 & 108.4 & 19.8 \\
 \bottomrule()
 \end{longtable}
 
@@ -1677,7 +1698,7 @@ Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups \textg
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"KW"}\NormalTok{)}
 \CommentTok{\# return t1$res\_diff}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, ]}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1687,7 +1708,7 @@ Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups \textg
 
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
   >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
@@ -1713,6 +1734,7 @@ IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
 IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
 IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
+IW - CW - TW & InvSimpson & CW & 0.8083 & 0.8083 & ns \\
 \bottomrule()
 \end{longtable}
 
@@ -1720,7 +1742,7 @@ IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{)}
 \CommentTok{\# return t1$res\_diff}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, ]}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1728,14 +1750,48 @@ IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
-Quitting from lines 1020-1022 (microeco-tutorial.Rmd)
-Error in \texttt{{[}.data.frame}(t1\$res\_diff, 1:5, c(1, 3:8)) : 选择了未定义的列
-Calls: local \ldots{} eval\_with\_user\_handlers -\textgreater{} eval -\textgreater{} eval -\textgreater{} -\textgreater{} {[} -\textgreater{} {[}.data.frame
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1486}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.4459}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1081}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1216}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1757}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
+Measure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Test\_method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Letter
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+MonoLetter
+\end{minipage} \\
+\midrule()
+\endhead
+Observed & Dunn's Kruskal-Wallis Multiple
+Comparisons & CW & a & a \\
+Observed & Dunn's Kruskal-Wallis Multiple
+Comparisons & IW & a & a \\
+Observed & Dunn's Kruskal-Wallis Multiple
+Comparisons & TW & a & a \\
+Chao1 & Dunn's Kruskal-Wallis Multiple
+Comparisons & CW & a & a \\
+Chao1 & Dunn's Kruskal-Wallis Multiple
+Comparisons & IW & b & b \\
+Chao1 & Dunn's Kruskal-Wallis Multiple
+Comparisons & TW & ab & ab \\
+\bottomrule()
+\end{longtable}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# more options}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{, }\AttributeTok{KW\_dunn\_letter =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"t.test"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1746,7 +1802,7 @@ Then, let's try to use anova.
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
 \CommentTok{\# return t1$res\_diff}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1763,7 +1819,7 @@ Then, let's try to use anova.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1528}}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1944}}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
@@ -1785,24 +1841,6 @@ Observed & anova & CW & a \\
 Chao1 & anova & IW & a \\
 Chao1 & anova & TW & ab \\
 Chao1 & anova & CW & b \\
-ACE & anova & IW & a \\
-ACE & anova & TW & b \\
-ACE & anova & CW & b \\
-Shannon & anova & IW & a \\
-Shannon & anova & TW & a \\
-Shannon & anova & CW & a \\
-Simpson & anova & IW & a \\
-Simpson & anova & TW & a \\
-Simpson & anova & CW & a \\
-InvSimpson & anova & IW & a \\
-InvSimpson & anova & TW & a \\
-InvSimpson & anova & CW & a \\
-Fisher & anova & IW & a \\
-Fisher & anova & TW & a \\
-Fisher & anova & CW & a \\
-Coverage & anova & CW & a \\
-Coverage & anova & TW & a \\
-Coverage & anova & IW & b \\
 \bottomrule()
 \end{longtable}
 
@@ -1839,7 +1877,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 
 \begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox} \end{center}
 
-Let's try to remove the ns in the label by operating the object\$res\_diff file.
+Let's try to remove the `ns' in the label by manipulating the object\$res\_diff.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3119,7 +3157,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Mar 30 14:32:51 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Mar 30 17:34:14 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3149,9 +3187,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3868 & 0.3638 & 9.093 \\
-CW & 435 & 0.5627 & 0.2958 & 0.2863 & 14.37 \\
-TW & 435 & 0.6244 & 0.4164 & 0.3998 & 9.821 \\
+IW & 435 & 0.6537 & 0.3862 & 0.3638 & 9.13 \\
+CW & 435 & 0.5628 & 0.296 & 0.2864 & 14.28 \\
+TW & 435 & 0.6245 & 0.4159 & 0.4 & 9.896 \\
 \bottomrule()
 \end{longtable}
 
@@ -4768,7 +4806,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-297-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-298-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4805,7 +4843,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-298-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-299-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

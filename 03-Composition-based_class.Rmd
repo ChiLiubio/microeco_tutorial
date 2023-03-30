@@ -240,6 +240,24 @@ t3$plot_pie(facet_nrow = 3, color_values = rev(c(RColorBrewer::brewer.pal(8, "Da
 knitr::include_graphics("Images/trans_venn_pie.png")
 ```
 
+Other examples:
+
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples(use_group = "Type")
+t1 <- trans_venn$new(test)
+# remove left bar in the UpSet plot
+t1$plot_bar(left_plot = FALSE)
+# sort samples in the axis according to the number of features
+t1$plot_bar(sort_samples = TRUE)
+# raw orders in test$sample_table
+t1$plot_bar(sort_samples = FALSE)
+# manipulate sample_table to adjust the orders
+test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
+test$tidy_dataset()
+t1 <- trans_venn$new(test)
+t1$plot_bar(sort_samples = FALSE)
+```
+
 ### Key points
 
   + ratio parameter: ratio parameter in trans_abund$new control whether and what content appear below the taxa number in venn plot

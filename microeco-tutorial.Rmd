@@ -948,6 +948,24 @@ t3$plot_pie(facet_nrow = 3, color_values = rev(c(RColorBrewer::brewer.pal(8, "Da
 knitr::include_graphics("Images/trans_venn_pie.png")
 ```
 
+Other examples:
+
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples(use_group = "Type")
+t1 <- trans_venn$new(test)
+# remove left bar in the UpSet plot
+t1$plot_bar(left_plot = FALSE)
+# sort samples in the axis according to the number of features
+t1$plot_bar(sort_samples = TRUE)
+# raw orders in test$sample_table
+t1$plot_bar(sort_samples = FALSE)
+# manipulate sample_table to adjust the orders
+test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
+test$tidy_dataset()
+t1 <- trans_venn$new(test)
+t1$plot_bar(sort_samples = FALSE)
+```
+
 ### Key points
 
   + ratio parameter: ratio parameter in trans_abund$new control whether and what content appear below the taxa number in venn plot
@@ -988,12 +1006,12 @@ The data_alpha is used for the following differential test and visualization.
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
 # return t1$data_stat
-t1$data_stat[1:5, ]
+head(t1$data_stat)
 ```
 
 ```{r, echo = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-pander::pander(t1$data_stat[1:5, ])
+pander::pander(head(t1$data_stat))
 ```
 
 Then, we test the differences among groups using Kruskal-Wallis Rank Sum Test (overall test when groups > 2), Wilcoxon Rank Sum Tests (for paired groups),
@@ -1002,28 +1020,31 @@ Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups > 2) a
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "KW")
 # return t1$res_diff
-t1$res_diff[1:5, ]
+head(t1$res_diff)
 ```
 
 ```{r, echo = FALSE}
 suppressWarnings(t1$cal_diff(method = "KW"))
-pander::pander(t1$res_diff[1:5, c(1:2, 4:7)])
+pander::pander(head(t1$res_diff[, -3]))
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "KW_dunn")
 # return t1$res_diff
-t1$res_diff[1:5, ]
+head(t1$res_diff)
 ```
 
 ```{r, echo = FALSE}
 t1$cal_diff(method = "KW_dunn")
-pander::pander(t1$res_diff[1:5, c(1, 3:8)])
+pander::pander(head(t1$res_diff))
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # more options
+t1$cal_diff(method = "KW_dunn", KW_dunn_letter = FALSE)
+head(t1$res_diff)
 t1$cal_diff(method = "wilcox")
+head(t1$res_diff)
 t1$cal_diff(method = "t.test")
 ```
 
@@ -1031,12 +1052,12 @@ Then, let's try to use anova.
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 # return t1$res_diff
-t1$res_diff
+head(t1$res_diff)
 ```
 
 ```{r, echo = FALSE}
 t1$cal_diff(method = "anova")
-pander::pander(t1$res_diff)
+pander::pander(head(t1$res_diff))
 ```
 
 The multi-factor analysis of variance is also supported with the `formula` parameter, such as two-way anova. 
@@ -1071,7 +1092,7 @@ t1$plot_alpha(measure = "Chao1", shape = "Group")
 knitr::include_graphics("Images/plot_alpha_wilcox.png")
 ```
 
-Let's try to remove the ns in the label by operating the object$res_diff file.
+Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$res_diff %<>% base::subset(Significance != "ns")
