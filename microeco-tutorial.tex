@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.15.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-27}
+\date{2023-03-30}
 
 \begin{document}
 \maketitle
@@ -3091,7 +3091,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Mon Mar 27 18:31:26 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Mar 30 11:52:26 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3121,9 +3121,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6535 & 0.3867 & 0.3636 & 9.142 \\
-CW & 435 & 0.5629 & 0.2961 & 0.2864 & 14.38 \\
-TW & 435 & 0.6245 & 0.416 & 0.4 & 9.874 \\
+IW & 435 & 0.6538 & 0.3868 & 0.3639 & 9.074 \\
+CW & 435 & 0.5629 & 0.2961 & 0.2866 & 14.35 \\
+TW & 435 & 0.6243 & 0.4159 & 0.3998 & 9.932 \\
 \bottomrule()
 \end{longtable}
 
@@ -3559,14 +3559,14 @@ Then, let's try to do RDA at the Genus level.
 \CommentTok{\# As the main results of RDA are related with the projection and angles between different arrows,}
 \CommentTok{\# we adjust the length of the arrow to show them clearly using several parameters.}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{show\_taxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{max\_perc\_tax =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{min\_perc\_env =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{min\_perc\_tax =} \FloatTok{0.2}\NormalTok{)}
-\CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
+\CommentTok{\# t1$res\_rda\_trans is the transformed result for plot}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics[width=650px]{Images/plot_rda_genus} \end{center}
 
-For more plotting ways, run the following examples.
+For more visualization styles, run the following examples.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3657,6 +3657,15 @@ Significance
 ** \\
 \bottomrule()
 \end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# mantel test for different groups}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# partial mantel test}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{partial\_mantel =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 For the combination of mantel test and correlation heatmap,
 please see another example (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#mantel-test-correlation-heatmap}).
@@ -3774,7 +3783,6 @@ please use \textbf{add\_abund\_table parameter} in the cal\_cor function.
 \begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
 
 The function plot\_scatterfit() in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
-For regression, \texttt{lm\_equation\ =\ FALSE} can be applied to not display the regression equation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3809,6 +3817,41 @@ For regression, \texttt{lm\_equation\ =\ FALSE} can be applied to not display th
 \end{Shaded}
 
 \begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_lmgroup} \end{center}
+
+Other examples.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ new\_test, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\CommentTok{\# with forward selection in RDA}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"dbRDA"}\NormalTok{, }\AttributeTok{feature\_sel =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# CCA, canonical correspondence analysis}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"CCA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{))}
+\CommentTok{\# correlation analysis without p adjustment}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"none"}\NormalTok{, }\AttributeTok{use\_taxa\_num =} \DecValTok{30}\NormalTok{)}
+\CommentTok{\# correlation heatmap with clustering based on the ggplot2 and aplot packages}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"both"}\NormalTok{)}
+\NormalTok{g1}
+\CommentTok{\# clustering heatmap with ggplot2 depends on aplot package}
+\CommentTok{\# to change the detail in the plot, please manipulate each element of g1}
+\NormalTok{g1[[}\DecValTok{1}\NormalTok{]]}
+\CommentTok{\# standardize x axis text format}
+\NormalTok{g1[[}\DecValTok{1}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ g1[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{+} \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\AttributeTok{NH4 =} \FunctionTok{expression}\NormalTok{(NH[}\DecValTok{4}\NormalTok{]}\SpecialCharTok{\^{}}\StringTok{\textquotesingle{}+\textquotesingle{}}\SpecialCharTok{{-}}\NormalTok{N), }\AttributeTok{NO3 =} \FunctionTok{expression}\NormalTok{(NO[}\DecValTok{3}\NormalTok{]}\SpecialCharTok{\^{}}\StringTok{\textquotesingle{}{-}\textquotesingle{}}\SpecialCharTok{{-}}\NormalTok{N)))}
+\NormalTok{g1[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{g1}
+\NormalTok{ggplot2}\SpecialCharTok{::}\FunctionTok{ggsave}\NormalTok{(}\StringTok{"test.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
+\CommentTok{\# For regression, lm\_equation = FALSE can be applied to not display the equation.}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{lm\_equation =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{lm\_equation =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{point\_alpha =}\NormalTok{ .}\DecValTok{3}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{line\_se\_color =} \StringTok{"grey90"}\NormalTok{, }\AttributeTok{label\_sep =} \StringTok{","}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{, }\AttributeTok{label.y.npc =} \StringTok{"bottom"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{pvalue\_trim =} \DecValTok{3}\NormalTok{, }\AttributeTok{cor\_coef\_trim =} \DecValTok{3}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y =} \StringTok{"TOC"}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{,}
+    \AttributeTok{shape\_values =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y\_axis\_title =} \StringTok{"TOC"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{key-points-9}{%
 \subsection{Key points}\label{key-points-9}}
@@ -4697,7 +4740,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-293-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-295-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4734,7 +4777,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-294-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-296-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

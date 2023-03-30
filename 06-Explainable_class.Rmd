@@ -126,7 +126,7 @@ t1$cal_ordination(method = "RDA", taxa_level = "Genus")
 # As the main results of RDA are related with the projection and angles between different arrows,
 # we adjust the length of the arrow to show them clearly using several parameters.
 t1$trans_ordination(show_taxa = 10, adjust_arrow_length = TRUE, max_perc_env = 1.5, max_perc_tax = 1.5, min_perc_env = 0.2, min_perc_tax = 0.2)
-# t1$res_rda_trans is the transformed result for plotting
+# t1$res_rda_trans is the transformed result for plot
 t1$plot_ordination(plot_color = "Group")
 ```
 
@@ -134,7 +134,7 @@ t1$plot_ordination(plot_color = "Group")
 knitr::include_graphics("Images/plot_rda_genus.png")
 ```
 
-For more plotting ways, run the following examples.
+For more visualization styles, run the following examples.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$plot_ordination(plot_color = "Group", plot_shape = "Group")
@@ -159,6 +159,13 @@ t1$res_mantel
 ```{r, echo = FALSE}
 t1$cal_mantel(use_measure = "bray")
 pander::pander(t1$res_mantel[, -c(2:3)])
+```
+
+```{r, echo = TRUE, eval = FALSE}
+# mantel test for different groups
+t1$cal_mantel(by_group = "Group", use_measure = "bray")
+# partial mantel test
+t1$cal_mantel(partial_mantel = TRUE)
 ```
 
 For the combination of mantel test and correlation heatmap, 
@@ -257,7 +264,6 @@ knitr::include_graphics("Images/plot_corr_alpha_diversity.png")
 ```
 
 The function plot_scatterfit() in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
-For regression, `lm_equation = FALSE` can be applied to not display the regression equation.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -293,6 +299,41 @@ t1$plot_scatterfit(
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_scatterfit_lmgroup.png")
 ```
+
+
+Other examples.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+# with forward selection in RDA
+t1$cal_ordination(method = "dbRDA", feature_sel = TRUE)
+# CCA, canonical correspondence analysis
+t1$cal_ordination(method = "CCA", taxa_level = "Genus")
+t1$trans_ordination(adjust_arrow_length = TRUE)
+t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
+# correlation analysis without p adjustment
+t1$cal_cor(use_data = "Genus", p_adjust_method = "none", use_taxa_num = 30)
+# correlation heatmap with clustering based on the ggplot2 and aplot packages
+g1 <- t1$plot_cor(cluster_ggplot = "both")
+g1
+# clustering heatmap with ggplot2 depends on aplot package
+# to change the detail in the plot, please manipulate each element of g1
+g1[[1]]
+# standardize x axis text format
+g1[[1]] <- g1[[1]] + scale_x_discrete(labels = c(NH4 = expression(NH[4]^'+'-N), NO3 = expression(NO[3]^'-'-N)))
+g1[[1]]
+g1
+ggplot2::ggsave("test.pdf", g1, width = 8, height = 6)
+# For regression, lm_equation = FALSE can be applied to not display the equation.
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = TRUE)
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = FALSE)
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", point_alpha = .3, line_se = FALSE)
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", line_se_color = "grey90", label_sep = ",", label.x.npc = "center", label.y.npc = "bottom")
+t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim = 3)
+t1$plot_scatterfit(x = "pH", y = "TOC", type = "lm", group = "Group", line_se = FALSE, label.x.npc = "center",
+	shape_values = 1:3, x_axis_title = "pH", y_axis_title = "TOC")
+```
+
 
 
 ### Key points
