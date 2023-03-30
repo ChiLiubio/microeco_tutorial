@@ -566,45 +566,13 @@ class(dataset$beta_diversity)
 dataset$save_betadiv(dirpath = "beta_diversity")
 ```
 
-
-### subset of samples
-
-We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
-**We recommend manipulating the sample_table in microtable object directly.**
-For example, if you want to extract samples of 'CW' group, please do like this: 
-
-```{r, echo = TRUE}
-# remember first clone the whole dataset
-# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function
-group_CW <- clone(dataset)
-# select 'CW'
-group_CW$sample_table <- subset(group_CW$sample_table, Group == "CW")
-# or: group_CW$sample_table <- subset(group_CW$sample_table, grepl("CW", Group))
-# use tidy_dataset to trim all the basic files
-group_CW$tidy_dataset()
-group_CW
-```
-
-### filter features
-
-Please use filter_taxa function to filter the features with low abundance or occurrence frequency.
-For other operations on the features, please directly manipulate the otu_table of your microtable object.
-
-```{r, echo = TRUE}
-# It is better to have a backup before filtering features
-dataset_filter <- clone(dataset)
-# mean relative abundance threshold 0.0001
-# occurrence frequency 0.1; 10% samples have the target features
-dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
-```
-
 ### merge taxa or samples
 
 Merging taxa according to a specific taxonomic rank level of tax_table can generate a new microtable object.
 In the new microtable object, each feature in otu_table represents one taxon at the output level.
 
 ```{r, echo = TRUE}
-test <- dataset$merge_taxa(taxa = "Family")
+test <- dataset$merge_taxa(taxa = "Genus")
 test
 ```
 
@@ -616,9 +584,67 @@ test
 ```
 
 
+### subset of samples
+
+We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
+**We recommend manipulating the sample_table in microtable object directly.**
+For example, if you want to extract samples of 'CW' group, please do like this: 
+
+```{r, echo = TRUE, eval = TRUE}
+# remember first clone the whole dataset
+# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function
+group_CW <- clone(dataset)
+# select 'CW'
+group_CW$sample_table <- subset(group_CW$sample_table, Group == "CW")
+# or: group_CW$sample_table <- subset(group_CW$sample_table, grepl("CW", Group))
+# use tidy_dataset to trim all the basic files
+group_CW$tidy_dataset()
+group_CW
+```
+
+
+### subset of taxa
+
+Similar with above operation, **subset of features can be achieved by manipulating the tax_table in microtable object directly.**
+
+```{r, echo = TRUE, eval = TRUE}
+proteo <- clone(dataset)
+proteo$tax_table <- subset(proteo$tax_table, Phylum == "p__Proteobacteria")
+# or: proteo$tax_table <- subset(proteo$tax_table, grepl("Proteobacteria", Phylum))
+proteo$tidy_dataset()
+proteo
+# proteo is a new microtable object with all OTUs coming from phylum Proteobacteria
+# beta diversity dissimilarity for Proteobacteria
+proteo$cal_betadiv()
+```
+
+
 ### Other examples
 
-In microtable$new, if auto_tidy = TRUE, the function can automatically use tidy_dataset to make all files uniform.
+The function `add_rownames2taxonomy` can add the rownames of tax_table as the last column of tax_table directly.
+This operation is very useful in some analysis, e.g. biomarker finding at OTU/ASV level with the relative abundance.
+
+```{r, echo = TRUE, eval = FALSE}
+test <- clone(dataset)
+ncol(test$tax_table)
+test$add_rownames2taxonomy(use_name = "OTU")
+ncol(test$tax_table)
+```
+
+The `filter_taxa` function can be applied to filter the features with low abundance or occurrence frequency when needed.
+For other operations on the features, please directly manipulate the otu_table of your microtable object.
+
+```{r, echo = TRUE, eval = FALSE}
+# It is better to have a backup before filtering features
+dataset_filter <- clone(dataset)
+dataset_filter
+# In this example, mean relative abundance threshold 0.0001
+# occurrence frequency 0.1; 10% samples have the target features
+dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
+dataset_filter
+```
+
+In microtable$new, if auto_tidy = TRUE, the function can automatically use `tidy_dataset` to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use `tidy_dataset` function to manually trim the microtable object.
 
@@ -647,23 +673,18 @@ Other functions and examples are listed here.
 # clone a complete dataset named test
 test <- clone(dataset)
 
-# add the rownames of tax_table as the last column of tax_table directly; useful in some analysis, e.g. biomarker finding at OTU/ASV level.
-ncol(test$tax_table)
-test$add_rownames2taxonomy(use_name = "OTU")
-ncol(test$tax_table)
-
-# sum the abundance for each taxa; very useful for taxa abundance checking and filtering
-test$taxa_sums()
-
-# rename feature names in all the files of microtable object
+# rename features in all the files of microtable object
 test$rename_taxa(newname_prefix = "new_name_")
 rownames(test$otu_table)[1:5]
 rownames(test$tax_table)[1:5]
 
-# output sample names in microtable object
+# sum the abundance for each taxon
+test$taxa_sums()
+
+# output sample names of microtable object
 test$sample_names()[1:5]
 
-# output taxa names in microtable object
+# output taxa names of microtable object
 test$taxa_names()[1:5]
 ```
 
@@ -876,7 +897,7 @@ t1 <- trans_venn$new(dataset = tmp)
 t1$data_summary %<>% .[.[, 1] > 20, ]
 g1 <- t1$plot_bar(left_plot = TRUE, bottom_height = 0.5, left_width = 0.15, up_bar_fill = "grey50", left_bar_fill = "grey50", bottom_point_color = "black")
 g1
-# g1 is aplot class and can be saved with aplot::ggsave or cowplot::save_plot function
+# g1 is aplot class and can be saved with ggplot2::ggsave, aplot::ggsave or cowplot::save_plot function
 # as g1 is comprised of several sub-plots, please adjust the details for each sub-plot
 g1[[1]]
 g1[[2]]

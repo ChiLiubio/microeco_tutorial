@@ -1061,6 +1061,43 @@ If method parameter is not provided, the function automatically calculates Bray-
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{merge-taxa-or-samples}{%
+\subsection{merge taxa or samples}\label{merge-taxa-or-samples}}
+
+Merging taxa according to a specific taxonomic rank level of tax\_table can generate a new microtable object.
+In the new microtable object, each feature in otu\_table represents one taxon at the output level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable-class object:
+## sample_table have 90 rows and 4 columns
+## otu_table have 1245 rows and 90 columns
+## tax_table have 1245 rows and 6 columns
+\end{verbatim}
+
+Similarly, merging samples according to a specific group of sample\_table can also generate a new microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## microtable-class object:
+## sample_table have 3 rows and 1 columns
+## otu_table have 12766 rows and 3 columns
+## tax_table have 12766 rows and 7 columns
+## phylo_tree have 12766 tips
+\end{verbatim}
+
 \hypertarget{subset-of-samples}{%
 \subsection{subset of samples}\label{subset-of-samples}}
 
@@ -1093,79 +1130,75 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
-\hypertarget{filter-features}{%
-\subsection{filter features}\label{filter-features}}
+\hypertarget{subset-of-taxa}{%
+\subsection{subset of taxa}\label{subset-of-taxa}}
 
-Please use filter\_taxa function to filter the features with low abundance or occurrence frequency.
-For other operations on the features, please directly manipulate the otu\_table of your microtable object.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# It is better to have a backup before filtering features}
-\NormalTok{dataset\_filter }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
-\CommentTok{\# mean relative abundance threshold 0.0001}
-\CommentTok{\# occurrence frequency 0.1; 10\% samples have the target features}
-\NormalTok{dataset\_filter}\SpecialCharTok{$}\FunctionTok{filter\_taxa}\NormalTok{(}\AttributeTok{rel\_abund =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{freq =} \FloatTok{0.1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 10647 features filtered based on the abundance ...
-\end{verbatim}
-
-\begin{verbatim}
-## freq smaller than 1; first convert it to an integer ...
-\end{verbatim}
-
-\begin{verbatim}
-## Use converted freq integer: 9 for the following filtering ...
-\end{verbatim}
-
-\begin{verbatim}
-## 6309 features filtered based on the occurrence...
-\end{verbatim}
-
-\hypertarget{merge-taxa-or-samples}{%
-\subsection{merge taxa or samples}\label{merge-taxa-or-samples}}
-
-Merging taxa according to a specific taxonomic rank level of tax\_table can generate a new microtable object.
-In the new microtable object, each feature in otu\_table represents one taxon at the output level.
+Similar with above operation, \textbf{subset of features can be achieved by manipulating the tax\_table in microtable object directly.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Family"}\NormalTok{)}
-\NormalTok{test}
+\NormalTok{proteo }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{proteo}\SpecialCharTok{$}\NormalTok{tax\_table }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(proteo}\SpecialCharTok{$}\NormalTok{tax\_table, Phylum }\SpecialCharTok{==} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
+\CommentTok{\# or: proteo$tax\_table \textless{}{-} subset(proteo$tax\_table, grepl("Proteobacteria", Phylum))}
+\NormalTok{proteo}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{proteo}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## microtable-class object:
 ## sample_table have 90 rows and 4 columns
-## otu_table have 616 rows and 90 columns
-## tax_table have 616 rows and 5 columns
+## otu_table have 3052 rows and 90 columns
+## tax_table have 3052 rows and 7 columns
+## phylo_tree have 3052 tips
+## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
-
-Similarly, merging samples according to a specific group of sample\_table can also generate a new microtable object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
-\NormalTok{test}
+\CommentTok{\# proteo is a new microtable object with all OTUs coming from phylum Proteobacteria}
+\CommentTok{\# beta diversity dissimilarity for Proteobacteria}
+\NormalTok{proteo}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## microtable-class object:
-## sample_table have 3 rows and 1 columns
-## otu_table have 12766 rows and 3 columns
-## tax_table have 12766 rows and 7 columns
-## phylo_tree have 12766 tips
+## The result is stored in object$beta_diversity ...
 \end{verbatim}
 
 \hypertarget{other-examples}{%
 \subsection{Other examples}\label{other-examples}}
 
-In microtable\$new, if auto\_tidy = TRUE, the function can automatically use tidy\_dataset to make all files uniform.
+The function \texttt{add\_rownames2taxonomy} can add the rownames of tax\_table as the last column of tax\_table directly.
+This operation is very useful in some analysis, e.g.~biomarker finding at OTU/ASV level with the relative abundance.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{add\_rownames2taxonomy}\NormalTok{(}\AttributeTok{use\_name =} \StringTok{"OTU"}\NormalTok{)}
+\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{filter\_taxa} function can be applied to filter the features with low abundance or occurrence frequency when needed.
+For other operations on the features, please directly manipulate the otu\_table of your microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# It is better to have a backup before filtering features}
+\NormalTok{dataset\_filter }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{dataset\_filter}
+\CommentTok{\# In this example, mean relative abundance threshold 0.0001}
+\CommentTok{\# occurrence frequency 0.1; 10\% samples have the target features}
+\NormalTok{dataset\_filter}\SpecialCharTok{$}\FunctionTok{filter\_taxa}\NormalTok{(}\AttributeTok{rel\_abund =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{freq =} \FloatTok{0.1}\NormalTok{)}
+\NormalTok{dataset\_filter}
+\end{Highlighting}
+\end{Shaded}
+
+In microtable\$new, if auto\_tidy = TRUE, the function can automatically use \texttt{tidy\_dataset} to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
 the class can not recognize this modification, the user should use \texttt{tidy\_dataset} function to manually trim the microtable object.
 
@@ -1238,23 +1271,18 @@ Other functions and examples are listed here.
 \CommentTok{\# clone a complete dataset named test}
 \NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
 
-\CommentTok{\# add the rownames of tax\_table as the last column of tax\_table directly; useful in some analysis, e.g. biomarker finding at OTU/ASV level.}
-\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{add\_rownames2taxonomy}\NormalTok{(}\AttributeTok{use\_name =} \StringTok{"OTU"}\NormalTok{)}
-\FunctionTok{ncol}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)}
-
-\CommentTok{\# sum the abundance for each taxa; very useful for taxa abundance checking and filtering}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_sums}\NormalTok{()}
-
-\CommentTok{\# rename feature names in all the files of microtable object}
+\CommentTok{\# rename features in all the files of microtable object}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{rename\_taxa}\NormalTok{(}\AttributeTok{newname\_prefix =} \StringTok{"new\_name\_"}\NormalTok{)}
 \FunctionTok{rownames}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{otu\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
 \FunctionTok{rownames}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{tax\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
 
-\CommentTok{\# output sample names in microtable object}
+\CommentTok{\# sum the abundance for each taxon}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_sums}\NormalTok{()}
+
+\CommentTok{\# output sample names of microtable object}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{sample\_names}\NormalTok{()[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
 
-\CommentTok{\# output taxa names in microtable object}
+\CommentTok{\# output taxa names of microtable object}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{taxa\_names}\NormalTok{()[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
@@ -1498,7 +1526,7 @@ This way is generally called UpSet plot. Please see the help document for more p
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{data\_summary }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.[, }\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textgreater{}} \DecValTok{20}\NormalTok{, ]}
 \NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{bottom\_height =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{left\_width =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{up\_bar\_fill =} \StringTok{"grey50"}\NormalTok{, }\AttributeTok{left\_bar\_fill =} \StringTok{"grey50"}\NormalTok{, }\AttributeTok{bottom\_point\_color =} \StringTok{"black"}\NormalTok{)}
 \NormalTok{g1}
-\CommentTok{\# g1 is aplot class and can be saved with aplot::ggsave or cowplot::save\_plot function}
+\CommentTok{\# g1 is aplot class and can be saved with ggplot2::ggsave, aplot::ggsave or cowplot::save\_plot function}
 \CommentTok{\# as g1 is comprised of several sub{-}plots, please adjust the details for each sub{-}plot}
 \NormalTok{g1[[}\DecValTok{1}\NormalTok{]]}
 \NormalTok{g1[[}\DecValTok{2}\NormalTok{]]}
@@ -1700,7 +1728,7 @@ IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
-Quitting from lines 999-1001 (microeco-tutorial.Rmd)
+Quitting from lines 1020-1022 (microeco-tutorial.Rmd)
 Error in \texttt{{[}.data.frame}(t1\$res\_diff, 1:5, c(1, 3:8)) : 选择了未定义的列
 Calls: local \ldots{} eval\_with\_user\_handlers -\textgreater{} eval -\textgreater{} eval -\textgreater{} -\textgreater{} {[} -\textgreater{} {[}.data.frame
 
@@ -3091,7 +3119,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Mar 30 11:52:26 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Mar 30 14:32:51 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3121,9 +3149,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3868 & 0.3639 & 9.074 \\
-CW & 435 & 0.5629 & 0.2961 & 0.2866 & 14.35 \\
-TW & 435 & 0.6243 & 0.4159 & 0.3998 & 9.932 \\
+IW & 435 & 0.6537 & 0.3868 & 0.3638 & 9.093 \\
+CW & 435 & 0.5627 & 0.2958 & 0.2863 & 14.37 \\
+TW & 435 & 0.6244 & 0.4164 & 0.3998 & 9.821 \\
 \bottomrule()
 \end{longtable}
 
@@ -4740,7 +4768,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-295-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-297-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4777,7 +4805,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-296-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-298-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
