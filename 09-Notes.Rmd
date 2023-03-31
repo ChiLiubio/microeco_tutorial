@@ -24,9 +24,9 @@ identical(t2, t1)
 ## `save` function
 
 As an R6 object is an encapsulated environment, there is also another useful advantage, i.e. the data repeatability.
-By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of intermediate files.
+By applying R6 classes, the analyzed data in 'R Environment' can have fewest intermediate files.
 It is also very convenient to save the analyzed data (i.e. object) to local computer with `save` function for back-up and communication with others.
-This is also the recommended way to send data for testing in 'Github Issues'.
+This is the recommended way to send data for the test in 'Github Issues'.
 
 ```{r, echo = TRUE, eval = FALSE}
 # save 'dataset' to local computer
@@ -36,7 +36,14 @@ load("dataset.RData")
 ```
 
 The `dataset.RData` can be compressed into zip format for the upload in 'Github Issues' (https://github.com/ChiLiubio/microeco/issues).
-The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+If you want to use R to compress it, please run the following command.
+
+```{r, echo = TRUE, eval = FALSE}
+zip("test_data.zip", "dataset.RData")
+```
+
+The 'test_data.zip' is the final compressed file for the upload.
+This saved object is only related with the package version when you save it and has no matter with the updated package when one load it again.
 So it is repeatable.
 
 

@@ -2243,7 +2243,7 @@ For the explanation of statistical methods in microbial ecology, please read the
 \hypertarget{model-based-class}{%
 \chapter{Model-based class}\label{model-based-class}}
 
-We group all the classes with complex models into the this section `Model-based class'.
+All the classes with complex models are grouped into this section.
 
 \hypertarget{trans_diff-class}{%
 \section{trans\_diff class}\label{trans_diff-class}}
@@ -2519,7 +2519,7 @@ These three packages are all deposited on the Bioconductor.
 \hypertarget{trans_network-class}{%
 \section{trans\_network class}\label{trans_network-class}}
 
-　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology \citep{Deng_Molecular_2012, Faust_Microbial_2012, Coyte_Theecology_2015}.
+　Network analysis has been frequently used to study microbial co-occurrence patterns \citep{Deng_Molecular_2012, Faust_Microbial_2012, Coyte_Theecology_2015}.
 In this part, we describe part of the implemented methods in the trans\_network class.
 
 \begin{center}\includegraphics[width=8000px]{Images/network_framework} \end{center}
@@ -2530,63 +2530,33 @@ The dashed line denotes the key objects (input or output). The \texttt{res\_netw
 \hypertarget{example-5}{%
 \subsection{Example}\label{example-5}}
 
-We use the correlation-based network to show the main operations for users.
+The correlation-based network is selected to show the main operations.
 This is only intended to show some operations conveniently.
 \textbf{Do not mean we are suggesting this approach in any case}.
 Please check the final part for other network construction methods.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# The parameter cor\_method in trans\_network is used for selecting the correlation calculation method.}
+\CommentTok{\# The parameter cor\_method in trans\_network is used to select correlation calculation method.}
 \CommentTok{\# default pearson or spearman correlation invoke R base cor.test, a little slow}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# return t1$res\_cor\_p list, containing two tables: correlation coefficient table and p value table}
 \end{Highlighting}
 \end{Shaded}
 
-Those are other available correlation/association options,
-such as Bray--Curtis (1-dissimilarity), SparCC \citep{Friedman_Inferring_2012}, CCLasso \citep{Fang_CCLasso_2015},
-Pearson or Spearman with data normalization based on NetCoMi package \citep{Peschel_NetCoMi_2021}.
+Spearman correlation based on WGCNA package is applied to show all the following operations.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use Bray–Curtis index (1{-}dissimilarity)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Pearson correlation}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Pearson correlation using WGCNA package}
-\CommentTok{\# install WGCNA package}
+\CommentTok{\# require WGCNA package}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Spearman correlation using WGCNA package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# Spearman correlation using NetCoMi package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"NetCoMi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# CCLasso method based on NetCoMi package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"cclasso"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# CCREPE method based on NetCoMi package}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"ccrepe"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-We use Spearman correlation based on WGCNA package (use\_WGCNA\_pearson\_spearman = TRUE) to show all the following operations.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# require WGCNA package; installation command: install.packages("WGCNA", repos = BiocManager::repositories())}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0001}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-The parameter COR\_cut can be used to select the correlation threshold.
-Furthermore, COR\_optimization = TRUE can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues)
-instead of the COR\_cut based on the RMT theory \citep{Deng_Molecular_2012}.
+The parameter \texttt{COR\_cut} can be used to select the correlation threshold.
+Furthermore, \texttt{COR\_optimization\ =\ TRUE} can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues)
+instead of the \texttt{COR\_cut} based on the RMT theory \citep{Deng_Molecular_2012}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2598,26 +2568,26 @@ instead of the COR\_cut based on the RMT theory \citep{Deng_Molecular_2012}.
 \end{Highlighting}
 \end{Shaded}
 
+Then, let's partition modules for the network.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# \# modularity for this undirected network with igraph cluster\_fast\_greedy function}
+\CommentTok{\# invoke igraph cluster\_fast\_greedy function for this undirected network }
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_fast\_greedy"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
+The following operation is to save network to gexf format for the visualization with Gephi(\url{https://gephi.org/}).
+The file `network.gexf' can be directly opened by Gephi.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# save network}
-\CommentTok{\# open network.gexf file using Gephi(https://gephi.org/)}
-\CommentTok{\# require rgexf package}
+\CommentTok{\# require rgexf package to be installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\AttributeTok{filepath =} \StringTok{"network.gexf"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-For the current version of microeco package, the node properties have no abundance information.
-If the user want to use abundance of features to scale up node size in the Gephi network plot,
-please check the solution in GitHub Issues (\url{https://github.com/ChiLiubio/microeco/issues/152}).
-Then, we plot the network and present the node colors according to the calculated modules in Gephi.
+Then, we plot the network in Gephi and present the node colors according to the partitioned modules.
 
 \begin{center}\includegraphics[width=550px]{Images/network1_spearman} \end{center}
 
@@ -2742,7 +2712,7 @@ The eigengene of a module, i.e.~the first principal component of PCA, represents
 \end{Highlighting}
 \end{Shaded}
 
-Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.
+Then we perform correlation heatmap to show the associations between eigengenes and environmental factors.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2757,7 +2727,7 @@ Then we perform correlation heatmap to show the relationships between eigengenes
 
 \begin{center}\includegraphics[width=600px]{Images/Env_module_eigen} \end{center}
 
-The subset\_network() function can be used to extract a part of nodes and edges among these nodes from the network.
+The \texttt{subset\_network} function can be applied to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.
 
 \begin{Shaded}
@@ -2805,7 +2775,7 @@ details on the network visualization in R.
 \end{Highlighting}
 \end{Shaded}
 
-The trans\_comm function can be used to transform the node classification to a new microtable object for other analysis.
+The \texttt{trans\_comm} function can be used to convert the node classification to a new microtable object for other analysis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2821,8 +2791,8 @@ The trans\_comm function can be used to transform the node classification to a n
 \end{Highlighting}
 \end{Shaded}
 
-The function cal\_sum\_links can sum the links (edge) number from one taxa to another or within the same taxa.
-The function plot\_sum\_links() is used to show the result from the function cal\_sum\_links().
+The function \texttt{cal\_sum\_links} can sum the links (edge) number from one taxa to another or within the same taxa.
+The function \texttt{plot\_sum\_links} is used to show the result from the function \texttt{cal\_sum\_links}.
 This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
 In terms of `Phylum' level in the tutorial, the function cal\_sum\_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
 So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
@@ -2838,6 +2808,37 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \end{Shaded}
 
 \begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
+
+For the correlation network, there are also other available correlation/association calculation options,
+such as Bray--Curtis (1-dissimilarity), SparCC \citep{Friedman_Inferring_2012}, CCLasso \citep{Fang_CCLasso_2015},
+Pearson or Spearman with data normalization based on NetCoMi package \citep{Peschel_NetCoMi_2021}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use Bray–Curtis index (1{-}dissimilarity)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation using WGCNA package}
+\CommentTok{\# install WGCNA package}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Spearman correlation using WGCNA package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_WGCNA\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# Spearman correlation using NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"NetCoMi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# CCLasso method based on NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"cclasso"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\CommentTok{\# CCREPE method based on NetCoMi package}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"ccrepe"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \textbf{Then let's show other implemented network construction approaches}:\\
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach of SpiecEasi R package \citep{Kurtz_Sparse_2015}
@@ -2902,7 +2903,7 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \subsection{Network comparison}\label{network-comparison}}
 
 To compare different networks from trans\_network class,
-please see the meconetcomp package part (\url{https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html}).
+please see the meconetcomp package chapter (\url{https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html}).
 
 \hypertarget{key-points-6}{%
 \subsection{Key points}\label{key-points-6}}
@@ -2910,7 +2911,7 @@ please see the meconetcomp package part (\url{https://chiliubio.github.io/microe
 \begin{itemize}
 \tightlist
 \item
-  cal\_network(): get a network named res\_network based on different methods
+  cal\_network(): get a network named \texttt{res\_network} based on different methods
 \item
   get\_node\_table(): get node properties table
 \item
@@ -3162,7 +3163,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Mar 31 16:10:26 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Mar 31 22:28:46 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3192,9 +3193,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3873 & 0.364 & 9.08 \\
-CW & 435 & 0.5631 & 0.2964 & 0.2867 & 14.34 \\
-TW & 435 & 0.6247 & 0.4154 & 0.4001 & 9.837 \\
+IW & 435 & 0.654 & 0.3871 & 0.3641 & 9.09 \\
+CW & 435 & 0.5628 & 0.2962 & 0.2864 & 14.37 \\
+TW & 435 & 0.6243 & 0.4165 & 0.3998 & 9.912 \\
 \bottomrule()
 \end{longtable}
 
@@ -4734,9 +4735,9 @@ R6 class has a special copy mechanism which is different from S3 and S4.
 \section{\texorpdfstring{\texttt{save} function}{save function}}\label{save-function}}
 
 As an R6 object is an encapsulated environment, there is also another useful advantage, i.e.~the data repeatability.
-By applying R6 classes, the analyzed data in `R Environment' can have minimum numbers of intermediate files.
+By applying R6 classes, the analyzed data in `R Environment' can have fewest intermediate files.
 It is also very convenient to save the analyzed data (i.e.~object) to local computer with \texttt{save} function for back-up and communication with others.
-This is also the recommended way to send data for testing in `Github Issues'.
+This is the recommended way to send data for the test in `Github Issues'.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4748,7 +4749,16 @@ This is also the recommended way to send data for testing in `Github Issues'.
 \end{Shaded}
 
 The \texttt{dataset.RData} can be compressed into zip format for the upload in `Github Issues' (\url{https://github.com/ChiLiubio/microeco/issues}).
-The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+If you want to use R to compress it, please run the following command.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{zip}\NormalTok{(}\StringTok{"test\_data.zip"}\NormalTok{, }\StringTok{"dataset.RData"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The `test\_data.zip' is the final compressed file for the upload.
+This saved object is only related with the package version when you save it and has no matter with the updated package when one load it again.
 So it is repeatable.
 
 \hypertarget{github-issues}{%
@@ -4811,7 +4821,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-298-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-299-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4848,7 +4858,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-299-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-300-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}

@@ -1288,7 +1288,7 @@ For the explanation of statistical methods in microbial ecology, please read the
 
 # Model-based class
 
-We group all the classes with complex models into the this section 'Model-based class'.
+All the classes with complex models are grouped into this section.
 
 
 ## trans_diff class
@@ -1528,7 +1528,7 @@ t1$plot_diff_bar(use_number = 1:20)
 
 ## trans_network class
 
-　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology [@Deng_Molecular_2012; @Faust_Microbial_2012; @Coyte_Theecology_2015].
+　Network analysis has been frequently used to study microbial co-occurrence patterns [@Deng_Molecular_2012; @Faust_Microbial_2012; @Coyte_Theecology_2015].
 In this part, we describe part of the implemented methods in the trans_network class.
 
 
@@ -1542,57 +1542,29 @@ The dashed line denotes the key objects (input or output). The `res_network` ins
 
 ### Example
 
-We use the correlation-based network to show the main operations for users. 
+The correlation-based network is selected to show the main operations. 
 This is only intended to show some operations conveniently. 
 **Do not mean we are suggesting this approach in any case**.
 Please check the final part for other network construction methods.
 
 ```{r, echo = TRUE, eval=FALSE}
-# The parameter cor_method in trans_network is used for selecting the correlation calculation method.
+# The parameter cor_method in trans_network is used to select correlation calculation method.
 # default pearson or spearman correlation invoke R base cor.test, a little slow
 t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", filter_thres = 0.001)
 # return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table
 ```
 
-Those are other available correlation/association options, 
-such as Bray–Curtis (1-dissimilarity), SparCC [@Friedman_Inferring_2012], CCLasso [@Fang_CCLasso_2015], 
-Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_NetCoMi_2021].
+Spearman correlation based on WGCNA package is applied to show all the following operations.
 
 ```{r, echo = TRUE, eval=FALSE}
-# use Bray–Curtis index (1-dissimilarity)
-t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
-# Pearson correlation
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
-# Pearson correlation using WGCNA package
-# install WGCNA package
+# require WGCNA package
 if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
-# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
-# Spearman correlation using WGCNA package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
-# Spearman correlation using NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
-# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.001)
-# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
-# CCLasso method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "cclasso", filter_thres = 0.001)
-# CCREPE method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres = 0.001)
-```
-
-We use Spearman correlation based on WGCNA package (use_WGCNA_pearson_spearman = TRUE) to show all the following operations.
-
-```{r, echo = TRUE, eval=FALSE}
-# require WGCNA package; installation command: install.packages("WGCNA", repos = BiocManager::repositories())
 t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
 ```
 
-The parameter COR_cut can be used to select the correlation threshold. 
-Furthermore, COR_optimization = TRUE can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues) 
-instead of the COR_cut based on the RMT theory [@Deng_Molecular_2012].
+The parameter `COR_cut` can be used to select the correlation threshold. 
+Furthermore, `COR_optimization = TRUE` can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues) 
+instead of the `COR_cut` based on the RMT theory [@Deng_Molecular_2012].
 
 ```{r, echo = TRUE, eval=FALSE}
 # construct network; require igraph package
@@ -1602,22 +1574,22 @@ t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7)
 # return t1$res_network
 ```
 
+Then, let's partition modules for the network.
+
 ```{r, echo = TRUE, eval=FALSE}
-# # modularity for this undirected network with igraph cluster_fast_greedy function
+# invoke igraph cluster_fast_greedy function for this undirected network 
 t1$cal_module(method = "cluster_fast_greedy")
 ```
 
+The following operation is to save network to gexf format for the visualization with Gephi(https://gephi.org/).
+The file 'network.gexf' can be directly opened by Gephi.
+
 ```{r, echo = TRUE, eval=FALSE}
-# save network
-# open network.gexf file using Gephi(https://gephi.org/)
-# require rgexf package
+# require rgexf package to be installed
 t1$save_network(filepath = "network.gexf")
 ```
 
-For the current version of microeco package, the node properties have no abundance information.
-If the user want to use abundance of features to scale up node size in the Gephi network plot,
-please check the solution in GitHub Issues (https://github.com/ChiLiubio/microeco/issues/152).
-Then, we plot the network and present the node colors according to the calculated modules in Gephi.
+Then, we plot the network in Gephi and present the node colors according to the partitioned modules.
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/network1_spearman.png")
@@ -1699,7 +1671,7 @@ t1$cal_eigen()
 # return t1$res_eigen
 ```
 
-Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.
+Then we perform correlation heatmap to show the associations between eigengenes and environmental factors.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create trans_env object
@@ -1714,7 +1686,7 @@ t2$plot_cor()
 knitr::include_graphics("Images/Env_module_eigen.png")
 ```
 
-The subset_network() function can be used to extract a part of nodes and edges among these nodes from the network.
+The `subset_network` function can be applied to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1756,7 +1728,7 @@ t1$plot_network(method = "networkD3", node_color = "module")
 t1$plot_network(method = "networkD3", node_color = "Phylum")
 ```
 
-The trans_comm function can be used to transform the node classification to a new microtable object for other analysis.
+The `trans_comm` function can be used to convert the node classification to a new microtable object for other analysis.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use_col is used to select a column of t1$res_node_table
@@ -1770,8 +1742,8 @@ tmp2$data_abund$Sample %<>% factor(., levels = rownames(tmp$sample_table))
 tmp2$plot_line(xtext_type_hor = TRUE, color_values = RColorBrewer::brewer.pal(12, "Paired")) + ylab("OTUs ratio (%)")
 ```
 
-The function cal_sum_links can sum the links (edge) number from one taxa to another or within the same taxa. 
-The function plot_sum_links() is used to show the result from the function cal_sum_links(). 
+The function `cal_sum_links` can sum the links (edge) number from one taxa to another or within the same taxa. 
+The function `plot_sum_links` is used to show the result from the function `cal_sum_links`. 
 This is very useful to fast see how many nodes are connected between different taxa or within one taxa. 
 In terms of 'Phylum' level in the tutorial, the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum. 
 So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum. 
@@ -1786,6 +1758,35 @@ t1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_sum_links.png")
+```
+
+For the correlation network, there are also other available correlation/association calculation options, 
+such as Bray–Curtis (1-dissimilarity), SparCC [@Friedman_Inferring_2012], CCLasso [@Fang_CCLasso_2015], 
+Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_NetCoMi_2021].
+
+```{r, echo = TRUE, eval=FALSE}
+# use Bray–Curtis index (1-dissimilarity)
+t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
+# Pearson correlation
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
+# Pearson correlation using WGCNA package
+# install WGCNA package
+if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+# Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+# Spearman correlation using WGCNA package
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+# Spearman correlation using NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
+t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.001)
+# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
+t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
+# CCLasso method based on NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "cclasso", filter_thres = 0.001)
+# CCREPE method based on NetCoMi package
+t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres = 0.001)
 ```
 
 
@@ -1807,7 +1808,6 @@ Another network construction approach comes from julia package FlashWeave [@Tack
 This is a probabilistic graph-based method to obtain the conditional independence. 
 It predicts direct associations among microbes from large-scale compositional abundance data through statistical co-occurrence. 
 To repeat the following code, please first install julia language in your computer and the FlashWeave package, and add the julia in the computer path.
-
 
 1. download and install julia from https://julialang.org/downloads/  
 2. Put julia in the computer env PATH, such as  your_directory_path\Julia\bin  
@@ -1838,12 +1838,12 @@ t1$cal_module(method = "cluster_optimal")
 
 ### Network comparison
 To compare different networks from trans_network class,
-please see the meconetcomp package part (https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html).
+please see the meconetcomp package chapter (https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html).
 
 
 ### Key points
 
-  + cal_network(): get a network named res_network based on different methods
+  + cal_network(): get a network named `res_network` based on different methods
   + get_node_table(): get node properties table
   + subset_network(): this function can extract any sub-network according to the input nodes, e.g. sub-network for modules or samples
 
@@ -3231,9 +3231,9 @@ identical(t2, t1)
 ## `save` function
 
 As an R6 object is an encapsulated environment, there is also another useful advantage, i.e. the data repeatability.
-By applying R6 classes, the analyzed data in 'R Environment' can have minimum numbers of intermediate files.
+By applying R6 classes, the analyzed data in 'R Environment' can have fewest intermediate files.
 It is also very convenient to save the analyzed data (i.e. object) to local computer with `save` function for back-up and communication with others.
-This is also the recommended way to send data for testing in 'Github Issues'.
+This is the recommended way to send data for the test in 'Github Issues'.
 
 ```{r, echo = TRUE, eval = FALSE}
 # save 'dataset' to local computer
@@ -3243,7 +3243,14 @@ load("dataset.RData")
 ```
 
 The `dataset.RData` can be compressed into zip format for the upload in 'Github Issues' (https://github.com/ChiLiubio/microeco/issues).
-The saved object is only related with the package version when you save it and has no matter with the updated package when you load it again.
+If you want to use R to compress it, please run the following command.
+
+```{r, echo = TRUE, eval = FALSE}
+zip("test_data.zip", "dataset.RData")
+```
+
+The 'test_data.zip' is the final compressed file for the upload.
+This saved object is only related with the package version when you save it and has no matter with the updated package when one load it again.
 So it is repeatable.
 
 

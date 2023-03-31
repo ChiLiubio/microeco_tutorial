@@ -341,7 +341,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="model-based-class" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Model-based class<a href="model-based-class.html#model-based-class" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>We group all the classes with complex models into the this section ‘Model-based class’.</p>
+<p>All the classes with complex models are grouped into this section.</p>
 <div id="trans_diff-class" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> trans_diff class<a href="model-based-class.html#trans_diff-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>　Differential abundance test is an important part in the microbiome profiling analysis.
@@ -543,74 +543,48 @@ make sure <code>tidy_taxonomy()</code> function has been performed for the <code
 </div>
 <div id="trans_network-class" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> trans_network class<a href="model-based-class.html#trans_network-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>　Network is a frequently used approach to study the co-occurrence patterns in microbial ecology <span class="citation">(<a href="#ref-Deng_Molecular_2012" role="doc-biblioref">Deng et al. 2012</a>; <a href="#ref-Faust_Microbial_2012" role="doc-biblioref">Faust and Raes 2012</a>; <a href="#ref-Coyte_Theecology_2015" role="doc-biblioref">Coyte, Schluter, and Foster 2015</a>)</span>.
+<p>　Network analysis has been frequently used to study microbial co-occurrence patterns <span class="citation">(<a href="#ref-Deng_Molecular_2012" role="doc-biblioref">Deng et al. 2012</a>; <a href="#ref-Faust_Microbial_2012" role="doc-biblioref">Faust and Raes 2012</a>; <a href="#ref-Coyte_Theecology_2015" role="doc-biblioref">Coyte, Schluter, and Foster 2015</a>)</span>.
 In this part, we describe part of the implemented methods in the trans_network class.</p>
 <p><img src="Images/network_framework.png" width="8000px" style="display: block; margin: auto;" /></p>
 <p>The objects inside the rectangle with full line represent functions.
 The dashed line denotes the key objects (input or output). The <code>res_network</code> inside the ellipse with dashed line means it is a hub object for other analysis.</p>
 <div id="example-5" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Example<a href="model-based-class.html#example-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We use the correlation-based network to show the main operations for users.
+<p>The correlation-based network is selected to show the main operations.
 This is only intended to show some operations conveniently.
 <strong>Do not mean we are suggesting this approach in any case</strong>.
 Please check the final part for other network construction methods.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="model-based-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The parameter cor_method in trans_network is used for selecting the correlation calculation method.</span></span>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="model-based-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The parameter cor_method in trans_network is used to select correlation calculation method.</span></span>
 <span id="cb153-2"><a href="model-based-class.html#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="co"># default pearson or spearman correlation invoke R base cor.test, a little slow</span></span>
 <span id="cb153-3"><a href="model-based-class.html#cb153-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb153-4"><a href="model-based-class.html#cb153-4" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table</span></span></code></pre></div>
-<p>Those are other available correlation/association options,
-such as Bray–Curtis (1-dissimilarity), SparCC <span class="citation">(<a href="#ref-Friedman_Inferring_2012" role="doc-biblioref">Friedman and Alm 2012</a>)</span>, CCLasso <span class="citation">(<a href="#ref-Fang_CCLasso_2015" role="doc-biblioref">Fang et al. 2015</a>)</span>,
-Pearson or Spearman with data normalization based on NetCoMi package <span class="citation">(<a href="#ref-Peschel_NetCoMi_2021" role="doc-biblioref">Peschel et al. 2021</a>)</span>.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="model-based-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use Bray–Curtis index (1-dissimilarity)</span></span>
-<span id="cb154-2"><a href="model-based-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;bray&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-3"><a href="model-based-class.html#cb154-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation</span></span>
-<span id="cb154-4"><a href="model-based-class.html#cb154-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-5"><a href="model-based-class.html#cb154-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation using WGCNA package</span></span>
-<span id="cb154-6"><a href="model-based-class.html#cb154-6" aria-hidden="true" tabindex="-1"></a><span class="co"># install WGCNA package</span></span>
-<span id="cb154-7"><a href="model-based-class.html#cb154-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;WGCNA&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span>
-<span id="cb154-8"><a href="model-based-class.html#cb154-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-9"><a href="model-based-class.html#cb154-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi</span></span>
-<span id="cb154-10"><a href="model-based-class.html#cb154-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">use_NetCoMi_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-11"><a href="model-based-class.html#cb154-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Spearman correlation using WGCNA package</span></span>
-<span id="cb154-12"><a href="model-based-class.html#cb154-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-13"><a href="model-based-class.html#cb154-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Spearman correlation using NetCoMi package</span></span>
-<span id="cb154-14"><a href="model-based-class.html#cb154-14" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_NetCoMi_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-15"><a href="model-based-class.html#cb154-15" aria-hidden="true" tabindex="-1"></a><span class="co"># SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation</span></span>
-<span id="cb154-16"><a href="model-based-class.html#cb154-16" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;sparcc&quot;</span>, <span class="at">use_sparcc_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-17"><a href="model-based-class.html#cb154-17" aria-hidden="true" tabindex="-1"></a><span class="co"># SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi</span></span>
-<span id="cb154-18"><a href="model-based-class.html#cb154-18" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;sparcc&quot;</span>, <span class="at">use_sparcc_method =</span> <span class="st">&quot;NetCoMi&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-19"><a href="model-based-class.html#cb154-19" aria-hidden="true" tabindex="-1"></a><span class="co"># CCLasso method based on NetCoMi package</span></span>
-<span id="cb154-20"><a href="model-based-class.html#cb154-20" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;cclasso&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb154-21"><a href="model-based-class.html#cb154-21" aria-hidden="true" tabindex="-1"></a><span class="co"># CCREPE method based on NetCoMi package</span></span>
-<span id="cb154-22"><a href="model-based-class.html#cb154-22" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;ccrepe&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
-<p>We use Spearman correlation based on WGCNA package (use_WGCNA_pearson_spearman = TRUE) to show all the following operations.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="model-based-class.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require WGCNA package; installation command: install.packages(&quot;WGCNA&quot;, repos = BiocManager::repositories())</span></span>
-<span id="cb155-2"><a href="model-based-class.html#cb155-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>)</span></code></pre></div>
-<p>The parameter COR_cut can be used to select the correlation threshold.
-Furthermore, COR_optimization = TRUE can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues)
-instead of the COR_cut based on the RMT theory <span class="citation">(<a href="#ref-Deng_Molecular_2012" role="doc-biblioref">Deng et al. 2012</a>)</span>.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="model-based-class.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="co"># construct network; require igraph package</span></span>
-<span id="cb156-2"><a href="model-based-class.html#cb156-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_optimization =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb156-3"><a href="model-based-class.html#cb156-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use arbitrary coefficient threshold to contruct network</span></span>
-<span id="cb156-4"><a href="model-based-class.html#cb156-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
-<span id="cb156-5"><a href="model-based-class.html#cb156-5" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_network</span></span></code></pre></div>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="model-based-class.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # modularity for this undirected network with igraph cluster_fast_greedy function</span></span>
-<span id="cb157-2"><a href="model-based-class.html#cb157-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_fast_greedy&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="model-based-class.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save network</span></span>
-<span id="cb158-2"><a href="model-based-class.html#cb158-2" aria-hidden="true" tabindex="-1"></a><span class="co"># open network.gexf file using Gephi(https://gephi.org/)</span></span>
-<span id="cb158-3"><a href="model-based-class.html#cb158-3" aria-hidden="true" tabindex="-1"></a><span class="co"># require rgexf package</span></span>
-<span id="cb158-4"><a href="model-based-class.html#cb158-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">save_network</span>(<span class="at">filepath =</span> <span class="st">&quot;network.gexf&quot;</span>)</span></code></pre></div>
-<p>For the current version of microeco package, the node properties have no abundance information.
-If the user want to use abundance of features to scale up node size in the Gephi network plot,
-please check the solution in GitHub Issues (<a href="https://github.com/ChiLiubio/microeco/issues/152" class="uri">https://github.com/ChiLiubio/microeco/issues/152</a>).
-Then, we plot the network and present the node colors according to the calculated modules in Gephi.</p>
+<p>Spearman correlation based on WGCNA package is applied to show all the following operations.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="model-based-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require WGCNA package</span></span>
+<span id="cb154-2"><a href="model-based-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;WGCNA&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span>
+<span id="cb154-3"><a href="model-based-class.html#cb154-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>)</span></code></pre></div>
+<p>The parameter <code>COR_cut</code> can be used to select the correlation threshold.
+Furthermore, <code>COR_optimization = TRUE</code> can be used to find the optimized coefficient threshold (potential transition point of network eigenvalues)
+instead of the <code>COR_cut</code> based on the RMT theory <span class="citation">(<a href="#ref-Deng_Molecular_2012" role="doc-biblioref">Deng et al. 2012</a>)</span>.</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="model-based-class.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># construct network; require igraph package</span></span>
+<span id="cb155-2"><a href="model-based-class.html#cb155-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_optimization =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb155-3"><a href="model-based-class.html#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use arbitrary coefficient threshold to contruct network</span></span>
+<span id="cb155-4"><a href="model-based-class.html#cb155-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
+<span id="cb155-5"><a href="model-based-class.html#cb155-5" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_network</span></span></code></pre></div>
+<p>Then, let’s partition modules for the network.</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="model-based-class.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="co"># invoke igraph cluster_fast_greedy function for this undirected network </span></span>
+<span id="cb156-2"><a href="model-based-class.html#cb156-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_fast_greedy&quot;</span>)</span></code></pre></div>
+<p>The following operation is to save network to gexf format for the visualization with Gephi(<a href="https://gephi.org/" class="uri">https://gephi.org/</a>).
+The file ‘network.gexf’ can be directly opened by Gephi.</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="model-based-class.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require rgexf package to be installed</span></span>
+<span id="cb157-2"><a href="model-based-class.html#cb157-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">save_network</span>(<span class="at">filepath =</span> <span class="st">&quot;network.gexf&quot;</span>)</span></code></pre></div>
+<p>Then, we plot the network in Gephi and present the node colors according to the partitioned modules.</p>
 <p><img src="Images/network1_spearman.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>Now, we show the node colors with the Phylum information and the edges colors with the positive and negative correlations.
 All the data used has been stored in the network.gexf file, including modules classifications, Phylum information and edge labels.</p>
 <p><img src="Images/network2_spearman.png" width="550px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="model-based-class.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate network attributes</span></span>
-<span id="cb159-2"><a href="model-based-class.html#cb159-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network_attr</span>()</span>
-<span id="cb159-3"><a href="model-based-class.html#cb159-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_network_attr</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="model-based-class.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate network attributes</span></span>
+<span id="cb158-2"><a href="model-based-class.html#cb158-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network_attr</span>()</span>
+<span id="cb158-3"><a href="model-based-class.html#cb158-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_network_attr</span></code></pre></div>
 <table style="width:49%;">
 <colgroup>
 <col width="34%" />
@@ -663,9 +637,9 @@ All the data used has been stored in the network.gexf file, including modules cl
 </table>
 <p>The function get_node_table, get_edge_table and get_adjacency_matrix are designed to
 get node properties table, edge properties table and adjacency matrix from network, respectively.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="model-based-class.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get node properties</span></span>
-<span id="cb160-2"><a href="model-based-class.html#cb160-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_node_table</span>(<span class="at">node_roles =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb160-3"><a href="model-based-class.html#cb160-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_node_table</span></span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="model-based-class.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get node properties</span></span>
+<span id="cb159-2"><a href="model-based-class.html#cb159-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_node_table</span>(<span class="at">node_roles =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb159-3"><a href="model-based-class.html#cb159-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_node_table</span></span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="17%" />
@@ -735,81 +709,106 @@ get node properties table, edge properties table and adjacency matrix from netwo
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="model-based-class.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get edge properties</span></span>
-<span id="cb161-2"><a href="model-based-class.html#cb161-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_edge_table</span>()</span>
-<span id="cb161-3"><a href="model-based-class.html#cb161-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_edge_table </span></span>
-<span id="cb161-4"><a href="model-based-class.html#cb161-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_adjacency_matrix</span>()</span>
-<span id="cb161-5"><a href="model-based-class.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_adjacency_matrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="model-based-class.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get edge properties</span></span>
+<span id="cb160-2"><a href="model-based-class.html#cb160-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_edge_table</span>()</span>
+<span id="cb160-3"><a href="model-based-class.html#cb160-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_edge_table </span></span>
+<span id="cb160-4"><a href="model-based-class.html#cb160-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">get_adjacency_matrix</span>()</span>
+<span id="cb160-5"><a href="model-based-class.html#cb160-5" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_adjacency_matrix</span></span></code></pre></div>
 <p>Then, let’s plot the node classification in terms of the within-module connectivity and among-module connectivity.</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="model-based-class.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add_label = TRUE can be used to directly add text label for points</span></span>
-<span id="cb162-2"><a href="model-based-class.html#cb162-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="model-based-class.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add_label = TRUE can be used to directly add text label for points</span></span>
+<span id="cb161-2"><a href="model-based-class.html#cb161-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Images/plot_taxa_roles.png" width="700px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="model-based-class.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot node roles with phylum information</span></span>
-<span id="cb163-2"><a href="model-based-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="model-based-class.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot node roles with phylum information</span></span>
+<span id="cb162-2"><a href="model-based-class.html#cb162-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Images/plot_taxa_roles_2.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Now, we show the eigengene analysis of modules.
 The eigengene of a module, i.e. the first principal component of PCA, represents the main variance of the abundance in the species of the module.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="model-based-class.html#cb164-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_eigen</span>()</span>
-<span id="cb164-2"><a href="model-based-class.html#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_eigen</span></span></code></pre></div>
-<p>Then we perform correlation heatmap to show the relationships between eigengenes and environmental factors.</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="model-based-class.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_env object</span></span>
-<span id="cb165-2"><a href="model-based-class.html#cb165-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
-<span id="cb165-3"><a href="model-based-class.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlations</span></span>
-<span id="cb165-4"><a href="model-based-class.html#cb165-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t1<span class="sc">$</span>res_eigen)</span>
-<span id="cb165-5"><a href="model-based-class.html#cb165-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the correlation heatmap</span></span>
-<span id="cb165-6"><a href="model-based-class.html#cb165-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="model-based-class.html#cb163-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_eigen</span>()</span>
+<span id="cb163-2"><a href="model-based-class.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_eigen</span></span></code></pre></div>
+<p>Then we perform correlation heatmap to show the associations between eigengenes and environmental factors.</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="model-based-class.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create trans_env object</span></span>
+<span id="cb164-2"><a href="model-based-class.html#cb164-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
+<span id="cb164-3"><a href="model-based-class.html#cb164-3" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlations</span></span>
+<span id="cb164-4"><a href="model-based-class.html#cb164-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t1<span class="sc">$</span>res_eigen)</span>
+<span id="cb164-5"><a href="model-based-class.html#cb164-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the correlation heatmap</span></span>
+<span id="cb164-6"><a href="model-based-class.html#cb164-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
 <p><img src="Images/Env_module_eigen.png" width="600px" style="display: block; margin: auto;" /></p>
-<p>The subset_network() function can be used to extract a part of nodes and edges among these nodes from the network.
+<p>The <code>subset_network</code> function can be applied to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="model-based-class.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a sub network that contains all nodes in module M1</span></span>
-<span id="cb166-2"><a href="model-based-class.html#cb166-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> t1<span class="sc">$</span>res_node_table <span class="sc">%&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(module <span class="sc">==</span> <span class="st">&quot;M1&quot;</span>) <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb166-3"><a href="model-based-class.html#cb166-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return a new network with igraph class</span></span>
-<span id="cb166-4"><a href="model-based-class.html#cb166-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract sub network in which all edge labels are &quot;+&quot;, i.e. positive edges</span></span>
-<span id="cb166-5"><a href="model-based-class.html#cb166-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="model-based-class.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a sub network that contains all nodes in module M1</span></span>
+<span id="cb165-2"><a href="model-based-class.html#cb165-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> t1<span class="sc">$</span>res_node_table <span class="sc">%&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(module <span class="sc">==</span> <span class="st">&quot;M1&quot;</span>) <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb165-3"><a href="model-based-class.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return a new network with igraph class</span></span>
+<span id="cb165-4"><a href="model-based-class.html#cb165-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract sub network in which all edge labels are &quot;+&quot;, i.e. positive edges</span></span>
+<span id="cb165-5"><a href="model-based-class.html#cb165-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
 <p><strong>Then let’s show how to extract sub-network for samples and the whole analysis flow.</strong></p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="model-based-class.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the sub-network of sample &#39;S1&#39;</span></span>
-<span id="cb167-2"><a href="model-based-class.html#cb167-2" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> dataset<span class="sc">$</span>otu_table <span class="sc">%&gt;%</span> .[.[, <span class="st">&quot;S1&quot;</span>] <span class="sc">!=</span> <span class="dv">0</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb167-3"><a href="model-based-class.html#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the &#39;clone&#39; function explanation</span></span>
-<span id="cb167-4"><a href="model-based-class.html#cb167-4" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(t1)</span>
-<span id="cb167-5"><a href="model-based-class.html#cb167-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_network <span class="ot">&lt;-</span> sub1</span>
-<span id="cb167-6"><a href="model-based-class.html#cb167-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then t2 have a network for &#39;S1&#39; and can be used for further analysis</span></span>
-<span id="cb167-7"><a href="model-based-class.html#cb167-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>()</span>
-<span id="cb167-8"><a href="model-based-class.html#cb167-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;S1.gexf&quot;</span>)</span>
-<span id="cb167-9"><a href="model-based-class.html#cb167-9" aria-hidden="true" tabindex="-1"></a><span class="co"># please use a loop for more samples</span></span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="model-based-class.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the sub-network of sample &#39;S1&#39;</span></span>
+<span id="cb166-2"><a href="model-based-class.html#cb166-2" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> dataset<span class="sc">$</span>otu_table <span class="sc">%&gt;%</span> .[.[, <span class="st">&quot;S1&quot;</span>] <span class="sc">!=</span> <span class="dv">0</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb166-3"><a href="model-based-class.html#cb166-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the &#39;clone&#39; function explanation</span></span>
+<span id="cb166-4"><a href="model-based-class.html#cb166-4" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">clone</span>(t1)</span>
+<span id="cb166-5"><a href="model-based-class.html#cb166-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>res_network <span class="ot">&lt;-</span> sub1</span>
+<span id="cb166-6"><a href="model-based-class.html#cb166-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then t2 have a network for &#39;S1&#39; and can be used for further analysis</span></span>
+<span id="cb166-7"><a href="model-based-class.html#cb166-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>()</span>
+<span id="cb166-8"><a href="model-based-class.html#cb166-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;S1.gexf&quot;</span>)</span>
+<span id="cb166-9"><a href="model-based-class.html#cb166-9" aria-hidden="true" tabindex="-1"></a><span class="co"># please use a loop for more samples</span></span></code></pre></div>
 <p>We also add the function <code>plot_network</code> to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See <a href="https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html" class="uri">https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html</a> and <a href="https://kateto.net/network-visualization" class="uri">https://kateto.net/network-visualization</a> for more
 details on the network visualization in R.</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="model-based-class.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># default parameter represents using igraph plot.igraph function</span></span>
-<span id="cb168-2"><a href="model-based-class.html#cb168-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>()</span>
-<span id="cb168-3"><a href="model-based-class.html#cb168-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use ggraph method; require ggraph package</span></span>
-<span id="cb168-4"><a href="model-based-class.html#cb168-4" aria-hidden="true" tabindex="-1"></a><span class="co"># If ggraph is not installed; first install it with command: install.packages(&quot;ggraph&quot;)</span></span>
-<span id="cb168-5"><a href="model-based-class.html#cb168-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;ggraph&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb168-6"><a href="model-based-class.html#cb168-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use networkD3 package method for the dynamic network visualization in R</span></span>
-<span id="cb168-7"><a href="model-based-class.html#cb168-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If networkD3 is not installed; first install it with command: install.packages(&quot;networkD3&quot;)</span></span>
-<span id="cb168-8"><a href="model-based-class.html#cb168-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;module&quot;</span>)</span>
-<span id="cb168-9"><a href="model-based-class.html#cb168-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span></code></pre></div>
-<p>The trans_comm function can be used to transform the node classification to a new microtable object for other analysis.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="model-based-class.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use_col is used to select a column of t1$res_node_table</span></span>
-<span id="cb169-2"><a href="model-based-class.html#cb169-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_comm</span>(<span class="at">use_col =</span> <span class="st">&quot;module&quot;</span>, <span class="at">abundance =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb169-3"><a href="model-based-class.html#cb169-3" aria-hidden="true" tabindex="-1"></a>tmp</span>
-<span id="cb169-4"><a href="model-based-class.html#cb169-4" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>otu_table[tmp<span class="sc">$</span>otu_table <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb169-5"><a href="model-based-class.html#cb169-5" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb169-6"><a href="model-based-class.html#cb169-6" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb169-7"><a href="model-based-class.html#cb169-7" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>)</span>
-<span id="cb169-8"><a href="model-based-class.html#cb169-8" aria-hidden="true" tabindex="-1"></a>tmp2<span class="sc">$</span>data_abund<span class="sc">$</span>Sample <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">rownames</span>(tmp<span class="sc">$</span>sample_table))</span>
-<span id="cb169-9"><a href="model-based-class.html#cb169-9" aria-hidden="true" tabindex="-1"></a>tmp2<span class="sc">$</span><span class="fu">plot_line</span>(<span class="at">xtext_type_hor =</span> <span class="cn">TRUE</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">12</span>, <span class="st">&quot;Paired&quot;</span>)) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;OTUs ratio (%)&quot;</span>)</span></code></pre></div>
-<p>The function cal_sum_links can sum the links (edge) number from one taxa to another or within the same taxa.
-The function plot_sum_links() is used to show the result from the function cal_sum_links().
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="model-based-class.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># default parameter represents using igraph plot.igraph function</span></span>
+<span id="cb167-2"><a href="model-based-class.html#cb167-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>()</span>
+<span id="cb167-3"><a href="model-based-class.html#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use ggraph method; require ggraph package</span></span>
+<span id="cb167-4"><a href="model-based-class.html#cb167-4" aria-hidden="true" tabindex="-1"></a><span class="co"># If ggraph is not installed; first install it with command: install.packages(&quot;ggraph&quot;)</span></span>
+<span id="cb167-5"><a href="model-based-class.html#cb167-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;ggraph&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
+<span id="cb167-6"><a href="model-based-class.html#cb167-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use networkD3 package method for the dynamic network visualization in R</span></span>
+<span id="cb167-7"><a href="model-based-class.html#cb167-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If networkD3 is not installed; first install it with command: install.packages(&quot;networkD3&quot;)</span></span>
+<span id="cb167-8"><a href="model-based-class.html#cb167-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;module&quot;</span>)</span>
+<span id="cb167-9"><a href="model-based-class.html#cb167-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;networkD3&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;Phylum&quot;</span>)</span></code></pre></div>
+<p>The <code>trans_comm</code> function can be used to convert the node classification to a new microtable object for other analysis.</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="model-based-class.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use_col is used to select a column of t1$res_node_table</span></span>
+<span id="cb168-2"><a href="model-based-class.html#cb168-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">trans_comm</span>(<span class="at">use_col =</span> <span class="st">&quot;module&quot;</span>, <span class="at">abundance =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb168-3"><a href="model-based-class.html#cb168-3" aria-hidden="true" tabindex="-1"></a>tmp</span>
+<span id="cb168-4"><a href="model-based-class.html#cb168-4" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>otu_table[tmp<span class="sc">$</span>otu_table <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb168-5"><a href="model-based-class.html#cb168-5" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb168-6"><a href="model-based-class.html#cb168-6" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb168-7"><a href="model-based-class.html#cb168-7" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>)</span>
+<span id="cb168-8"><a href="model-based-class.html#cb168-8" aria-hidden="true" tabindex="-1"></a>tmp2<span class="sc">$</span>data_abund<span class="sc">$</span>Sample <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">rownames</span>(tmp<span class="sc">$</span>sample_table))</span>
+<span id="cb168-9"><a href="model-based-class.html#cb168-9" aria-hidden="true" tabindex="-1"></a>tmp2<span class="sc">$</span><span class="fu">plot_line</span>(<span class="at">xtext_type_hor =</span> <span class="cn">TRUE</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">12</span>, <span class="st">&quot;Paired&quot;</span>)) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;OTUs ratio (%)&quot;</span>)</span></code></pre></div>
+<p>The function <code>cal_sum_links</code> can sum the links (edge) number from one taxa to another or within the same taxa.
+The function <code>plot_sum_links</code> is used to show the result from the function <code>cal_sum_links</code>.
 This is very useful to fast see how many nodes are connected between different taxa or within one taxa.
 In terms of ‘Phylum’ level in the tutorial, the function cal_sum_links() sum the linkages number from one Phylum to another Phylum or the linkages in the same Phylum.
 So the numbers along the outside of the circular plot represent how many edges or linkages are related with the Phylum.
 For example, in terms of Proteobacteria, there are roughly total 900 edges associated with the OTUs in Proteobacteria,
 in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 edges connect the OTUs from Proteobacteria with the OTUs from Chloroflexi.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="model-based-class.html#cb170-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_sum_links</span>(<span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb170-2"><a href="model-based-class.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package; see https://github.com/mattflor/chorddiag</span></span>
-<span id="cb170-3"><a href="model-based-class.html#cb170-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="model-based-class.html#cb169-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_sum_links</span>(<span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
+<span id="cb169-2"><a href="model-based-class.html#cb169-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package; see https://github.com/mattflor/chorddiag</span></span>
+<span id="cb169-3"><a href="model-based-class.html#cb169-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
+<p>For the correlation network, there are also other available correlation/association calculation options,
+such as Bray–Curtis (1-dissimilarity), SparCC <span class="citation">(<a href="#ref-Friedman_Inferring_2012" role="doc-biblioref">Friedman and Alm 2012</a>)</span>, CCLasso <span class="citation">(<a href="#ref-Fang_CCLasso_2015" role="doc-biblioref">Fang et al. 2015</a>)</span>,
+Pearson or Spearman with data normalization based on NetCoMi package <span class="citation">(<a href="#ref-Peschel_NetCoMi_2021" role="doc-biblioref">Peschel et al. 2021</a>)</span>.</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="model-based-class.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use Bray–Curtis index (1-dissimilarity)</span></span>
+<span id="cb170-2"><a href="model-based-class.html#cb170-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;bray&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-3"><a href="model-based-class.html#cb170-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation</span></span>
+<span id="cb170-4"><a href="model-based-class.html#cb170-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-5"><a href="model-based-class.html#cb170-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation using WGCNA package</span></span>
+<span id="cb170-6"><a href="model-based-class.html#cb170-6" aria-hidden="true" tabindex="-1"></a><span class="co"># install WGCNA package</span></span>
+<span id="cb170-7"><a href="model-based-class.html#cb170-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;WGCNA&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;WGCNA&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span>
+<span id="cb170-8"><a href="model-based-class.html#cb170-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-9"><a href="model-based-class.html#cb170-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi</span></span>
+<span id="cb170-10"><a href="model-based-class.html#cb170-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">use_NetCoMi_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-11"><a href="model-based-class.html#cb170-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Spearman correlation using WGCNA package</span></span>
+<span id="cb170-12"><a href="model-based-class.html#cb170-12" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_WGCNA_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-13"><a href="model-based-class.html#cb170-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Spearman correlation using NetCoMi package</span></span>
+<span id="cb170-14"><a href="model-based-class.html#cb170-14" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use_NetCoMi_pearson_spearman =</span> <span class="cn">TRUE</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-15"><a href="model-based-class.html#cb170-15" aria-hidden="true" tabindex="-1"></a><span class="co"># SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation</span></span>
+<span id="cb170-16"><a href="model-based-class.html#cb170-16" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;sparcc&quot;</span>, <span class="at">use_sparcc_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-17"><a href="model-based-class.html#cb170-17" aria-hidden="true" tabindex="-1"></a><span class="co"># SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi</span></span>
+<span id="cb170-18"><a href="model-based-class.html#cb170-18" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;sparcc&quot;</span>, <span class="at">use_sparcc_method =</span> <span class="st">&quot;NetCoMi&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-19"><a href="model-based-class.html#cb170-19" aria-hidden="true" tabindex="-1"></a><span class="co"># CCLasso method based on NetCoMi package</span></span>
+<span id="cb170-20"><a href="model-based-class.html#cb170-20" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;cclasso&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb170-21"><a href="model-based-class.html#cb170-21" aria-hidden="true" tabindex="-1"></a><span class="co"># CCREPE method based on NetCoMi package</span></span>
+<span id="cb170-22"><a href="model-based-class.html#cb170-22" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;ccrepe&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
 <p><strong>Then let’s show other implemented network construction approaches</strong>:<br />
 SPIEC-EASI (SParse InversE Covariance Estimation for Ecological Association Inference) approach of SpiecEasi R package <span class="citation">(<a href="#ref-Kurtz_Sparse_2015" role="doc-biblioref">Kurtz et al. 2015</a>)</span>
 has two network construction approaches based on graph model, which relies on algorithms for sparse neighborhood and inverse covariance selection.
@@ -850,12 +849,12 @@ Please see <a href="https://github.com/CSB5/BEEM-static" class="uri">https://git
 <div id="network-comparison" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Network comparison<a href="model-based-class.html#network-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To compare different networks from trans_network class,
-please see the meconetcomp package part (<a href="https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html" class="uri">https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html</a>).</p>
+please see the meconetcomp package chapter (<a href="https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html" class="uri">https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html</a>).</p>
 </div>
 <div id="key-points-6" class="section level3 hasAnchor" number="6.2.3">
 <h3><span class="header-section-number">6.2.3</span> Key points<a href="model-based-class.html#key-points-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>cal_network(): get a network named res_network based on different methods</li>
+<li>cal_network(): get a network named <code>res_network</code> based on different methods</li>
 <li>get_node_table(): get node properties table</li>
 <li>subset_network(): this function can extract any sub-network according to the input nodes, e.g. sub-network for modules or samples</li>
 </ul>
@@ -1073,7 +1072,7 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <span id="cb185-2"><a href="model-based-class.html#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="co"># result: t1$res_tNST</span></span>
 <span id="cb185-3"><a href="model-based-class.html#cb185-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_tNST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Fri Mar 31 16:07:27 2023. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Fri Mar 31 22:25:32 2023. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_tNST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1098,26 +1097,26 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.6542</td>
-<td align="center">0.3882</td>
-<td align="center">0.3642</td>
-<td align="center">9.059</td>
+<td align="center">0.6538</td>
+<td align="center">0.3869</td>
+<td align="center">0.3639</td>
+<td align="center">9.096</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5629</td>
-<td align="center">0.2965</td>
-<td align="center">0.2865</td>
-<td align="center">14.33</td>
+<td align="center">0.5628</td>
+<td align="center">0.2962</td>
+<td align="center">0.2864</td>
+<td align="center">14.29</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6247</td>
-<td align="center">0.4159</td>
-<td align="center">0.4002</td>
-<td align="center">9.882</td>
+<td align="center">0.6249</td>
+<td align="center">0.4172</td>
+<td align="center">0.4004</td>
+<td align="center">9.861</td>
 </tr>
 </tbody>
 </table>
