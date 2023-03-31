@@ -1125,14 +1125,14 @@ t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 
 ### Key points
 
-  + trans_alpha$new: creating trans_alpha object can invoke alpha_diversity in microtable for transformation
-  + cal_diff: formula parameter can be used for multi-factor analysis of variance
-  + plot_alpha: the significance label comes from the object$res_diff
+  + trans_alpha$new: creating `trans_alpha` object can invoke `alpha_diversity` in microtable for transformation
+  + cal_diff: `formula` parameter applies to multi-factor analysis of variance
+  + plot_alpha: the significance label comes from the results in `object$res_diff`
 
 
 ## trans_beta class
 
-　The trans_beta class is developed for the beta diversity analysis, i.e. the dissimilarities among samples.
+　The trans_beta class is specifically designed for the beta diversity analysis, i.e. the dissimilarities among samples.
 Beta diversity can be defined at different forms[@Tuomisto_diversity_2010] and can be explored with different ways[@Anderson_Navigating_2011].
 We encapsulate some commonly-used approaches in microbial ecology[@Ramette_Multivariate_2007].
 Note that the part of beta diversity related with environmental factors are placed into the trans_env class.
@@ -1142,7 +1142,7 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 
 ### Example
 
-We first show the ordination using PCoA.
+We first show the ordination using PCoA (principal coordinates analysis).
 
 ```{r, echo = TRUE, eval = TRUE}
 # we first create an trans_beta object
@@ -1151,7 +1151,7 @@ t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# use PCoA as an example, PCA or NMDS is also available
+# PCoA, PCA and NMDS are available
 t1$cal_ordination(ordination = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)
@@ -1180,8 +1180,6 @@ t1$plot_ordination(plot_type = c("point", "centroid"), plot_color = "Type", cent
 t1$plot_ordination(plot_color = "Saline", point_size = 5, point_alpha = .2, plot_type = c("point", "chull"), ellipse_chull_fill = FALSE, ellipse_chull_alpha = 0.1)
 t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) + geom_vline(xintercept = 0, linetype = 2) + geom_hline(yintercept = 0, linetype = 2)
 ```
-
-
 
 Then we plot and compare the group distances.
 
@@ -1221,7 +1219,8 @@ knitr::include_graphics("Images/plot_clustering.png")
 ```
 
 
-PerMANOVA[@Anderson_Austral_2001] is often used in the differential test of distances among groups.
+PerMANOVA[@Anderson_Austral_2001] can be applied to the differential test of distances among groups via the `cal_manova` function developed 
+based on the `adonis2` function of vegan package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # manova for all groups when manova_all = TRUE
@@ -1234,7 +1233,8 @@ t1$cal_manova(manova_all = TRUE)
 pander::pander(t1$res_manova)
 ```
 
-The parameter manova_all = FALSE can be used to calculate significance for each paired group.
+The parameter `manova_all = FALSE` can make the test switch to paired group comparison.
+
 ```{r, echo = TRUE, eval = FALSE}
 # manova for each paired groups
 t1$cal_manova(manova_all = FALSE)
@@ -1246,7 +1246,8 @@ t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
 
-The parameter manova_set has higher priority than manova_all. If manova_set is provided, manova_all parameter will be disabled.
+The parameter `manova_set` has higher priority than `manova_all`. If `manova_set` is provided, manova_all parameter will be disabled.
+
 ```{r, echo = TRUE, eval = FALSE}
 # manova for specified group set: such as "Group + Type"
 t1$cal_manova(manova_set = "Group + Type")
@@ -1259,7 +1260,7 @@ pander::pander(t1$res_manova)
 ```
 
 
-PERMDISP[@Anderson_Navigating_2011] is also implemented to check multivariate homogeneity of groups dispersions (variances).
+PERMDISP[@Anderson_Navigating_2011] is implemented to test multivariate homogeneity of groups dispersions (variances) based on the `betadisper` function of vegan package.
 
 ```{r, echo = TRUE}
 # for the whole comparison and for each paired groups
@@ -1269,12 +1270,14 @@ t1$res_betadisper
 
 For the explanation of statistical methods in microbial ecology, please read the references [@Ramette_Multivariate_2007; @Buttigieg_guide_2014].
 
+
+
 ### Key points
 
-  + trans_beta$new: creating trans_beta object with measure parameter can invoke beta_diversity in microtable object for transformation
+  + trans_beta$new: creating `trans_beta` object with `measure` parameter can invoke `beta_diversity` in `microtable` object for transformation
   + cal_ordination(): PCoA, PCA and NMDS approaches are all available
-  + cal_manova(): cal_manova function can be used for paired comparisons, overall test and multi-factor test
-  + plot_group_distance(): manipulating object$res_group_distance_diff can control what statistical results are presented in the plot.
+  + cal_manova(): `cal_manova` function can be used for paired comparisons, overall test and multi-factors test
+  + plot_group_distance(): manipulating `object$res_group_distance_diff` can control what statistical results are presented in the plot.
 
 
 

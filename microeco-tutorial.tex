@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.15.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-30}
+\date{2023-03-31}
 
 \begin{document}
 \maketitle
@@ -1915,17 +1915,17 @@ Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way fa
 \begin{itemize}
 \tightlist
 \item
-  trans\_alpha\$new: creating trans\_alpha object can invoke alpha\_diversity in microtable for transformation
+  trans\_alpha\$new: creating \texttt{trans\_alpha} object can invoke \texttt{alpha\_diversity} in microtable for transformation
 \item
-  cal\_diff: formula parameter can be used for multi-factor analysis of variance
+  cal\_diff: \texttt{formula} parameter applies to multi-factor analysis of variance
 \item
-  plot\_alpha: the significance label comes from the object\$res\_diff
+  plot\_alpha: the significance label comes from the results in \texttt{object\$res\_diff}
 \end{itemize}
 
 \hypertarget{trans_beta-class}{%
 \section{trans\_beta class}\label{trans_beta-class}}
 
-　The trans\_beta class is developed for the beta diversity analysis, i.e.~the dissimilarities among samples.
+　The trans\_beta class is specifically designed for the beta diversity analysis, i.e.~the dissimilarities among samples.
 Beta diversity can be defined at different forms\citep{Tuomisto_diversity_2010} and can be explored with different ways\citep{Anderson_Navigating_2011}.
 We encapsulate some commonly-used approaches in microbial ecology\citep{Ramette_Multivariate_2007}.
 Note that the part of beta diversity related with environmental factors are placed into the trans\_env class.
@@ -1935,7 +1935,7 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 \hypertarget{example-3}{%
 \subsection{Example}\label{example-3}}
 
-We first show the ordination using PCoA.
+We first show the ordination using PCoA (principal coordinates analysis).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1947,7 +1947,7 @@ We first show the ordination using PCoA.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use PCoA as an example, PCA or NMDS is also available}
+\CommentTok{\# PCoA, PCA and NMDS are available}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# t1$res\_ordination is the ordination result list}
 \FunctionTok{class}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination)}
@@ -2015,7 +2015,8 @@ Clustering plot is also a frequently used method.
 
 \begin{center}\includegraphics[width=550px]{Images/plot_clustering} \end{center}
 
-PerMANOVA\citep{Anderson_Austral_2001} is often used in the differential test of distances among groups.
+PerMANOVA\citep{Anderson_Austral_2001} can be applied to the differential test of distances among groups via the \texttt{cal\_manova} function developed
+based on the \texttt{adonis2} function of vegan package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2075,7 +2076,7 @@ Pr(\textgreater F)
 \bottomrule()
 \end{longtable}
 
-The parameter manova\_all = FALSE can be used to calculate significance for each paired group.
+The parameter \texttt{manova\_all\ =\ FALSE} can make the test switch to paired group comparison.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2121,7 +2122,7 @@ CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
 \bottomrule()
 \end{longtable}
 
-The parameter manova\_set has higher priority than manova\_all. If manova\_set is provided, manova\_all parameter will be disabled.
+The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}. If \texttt{manova\_set} is provided, manova\_all parameter will be disabled.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2182,7 +2183,7 @@ Pr(\textgreater F)
 \bottomrule()
 \end{longtable}
 
-PERMDISP\citep{Anderson_Navigating_2011} is also implemented to check multivariate homogeneity of groups dispersions (variances).
+PERMDISP\citep{Anderson_Navigating_2011} is implemented to test multivariate homogeneity of groups dispersions (variances) based on the \texttt{betadisper} function of vegan package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2230,13 +2231,13 @@ For the explanation of statistical methods in microbial ecology, please read the
 \begin{itemize}
 \tightlist
 \item
-  trans\_beta\$new: creating trans\_beta object with measure parameter can invoke beta\_diversity in microtable object for transformation
+  trans\_beta\$new: creating \texttt{trans\_beta} object with \texttt{measure} parameter can invoke \texttt{beta\_diversity} in \texttt{microtable} object for transformation
 \item
   cal\_ordination(): PCoA, PCA and NMDS approaches are all available
 \item
-  cal\_manova(): cal\_manova function can be used for paired comparisons, overall test and multi-factor test
+  cal\_manova(): \texttt{cal\_manova} function can be used for paired comparisons, overall test and multi-factors test
 \item
-  plot\_group\_distance(): manipulating object\$res\_group\_distance\_diff can control what statistical results are presented in the plot.
+  plot\_group\_distance(): manipulating \texttt{object\$res\_group\_distance\_diff} can control what statistical results are presented in the plot.
 \end{itemize}
 
 \hypertarget{model-based-class}{%
@@ -3157,7 +3158,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Mar 30 17:34:14 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Mar 31 11:55:14 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3187,9 +3188,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3862 & 0.3638 & 9.13 \\
-CW & 435 & 0.5628 & 0.296 & 0.2864 & 14.28 \\
-TW & 435 & 0.6245 & 0.4159 & 0.4 & 9.896 \\
+IW & 435 & 0.654 & 0.3869 & 0.364 & 9.105 \\
+CW & 435 & 0.563 & 0.2964 & 0.2866 & 14.25 \\
+TW & 435 & 0.6245 & 0.4157 & 0.3999 & 9.886 \\
 \bottomrule()
 \end{longtable}
 
