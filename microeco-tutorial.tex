@@ -2248,20 +2248,23 @@ We group all the classes with complex models into the this section `Model-based 
 \hypertarget{trans_diff-class}{%
 \section{trans\_diff class}\label{trans_diff-class}}
 
-　Differential abundance test is a very important part in the microbial community data analysis \citep{Nearing_Microbiome_2022}.
-It can find the significant taxa in determining the community differences across groups.
-There are also several wrapped methods to better capture the important biomarkers,
-such as the combination of machine-learning and differential abundance test.
-Currently, trans\_diff class have several famous approaches to perform this analysis:
+　Differential abundance test is an important part in the microbiome profiling analysis.
+It can find the significant taxa in determining community differences across groups.
+Different approaches may produce inconsistent results since the underlying models/hypothesis are different \citep{Nearing_Microbiome_2022}.
+Currently, trans\_diff class has multiple famous differential test approaches or wrapped methods to better capture the important biomarkers:
 metastat\citep{White_Statistical_2009}, LEfSe\citep{Segata_Metagenomic_2011}, RF (random forest + differential test), metagenomeSeq\citep{Paulson_Differential_2013},
 Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Tests (for each paired group) and
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups \textgreater{} 2),
-t.test, ANOVA, ANCOMBC \citep{Lin_Analysis_2020} and ALDEx2 \citep{Fernandes_Unifying_2014}.
+t.test, ANOVA, Scheirer Ray Hare test,
+ANCOMBC \citep{Lin_Analysis_2020}, ALDEx2 \citep{Fernandes_Unifying_2014},
+DESeq2 \citep{Michael_Moderated_2014}, beta regression \citep{Betaregression_2010}, etc.
+Given that multiple approaches are available,
+it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
 \hypertarget{example-4}{%
 \subsection{Example}\label{example-4}}
 
-All the differential test result is stored in the object\$res\_diff.
+All the differential test result is stored in the \texttt{object\$res\_diff}.
 LEfSe combines the non-parametric test and linear discriminant analysis \citep{Segata_Metagenomic_2011}.
 
 \begin{Shaded}
@@ -2324,7 +2327,7 @@ There are too many taxa in this dataset.
 As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
 \textbf{Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data}.
-\textbf{Please see the tidy\_taxonomy function of microtable part to solve this issue.}.
+\textbf{Please see the \texttt{tidy\_taxonomy} function of microtable class part to solve this issue.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2337,7 +2340,7 @@ We only show the full taxonomic label at Phylum level and use letters at other l
 \begin{center}\includegraphics[width=1000px]{Images/plot_lefse_cladogram} \end{center}
 
 There may be a problem related with the taxonomic labels in the plot.
-When the levels used are too many, the taxonomic labels may have too much overlap.
+When there are too many levels shown, the taxonomic labels can have too much overlap.
 However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
 At this time, taxa can be manually choosed to show like the following operation.
 
@@ -2501,15 +2504,16 @@ These three packages are all deposited on the Bioconductor.
 \begin{itemize}
 \tightlist
 \item
-  trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = NULL can shut down the p value adjustment for method != ``metastat'' or ``anova''.
-  This is useful in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
-  where the results need to be compared with that from Galaxy server or other LEfSe python version.
+  trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = ``none'' or NULL can close the p value adjustment.
+  This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and
+  where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.
 \item
-  trans\_diff\(new: this class has a strict requirement on the taxonomic information, make sure `tidy_taxonomy()` function has been performed for the dataset\)tax\_table
+  trans\_diff\$new: this class has a strict requirement on the taxonomic information,
+  make sure \texttt{tidy\_taxonomy()} function has been performed for the \texttt{tax\_table} in \texttt{microtable} object.
 \item
-  trans\_diff\$new: creating this class will invoke taxa\_abund stored in microtable object
+  trans\_diff\$new: creating this class invokes one or more tables in \texttt{taxa\_abund} list, which is stored in \texttt{microtable} object.
 \item
-  trans\_diff\$plot\_diff\_cladogram: clade\_label\_size, clade\_label\_size\_add and clade\_label\_size\_log are used to control the text size in the cladogram
+  trans\_diff\$plot\_diff\_cladogram: \texttt{clade\_label\_size}, \texttt{clade\_label\_size\_add} and \texttt{clade\_label\_size\_log} can control the text size all together in the cladogram.
 \end{itemize}
 
 \hypertarget{trans_network-class}{%
@@ -3158,7 +3162,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Mar 31 11:55:14 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Mar 31 16:10:26 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3188,9 +3192,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3869 & 0.364 & 9.105 \\
-CW & 435 & 0.563 & 0.2964 & 0.2866 & 14.25 \\
-TW & 435 & 0.6245 & 0.4157 & 0.3999 & 9.886 \\
+IW & 435 & 0.6539 & 0.3873 & 0.364 & 9.08 \\
+CW & 435 & 0.5631 & 0.2964 & 0.2867 & 14.34 \\
+TW & 435 & 0.6247 & 0.4154 & 0.4001 & 9.837 \\
 \bottomrule()
 \end{longtable}
 

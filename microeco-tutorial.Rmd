@@ -1293,20 +1293,23 @@ We group all the classes with complex models into the this section 'Model-based 
 
 ## trans_diff class
 
-　Differential abundance test is a very important part in the microbial community data analysis [@Nearing_Microbiome_2022].
-It can find the significant taxa in determining the community differences across groups.
-There are also several wrapped methods to better capture the important biomarkers,
-such as the combination of machine-learning and differential abundance test.
-Currently, trans_diff class have several famous approaches to perform this analysis: 
+　Differential abundance test is an important part in the microbiome profiling analysis.
+It can find the significant taxa in determining community differences across groups.
+Different approaches may produce inconsistent results since the underlying models/hypothesis are different [@Nearing_Microbiome_2022].
+Currently, trans_diff class has multiple famous differential test approaches or wrapped methods to better capture the important biomarkers: 
 metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], RF (random forest + differential test), metagenomeSeq[@Paulson_Differential_2013],
 Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each paired group) and 
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
-t.test, ANOVA, ANCOMBC [@Lin_Analysis_2020] and ALDEx2 [@Fernandes_Unifying_2014].
+t.test, ANOVA, Scheirer Ray Hare test,
+ANCOMBC [@Lin_Analysis_2020], ALDEx2 [@Fernandes_Unifying_2014],
+DESeq2 [@Michael_Moderated_2014], beta regression [@Betaregression_2010], etc.
+Given that multiple approaches are available, 
+it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
 
 ### Example
 
-All the differential test result is stored in the object$res_diff.
+All the differential test result is stored in the `object$res_diff`.
 LEfSe combines the non-parametric test and linear discriminant analysis [@Segata_Metagenomic_2011].
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1347,7 +1350,7 @@ There are too many taxa in this dataset.
 As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
 **Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user's data**.
-**Please see the tidy_taxonomy function of microtable part to solve this issue.**.
+**Please see the `tidy_taxonomy` function of microtable class part to solve this issue.**
 
 ```{r, echo = TRUE, eval = FALSE}
 # clade_label_level 5 represent phylum level in this analysis
@@ -1360,7 +1363,7 @@ knitr::include_graphics("Images/plot_lefse_cladogram.png")
 ```
 
 There may be a problem related with the taxonomic labels in the plot.
-When the levels used are too many, the taxonomic labels may have too much overlap.
+When there are too many levels shown, the taxonomic labels can have too much overlap.
 However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
 At this time, taxa can be manually choosed to show like the following operation.
 
@@ -1514,12 +1517,13 @@ t1$plot_diff_bar(use_number = 1:20)
 
 ### Key points
 
-  + trans_diff\$new: In trans_diff\$new, p_adjust_method = NULL can shut down the p value adjustment for method != "metastat" or "anova". 
-    This is useful in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and 
-	where the results need to be compared with that from Galaxy server or other LEfSe python version.
-  + trans_diff$new: this class has a strict requirement on the taxonomic information, make sure `tidy_taxonomy()` function has been performed for the dataset$tax_table
-  + trans_diff$new: creating this class will invoke taxa_abund stored in microtable object
-  + trans_diff$plot_diff_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram
+  + trans_diff\$new: In trans_diff\$new, p_adjust_method = "none" or NULL can close the p value adjustment. 
+    This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and 
+	where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.
+  + trans_diff\$new: this class has a strict requirement on the taxonomic information, 
+    make sure `tidy_taxonomy()` function has been performed for the `tax_table` in `microtable` object.
+  + trans_diff\$new: creating this class invokes one or more tables in `taxa_abund` list, which is stored in `microtable` object.
+  + trans_diff\$plot_diff_cladogram: `clade_label_size`, `clade_label_size_add` and `clade_label_size_log` can control the text size all together in the cladogram.
 
 
 ## trans_network class

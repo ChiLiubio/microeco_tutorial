@@ -344,18 +344,21 @@ div.csl-indent {
 <p>We group all the classes with complex models into the this section ‘Model-based class’.</p>
 <div id="trans_diff-class" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> trans_diff class<a href="model-based-class.html#trans_diff-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>　Differential abundance test is a very important part in the microbial community data analysis <span class="citation">(<a href="#ref-Nearing_Microbiome_2022" role="doc-biblioref">Nearing et al. 2022</a>)</span>.
-It can find the significant taxa in determining the community differences across groups.
-There are also several wrapped methods to better capture the important biomarkers,
-such as the combination of machine-learning and differential abundance test.
-Currently, trans_diff class have several famous approaches to perform this analysis:
+<p>　Differential abundance test is an important part in the microbiome profiling analysis.
+It can find the significant taxa in determining community differences across groups.
+Different approaches may produce inconsistent results since the underlying models/hypothesis are different <span class="citation">(<a href="#ref-Nearing_Microbiome_2022" role="doc-biblioref">Nearing et al. 2022</a>)</span>.
+Currently, trans_diff class has multiple famous differential test approaches or wrapped methods to better capture the important biomarkers:
 metastat<span class="citation">(<a href="#ref-White_Statistical_2009" role="doc-biblioref">White, Nagarajan, and Pop 2009</a>)</span>, LEfSe<span class="citation">(<a href="#ref-Segata_Metagenomic_2011" role="doc-biblioref">Segata et al. 2011</a>)</span>, RF (random forest + differential test), metagenomeSeq<span class="citation">(<a href="#ref-Paulson_Differential_2013" role="doc-biblioref">Paulson et al. 2013</a>)</span>,
 Kruskal-Wallis Rank Sum Test (for groups &gt; 2), Wilcoxon Rank Sum Tests (for each paired group) and
 Dunn’s Kruskal-Wallis Multiple Comparisons (for paired group in cases groups &gt; 2),
-t.test, ANOVA, ANCOMBC <span class="citation">(<a href="#ref-Lin_Analysis_2020" role="doc-biblioref">Lin and Peddada 2020</a>)</span> and ALDEx2 <span class="citation">(<a href="#ref-Fernandes_Unifying_2014" role="doc-biblioref">Fernandes et al. 2014</a>)</span>.</p>
+t.test, ANOVA, Scheirer Ray Hare test,
+ANCOMBC <span class="citation">(<a href="#ref-Lin_Analysis_2020" role="doc-biblioref">Lin and Peddada 2020</a>)</span>, ALDEx2 <span class="citation">(<a href="#ref-Fernandes_Unifying_2014" role="doc-biblioref">Fernandes et al. 2014</a>)</span>,
+DESeq2 <span class="citation">(<a href="#ref-Michael_Moderated_2014" role="doc-biblioref">Love, Huber, and Anders 2014</a>)</span>, beta regression <span class="citation">(<a href="#ref-Betaregression_2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span>, etc.
+Given that multiple approaches are available,
+it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.</p>
 <div id="example-4" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Example<a href="model-based-class.html#example-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>All the differential test result is stored in the object$res_diff.
+<p>All the differential test result is stored in the <code>object$res_diff</code>.
 LEfSe combines the non-parametric test and linear discriminant analysis <span class="citation">(<a href="#ref-Segata_Metagenomic_2011" role="doc-biblioref">Segata et al. 2011</a>)</span>.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="model-based-class.html#cb139-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.01</span>, <span class="at">lefse_subgroup =</span> <span class="cn">NULL</span>)</span>
 <span id="cb139-2"><a href="model-based-class.html#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see t1$res_diff for the result</span></span>
@@ -422,13 +425,13 @@ There are too many taxa in this dataset.
 As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
 We only show the full taxonomic label at Phylum level and use letters at other levels to reduce the text overlap.
 <strong>Note that if an error occurs in this function, the reason with a high probability is the chaotic taxonomy in the user’s data</strong>.
-<strong>Please see the tidy_taxonomy function of microtable part to solve this issue.</strong>.</p>
+<strong>Please see the <code>tidy_taxonomy</code> function of microtable class part to solve this issue.</strong></p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="model-based-class.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clade_label_level 5 represent phylum level in this analysis</span></span>
 <span id="cb142-2"><a href="model-based-class.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggtree package</span></span>
 <span id="cb142-3"><a href="model-based-class.html#cb142-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_cladogram</span>(<span class="at">use_taxa_num =</span> <span class="dv">200</span>, <span class="at">use_feature_num =</span> <span class="dv">50</span>, <span class="at">clade_label_level =</span> <span class="dv">5</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span></code></pre></div>
 <p><img src="Images/plot_lefse_cladogram.png" width="1000px" style="display: block; margin: auto;" /></p>
 <p>There may be a problem related with the taxonomic labels in the plot.
-When the levels used are too many, the taxonomic labels may have too much overlap.
+When there are too many levels shown, the taxonomic labels can have too much overlap.
 However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
 At this time, taxa can be manually choosed to show like the following operation.</p>
 <div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="model-based-class.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># choose some taxa according to the positions in the previous picture; those taxa labels have minimum overlap</span></span>
@@ -528,12 +531,13 @@ These three packages are all deposited on the Bioconductor.</p>
 <div id="key-points-5" class="section level3 hasAnchor" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> Key points<a href="model-based-class.html#key-points-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>trans_diff$new: In trans_diff$new, p_adjust_method = NULL can shut down the p value adjustment for method != “metastat” or “anova”.
-This is useful in cases where very few significant taxa are found (generally no significant taxa found after adjustment) and
-where the results need to be compared with that from Galaxy server or other LEfSe python version.</li>
-<li>trans_diff<span class="math inline">\(new: this class has a strict requirement on the taxonomic information, make sure `tidy_taxonomy()` function has been performed for the dataset\)</span>tax_table</li>
-<li>trans_diff$new: creating this class will invoke taxa_abund stored in microtable object</li>
-<li>trans_diff$plot_diff_cladogram: clade_label_size, clade_label_size_add and clade_label_size_log are used to control the text size in the cladogram</li>
+<li>trans_diff$new: In trans_diff$new, p_adjust_method = “none” or NULL can close the p value adjustment.
+This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and
+where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.</li>
+<li>trans_diff$new: this class has a strict requirement on the taxonomic information,
+make sure <code>tidy_taxonomy()</code> function has been performed for the <code>tax_table</code> in <code>microtable</code> object.</li>
+<li>trans_diff$new: creating this class invokes one or more tables in <code>taxa_abund</code> list, which is stored in <code>microtable</code> object.</li>
+<li>trans_diff$plot_diff_cladogram: <code>clade_label_size</code>, <code>clade_label_size_add</code> and <code>clade_label_size_log</code> can control the text size all together in the cladogram.</li>
 </ul>
 </div>
 </div>
@@ -1069,7 +1073,7 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <span id="cb185-2"><a href="model-based-class.html#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="co"># result: t1$res_tNST</span></span>
 <span id="cb185-3"><a href="model-based-class.html#cb185-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_tNST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Fri Mar 31 11:52:11 2023. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Fri Mar 31 16:07:27 2023. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_tNST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1094,26 +1098,26 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.654</td>
-<td align="center">0.3874</td>
-<td align="center">0.364</td>
-<td align="center">9.091</td>
+<td align="center">0.6542</td>
+<td align="center">0.3882</td>
+<td align="center">0.3642</td>
+<td align="center">9.059</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.563</td>
-<td align="center">0.2966</td>
-<td align="center">0.2866</td>
-<td align="center">14.4</td>
+<td align="center">0.5629</td>
+<td align="center">0.2965</td>
+<td align="center">0.2865</td>
+<td align="center">14.33</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6241</td>
-<td align="center">0.4163</td>
-<td align="center">0.3995</td>
-<td align="center">9.884</td>
+<td align="center">0.6247</td>
+<td align="center">0.4159</td>
+<td align="center">0.4002</td>
+<td align="center">9.882</td>
 </tr>
 </tbody>
 </table>
@@ -1262,6 +1266,9 @@ Chase, Jonathan M, Nathan JB Kraft, Kevin G Smith, Mark Vellend, and Brian D Ino
 <div id="ref-Coyte_Theecology_2015" class="csl-entry">
 Coyte, Katharine Z, Jonas Schluter, and Kevin R Foster. 2015. <span>“The Ecology of the Microbiome: Networks, Competition, and Stability.”</span> Journal Article. <em>Science</em> 350 (6261): 663–66.
 </div>
+<div id="ref-Betaregression_2010" class="csl-entry">
+Cribari-Neto, Francisco, and Achim Zeileis. 2010. <span>“Beta Regression in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 34 (2): 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">https://doi.org/10.18637/jss.v034.i02</a>.
+</div>
 <div id="ref-Deng_Molecular_2012" class="csl-entry">
 Deng, Ye, Yi-Huei Jiang, Yunfeng Yang, Zhili He, Feng Luo, and Jizhong Zhou. 2012. <span>“Molecular Ecological Network Analyses.”</span> Journal Article. <em>BMC Bioinformatics</em> 13 (1): 113.
 </div>
@@ -1294,6 +1301,9 @@ Lin, Huang, and Shyamal Das Peddada. 2020. <span>“Analysis of Compositions of 
 </div>
 <div id="ref-Liu_Long_term_2017" class="csl-entry">
 Liu, Chi, Minjie Yao, James C Stegen, Junpeng Rui, Jiabao Li, and Xiangzhen Li. 2017. <span>“Long-Term Nitrogen Addition Affects the Phylogenetic Turnover of Soil Microbial Community Responding to Moisture Pulse.”</span> Journal Article. <em>Scientific Reports</em> 7 (1): 17492.
+</div>
+<div id="ref-Michael_Moderated_2014" class="csl-entry">
+Love, Michael I., Wolfgang Huber, and Simon Anders. 2014. <span>“Moderated Estimation of Fold Change and Dispersion for RNA-Seq Data with DESeq2.”</span> <em>Genome Biology</em> 15: 550. <a href="https://doi.org/10.1186/s13059-014-0550-8">https://doi.org/10.1186/s13059-014-0550-8</a>.
 </div>
 <div id="ref-Nearing_Microbiome_2022" class="csl-entry">
 Nearing, Jacob T, Gavin M Douglas, Molly G Hayes, Jocelyn MacDonald, Dhwani K Desai, Nicole Allward, Casey Jones, Robyn J Wright, Akhilesh S Dhanani, and André M Comeau. 2022. <span>“Microbiome Differential Abundance Methods Produce Different Results Across 38 Datasets.”</span> Journal Article. <em>Nature Communications</em> 13 (1): 1–16.
@@ -1392,20 +1402,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
