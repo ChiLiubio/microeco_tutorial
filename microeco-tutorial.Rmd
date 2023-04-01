@@ -2247,18 +2247,19 @@ t1$plot_feature_imp(use_number = 1:20) + ylab("IncNodePurity")
 
 # Explainable class
 
-We group trans_env and trans_func classes into 'Explainable class', 
+The trans_env and trans_func classes are placed into the section 'Explainable class', 
 as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.
 
 
 ## trans_env class
 There may be some NA (missing value) in the user's env data.
-If so, please add `complete_na = TRUE` for interpolation when creating the trans_env object.
+If so, please add `complete_na = TRUE` for the interpolation when creating a trans_env object.
 
 ### Example
 
 Creating trans_env object has at least two ways.
 The following is using additional environmental data which is not in the microtable object.
+
 ```{r, echo = TRUE}
 # add_data is used to add the environmental data
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
@@ -2280,22 +2281,21 @@ Now let's use env_cols to select the required columns from sample_table in the m
 t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
 ```
 
-Generally, it is beneficial to the understanding on environmental variables in order to better use more methods.
-So, we first show the cal_diff and cal_autocor functions.
-The cal_diff function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff class parts.
+Generally, it is beneficial to analyze environmental variables in order to better use more methods.
+The `cal_diff` function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff class parts.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# use Wilcoxon Rank Sum and Signed Rank Tests as an example
+# use Wilcoxon Rank Sum Test as an example
 t1$cal_diff(group = "Group", method = "wilcox")
-t1$res_diff[, c(1, 2, 4, 6, 7)]
+head(t1$res_diff)
 ```
 ```{r, echo = FALSE}
 t1$cal_diff(group = "Group", method = "wilcox")
 pander::pander(t1$res_diff[1:7, c(1, 2, 4, 6, 7)])
 ```
 
-Let’s perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
+Let’s perform the ANOVA and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova", group = "Group")
@@ -2310,8 +2310,7 @@ plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
 knitr::include_graphics("Images/plot_env_diff_all.png")
 ```
 
-
-From the v0.12.0, the trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
+From v0.12.0, trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(group = "Type", by_group = "Group", method = "anova")
@@ -2322,11 +2321,10 @@ t1$plot_diff(measure = "pH", add_sig_text_size = 5)
 knitr::include_graphics("Images/plot_env_diff_bygroup.png")
 ```
 
-
 Then we show the autocorrelations among variables.
 
 ```{r, echo = TRUE, eval = FALSE}
-# require GGally package installed
+# require GGally package to be installed
 t1$cal_autocor()
 ```
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -2342,10 +2340,10 @@ t1$cal_autocor(group = "Group")
 knitr::include_graphics("Images/trans_env_autocor_group.png")
 ```
 
-Then let's do the RDA analysis (db-RDA and RDA).
+Then let's show the RDA analysis (db-RDA and RDA).
 
 ```{r, echo = TRUE, eval = FALSE}
-# use bray-curtis distance to do dbrda
+# use bray-curtis distance for dbRDA
 t1$cal_ordination(method = "dbRDA", use_measure = "bray")
 # t1$res_rda is the result list stored in the object
 t1$trans_ordination(adjust_arrow_length = TRUE, max_perc_env = 1.5)
@@ -2400,12 +2398,12 @@ Mantel test can be used to check whether there is significant correlations betwe
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_mantel(use_measure = "bray")
 # return t1$res_mantel
-t1$res_mantel
+head(t1$res_mantel)
 ```
 
 ```{r, echo = FALSE}
 t1$cal_mantel(use_measure = "bray")
-pander::pander(t1$res_mantel[, -c(2:3)])
+pander::pander(t1$res_mantel[, -c(1, 3:4)])
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2422,12 +2420,10 @@ please see another example (https://chiliubio.github.io/microeco_tutorial/other-
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using relative abundance data at Genus level with the `cal_cor` function.
 The parameter `p_adjust_type` can control the p value adjustment type. 
-The default `p_adjust_type = "Env"` means p adjustment is performed for each environmental variable separately.
-If the user needs to adjust p values for all the results together, please use `p_adjust_type = "Type"`.
-
 
 ```{r, echo = TRUE}
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+# 'p_adjust_type = "Env"' means p adjustment is performed for each environmental variable separately.
 t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
 ```
@@ -2466,7 +2462,7 @@ knitr::include_graphics("Images/plot_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
-Note that, besides the **color_vector parameter**, 
+Note that, besides the **color_vector** parameter, 
 **color_palette** can also be used to control color palette with customized colors.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2479,7 +2475,7 @@ t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9,
 knitr::include_graphics("Images/plot_corr_pheatmap.png")
 ```
 
-Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
 **by_group parameter** can be used for this goal.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2495,7 +2491,7 @@ knitr::include_graphics("Images/plot_corr_ggplot_groups.png")
 
 
 If the user is concerned with the relationship between environmental factors and alpha diversity, 
-please use **add_abund_table parameter** in the cal_cor function.
+please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
@@ -2510,7 +2506,7 @@ t1$plot_cor(cluster_ggplot = "row")
 knitr::include_graphics("Images/plot_corr_alpha_diversity.png")
 ```
 
-The function plot_scatterfit() in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
+The function `plot_scatterfit` in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
 
 
 ```{r, echo = TRUE, eval = FALSE}

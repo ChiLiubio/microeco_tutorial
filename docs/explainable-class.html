@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-03-31" />
+<meta name="date" content="2023-04-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -341,12 +341,12 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="explainable-class" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Explainable class<a href="explainable-class.html#explainable-class" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>We group trans_env and trans_func classes into ‘Explainable class’,
+<p>The trans_env and trans_func classes are placed into the section ‘Explainable class’,
 as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.</p>
 <div id="trans_env-class" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> trans_env class<a href="explainable-class.html#trans_env-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There may be some NA (missing value) in the user’s env data.
-If so, please add <code>complete_na = TRUE</code> for interpolation when creating the trans_env object.</p>
+If so, please add <code>complete_na = TRUE</code> for the interpolation when creating a trans_env object.</p>
 <div id="example-7" class="section level3 hasAnchor" number="7.1.1">
 <h3><span class="header-section-number">7.1.1</span> Example<a href="explainable-class.html#example-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Creating trans_env object has at least two ways.
@@ -371,12 +371,11 @@ To show this operation, we first merge additional table into sample_table to gen
 <p>Now let’s use env_cols to select the required columns from sample_table in the microtable object.</p>
 <div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="explainable-class.html#cb208-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> new_test, <span class="at">env_cols =</span> <span class="dv">8</span><span class="sc">:</span><span class="dv">15</span>)</span></code></pre></div>
 <pre><code>## Env data is stored in object$data_env ...</code></pre>
-<p>Generally, it is beneficial to the understanding on environmental variables in order to better use more methods.
-So, we first show the cal_diff and cal_autocor functions.
-The cal_diff function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff class parts.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="explainable-class.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use Wilcoxon Rank Sum and Signed Rank Tests as an example</span></span>
+<p>Generally, it is beneficial to analyze environmental variables in order to better use more methods.
+The <code>cal_diff</code> function is used to test the significance of variables across groups like we have shown in trans_alpha and trans_diff class parts.</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="explainable-class.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use Wilcoxon Rank Sum Test as an example</span></span>
 <span id="cb210-2"><a href="explainable-class.html#cb210-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb210-3"><a href="explainable-class.html#cb210-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>)]</span></code></pre></div>
+<span id="cb210-3"><a href="explainable-class.html#cb210-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_diff)</span></code></pre></div>
 <pre><code>## The result is stored in object$res_diff ...</code></pre>
 <table style="width:89%;">
 <colgroup>
@@ -447,7 +446,7 @@ The cal_diff function is used to test the significance of variables across group
 </tr>
 </tbody>
 </table>
-<p>Let’s perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.</p>
+<p>Let’s perform the ANOVA and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.</p>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="explainable-class.html#cb212-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb212-2"><a href="explainable-class.html#cb212-2" aria-hidden="true" tabindex="-1"></a><span class="co"># place all the plots into a list</span></span>
 <span id="cb212-3"><a href="explainable-class.html#cb212-3" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
@@ -456,19 +455,19 @@ The cal_diff function is used to test the significance of variables across group
 <span id="cb212-6"><a href="explainable-class.html#cb212-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb212-7"><a href="explainable-class.html#cb212-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gridExtra<span class="sc">::</span><span class="fu">arrangeGrob</span>(<span class="at">grobs =</span> tmp, <span class="at">ncol =</span> <span class="dv">3</span>))</span></code></pre></div>
 <p><img src="Images/plot_env_diff_all.png" width="750px" style="display: block; margin: auto;" /></p>
-<p>From the v0.12.0, the trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.</p>
+<p>From v0.12.0, trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.</p>
 <div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="explainable-class.html#cb213-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
 <span id="cb213-2"><a href="explainable-class.html#cb213-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p><img src="Images/plot_env_diff_bygroup.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>Then we show the autocorrelations among variables.</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="explainable-class.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require GGally package installed</span></span>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="explainable-class.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require GGally package to be installed</span></span>
 <span id="cb214-2"><a href="explainable-class.html#cb214-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_autocor</span>()</span></code></pre></div>
 <p><img src="Images/trans_env_autocor1.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>For different groups, please use group parameter to show the distributions of variables and the autocorrelations across groups.</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="explainable-class.html#cb215-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_autocor</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_env_autocor_group.png" width="800px" style="display: block; margin: auto;" /></p>
-<p>Then let’s do the RDA analysis (db-RDA and RDA).</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="explainable-class.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use bray-curtis distance to do dbrda</span></span>
+<p>Then let’s show the RDA analysis (db-RDA and RDA).</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="explainable-class.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use bray-curtis distance for dbRDA</span></span>
 <span id="cb216-2"><a href="explainable-class.html#cb216-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;dbRDA&quot;</span>, <span class="at">use_measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
 <span id="cb216-3"><a href="explainable-class.html#cb216-3" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$res_rda is the result list stored in the object</span></span>
 <span id="cb216-4"><a href="explainable-class.html#cb216-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">trans_ordination</span>(<span class="at">adjust_arrow_length =</span> <span class="cn">TRUE</span>, <span class="at">max_perc_env =</span> <span class="fl">1.5</span>)</span>
@@ -500,111 +499,80 @@ Furthermore, the function <code>cal_ordination_envfit</code> can be used to get 
 <p>Mantel test can be used to check whether there is significant correlations between environmental variables and distance matrix.</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="explainable-class.html#cb220-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_mantel</span>(<span class="at">use_measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
 <span id="cb220-2"><a href="explainable-class.html#cb220-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_mantel</span></span>
-<span id="cb220-3"><a href="explainable-class.html#cb220-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_mantel</span></code></pre></div>
+<span id="cb220-3"><a href="explainable-class.html#cb220-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_mantel)</span></code></pre></div>
 <pre><code>## The result is stored in object$res_mantel ...</code></pre>
 <table>
-<caption>Table continues below</caption>
 <colgroup>
-<col width="13%" />
-<col width="25%" />
+<col width="20%" />
 <col width="32%" />
 <col width="12%" />
 <col width="16%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">by_group</th>
-<th align="center">Correlation method</th>
+<th align="center">Variables</th>
 <th align="center">Correlation coefficient</th>
 <th align="center">p.value</th>
 <th align="center">p.adjusted</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.452</td>
-<td align="center">0.001</td>
-<td align="center">0.002</td>
-</tr>
-<tr class="even">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.2791</td>
-<td align="center">0.001</td>
-<td align="center">0.002</td>
-</tr>
-<tr class="odd">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.13</td>
-<td align="center">0.003</td>
-<td align="center">0.004</td>
-</tr>
-<tr class="even">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">-0.05539</td>
-<td align="center">0.926</td>
-<td align="center">0.926</td>
-</tr>
-<tr class="odd">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.06758</td>
-<td align="center">0.05</td>
-<td align="center">0.05714</td>
-</tr>
-<tr class="even">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.4085</td>
-<td align="center">0.001</td>
-<td align="center">0.002</td>
-</tr>
-<tr class="odd">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.2643</td>
-<td align="center">0.001</td>
-<td align="center">0.002</td>
-</tr>
-<tr class="even">
-<td align="center">All</td>
-<td align="center">pearson</td>
-<td align="center">0.1321</td>
-<td align="center">0.002</td>
-<td align="center">0.0032</td>
-</tr>
-</tbody>
-</table>
-<table style="width:21%;">
-<colgroup>
-<col width="20%" />
-</colgroup>
-<thead>
-<tr class="header">
 <th align="center">Significance</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="center">Temperature</td>
+<td align="center">0.452</td>
+<td align="center">0.001</td>
+<td align="center">0.002</td>
 <td align="center">**</td>
 </tr>
 <tr class="even">
+<td align="center">Precipitation</td>
+<td align="center">0.2791</td>
+<td align="center">0.001</td>
+<td align="center">0.002</td>
 <td align="center">**</td>
 </tr>
 <tr class="odd">
+<td align="center">TOC</td>
+<td align="center">0.13</td>
+<td align="center">0.003</td>
+<td align="center">0.004</td>
 <td align="center">**</td>
 </tr>
 <tr class="even">
+<td align="center">NH4</td>
+<td align="center">-0.05539</td>
+<td align="center">0.926</td>
+<td align="center">0.926</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">NO3</td>
+<td align="center">0.06758</td>
+<td align="center">0.05</td>
+<td align="center">0.05714</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">pH</td>
+<td align="center">0.4085</td>
+<td align="center">0.001</td>
+<td align="center">0.002</td>
 <td align="center">**</td>
 </tr>
 <tr class="odd">
+<td align="center">Conductivity</td>
+<td align="center">0.2643</td>
+<td align="center">0.001</td>
+<td align="center">0.002</td>
 <td align="center">**</td>
 </tr>
 <tr class="even">
+<td align="center">TN</td>
+<td align="center">0.1321</td>
+<td align="center">0.002</td>
+<td align="center">0.0032</td>
 <td align="center">**</td>
 </tr>
 </tbody>
@@ -617,12 +585,11 @@ Furthermore, the function <code>cal_ordination_envfit</code> can be used to get 
 please see another example (<a href="https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#mantel-test-correlation-heatmap" class="uri">https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#mantel-test-correlation-heatmap</a>).</p>
 <p>The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let’s first perform a correlation heatmap using relative abundance data at Genus level with the <code>cal_cor</code> function.
-The parameter <code>p_adjust_type</code> can control the p value adjustment type.
-The default <code>p_adjust_type = "Env"</code> means p adjustment is performed for each environmental variable separately.
-If the user needs to adjust p values for all the results together, please use <code>p_adjust_type = "Type"</code>.</p>
+The parameter <code>p_adjust_type</code> can control the p value adjustment type.</p>
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="explainable-class.html#cb223-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span></code></pre></div>
 <pre><code>## Env data is stored in object$data_env ...</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="explainable-class.html#cb225-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">p_adjust_method =</span> <span class="st">&quot;fdr&quot;</span>, <span class="at">p_adjust_type =</span> <span class="st">&quot;Env&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="explainable-class.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;p_adjust_type = &quot;Env&quot;&#39; means p adjustment is performed for each environmental variable separately.</span></span>
+<span id="cb225-2"><a href="explainable-class.html#cb225-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">p_adjust_method =</span> <span class="st">&quot;fdr&quot;</span>, <span class="at">p_adjust_type =</span> <span class="st">&quot;Env&quot;</span>)</span></code></pre></div>
 <pre><code>## The correlation result is stored in object$res_cor ...</code></pre>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="explainable-class.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_cor</span></span></code></pre></div>
 <p>Then, we can plot the correlation results using plot_cor function.</p>
@@ -643,13 +610,13 @@ please use <strong>other_taxa</strong> parameter in cal_cor function.</p>
 <span id="cb230-7"><a href="explainable-class.html#cb230-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
 <p><img src="Images/plot_corr_ggplot.png" width="700px" style="display: block; margin: auto;" /></p>
 <p>The pheatmap method is also available.
-Note that, besides the <strong>color_vector parameter</strong>,
+Note that, besides the <strong>color_vector</strong> parameter,
 <strong>color_palette</strong> can also be used to control color palette with customized colors.</p>
 <div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="explainable-class.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clustering heatmap; require pheatmap package</span></span>
 <span id="cb231-2"><a href="explainable-class.html#cb231-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s take another color pallete</span></span>
 <span id="cb231-3"><a href="explainable-class.html#cb231-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>, <span class="at">color_palette =</span> <span class="fu">rev</span>(RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">9</span>, <span class="at">name =</span> <span class="st">&quot;RdYlBu&quot;</span>)))</span></code></pre></div>
 <p><img src="Images/plot_corr_pheatmap.png" width="700px" style="display: block; margin: auto;" /></p>
-<p>Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+<p>Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
 <strong>by_group parameter</strong> can be used for this goal.</p>
 <div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="explainable-class.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlations for different groups using parameter by_group</span></span>
 <span id="cb232-2"><a href="explainable-class.html#cb232-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">use_data =</span> <span class="st">&quot;other&quot;</span>, <span class="at">p_adjust_method =</span> <span class="st">&quot;fdr&quot;</span>, <span class="at">other_taxa =</span> t2<span class="sc">$</span>res_diff<span class="sc">$</span>Taxa[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>])</span>
@@ -657,7 +624,7 @@ Note that, besides the <strong>color_vector parameter</strong>,
 <span id="cb232-4"><a href="explainable-class.html#cb232-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
 <p><img src="Images/plot_corr_ggplot_groups.png" width="700px" style="display: block; margin: auto;" /></p>
 <p>If the user is concerned with the relationship between environmental factors and alpha diversity,
-please use <strong>add_abund_table parameter</strong> in the cal_cor function.</p>
+please use <strong>add_abund_table</strong> parameter in the cal_cor function.</p>
 <div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="explainable-class.html#cb233-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
 <span id="cb233-2"><a href="explainable-class.html#cb233-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use add_abund_table parameter to add the extra data table</span></span>
 <span id="cb233-3"><a href="explainable-class.html#cb233-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> dataset<span class="sc">$</span>alpha_diversity)</span>
@@ -665,7 +632,7 @@ please use <strong>add_abund_table parameter</strong> in the cal_cor function.</
 <span id="cb233-5"><a href="explainable-class.html#cb233-5" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)</span></span>
 <span id="cb233-6"><a href="explainable-class.html#cb233-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">cluster_ggplot =</span> <span class="st">&quot;row&quot;</span>)</span></code></pre></div>
 <p><img src="Images/plot_corr_alpha_diversity.png" width="600px" style="display: block; margin: auto;" /></p>
-<p>The function plot_scatterfit() in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.</p>
+<p>The function <code>plot_scatterfit</code> in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="explainable-class.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use pH and bray-curtis distance</span></span>
 <span id="cb234-2"><a href="explainable-class.html#cb234-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add correlation statistics</span></span>
 <span id="cb234-3"><a href="explainable-class.html#cb234-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_scatterfit</span>(</span>

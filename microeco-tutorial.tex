@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.15.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-03-31}
+\date{2023-04-01}
 
 \begin{document}
 \maketitle
@@ -3163,7 +3163,7 @@ The cal\_tNST function can be used to calculate normalized stochasticity ratio b
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Mar 31 22:28:46 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Apr  1 14:50:03 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3193,9 +3193,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3871 & 0.3641 & 9.09 \\
-CW & 435 & 0.5628 & 0.2962 & 0.2864 & 14.37 \\
-TW & 435 & 0.6243 & 0.4165 & 0.3998 & 9.912 \\
+IW & 435 & 0.6541 & 0.3875 & 0.3642 & 9.132 \\
+CW & 435 & 0.563 & 0.2964 & 0.2865 & 14.36 \\
+TW & 435 & 0.6245 & 0.4151 & 0.3999 & 9.849 \\
 \bottomrule()
 \end{longtable}
 
@@ -3442,14 +3442,14 @@ The regression is supported from v0.15.0.
 \hypertarget{explainable-class}{%
 \chapter{Explainable class}\label{explainable-class}}
 
-We group trans\_env and trans\_func classes into `Explainable class',
+The trans\_env and trans\_func classes are placed into the section `Explainable class',
 as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.
 
 \hypertarget{trans_env-class}{%
 \section{trans\_env class}\label{trans_env-class}}
 
 There may be some NA (missing value) in the user's env data.
-If so, please add \texttt{complete\_na\ =\ TRUE} for interpolation when creating the trans\_env object.
+If so, please add \texttt{complete\_na\ =\ TRUE} for the interpolation when creating a trans\_env object.
 
 \hypertarget{example-7}{%
 \subsection{Example}\label{example-7}}
@@ -3503,15 +3503,14 @@ Now let's use env\_cols to select the required columns from sample\_table in the
 ## Env data is stored in object$data_env ...
 \end{verbatim}
 
-Generally, it is beneficial to the understanding on environmental variables in order to better use more methods.
-So, we first show the cal\_diff and cal\_autocor functions.
-The cal\_diff function is used to test the significance of variables across groups like we have shown in trans\_alpha and trans\_diff class parts.
+Generally, it is beneficial to analyze environmental variables in order to better use more methods.
+The \texttt{cal\_diff} function is used to test the significance of variables across groups like we have shown in trans\_alpha and trans\_diff class parts.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use Wilcoxon Rank Sum and Signed Rank Tests as an example}
+\CommentTok{\# use Wilcoxon Rank Sum Test as an example}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{)]}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3549,7 +3548,7 @@ IW - CW & TOC & IW & 0.4687 & ns \\
 \bottomrule()
 \end{longtable}
 
-Let's perform the anova and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
+Let's perform the ANOVA and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3565,7 +3564,7 @@ Let's perform the anova and show the letters in the box plot. We use list to sto
 
 \begin{center}\includegraphics[width=750px]{Images/plot_env_diff_all} \end{center}
 
-From the v0.12.0, the trans\_env class supports the differential test of groups within each group by using the by\_group parameter in cal\_diff function.
+From v0.12.0, trans\_env class supports the differential test of groups within each group by using the by\_group parameter in cal\_diff function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3580,7 +3579,7 @@ Then we show the autocorrelations among variables.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# require GGally package installed}
+\CommentTok{\# require GGally package to be installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_autocor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -3597,11 +3596,11 @@ For different groups, please use group parameter to show the distributions of va
 
 \begin{center}\includegraphics[width=800px]{Images/trans_env_autocor_group} \end{center}
 
-Then let's do the RDA analysis (db-RDA and RDA).
+Then let's show the RDA analysis (db-RDA and RDA).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use bray{-}curtis distance to do dbrda}
+\CommentTok{\# use bray{-}curtis distance for dbRDA}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"dbRDA"}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# t1$res\_rda is the result list stored in the object}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \FloatTok{1.5}\NormalTok{)}
@@ -3659,7 +3658,7 @@ Mantel test can be used to check whether there is significant correlations betwe
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mantel}\NormalTok{(}\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# return t1$res\_mantel}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mantel}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mantel)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3668,65 +3667,33 @@ Mantel test can be used to check whether there is significant correlations betwe
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1358}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2593}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3210}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1235}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1605}}@{}}
-\caption{Table continues below}\tabularnewline
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1625}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1875}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
-by\_group
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Correlation method
+Variables
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Correlation coefficient
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.value
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.adjusted
-\end{minipage} \\
-\midrule()
-\endfirsthead
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
-by\_group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Correlation method
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Correlation coefficient
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-p.value
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-p.adjusted
-\end{minipage} \\
-\midrule()
-\endhead
-All & pearson & 0.452 & 0.001 & 0.002 \\
-All & pearson & 0.2791 & 0.001 & 0.002 \\
-All & pearson & 0.13 & 0.003 & 0.004 \\
-All & pearson & -0.05539 & 0.926 & 0.926 \\
-All & pearson & 0.06758 & 0.05 & 0.05714 \\
-All & pearson & 0.4085 & 0.001 & 0.002 \\
-All & pearson & 0.2643 & 0.001 & 0.002 \\
-All & pearson & 0.1321 & 0.002 & 0.0032 \\
-\bottomrule()
-\end{longtable}
-
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.2083}}@{}}
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
 \midrule()
 \endhead
-** \\
-** \\
-** \\
-** \\
-** \\
-** \\
+Temperature & 0.452 & 0.001 & 0.002 & ** \\
+Precipitation & 0.2791 & 0.001 & 0.002 & ** \\
+TOC & 0.13 & 0.003 & 0.004 & ** \\
+NH4 & -0.05539 & 0.926 & 0.926 & \\
+NO3 & 0.06758 & 0.05 & 0.05714 & \\
+pH & 0.4085 & 0.001 & 0.002 & ** \\
+Conductivity & 0.2643 & 0.001 & 0.002 & ** \\
+TN & 0.1321 & 0.002 & 0.0032 & ** \\
 \bottomrule()
 \end{longtable}
 
@@ -3745,8 +3712,6 @@ please see another example (\url{https://chiliubio.github.io/microeco_tutorial/o
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using relative abundance data at Genus level with the \texttt{cal\_cor} function.
 The parameter \texttt{p\_adjust\_type} can control the p value adjustment type.
-The default \texttt{p\_adjust\_type\ =\ "Env"} means p adjustment is performed for each environmental variable separately.
-If the user needs to adjust p values for all the results together, please use \texttt{p\_adjust\_type\ =\ "Type"}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3760,6 +3725,7 @@ If the user needs to adjust p values for all the results together, please use \t
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# \textquotesingle{}p\_adjust\_type = "Env"\textquotesingle{} means p adjustment is performed for each environmental variable separately.}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{p\_adjust\_type =} \StringTok{"Env"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3811,7 +3777,7 @@ please use \textbf{other\_taxa} parameter in cal\_cor function.
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
 
 The pheatmap method is also available.
-Note that, besides the \textbf{color\_vector parameter},
+Note that, besides the \textbf{color\_vector} parameter,
 \textbf{color\_palette} can also be used to control color palette with customized colors.
 
 \begin{Shaded}
@@ -3824,7 +3790,7 @@ Note that, besides the \textbf{color\_vector parameter},
 
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
 
-Sometimes, if it is necessary to study the correlations between environmental variables and taxa for different groups,
+Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
 \textbf{by\_group parameter} can be used for this goal.
 
 \begin{Shaded}
@@ -3839,7 +3805,7 @@ Sometimes, if it is necessary to study the correlations between environmental va
 \begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot_groups} \end{center}
 
 If the user is concerned with the relationship between environmental factors and alpha diversity,
-please use \textbf{add\_abund\_table parameter} in the cal\_cor function.
+please use \textbf{add\_abund\_table} parameter in the cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3854,7 +3820,7 @@ please use \textbf{add\_abund\_table parameter} in the cal\_cor function.
 
 \begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
 
-The function plot\_scatterfit() in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
+The function \texttt{plot\_scatterfit} in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
 
 \begin{Shaded}
 \begin{Highlighting}[]
