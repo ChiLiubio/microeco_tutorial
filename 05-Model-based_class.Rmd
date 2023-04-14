@@ -544,8 +544,8 @@ Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic p
 t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require beemStatic package installed
 t1$cal_network(network_method = "beemStatic")
-# we use cluster_optimal method for the directed network
-t1$cal_module(method = "cluster_optimal")
+# use cluster_walktrap method for the directed network
+t1$cal_module(method = "cluster_walktrap")
 ```
 
 ### Network comparison
@@ -561,7 +561,8 @@ please see the meconetcomp package chapter (https://chiliubio.github.io/microeco
 
 ### Other functions
 
-  + cal_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follows a power law distribution and fit degrees to a power law distribution.
+  + cal_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follow a power law distribution and fit degrees to a power law distribution.  
+  + random_network(): generate random networks, compare them with the empirical network and get the p value of topological properties.
 
 
 ## trans_nullmodel class
@@ -733,24 +734,31 @@ t1$res_process
 pander::pander(t1$res_process)
 ```
 
-The cal_tNST function can be used to calculate normalized stochasticity ratio based on the NST package [@Ning_general_2019].
+The `cal_NST` function can be used to calculate normalized stochasticity ratio based on the NST package [@Ning_general_2019],
+including 'tNST' and 'pNST' methods.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1$cal_tNST(group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
-# result: t1$res_tNST
-t1$res_tNST$index.grp
+# require NST package to be installed
+t1$cal_NST(method = "tNST", group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
+t1$res_NST$index.grp
 ```
 
 ```{r, echo = FALSE}
-t1$cal_tNST(group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
-pander::pander(t1$res_tNST$index.grp)
+t1$cal_NST(group = "Group", dist.method = "bray", abundance.weighted = TRUE, output.rand = TRUE, SES = TRUE)
+pander::pander(t1$res_NST$index.grp)
 ```
-
 
 ```{r, echo = TRUE, eval = FALSE}
 # test the NST difference between each pair of groups
-t1$cal_tNST_test(method = "nst.boot")
+t1$cal_NST_test(method = "nst.boot")
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+# for pNST method, phylogenetic tree is needed
+t1$cal_NST(method = "pNST", group = "Group", output.rand = TRUE, SES = TRUE)
+t1$cal_NST_test(method = "nst.boot")
+```
+
 
 For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal_NTI and cal_NRI, respectively.
 

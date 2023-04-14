@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.15.0)},
+  pdftitle={Tutorial for R microeco package (v0.16.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.15.0)}
+\title{Tutorial for R microeco package (v0.16.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-04-04}
+\date{2023-04-14}
 
 \begin{document}
 \maketitle
@@ -1388,6 +1388,7 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \begin{center}\includegraphics[width=40in]{Images/plot_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
+Note that, from v0.16.0, the parameter \texttt{group\_morestats\ =\ TRUE} can be used to add more summary statistics in the return \texttt{data\_abund} when \texttt{groupmean} parameter is provided.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1958,7 +1959,7 @@ We first show the ordination using PCoA (principal coordinates analysis).
 
 \begin{center}\includegraphics[width=650px]{Images/plot_ordination} \end{center}
 
-Try other interesting options in the plotting.
+More examples on different options.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1987,6 +1988,7 @@ Then we plot and compare the group distances.
 \CommentTok{\# return t1$res\_group\_distance}
 \CommentTok{\# perform Wilcoxon Rank Sum and Signed Rank Tests}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\CommentTok{\# plot\_group\_order parameter can be used to adjust orders in x axis}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2894,8 +2896,8 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# require beemStatic package installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"beemStatic"}\NormalTok{)}
-\CommentTok{\# we use cluster\_optimal method for the directed network}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
+\CommentTok{\# use cluster\_walktrap method for the directed network}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_walktrap"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2924,7 +2926,9 @@ please see the meconetcomp package chapter (\url{https://chiliubio.github.io/mic
 \begin{itemize}
 \tightlist
 \item
-  cal\_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follows a power law distribution and fit degrees to a power law distribution.
+  cal\_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follow a power law distribution and fit degrees to a power law distribution.\\
+\item
+  random\_network(): generate random networks, compare them with the empirical network and get the p value of topological properties.
 \end{itemize}
 
 \hypertarget{trans_nullmodel-class}{%
@@ -3148,26 +3152,31 @@ drift & 70.26 \\
 \bottomrule()
 \end{longtable}
 
-The cal\_tNST function can be used to calculate normalized stochasticity ratio based on the NST package \citep{Ning_general_2019}.
+The \texttt{cal\_NST} function can be used to calculate normalized stochasticity ratio based on the NST package \citep{Ning_general_2019},
+including `tNST' and `pNST' methods.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tNST}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{dist.method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# result: t1$res\_tNST}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_tNST}\SpecialCharTok{$}\NormalTok{index.grp}
+\CommentTok{\# require NST package to be installed}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST}\NormalTok{(}\AttributeTok{method =} \StringTok{"tNST"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{dist.method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_NST}\SpecialCharTok{$}\NormalTok{index.grp}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Perform tNST analysis ...
+\end{verbatim}
 
 \begin{verbatim}
 ## All match very well.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Apr  4 16:42:40 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Apr 14 16:02:53 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
-## The result is stored in object$res_tNST ...
+## The result is stored in object$res_NST ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -3193,16 +3202,24 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3876 & 0.3638 & 9.11 \\
-CW & 435 & 0.563 & 0.2959 & 0.2866 & 14.29 \\
-TW & 435 & 0.6241 & 0.4156 & 0.3996 & 9.892 \\
+IW & 435 & 0.6539 & 0.3884 & 0.364 & 9.14 \\
+CW & 435 & 0.5629 & 0.2965 & 0.2864 & 14.37 \\
+TW & 435 & 0.6243 & 0.4158 & 0.3998 & 9.864 \\
 \bottomrule()
 \end{longtable}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# test the NST difference between each pair of groups}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tNST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for pNST method, phylogenetic tree is needed}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST}\NormalTok{(}\AttributeTok{method =} \StringTok{"pNST"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4285,7 +4302,7 @@ The qiime1meco() function can be used to construct the microtable object using t
 \section{QIIME2}\label{qiime2}}
 
 The qiime2meco() function is designed to create the microtable object using files from QIIME2 \citep{Bolyen_Reproducible_2019}.
-The example data is the ASV (amplicon sequence varient) abundance table based on DADA2 \citep{Callahan_DADA2_2016}.
+The example data is the ASV (amplicon sequence variant) abundance table based on DADA2 \citep{Callahan_DADA2_2016}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4788,7 +4805,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-299-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-300-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4825,7 +4842,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-300-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-301-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
@@ -5516,14 +5533,14 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ##                 Taxa    Direction   Change S -> RS | Significance
 ## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
 ## 2  p__Actinobacteria S -> RS -> R Increase                     ns
-## 3 p__Armatimonadetes S -> RS -> R Decrease                      *
+## 3 p__Armatimonadetes S -> RS -> R Decrease                     ns
 ## 4   p__Bacteroidetes S -> RS -> R      +|-                     ns
-## 5     p__Chloroflexi S -> RS -> R Decrease                    ***
+## 5     p__Chloroflexi S -> RS -> R Decrease                     **
 ## 6   p__Cyanobacteria S -> RS -> R Decrease                     ns
 ##   RS -> R | Significance
 ## 1                    ***
-## 2                    ***
-## 3                     **
+## 2                     **
+## 3                      *
 ## 4                     ns
 ## 5                    ***
 ## 6                     **
@@ -5593,7 +5610,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ##                 Taxa    Direction   Change S -> RS | Significance
 ## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
 ## 2  p__Actinobacteria S -> RS -> R                              ns
-## 3 p__Armatimonadetes S -> RS -> R                              **
+## 3 p__Armatimonadetes S -> RS -> R                               *
 ## 4   p__Bacteroidetes S -> RS -> R                               *
 ## 5     p__Chloroflexi S -> RS -> R                             ***
 ## 6   p__Cyanobacteria S -> RS -> R                              ns
@@ -5603,7 +5620,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ## 3                    ***
 ## 4                     ns
 ## 5                    ***
-## 6                    ***
+## 6                     **
 \end{verbatim}
 
 The upper operations can also be applied to different groups.

@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v0.15.0)</title>
-  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v0.16.0)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.15.0)" />
+  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.16.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.15.0)" />
+  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v0.16.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
 
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-04-04" />
+<meta name="date" content="2023-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -331,7 +331,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.15.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.16.0)</a>
           </h1>
         </div>
 
@@ -843,8 +843,8 @@ Please see <a href="https://github.com/CSB5/BEEM-static" class="uri">https://git
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="model-based-class.html#cb173-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="cn">NULL</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb173-2"><a href="model-based-class.html#cb173-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require beemStatic package installed</span></span>
 <span id="cb173-3"><a href="model-based-class.html#cb173-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;beemStatic&quot;</span>)</span>
-<span id="cb173-4"><a href="model-based-class.html#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="co"># we use cluster_optimal method for the directed network</span></span>
-<span id="cb173-5"><a href="model-based-class.html#cb173-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_optimal&quot;</span>)</span></code></pre></div>
+<span id="cb173-4"><a href="model-based-class.html#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use cluster_walktrap method for the directed network</span></span>
+<span id="cb173-5"><a href="model-based-class.html#cb173-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_module</span>(<span class="at">method =</span> <span class="st">&quot;cluster_walktrap&quot;</span>)</span></code></pre></div>
 </div>
 <div id="network-comparison" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Network comparison<a href="model-based-class.html#network-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -862,7 +862,9 @@ please see the meconetcomp package chapter (<a href="https://chiliubio.github.io
 <div id="other-functions" class="section level3 hasAnchor" number="6.2.4">
 <h3><span class="header-section-number">6.2.4</span> Other functions<a href="model-based-class.html#other-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>cal_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follows a power law distribution and fit degrees to a power law distribution.</li>
+<li>cal_powerlaw(): perform bootstrapping hypothesis test to determine whether degrees follow a power law distribution and fit degrees to a power law distribution.<br />
+</li>
+<li>random_network(): generate random networks, compare them with the empirical network and get the p value of topological properties.</li>
 </ul>
 </div>
 </div>
@@ -1067,13 +1069,15 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 </tr>
 </tbody>
 </table>
-<p>The cal_tNST function can be used to calculate normalized stochasticity ratio based on the NST package <span class="citation">(<a href="#ref-Ning_general_2019" role="doc-biblioref">Ning et al. 2019</a>)</span>.</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="model-based-class.html#cb185-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tNST</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">dist.method =</span> <span class="st">&quot;bray&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">TRUE</span>, <span class="at">output.rand =</span> <span class="cn">TRUE</span>, <span class="at">SES =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb185-2"><a href="model-based-class.html#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="co"># result: t1$res_tNST</span></span>
-<span id="cb185-3"><a href="model-based-class.html#cb185-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_tNST<span class="sc">$</span>index.grp</span></code></pre></div>
+<p>The <code>cal_NST</code> function can be used to calculate normalized stochasticity ratio based on the NST package <span class="citation">(<a href="#ref-Ning_general_2019" role="doc-biblioref">Ning et al. 2019</a>)</span>,
+including ‘tNST’ and ‘pNST’ methods.</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="model-based-class.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require NST package to be installed</span></span>
+<span id="cb185-2"><a href="model-based-class.html#cb185-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NST</span>(<span class="at">method =</span> <span class="st">&quot;tNST&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">dist.method =</span> <span class="st">&quot;bray&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">TRUE</span>, <span class="at">output.rand =</span> <span class="cn">TRUE</span>, <span class="at">SES =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb185-3"><a href="model-based-class.html#cb185-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
+<pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Tue Apr  4 16:39:31 2023. Please wait...</code></pre>
-<pre><code>## The result is stored in object$res_tNST ...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Fri Apr 14 15:59:50 2023. Please wait...</code></pre>
+<pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
 <col width="11%" />
@@ -1098,33 +1102,36 @@ The fraction of all pairwise comparisons with |βNTI| &lt; 2 and |RCbray| &lt; 0
 <td align="center">IW</td>
 <td align="center">435</td>
 <td align="center">0.6538</td>
-<td align="center">0.3863</td>
-<td align="center">0.3638</td>
-<td align="center">9.074</td>
+<td align="center">0.387</td>
+<td align="center">0.3639</td>
+<td align="center">9.131</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.563</td>
+<td align="center">0.5631</td>
 <td align="center">0.2962</td>
-<td align="center">0.2866</td>
-<td align="center">14.34</td>
+<td align="center">0.2867</td>
+<td align="center">14.37</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
 <td align="center">0.6245</td>
-<td align="center">0.4154</td>
-<td align="center">0.4</td>
-<td align="center">9.853</td>
+<td align="center">0.4166</td>
+<td align="center">0.3999</td>
+<td align="center">9.896</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="model-based-class.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test the NST difference between each pair of groups</span></span>
-<span id="cb189-2"><a href="model-based-class.html#cb189-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tNST_test</span>(<span class="at">method =</span> <span class="st">&quot;nst.boot&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="model-based-class.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test the NST difference between each pair of groups</span></span>
+<span id="cb190-2"><a href="model-based-class.html#cb190-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NST_test</span>(<span class="at">method =</span> <span class="st">&quot;nst.boot&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="model-based-class.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for pNST method, phylogenetic tree is needed</span></span>
+<span id="cb191-2"><a href="model-based-class.html#cb191-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NST</span>(<span class="at">method =</span> <span class="st">&quot;pNST&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">output.rand =</span> <span class="cn">TRUE</span>, <span class="at">SES =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb191-3"><a href="model-based-class.html#cb191-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NST_test</span>(<span class="at">method =</span> <span class="st">&quot;nst.boot&quot;</span>)</span></code></pre></div>
 <p>For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal_NTI and cal_NRI, respectively.</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="model-based-class.html#cb190-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NRI</span>(<span class="at">null.model =</span> <span class="st">&quot;taxa.labels&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">FALSE</span>, <span class="at">runs =</span> <span class="dv">999</span>)</span>
-<span id="cb190-2"><a href="model-based-class.html#cb190-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NTI</span>(<span class="at">null.model =</span> <span class="st">&quot;taxa.labels&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">TRUE</span>, <span class="at">runs =</span> <span class="dv">999</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="model-based-class.html#cb192-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NRI</span>(<span class="at">null.model =</span> <span class="st">&quot;taxa.labels&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">FALSE</span>, <span class="at">runs =</span> <span class="dv">999</span>)</span>
+<span id="cb192-2"><a href="model-based-class.html#cb192-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_NTI</span>(<span class="at">null.model =</span> <span class="st">&quot;taxa.labels&quot;</span>, <span class="at">abundance.weighted =</span> <span class="cn">TRUE</span>, <span class="at">runs =</span> <span class="dv">999</span>)</span></code></pre></div>
 </div>
 <div id="key-points-7" class="section level3 hasAnchor" number="6.3.2">
 <h3><span class="header-section-number">6.3.2</span> Key points<a href="model-based-class.html#key-points-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1148,95 +1155,95 @@ and soil categories <span class="citation">(<a href="#ref-Wilhelm_Predicting_202
 <div id="dependencies" class="section level3 hasAnchor" number="6.4.1">
 <h3><span class="header-section-number">6.4.1</span> Dependencies<a href="model-based-class.html#dependencies" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Before starting the examples, make sure those packages have been installed.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="model-based-class.html#cb191-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Boruta&quot;</span>, <span class="st">&quot;parallel&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;caret&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;multiROC&quot;</span>)</span>
-<span id="cb191-2"><a href="model-based-class.html#cb191-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
-<span id="cb191-3"><a href="model-based-class.html#cb191-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
-<span id="cb191-4"><a href="model-based-class.html#cb191-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb191-5"><a href="model-based-class.html#cb191-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb191-6"><a href="model-based-class.html#cb191-6" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb191-7"><a href="model-based-class.html#cb191-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="model-based-class.html#cb193-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Boruta&quot;</span>, <span class="st">&quot;parallel&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;caret&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;multiROC&quot;</span>)</span>
+<span id="cb193-2"><a href="model-based-class.html#cb193-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
+<span id="cb193-3"><a href="model-based-class.html#cb193-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
+<span id="cb193-4"><a href="model-based-class.html#cb193-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb193-5"><a href="model-based-class.html#cb193-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb193-6"><a href="model-based-class.html#cb193-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb193-7"><a href="model-based-class.html#cb193-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="examples" class="section level3 hasAnchor" number="6.4.2">
 <h3><span class="header-section-number">6.4.2</span> Examples<a href="model-based-class.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In this section, we use the example data in file2meco package (<a href="https://chiliubio.github.io/microeco_tutorial/file2meco-package.html" class="uri">https://chiliubio.github.io/microeco_tutorial/file2meco-package.html</a>) to demonstrate the feature selection,
 data training and prediction with random forest algorithm.</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="model-based-class.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
-<span id="cb192-2"><a href="model-based-class.html#cb192-2" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb192-3"><a href="model-based-class.html#cb192-3" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb192-4"><a href="model-based-class.html#cb192-4" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb192-5"><a href="model-based-class.html#cb192-5" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
-<span id="cb192-6"><a href="model-based-class.html#cb192-6" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">feature_table =</span> abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path)</span>
-<span id="cb192-7"><a href="model-based-class.html#cb192-7" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb192-8"><a href="model-based-class.html#cb192-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb192-9"><a href="model-based-class.html#cb192-9" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize: use &quot;genotype&quot; as response variable</span></span>
-<span id="cb192-10"><a href="model-based-class.html#cb192-10" aria-hidden="true" tabindex="-1"></a><span class="co"># x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa_abund</span></span>
-<span id="cb192-11"><a href="model-based-class.html#cb192-11" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">y.response =</span> <span class="st">&quot;genotype&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;All&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="model-based-class.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
+<span id="cb194-2"><a href="model-based-class.html#cb194-2" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb194-3"><a href="model-based-class.html#cb194-3" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb194-4"><a href="model-based-class.html#cb194-4" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb194-5"><a href="model-based-class.html#cb194-5" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb194-6"><a href="model-based-class.html#cb194-6" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(<span class="at">feature_table =</span> abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path)</span>
+<span id="cb194-7"><a href="model-based-class.html#cb194-7" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb194-8"><a href="model-based-class.html#cb194-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-9"><a href="model-based-class.html#cb194-9" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize: use &quot;genotype&quot; as response variable</span></span>
+<span id="cb194-10"><a href="model-based-class.html#cb194-10" aria-hidden="true" tabindex="-1"></a><span class="co"># x.predictors parameter is used to select the taxa; here we use all the taxa data in d1$taxa_abund</span></span>
+<span id="cb194-11"><a href="model-based-class.html#cb194-11" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">y.response =</span> <span class="st">&quot;genotype&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;All&quot;</span>)</span></code></pre></div>
 <p>We silit the data into training and testing set.</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="model-based-class.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate train and test set</span></span>
-<span id="cb193-2"><a href="model-based-class.html#cb193-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="model-based-class.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate train and test set</span></span>
+<span id="cb195-2"><a href="model-based-class.html#cb195-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span></code></pre></div>
 <p>Before training the model, we run the set_trainControl to invoke the trainControl function of caret package to generate the parameters used for training.
 Here we use the default parameters in trainControl function.</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="model-based-class.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require caret package</span></span>
-<span id="cb194-2"><a href="model-based-class.html#cb194-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_trainControl</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="model-based-class.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require caret package</span></span>
+<span id="cb196-2"><a href="model-based-class.html#cb196-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_trainControl</span>()</span></code></pre></div>
 <p>Now let’s start model training with rf method.</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="model-based-class.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use default parameter method = &quot;rf&quot;</span></span>
-<span id="cb195-2"><a href="model-based-class.html#cb195-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_train</span>(<span class="at">max.ntree =</span> <span class="dv">500</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="model-based-class.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use default parameter method = &quot;rf&quot;</span></span>
+<span id="cb197-2"><a href="model-based-class.html#cb197-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_train</span>(<span class="at">max.ntree =</span> <span class="dv">500</span>)</span></code></pre></div>
 <p>We can use cal_predict function to predict the testing data set.</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="model-based-class.html#cb196-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
-<span id="cb196-2"><a href="model-based-class.html#cb196-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the confusionMatrix to check out the performance</span></span>
-<span id="cb196-3"><a href="model-based-class.html#cb196-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_confusionMatrix</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="model-based-class.html#cb198-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
+<span id="cb198-2"><a href="model-based-class.html#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the confusionMatrix to check out the performance</span></span>
+<span id="cb198-3"><a href="model-based-class.html#cb198-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_confusionMatrix</span>()</span></code></pre></div>
 <p><img src="Images/plot_confusionMatrix_without_selection.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>Using cal_ROC and plot_ROC can get the ROC (Receiver Operator Characteristic) curve.</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="model-based-class.html#cb197-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ROC</span>()</span>
-<span id="cb197-2"><a href="model-based-class.html#cb197-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="model-based-class.html#cb199-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ROC</span>()</span>
+<span id="cb199-2"><a href="model-based-class.html#cb199-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <p><img src="Images/plot_ROC_without_selection.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>While building a machine learning model for microbiome data,
 the huge diversity of microbial community and/or associated relationships among taxa accross phylogeny can lead to a large number of unnecessary features,
 which can reduce the overall accuracy, increase the complexity and overfit of the model and decrease the generalization capability of the model.
 So, feature selection is one important step in building machine-learning model.
 Then, we attempt to use Boruta package <span class="citation">(<a href="#ref-Kursa_Feature_2010" role="doc-biblioref">Kursa and Rudnicki 2010</a>)</span> to do feature selection.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="model-based-class.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require Boruta package</span></span>
-<span id="cb198-2"><a href="model-based-class.html#cb198-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="model-based-class.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="co"># require Boruta package</span></span>
+<span id="cb200-2"><a href="model-based-class.html#cb200-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span></code></pre></div>
 <p>To compare the results between the procedure with feature selection and that without feature selection,
 we also perfom all the analysis with feature selection to show the whole results.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="model-based-class.html#cb199-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">y.response =</span> <span class="st">&quot;genotype&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;All&quot;</span>)</span>
-<span id="cb199-2"><a href="model-based-class.html#cb199-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span>
-<span id="cb199-3"><a href="model-based-class.html#cb199-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
-<span id="cb199-4"><a href="model-based-class.html#cb199-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">set_trainControl</span>()</span>
-<span id="cb199-5"><a href="model-based-class.html#cb199-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_train</span>(<span class="at">max.ntree =</span> <span class="dv">500</span>)</span>
-<span id="cb199-6"><a href="model-based-class.html#cb199-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
-<span id="cb199-7"><a href="model-based-class.html#cb199-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_confusionMatrix</span>()</span>
-<span id="cb199-8"><a href="model-based-class.html#cb199-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_ROC</span>()</span>
-<span id="cb199-9"><a href="model-based-class.html#cb199-9" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="model-based-class.html#cb201-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">y.response =</span> <span class="st">&quot;genotype&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;All&quot;</span>)</span>
+<span id="cb201-2"><a href="model-based-class.html#cb201-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span>
+<span id="cb201-3"><a href="model-based-class.html#cb201-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb201-4"><a href="model-based-class.html#cb201-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">set_trainControl</span>()</span>
+<span id="cb201-5"><a href="model-based-class.html#cb201-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_train</span>(<span class="at">max.ntree =</span> <span class="dv">500</span>)</span>
+<span id="cb201-6"><a href="model-based-class.html#cb201-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
+<span id="cb201-7"><a href="model-based-class.html#cb201-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_confusionMatrix</span>()</span>
+<span id="cb201-8"><a href="model-based-class.html#cb201-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_ROC</span>()</span>
+<span id="cb201-9"><a href="model-based-class.html#cb201-9" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <p><img src="Images/plot_confusionMatrix_with_selection.png" width="600px" style="display: block; margin: auto;" />
 <img src="Images/plot_ROC_with_selection.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>To plot the Precision-Recall curve (PR curve), please make plot_type = “PR” in plot_ROC function.</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="model-based-class.html#cb200-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">plot_type =</span> <span class="st">&quot;PR&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="model-based-class.html#cb202-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">plot_type =</span> <span class="st">&quot;PR&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <p><img src="Images/plot_PR_with_selection.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>To show the ROC curve or PR curve of the training result, please make input = “train” in plot_ROC function.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="model-based-class.html#cb201-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_ROC</span>(<span class="at">input =</span> <span class="st">&quot;train&quot;</span>)</span>
-<span id="cb201-2"><a href="model-based-class.html#cb201-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">plot_type =</span> <span class="st">&quot;ROC&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="model-based-class.html#cb203-1" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_ROC</span>(<span class="at">input =</span> <span class="st">&quot;train&quot;</span>)</span>
+<span id="cb203-2"><a href="model-based-class.html#cb203-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_ROC</span>(<span class="at">plot_type =</span> <span class="st">&quot;ROC&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <p><img src="Images/plot_ROC_with_selection_training.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>For other machine-learning models, please use method parameter in cal_train function.</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="model-based-class.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use SVM method</span></span>
-<span id="cb202-2"><a href="model-based-class.html#cb202-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">al_train</span>(<span class="at">method =</span> <span class="st">&quot;svmRadial&quot;</span>, <span class="at">tuneLength =</span> <span class="dv">15</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="model-based-class.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use SVM method</span></span>
+<span id="cb204-2"><a href="model-based-class.html#cb204-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">al_train</span>(<span class="at">method =</span> <span class="st">&quot;svmRadial&quot;</span>, <span class="at">tuneLength =</span> <span class="dv">15</span>)</span></code></pre></div>
 <p>The regression is supported from v0.15.0.</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="model-based-class.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare data</span></span>
-<span id="cb203-2"><a href="model-based-class.html#cb203-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
-<span id="cb203-3"><a href="model-based-class.html#cb203-3" aria-hidden="true" tabindex="-1"></a>new_test <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb203-4"><a href="model-based-class.html#cb203-4" aria-hidden="true" tabindex="-1"></a>new_test<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(new_test<span class="sc">$</span>sample_table, env_data_16S[<span class="fu">rownames</span>(new_test<span class="sc">$</span>sample_table), ])</span>
-<span id="cb203-5"><a href="model-based-class.html#cb203-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pH response variable</span></span>
-<span id="cb203-6"><a href="model-based-class.html#cb203-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> new_test, <span class="at">y.response =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;Genus&quot;</span>)</span>
-<span id="cb203-7"><a href="model-based-class.html#cb203-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
-<span id="cb203-8"><a href="model-based-class.html#cb203-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_trainControl</span>()</span>
-<span id="cb203-9"><a href="model-based-class.html#cb203-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_train</span>()</span>
-<span id="cb203-10"><a href="model-based-class.html#cb203-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_train</span>
-<span id="cb203-11"><a href="model-based-class.html#cb203-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
-<span id="cb203-12"><a href="model-based-class.html#cb203-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_predict</span>
-<span id="cb203-13"><a href="model-based-class.html#cb203-13" aria-hidden="true" tabindex="-1"></a><span class="co"># feature importance</span></span>
-<span id="cb203-14"><a href="model-based-class.html#cb203-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_feature_imp</span>()</span>
-<span id="cb203-15"><a href="model-based-class.html#cb203-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_feature_imp)</span>
-<span id="cb203-16"><a href="model-based-class.html#cb203-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_feature_imp</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;IncNodePurity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="model-based-class.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare data</span></span>
+<span id="cb205-2"><a href="model-based-class.html#cb205-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
+<span id="cb205-3"><a href="model-based-class.html#cb205-3" aria-hidden="true" tabindex="-1"></a>new_test <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb205-4"><a href="model-based-class.html#cb205-4" aria-hidden="true" tabindex="-1"></a>new_test<span class="sc">$</span>sample_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(new_test<span class="sc">$</span>sample_table, env_data_16S[<span class="fu">rownames</span>(new_test<span class="sc">$</span>sample_table), ])</span>
+<span id="cb205-5"><a href="model-based-class.html#cb205-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pH response variable</span></span>
+<span id="cb205-6"><a href="model-based-class.html#cb205-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> new_test, <span class="at">y.response =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;Genus&quot;</span>)</span>
+<span id="cb205-7"><a href="model-based-class.html#cb205-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb205-8"><a href="model-based-class.html#cb205-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_trainControl</span>()</span>
+<span id="cb205-9"><a href="model-based-class.html#cb205-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_train</span>()</span>
+<span id="cb205-10"><a href="model-based-class.html#cb205-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_train</span>
+<span id="cb205-11"><a href="model-based-class.html#cb205-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
+<span id="cb205-12"><a href="model-based-class.html#cb205-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_predict</span>
+<span id="cb205-13"><a href="model-based-class.html#cb205-13" aria-hidden="true" tabindex="-1"></a><span class="co"># feature importance</span></span>
+<span id="cb205-14"><a href="model-based-class.html#cb205-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_feature_imp</span>()</span>
+<span id="cb205-15"><a href="model-based-class.html#cb205-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_feature_imp)</span>
+<span id="cb205-16"><a href="model-based-class.html#cb205-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_feature_imp</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;IncNodePurity&quot;</span>)</span></code></pre></div>
 </div>
 <div id="key-points-8" class="section level3 hasAnchor" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> Key points<a href="model-based-class.html#key-points-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>

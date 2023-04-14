@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v0.15.0)</title>
-  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v0.16.0)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.15.0)" />
+  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.16.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.15.0)" />
+  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v0.16.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
 
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-04-04" />
+<meta name="date" content="2023-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -331,7 +331,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.15.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.16.0)</a>
           </h1>
         </div>
 
@@ -374,7 +374,8 @@ The alluvial plot is also implemented in the plot_bar function with use_alluvium
 <span id="cb88-4"><a href="composition-based-class.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bar_type = &quot;notfull&quot; can discard &#39;others&#39;; select another color palette</span></span>
 <span id="cb88-5"><a href="composition-based-class.html#cb88-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>, <span class="at">use_alluvium =</span> <span class="cn">TRUE</span>, <span class="at">clustering =</span> <span class="cn">TRUE</span>, <span class="at">xtext_type_hor =</span> <span class="cn">FALSE</span>, <span class="at">xtext_size =</span> <span class="dv">6</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>))</span></code></pre></div>
 <p><img src="Images/plot_bar_allu.png" width="1440" style="display: block; margin: auto;" /></p>
-<p>The bar plot can also be performed with group mean values.</p>
+<p>The bar plot can also be performed with group mean values.
+Note that, from v0.16.0, the parameter <code>group_morestats = TRUE</code> can be used to add more summary statistics in the return <code>data_abund</code> when <code>groupmean</code> parameter is provided.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="composition-based-class.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The groupmean parameter can be used to obtain the group-mean barplot.</span></span>
 <span id="cb89-2"><a href="composition-based-class.html#cb89-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb89-3"><a href="composition-based-class.html#cb89-3" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">others_color =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span>

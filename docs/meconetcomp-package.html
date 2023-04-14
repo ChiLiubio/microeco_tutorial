@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.15.0)</title>
-  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <title>Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.16.0)</title>
+  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.15.0)" />
+  <meta property="og:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.16.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.15.0)" />
+  <meta name="twitter:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v0.16.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecodev packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
 
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-04-04" />
+<meta name="date" content="2023-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -331,7 +331,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.15.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.16.0)</a>
           </h1>
         </div>
 
@@ -347,116 +347,116 @@ The basic strategy is to use R list to put into all the trans_network objects an
 The flow chart and following contents are adapted from the published article <span class="citation">(<a href="#ref-Liu_meconetcomp_2023" role="doc-biblioref">Liu et al. 2023</a>)</span>.
 For more details, please see the online paper (<a href="https://doi.org/10.1002/imt2.71" class="uri">https://doi.org/10.1002/imt2.71</a>).</p>
 <p><img src="Images/meconetcomp.png" width="650px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="meconetcomp-package.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required packages</span></span>
-<span id="cb304-2"><a href="meconetcomp-package.html#cb304-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aplot: one dependency of the trans_venn class of microeco package</span></span>
-<span id="cb304-3"><a href="meconetcomp-package.html#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="co"># agricolae: for Duncan&#39;s new multiple range test</span></span>
-<span id="cb304-4"><a href="meconetcomp-package.html#cb304-4" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;meconetcomp&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;agricolae&quot;</span>)</span>
-<span id="cb304-5"><a href="meconetcomp-package.html#cb304-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
-<span id="cb304-6"><a href="meconetcomp-package.html#cb304-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
-<span id="cb304-7"><a href="meconetcomp-package.html#cb304-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb304-8"><a href="meconetcomp-package.html#cb304-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb304-9"><a href="meconetcomp-package.html#cb304-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb304-10"><a href="meconetcomp-package.html#cb304-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="meconetcomp-package.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb305-2"><a href="meconetcomp-package.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meconetcomp)</span>
-<span id="cb305-3"><a href="meconetcomp-package.html#cb305-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use pipe operator in magrittr package</span></span>
-<span id="cb305-4"><a href="meconetcomp-package.html#cb305-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb305-5"><a href="meconetcomp-package.html#cb305-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb305-6"><a href="meconetcomp-package.html#cb305-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb305-7"><a href="meconetcomp-package.html#cb305-7" aria-hidden="true" tabindex="-1"></a><span class="co"># load soil amplicon sequencing dataset</span></span>
-<span id="cb305-8"><a href="meconetcomp-package.html#cb305-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(soil_amp)</span></code></pre></div>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="meconetcomp-package.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required packages</span></span>
+<span id="cb306-2"><a href="meconetcomp-package.html#cb306-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aplot: one dependency of the trans_venn class of microeco package</span></span>
+<span id="cb306-3"><a href="meconetcomp-package.html#cb306-3" aria-hidden="true" tabindex="-1"></a><span class="co"># agricolae: for Duncan&#39;s new multiple range test</span></span>
+<span id="cb306-4"><a href="meconetcomp-package.html#cb306-4" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;meconetcomp&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;agricolae&quot;</span>)</span>
+<span id="cb306-5"><a href="meconetcomp-package.html#cb306-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
+<span id="cb306-6"><a href="meconetcomp-package.html#cb306-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
+<span id="cb306-7"><a href="meconetcomp-package.html#cb306-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb306-8"><a href="meconetcomp-package.html#cb306-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb306-9"><a href="meconetcomp-package.html#cb306-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb306-10"><a href="meconetcomp-package.html#cb306-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="meconetcomp-package.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb307-2"><a href="meconetcomp-package.html#cb307-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meconetcomp)</span>
+<span id="cb307-3"><a href="meconetcomp-package.html#cb307-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use pipe operator in magrittr package</span></span>
+<span id="cb307-4"><a href="meconetcomp-package.html#cb307-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb307-5"><a href="meconetcomp-package.html#cb307-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb307-6"><a href="meconetcomp-package.html#cb307-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb307-7"><a href="meconetcomp-package.html#cb307-7" aria-hidden="true" tabindex="-1"></a><span class="co"># load soil amplicon sequencing dataset</span></span>
+<span id="cb307-8"><a href="meconetcomp-package.html#cb307-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(soil_amp)</span></code></pre></div>
 <p>First reconstruct three correlation networks for the three groups ‘IW’, ‘TW’ and ‘CW’ as the example.</p>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="meconetcomp-package.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first create a list</span></span>
-<span id="cb306-2"><a href="meconetcomp-package.html#cb306-2" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb306-3"><a href="meconetcomp-package.html#cb306-3" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;IW&quot; group</span></span>
-<span id="cb306-4"><a href="meconetcomp-package.html#cb306-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use clone to get a deep copy of soil_amp (R6 object)</span></span>
-<span id="cb306-5"><a href="meconetcomp-package.html#cb306-5" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
-<span id="cb306-6"><a href="meconetcomp-package.html#cb306-6" aria-hidden="true" tabindex="-1"></a><span class="co"># change sample_table directly</span></span>
-<span id="cb306-7"><a href="meconetcomp-package.html#cb306-7" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;IW&quot;</span>)</span>
-<span id="cb306-8"><a href="meconetcomp-package.html#cb306-8" aria-hidden="true" tabindex="-1"></a><span class="co"># trim all files in the object</span></span>
-<span id="cb306-9"><a href="meconetcomp-package.html#cb306-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb306-10"><a href="meconetcomp-package.html#cb306-10" aria-hidden="true" tabindex="-1"></a><span class="co"># use filter_thres parameter to filter the feature with low relative abundance</span></span>
-<span id="cb306-11"><a href="meconetcomp-package.html#cb306-11" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb306-12"><a href="meconetcomp-package.html#cb306-12" aria-hidden="true" tabindex="-1"></a><span class="co"># COR_p_thres represents the p value threshold</span></span>
-<span id="cb306-13"><a href="meconetcomp-package.html#cb306-13" aria-hidden="true" tabindex="-1"></a><span class="co"># COR_cut denotes the correlation coefficient threshold</span></span>
-<span id="cb306-14"><a href="meconetcomp-package.html#cb306-14" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
-<span id="cb306-15"><a href="meconetcomp-package.html#cb306-15" aria-hidden="true" tabindex="-1"></a><span class="co"># put the network into the list</span></span>
-<span id="cb306-16"><a href="meconetcomp-package.html#cb306-16" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>IW <span class="ot">&lt;-</span> tmp</span>
-<span id="cb306-17"><a href="meconetcomp-package.html#cb306-17" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;TW&quot; group</span></span>
-<span id="cb306-18"><a href="meconetcomp-package.html#cb306-18" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
-<span id="cb306-19"><a href="meconetcomp-package.html#cb306-19" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;TW&quot;</span>)</span>
-<span id="cb306-20"><a href="meconetcomp-package.html#cb306-20" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb306-21"><a href="meconetcomp-package.html#cb306-21" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb306-22"><a href="meconetcomp-package.html#cb306-22" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
-<span id="cb306-23"><a href="meconetcomp-package.html#cb306-23" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>TW <span class="ot">&lt;-</span> tmp</span>
-<span id="cb306-24"><a href="meconetcomp-package.html#cb306-24" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;CW&quot; group</span></span>
-<span id="cb306-25"><a href="meconetcomp-package.html#cb306-25" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
-<span id="cb306-26"><a href="meconetcomp-package.html#cb306-26" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;CW&quot;</span>)</span>
-<span id="cb306-27"><a href="meconetcomp-package.html#cb306-27" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb306-28"><a href="meconetcomp-package.html#cb306-28" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb306-29"><a href="meconetcomp-package.html#cb306-29" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
-<span id="cb306-30"><a href="meconetcomp-package.html#cb306-30" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>CW <span class="ot">&lt;-</span> tmp</span>
-<span id="cb306-31"><a href="meconetcomp-package.html#cb306-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we have the list soil_amp_network</span></span></code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="meconetcomp-package.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first create a list</span></span>
+<span id="cb308-2"><a href="meconetcomp-package.html#cb308-2" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb308-3"><a href="meconetcomp-package.html#cb308-3" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;IW&quot; group</span></span>
+<span id="cb308-4"><a href="meconetcomp-package.html#cb308-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use clone to get a deep copy of soil_amp (R6 object)</span></span>
+<span id="cb308-5"><a href="meconetcomp-package.html#cb308-5" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
+<span id="cb308-6"><a href="meconetcomp-package.html#cb308-6" aria-hidden="true" tabindex="-1"></a><span class="co"># change sample_table directly</span></span>
+<span id="cb308-7"><a href="meconetcomp-package.html#cb308-7" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;IW&quot;</span>)</span>
+<span id="cb308-8"><a href="meconetcomp-package.html#cb308-8" aria-hidden="true" tabindex="-1"></a><span class="co"># trim all files in the object</span></span>
+<span id="cb308-9"><a href="meconetcomp-package.html#cb308-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb308-10"><a href="meconetcomp-package.html#cb308-10" aria-hidden="true" tabindex="-1"></a><span class="co"># use filter_thres parameter to filter the feature with low relative abundance</span></span>
+<span id="cb308-11"><a href="meconetcomp-package.html#cb308-11" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb308-12"><a href="meconetcomp-package.html#cb308-12" aria-hidden="true" tabindex="-1"></a><span class="co"># COR_p_thres represents the p value threshold</span></span>
+<span id="cb308-13"><a href="meconetcomp-package.html#cb308-13" aria-hidden="true" tabindex="-1"></a><span class="co"># COR_cut denotes the correlation coefficient threshold</span></span>
+<span id="cb308-14"><a href="meconetcomp-package.html#cb308-14" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
+<span id="cb308-15"><a href="meconetcomp-package.html#cb308-15" aria-hidden="true" tabindex="-1"></a><span class="co"># put the network into the list</span></span>
+<span id="cb308-16"><a href="meconetcomp-package.html#cb308-16" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>IW <span class="ot">&lt;-</span> tmp</span>
+<span id="cb308-17"><a href="meconetcomp-package.html#cb308-17" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;TW&quot; group</span></span>
+<span id="cb308-18"><a href="meconetcomp-package.html#cb308-18" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
+<span id="cb308-19"><a href="meconetcomp-package.html#cb308-19" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;TW&quot;</span>)</span>
+<span id="cb308-20"><a href="meconetcomp-package.html#cb308-20" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb308-21"><a href="meconetcomp-package.html#cb308-21" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb308-22"><a href="meconetcomp-package.html#cb308-22" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
+<span id="cb308-23"><a href="meconetcomp-package.html#cb308-23" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>TW <span class="ot">&lt;-</span> tmp</span>
+<span id="cb308-24"><a href="meconetcomp-package.html#cb308-24" aria-hidden="true" tabindex="-1"></a><span class="co"># select samples of &quot;CW&quot; group</span></span>
+<span id="cb308-25"><a href="meconetcomp-package.html#cb308-25" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(soil_amp)</span>
+<span id="cb308-26"><a href="meconetcomp-package.html#cb308-26" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">==</span> <span class="st">&quot;CW&quot;</span>)</span>
+<span id="cb308-27"><a href="meconetcomp-package.html#cb308-27" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb308-28"><a href="meconetcomp-package.html#cb308-28" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb308-29"><a href="meconetcomp-package.html#cb308-29" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)</span>
+<span id="cb308-30"><a href="meconetcomp-package.html#cb308-30" aria-hidden="true" tabindex="-1"></a>soil_amp_network<span class="sc">$</span>CW <span class="ot">&lt;-</span> tmp</span>
+<span id="cb308-31"><a href="meconetcomp-package.html#cb308-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we have the list soil_amp_network</span></span></code></pre></div>
 <div id="network-modularity-for-all-networks" class="section level2 hasAnchor" number="12.1">
 <h2><span class="header-section-number">12.1</span> Network modularity for all networks<a href="meconetcomp-package.html#network-modularity-for-all-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The function cal_module in meconetcomp package is designed to partition modules for all the networks in the list.</p>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="meconetcomp-package.html#cb307-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="sc">%&lt;&gt;%</span> <span class="fu">cal_module</span>(<span class="at">undirected_method =</span> <span class="st">&quot;cluster_fast_greedy&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="meconetcomp-package.html#cb309-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="sc">%&lt;&gt;%</span> <span class="fu">cal_module</span>(<span class="at">undirected_method =</span> <span class="st">&quot;cluster_fast_greedy&quot;</span>)</span></code></pre></div>
 </div>
 <div id="network-topological-attributes-for-all-networks" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> Network topological attributes for all networks<a href="meconetcomp-package.html#network-topological-attributes-for-all-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>we extracted all the res_network_attr tables in the networks and merged them into one final table by using cal_network_attr function in meconetcomp package.</p>
-<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="meconetcomp-package.html#cb308-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">cal_network_attr</span>(soil_amp_network)</span>
-<span id="cb308-2"><a href="meconetcomp-package.html#cb308-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tmp is a data.frame object</span></span></code></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="meconetcomp-package.html#cb310-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">cal_network_attr</span>(soil_amp_network)</span>
+<span id="cb310-2"><a href="meconetcomp-package.html#cb310-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tmp is a data.frame object</span></span></code></pre></div>
 </div>
 <div id="node-and-edge-properties-extraction-for-all-networks" class="section level2 hasAnchor" number="12.3">
 <h2><span class="header-section-number">12.3</span> Node and edge properties extraction for all networks<a href="meconetcomp-package.html#node-and-edge-properties-extraction-for-all-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The get_node_table and get_edge_table functions of meconetcomp package can be used to directly extract node and edge properties for all the networks.
 The return table is stored in each network object.</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="meconetcomp-package.html#cb309-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="sc">%&lt;&gt;%</span> <span class="fu">get_node_table</span>(<span class="at">node_roles =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> get_edge_table</span></code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="meconetcomp-package.html#cb311-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network <span class="sc">%&lt;&gt;%</span> <span class="fu">get_node_table</span>(<span class="at">node_roles =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> get_edge_table</span></code></pre></div>
 </div>
 <div id="compare-nodes-across-networks" class="section level2 hasAnchor" number="12.4">
 <h2><span class="header-section-number">12.4</span> Compare nodes across networks<a href="meconetcomp-package.html#compare-nodes-across-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The nodes in all the networks can be converted to a new microtable object by using the node_comp function of meconetcomp package.
 Then, it is easy to analyse the nodes overlap with trans_venn class.</p>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="meconetcomp-package.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain the node distributions by searching the res_node_table in the object</span></span>
-<span id="cb310-2"><a href="meconetcomp-package.html#cb310-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">node_comp</span>(soil_amp_network, <span class="at">property =</span> <span class="st">&quot;name&quot;</span>)</span>
-<span id="cb310-3"><a href="meconetcomp-package.html#cb310-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain nodes intersection</span></span>
-<span id="cb310-4"><a href="meconetcomp-package.html#cb310-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">ratio =</span> <span class="st">&quot;numratio&quot;</span>)</span>
-<span id="cb310-5"><a href="meconetcomp-package.html#cb310-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">fill_color =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb310-6"><a href="meconetcomp-package.html#cb310-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_node_overlap.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
-<span id="cb310-7"><a href="meconetcomp-package.html#cb310-7" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate jaccard distance to reflect the overall differences of networks</span></span>
-<span id="cb310-8"><a href="meconetcomp-package.html#cb310-8" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span>)</span>
-<span id="cb310-9"><a href="meconetcomp-package.html#cb310-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>beta_diversity<span class="sc">$</span>jaccard</span></code></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="meconetcomp-package.html#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain the node distributions by searching the res_node_table in the object</span></span>
+<span id="cb312-2"><a href="meconetcomp-package.html#cb312-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">node_comp</span>(soil_amp_network, <span class="at">property =</span> <span class="st">&quot;name&quot;</span>)</span>
+<span id="cb312-3"><a href="meconetcomp-package.html#cb312-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain nodes intersection</span></span>
+<span id="cb312-4"><a href="meconetcomp-package.html#cb312-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">ratio =</span> <span class="st">&quot;numratio&quot;</span>)</span>
+<span id="cb312-5"><a href="meconetcomp-package.html#cb312-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">fill_color =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb312-6"><a href="meconetcomp-package.html#cb312-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_node_overlap.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb312-7"><a href="meconetcomp-package.html#cb312-7" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate jaccard distance to reflect the overall differences of networks</span></span>
+<span id="cb312-8"><a href="meconetcomp-package.html#cb312-8" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span>)</span>
+<span id="cb312-9"><a href="meconetcomp-package.html#cb312-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>beta_diversity<span class="sc">$</span>jaccard</span></code></pre></div>
 </div>
 <div id="compare-edges-across-networks" class="section level2 hasAnchor" number="12.5">
 <h2><span class="header-section-number">12.5</span> Compare edges across networks<a href="meconetcomp-package.html#compare-edges-across-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The pipeline of studying edges overlap is similar with the above operations of nodes comparison.
 The edge_comp function of meconetcomp package is used to convert edges distribution to a new microtable object.</p>
-<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="meconetcomp-package.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the edge distributions across networks</span></span>
-<span id="cb311-2"><a href="meconetcomp-package.html#cb311-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">edge_comp</span>(soil_amp_network)</span>
-<span id="cb311-3"><a href="meconetcomp-package.html#cb311-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain edges intersection</span></span>
-<span id="cb311-4"><a href="meconetcomp-package.html#cb311-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">ratio =</span> <span class="st">&quot;numratio&quot;</span>)</span>
-<span id="cb311-5"><a href="meconetcomp-package.html#cb311-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">fill_color =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb311-6"><a href="meconetcomp-package.html#cb311-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_edge_overlap.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
-<span id="cb311-7"><a href="meconetcomp-package.html#cb311-7" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate jaccard distance</span></span>
-<span id="cb311-8"><a href="meconetcomp-package.html#cb311-8" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span>)</span>
-<span id="cb311-9"><a href="meconetcomp-package.html#cb311-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>beta_diversity<span class="sc">$</span>jaccard</span></code></pre></div>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="meconetcomp-package.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the edge distributions across networks</span></span>
+<span id="cb313-2"><a href="meconetcomp-package.html#cb313-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">edge_comp</span>(soil_amp_network)</span>
+<span id="cb313-3"><a href="meconetcomp-package.html#cb313-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain edges intersection</span></span>
+<span id="cb313-4"><a href="meconetcomp-package.html#cb313-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp, <span class="at">ratio =</span> <span class="st">&quot;numratio&quot;</span>)</span>
+<span id="cb313-5"><a href="meconetcomp-package.html#cb313-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_venn</span>(<span class="at">fill_color =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb313-6"><a href="meconetcomp-package.html#cb313-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_edge_overlap.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb313-7"><a href="meconetcomp-package.html#cb313-7" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate jaccard distance</span></span>
+<span id="cb313-8"><a href="meconetcomp-package.html#cb313-8" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span>)</span>
+<span id="cb313-9"><a href="meconetcomp-package.html#cb313-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>beta_diversity<span class="sc">$</span>jaccard</span></code></pre></div>
 </div>
 <div id="extract-overlapped-edges-of-networks-to-a-new-network" class="section level2 hasAnchor" number="12.6">
 <h2><span class="header-section-number">12.6</span> Extract overlapped edges of networks to a new network<a href="meconetcomp-package.html#extract-overlapped-edges-of-networks-to-a-new-network" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Then we extracted the subset of edges according to the intersections of edges across networks,
 which can be accomplished with the subset_network function in meconetcomp package.</p>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="meconetcomp-package.html#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first obtain edges distribution and intersection</span></span>
-<span id="cb312-2"><a href="meconetcomp-package.html#cb312-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">edge_comp</span>(soil_amp_network)</span>
-<span id="cb312-3"><a href="meconetcomp-package.html#cb312-3" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp)</span>
-<span id="cb312-4"><a href="meconetcomp-package.html#cb312-4" aria-hidden="true" tabindex="-1"></a><span class="co"># convert intersection result to a microtable object</span></span>
-<span id="cb312-5"><a href="meconetcomp-package.html#cb312-5" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">trans_comm</span>()</span>
-<span id="cb312-6"><a href="meconetcomp-package.html#cb312-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the intersection of all the three networks (&quot;IW&quot;, &quot;TW&quot; and &quot;CW&quot;)</span></span>
-<span id="cb312-7"><a href="meconetcomp-package.html#cb312-7" aria-hidden="true" tabindex="-1"></a><span class="co"># please use colnames(tmp2$otu_table) to find the required name</span></span>
-<span id="cb312-8"><a href="meconetcomp-package.html#cb312-8" aria-hidden="true" tabindex="-1"></a>Intersec_all <span class="ot">&lt;-</span> <span class="fu">subset_network</span>(soil_amp_network, <span class="at">venn =</span> tmp2, <span class="at">name =</span> <span class="st">&quot;IW&amp;TW&amp;CW&quot;</span>)</span>
-<span id="cb312-9"><a href="meconetcomp-package.html#cb312-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Intersec_all is a trans_network object</span></span>
-<span id="cb312-10"><a href="meconetcomp-package.html#cb312-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for example, save Intersec_all as gexf format</span></span>
-<span id="cb312-11"><a href="meconetcomp-package.html#cb312-11" aria-hidden="true" tabindex="-1"></a>Intersec_all<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;Intersec_all.gexf&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="meconetcomp-package.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first obtain edges distribution and intersection</span></span>
+<span id="cb314-2"><a href="meconetcomp-package.html#cb314-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">edge_comp</span>(soil_amp_network)</span>
+<span id="cb314-3"><a href="meconetcomp-package.html#cb314-3" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_venn<span class="sc">$</span><span class="fu">new</span>(tmp)</span>
+<span id="cb314-4"><a href="meconetcomp-package.html#cb314-4" aria-hidden="true" tabindex="-1"></a><span class="co"># convert intersection result to a microtable object</span></span>
+<span id="cb314-5"><a href="meconetcomp-package.html#cb314-5" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">trans_comm</span>()</span>
+<span id="cb314-6"><a href="meconetcomp-package.html#cb314-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the intersection of all the three networks (&quot;IW&quot;, &quot;TW&quot; and &quot;CW&quot;)</span></span>
+<span id="cb314-7"><a href="meconetcomp-package.html#cb314-7" aria-hidden="true" tabindex="-1"></a><span class="co"># please use colnames(tmp2$otu_table) to find the required name</span></span>
+<span id="cb314-8"><a href="meconetcomp-package.html#cb314-8" aria-hidden="true" tabindex="-1"></a>Intersec_all <span class="ot">&lt;-</span> <span class="fu">subset_network</span>(soil_amp_network, <span class="at">venn =</span> tmp2, <span class="at">name =</span> <span class="st">&quot;IW&amp;TW&amp;CW&quot;</span>)</span>
+<span id="cb314-9"><a href="meconetcomp-package.html#cb314-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Intersec_all is a trans_network object</span></span>
+<span id="cb314-10"><a href="meconetcomp-package.html#cb314-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for example, save Intersec_all as gexf format</span></span>
+<span id="cb314-11"><a href="meconetcomp-package.html#cb314-11" aria-hidden="true" tabindex="-1"></a>Intersec_all<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;Intersec_all.gexf&quot;</span>)</span></code></pre></div>
 </div>
 <div id="compare-phylogenetic-distances-of-paired-nodes-in-edges" class="section level2 hasAnchor" number="12.7">
 <h2><span class="header-section-number">12.7</span> Compare phylogenetic distances of paired nodes in edges<a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -464,26 +464,26 @@ which can be accomplished with the subset_network function in meconetcomp packag
 Here, we indicated the phylogenetic distance distributions and performed the differential test among networks.
 The input parameter dis_matrix can be any symmetric matrix with both the column names and row names (i.e. feature names).
 So it is also feasible to compare other properties of features, such as Levin’s niche overlap.</p>
-<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="meconetcomp-package.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter useless features to speed up the calculation</span></span>
-<span id="cb313-2"><a href="meconetcomp-package.html#cb313-2" aria-hidden="true" tabindex="-1"></a>node_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(soil_amp_network, <span class="cf">function</span>(x){<span class="fu">colnames</span>(x<span class="sc">$</span>data_abund)})))</span>
-<span id="cb313-3"><a href="meconetcomp-package.html#cb313-3" aria-hidden="true" tabindex="-1"></a>filter_soil_amp <span class="ot">&lt;-</span> microeco<span class="sc">::</span><span class="fu">clone</span>(soil_amp)</span>
-<span id="cb313-4"><a href="meconetcomp-package.html#cb313-4" aria-hidden="true" tabindex="-1"></a>filter_soil_amp<span class="sc">$</span>otu_table <span class="ot">&lt;-</span> filter_soil_amp<span class="sc">$</span>otu_table[node_names, ]</span>
-<span id="cb313-5"><a href="meconetcomp-package.html#cb313-5" aria-hidden="true" tabindex="-1"></a>filter_soil_amp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb313-6"><a href="meconetcomp-package.html#cb313-6" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain phylogenetic distance matrix</span></span>
-<span id="cb313-7"><a href="meconetcomp-package.html#cb313-7" aria-hidden="true" tabindex="-1"></a>phylogenetic_distance_soil <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cophenetic</span>(filter_soil_amp<span class="sc">$</span>phylo_tree))</span>
-<span id="cb313-8"><a href="meconetcomp-package.html#cb313-8" aria-hidden="true" tabindex="-1"></a><span class="co"># use both the positive and negative labels</span></span>
-<span id="cb313-9"><a href="meconetcomp-package.html#cb313-9" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> edge_node_distance<span class="sc">$</span><span class="fu">new</span>(<span class="at">network_list =</span> soil_amp_network, <span class="at">dis_matrix =</span> phylogenetic_distance_soil, <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>))</span>
-<span id="cb313-10"><a href="meconetcomp-package.html#cb313-10" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
-<span id="cb313-11"><a href="meconetcomp-package.html#cb313-11" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization</span></span>
-<span id="cb313-12"><a href="meconetcomp-package.html#cb313-12" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;none&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Phylogenetic distance&quot;</span>)</span>
-<span id="cb313-13"><a href="meconetcomp-package.html#cb313-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_phylo_distance.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
-<span id="cb313-14"><a href="meconetcomp-package.html#cb313-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb313-15"><a href="meconetcomp-package.html#cb313-15" aria-hidden="true" tabindex="-1"></a><span class="co"># show different modules with at least 10 nodes and positive edges</span></span>
-<span id="cb313-16"><a href="meconetcomp-package.html#cb313-16" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> edge_node_distance<span class="sc">$</span><span class="fu">new</span>(<span class="at">network_list =</span> soil_amp_network, <span class="at">dis_matrix =</span> phylogenetic_distance_soil, </span>
-<span id="cb313-17"><a href="meconetcomp-package.html#cb313-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;+&quot;</span>, <span class="at">with_module =</span> <span class="cn">TRUE</span>, <span class="at">module_thres =</span> <span class="dv">10</span>)</span>
-<span id="cb313-18"><a href="meconetcomp-package.html#cb313-18" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
-<span id="cb313-19"><a href="meconetcomp-package.html#cb313-19" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;none&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Phylogenetic distance&quot;</span>)</span>
-<span id="cb313-20"><a href="meconetcomp-package.html#cb313-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_phylo_distance_modules.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="meconetcomp-package.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter useless features to speed up the calculation</span></span>
+<span id="cb315-2"><a href="meconetcomp-package.html#cb315-2" aria-hidden="true" tabindex="-1"></a>node_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(soil_amp_network, <span class="cf">function</span>(x){<span class="fu">colnames</span>(x<span class="sc">$</span>data_abund)})))</span>
+<span id="cb315-3"><a href="meconetcomp-package.html#cb315-3" aria-hidden="true" tabindex="-1"></a>filter_soil_amp <span class="ot">&lt;-</span> microeco<span class="sc">::</span><span class="fu">clone</span>(soil_amp)</span>
+<span id="cb315-4"><a href="meconetcomp-package.html#cb315-4" aria-hidden="true" tabindex="-1"></a>filter_soil_amp<span class="sc">$</span>otu_table <span class="ot">&lt;-</span> filter_soil_amp<span class="sc">$</span>otu_table[node_names, ]</span>
+<span id="cb315-5"><a href="meconetcomp-package.html#cb315-5" aria-hidden="true" tabindex="-1"></a>filter_soil_amp<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb315-6"><a href="meconetcomp-package.html#cb315-6" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain phylogenetic distance matrix</span></span>
+<span id="cb315-7"><a href="meconetcomp-package.html#cb315-7" aria-hidden="true" tabindex="-1"></a>phylogenetic_distance_soil <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">cophenetic</span>(filter_soil_amp<span class="sc">$</span>phylo_tree))</span>
+<span id="cb315-8"><a href="meconetcomp-package.html#cb315-8" aria-hidden="true" tabindex="-1"></a><span class="co"># use both the positive and negative labels</span></span>
+<span id="cb315-9"><a href="meconetcomp-package.html#cb315-9" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> edge_node_distance<span class="sc">$</span><span class="fu">new</span>(<span class="at">network_list =</span> soil_amp_network, <span class="at">dis_matrix =</span> phylogenetic_distance_soil, <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>))</span>
+<span id="cb315-10"><a href="meconetcomp-package.html#cb315-10" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
+<span id="cb315-11"><a href="meconetcomp-package.html#cb315-11" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization</span></span>
+<span id="cb315-12"><a href="meconetcomp-package.html#cb315-12" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;none&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Phylogenetic distance&quot;</span>)</span>
+<span id="cb315-13"><a href="meconetcomp-package.html#cb315-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_phylo_distance.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb315-14"><a href="meconetcomp-package.html#cb315-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-15"><a href="meconetcomp-package.html#cb315-15" aria-hidden="true" tabindex="-1"></a><span class="co"># show different modules with at least 10 nodes and positive edges</span></span>
+<span id="cb315-16"><a href="meconetcomp-package.html#cb315-16" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> edge_node_distance<span class="sc">$</span><span class="fu">new</span>(<span class="at">network_list =</span> soil_amp_network, <span class="at">dis_matrix =</span> phylogenetic_distance_soil, </span>
+<span id="cb315-17"><a href="meconetcomp-package.html#cb315-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;+&quot;</span>, <span class="at">with_module =</span> <span class="cn">TRUE</span>, <span class="at">module_thres =</span> <span class="dv">10</span>)</span>
+<span id="cb315-18"><a href="meconetcomp-package.html#cb315-18" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
+<span id="cb315-19"><a href="meconetcomp-package.html#cb315-19" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;none&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Phylogenetic distance&quot;</span>)</span>
+<span id="cb315-20"><a href="meconetcomp-package.html#cb315-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_phylo_distance_modules.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span></code></pre></div>
 </div>
 <div id="compare-node-sources-of-edges-across-networks" class="section level2 hasAnchor" number="12.8">
 <h2><span class="header-section-number">12.8</span> Compare node sources of edges across networks<a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -491,32 +491,32 @@ So it is also feasible to compare other properties of features, such as Levin’
 In this part, as an instance, we used edge_tax_comp function of meconetcomp package to get the sums of node sources (at Phylum level) in the positive edges.
 In other words, how many linked nodes of positive edges come from different phyla or the same phyla.
 Then, to make the results comparable, the ratio was calculated with the positive edge number as denominator.</p>
-<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="meconetcomp-package.html#cb314-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network_edgetax <span class="ot">&lt;-</span> <span class="fu">edge_tax_comp</span>(soil_amp_network, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">label =</span> <span class="st">&quot;+&quot;</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb314-2"><a href="meconetcomp-package.html#cb314-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the features with small number</span></span>
-<span id="cb314-3"><a href="meconetcomp-package.html#cb314-3" aria-hidden="true" tabindex="-1"></a>soil_amp_network_edgetax <span class="ot">&lt;-</span> soil_amp_network_edgetax[<span class="fu">apply</span>(soil_amp_network_edgetax, <span class="dv">1</span>, mean) <span class="sc">&gt;</span> <span class="fl">0.01</span>, ]</span>
-<span id="cb314-4"><a href="meconetcomp-package.html#cb314-4" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization</span></span>
-<span id="cb314-5"><a href="meconetcomp-package.html#cb314-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(soil_amp_network_edgetax, <span class="at">display_numbers =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb314-6"><a href="meconetcomp-package.html#cb314-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_edge_tax_comp.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="meconetcomp-package.html#cb316-1" aria-hidden="true" tabindex="-1"></a>soil_amp_network_edgetax <span class="ot">&lt;-</span> <span class="fu">edge_tax_comp</span>(soil_amp_network, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">label =</span> <span class="st">&quot;+&quot;</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb316-2"><a href="meconetcomp-package.html#cb316-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the features with small number</span></span>
+<span id="cb316-3"><a href="meconetcomp-package.html#cb316-3" aria-hidden="true" tabindex="-1"></a>soil_amp_network_edgetax <span class="ot">&lt;-</span> soil_amp_network_edgetax[<span class="fu">apply</span>(soil_amp_network_edgetax, <span class="dv">1</span>, mean) <span class="sc">&gt;</span> <span class="fl">0.01</span>, ]</span>
+<span id="cb316-4"><a href="meconetcomp-package.html#cb316-4" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization</span></span>
+<span id="cb316-5"><a href="meconetcomp-package.html#cb316-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(soil_amp_network_edgetax, <span class="at">display_numbers =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb316-6"><a href="meconetcomp-package.html#cb316-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_edge_tax_comp.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">7</span>)</span></code></pre></div>
 </div>
 <div id="compare-topological-properties-of-sub-networks" class="section level2 hasAnchor" number="12.9">
 <h2><span class="header-section-number">12.9</span> Compare topological properties of sub-networks<a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this part, we extracted the sub-networks according to the OTU existed in each sample of soil_amp dataset for each network in soil_amp_network.
 Then, the global topological properties of sub-networks were calculated.
 All the operations were encapsulated into the subnet_property function of meconetcomp package.</p>
-<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="meconetcomp-package.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate global properties of all sub-networks</span></span>
-<span id="cb315-2"><a href="meconetcomp-package.html#cb315-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">subnet_property</span>(soil_amp_network)</span>
-<span id="cb315-3"><a href="meconetcomp-package.html#cb315-3" aria-hidden="true" tabindex="-1"></a><span class="co"># then prepare the data for the correlation analysis</span></span>
-<span id="cb315-4"><a href="meconetcomp-package.html#cb315-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use sample names (second column) as rownames</span></span>
-<span id="cb315-5"><a href="meconetcomp-package.html#cb315-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(tmp) <span class="ot">&lt;-</span> tmp[, <span class="dv">2</span>]</span>
-<span id="cb315-6"><a href="meconetcomp-package.html#cb315-6" aria-hidden="true" tabindex="-1"></a><span class="co"># delete first two columns (network name and sample name)</span></span>
-<span id="cb315-7"><a href="meconetcomp-package.html#cb315-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
-<span id="cb315-8"><a href="meconetcomp-package.html#cb315-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load ready-made abiotic factor and diversity table</span></span>
-<span id="cb315-9"><a href="meconetcomp-package.html#cb315-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(soil_measure_diversity)</span>
-<span id="cb315-10"><a href="meconetcomp-package.html#cb315-10" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> soil_amp, <span class="at">add_data =</span> soil_measure_diversity)</span>
-<span id="cb315-11"><a href="meconetcomp-package.html#cb315-11" aria-hidden="true" tabindex="-1"></a>tmp1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;other&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">add_abund_table =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb315-12"><a href="meconetcomp-package.html#cb315-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate correlation heatmap</span></span>
-<span id="cb315-13"><a href="meconetcomp-package.html#cb315-13" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_cor</span>()</span>
-<span id="cb315-14"><a href="meconetcomp-package.html#cb315-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_subnet_property.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">11</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="meconetcomp-package.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate global properties of all sub-networks</span></span>
+<span id="cb317-2"><a href="meconetcomp-package.html#cb317-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">subnet_property</span>(soil_amp_network)</span>
+<span id="cb317-3"><a href="meconetcomp-package.html#cb317-3" aria-hidden="true" tabindex="-1"></a><span class="co"># then prepare the data for the correlation analysis</span></span>
+<span id="cb317-4"><a href="meconetcomp-package.html#cb317-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use sample names (second column) as rownames</span></span>
+<span id="cb317-5"><a href="meconetcomp-package.html#cb317-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(tmp) <span class="ot">&lt;-</span> tmp[, <span class="dv">2</span>]</span>
+<span id="cb317-6"><a href="meconetcomp-package.html#cb317-6" aria-hidden="true" tabindex="-1"></a><span class="co"># delete first two columns (network name and sample name)</span></span>
+<span id="cb317-7"><a href="meconetcomp-package.html#cb317-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
+<span id="cb317-8"><a href="meconetcomp-package.html#cb317-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load ready-made abiotic factor and diversity table</span></span>
+<span id="cb317-9"><a href="meconetcomp-package.html#cb317-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(soil_measure_diversity)</span>
+<span id="cb317-10"><a href="meconetcomp-package.html#cb317-10" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> soil_amp, <span class="at">add_data =</span> soil_measure_diversity)</span>
+<span id="cb317-11"><a href="meconetcomp-package.html#cb317-11" aria-hidden="true" tabindex="-1"></a>tmp1<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;other&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">add_abund_table =</span> tmp, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb317-12"><a href="meconetcomp-package.html#cb317-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate correlation heatmap</span></span>
+<span id="cb317-13"><a href="meconetcomp-package.html#cb317-13" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_cor</span>()</span>
+<span id="cb317-14"><a href="meconetcomp-package.html#cb317-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_subnet_property.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">11</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
 
 </div>
 </div>
