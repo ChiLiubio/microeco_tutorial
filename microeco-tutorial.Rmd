@@ -952,6 +952,19 @@ knitr::include_graphics("Images/trans_venn_pie.png")
 
 Other examples:
 
+To reorder samples in the plots, please manipulate the sample_table in the object to adjust the orders.
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples(use_group = "Type")
+test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
+test$tidy_dataset()
+# The columns of otu_table can also be reordered according to the sample_table after running tidy_dataset function
+t1 <- trans_venn$new(test)
+t1$plot_bar(sort_samples = FALSE)
+```
+
+The parameter `sort_samples = TRUE` in `plot_bar` function can be applied to sort samples in the y axis according to the number of features.
+The left bar plot can be removed when the parameter `left_plot = FALSE`.
+
 ```{r, echo = TRUE, eval = FALSE}
 test <- dataset$merge_samples(use_group = "Type")
 t1 <- trans_venn$new(test)
@@ -959,12 +972,7 @@ t1 <- trans_venn$new(test)
 t1$plot_bar(left_plot = FALSE)
 # sort samples in the axis according to the number of features
 t1$plot_bar(sort_samples = TRUE)
-# raw orders in test$sample_table
-t1$plot_bar(sort_samples = FALSE)
-# manipulate sample_table to adjust the orders
-test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
-test$tidy_dataset()
-t1 <- trans_venn$new(test)
+# original orders in test$sample_table
 t1$plot_bar(sort_samples = FALSE)
 ```
 
@@ -3951,15 +3959,16 @@ This is a discussion topic in microeco Discussions part. Here is the link (https
 The taxonomic classification with standard prefix is very important for some analyses,
 e.g. taxonomic abundance plotting and biomarker finding.
 The tidy_taxonomy function in microeco package is designed to make the taxa having standard prefix.
-See those Issues for the detailed examples: (https://github.com/ChiLiubio/microeco/issues/32) and (https://github.com/ChiLiubio/microeco/issues/22).
+See those Issues for the detailed examples: (https://github.com/ChiLiubio/microeco/issues/32), (https://github.com/ChiLiubio/microeco/issues/22)
+and (https://github.com/ChiLiubio/microeco/issues/231).
 
 
 
 ## Show the abundance of unknown taxa
 
 In the trans_abund class, the default operation can filter the unclassified taxa, such as those with 'g__'.
-Sometimes, these unknown taxa may be useful to represent the uncultured species.
-Under the circumstances, the abundance of the unknown taxa can be used to show the ratio of uncultured taxa in the system.
+Sometimes, these unknown taxa may be useful to represent uncultured species.
+Under the circumstance, the abundance of unknown taxa can be used to show the ratio of uncultured taxa in the system.
 Please see the solution in this topic of Issues (https://github.com/ChiLiubio/microeco/issues/165).
 
 

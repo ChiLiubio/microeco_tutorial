@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.16.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-04-14}
+\date{2023-04-22}
 
 \begin{document}
 \maketitle
@@ -1597,6 +1597,22 @@ We also try to use pie chart to show the compositions at the Phylum level.
 
 Other examples:
 
+To reorder samples in the plots, please manipulate the sample\_table in the object to adjust the orders.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\FunctionTok{c}\NormalTok{(}\StringTok{"YML"}\NormalTok{, }\StringTok{"NE"}\NormalTok{, }\StringTok{"NW"}\NormalTok{, }\StringTok{"NC"}\NormalTok{, }\StringTok{"QTP"}\NormalTok{, }\StringTok{"SC"}\NormalTok{), , drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# The columns of otu\_table can also be reordered according to the sample\_table after running tidy\_dataset function}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The parameter \texttt{sort\_samples\ =\ TRUE} in \texttt{plot\_bar} function can be applied to sort samples in the y axis according to the number of features.
+The left bar plot can be removed when the parameter \texttt{left\_plot\ =\ FALSE}.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
@@ -1605,12 +1621,7 @@ Other examples:
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_plot =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# sort samples in the axis according to the number of features}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# raw orders in test$sample\_table}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{FALSE}\NormalTok{)}
-\CommentTok{\# manipulate sample\_table to adjust the orders}
-\NormalTok{test}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\FunctionTok{c}\NormalTok{(}\StringTok{"YML"}\NormalTok{, }\StringTok{"NE"}\NormalTok{, }\StringTok{"NW"}\NormalTok{, }\StringTok{"NC"}\NormalTok{, }\StringTok{"QTP"}\NormalTok{, }\StringTok{"SC"}\NormalTok{), , drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
+\CommentTok{\# original orders in test$sample\_table}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{sort\_samples =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3172,7 +3183,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Apr 14 16:02:53 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Apr 22 14:06:21 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3202,9 +3213,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3884 & 0.364 & 9.14 \\
-CW & 435 & 0.5629 & 0.2965 & 0.2864 & 14.37 \\
-TW & 435 & 0.6243 & 0.4158 & 0.3998 & 9.864 \\
+IW & 435 & 0.6539 & 0.387 & 0.364 & 9.08 \\
+CW & 435 & 0.5631 & 0.296 & 0.2866 & 14.3 \\
+TW & 435 & 0.6247 & 0.4169 & 0.4002 & 9.914 \\
 \bottomrule()
 \end{longtable}
 
@@ -4805,7 +4816,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-300-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-301-1.pdf}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4842,7 +4853,7 @@ We can find the changed group order in the legend and colors in the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-301-1.pdf}
+\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-302-1.pdf}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
@@ -5697,14 +5708,15 @@ This is a discussion topic in microeco Discussions part. Here is the link (\url{
 The taxonomic classification with standard prefix is very important for some analyses,
 e.g.~taxonomic abundance plotting and biomarker finding.
 The tidy\_taxonomy function in microeco package is designed to make the taxa having standard prefix.
-See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}) and (\url{https://github.com/ChiLiubio/microeco/issues/22}).
+See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}), (\url{https://github.com/ChiLiubio/microeco/issues/22})
+and (\url{https://github.com/ChiLiubio/microeco/issues/231}).
 
 \hypertarget{show-the-abundance-of-unknown-taxa}{%
 \section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa}}
 
 In the trans\_abund class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
-Sometimes, these unknown taxa may be useful to represent the uncultured species.
-Under the circumstances, the abundance of the unknown taxa can be used to show the ratio of uncultured taxa in the system.
+Sometimes, these unknown taxa may be useful to represent uncultured species.
+Under the circumstance, the abundance of unknown taxa can be used to show the ratio of uncultured taxa in the system.
 Please see the solution in this topic of Issues (\url{https://github.com/ChiLiubio/microeco/issues/165}).
 
 \hypertarget{question-of-prefix-in-the-taxa}{%

@@ -244,6 +244,19 @@ knitr::include_graphics("Images/trans_venn_pie.png")
 
 Other examples:
 
+To reorder samples in the plots, please manipulate the sample_table in the object to adjust the orders.
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples(use_group = "Type")
+test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
+test$tidy_dataset()
+# The columns of otu_table can also be reordered according to the sample_table after running tidy_dataset function
+t1 <- trans_venn$new(test)
+t1$plot_bar(sort_samples = FALSE)
+```
+
+The parameter `sort_samples = TRUE` in `plot_bar` function can be applied to sort samples in the y axis according to the number of features.
+The left bar plot can be removed when the parameter `left_plot = FALSE`.
+
 ```{r, echo = TRUE, eval = FALSE}
 test <- dataset$merge_samples(use_group = "Type")
 t1 <- trans_venn$new(test)
@@ -251,12 +264,7 @@ t1 <- trans_venn$new(test)
 t1$plot_bar(left_plot = FALSE)
 # sort samples in the axis according to the number of features
 t1$plot_bar(sort_samples = TRUE)
-# raw orders in test$sample_table
-t1$plot_bar(sort_samples = FALSE)
-# manipulate sample_table to adjust the orders
-test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
-test$tidy_dataset()
-t1 <- trans_venn$new(test)
+# original orders in test$sample_table
 t1$plot_bar(sort_samples = FALSE)
 ```
 
