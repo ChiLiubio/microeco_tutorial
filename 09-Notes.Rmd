@@ -81,22 +81,30 @@ dataset$sample_table %<>% .[, -2]
 ## group order
 If the user want to reorder the groups, **assigning factors may be the simplest way.**
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 data(dataset)
 t1 <- trans_beta$new(dataset = dataset, measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
 t1$plot_ordination(plot_color = "Group")
 ```
 
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/Notes_group_order_1.png")
+```
+
 Then we assign factors to the 'Group' in sample_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 dataset$sample_table$Group %<>% factor(., levels = c("IW", "TW", "CW"))
 str(dataset$sample_table)
 t1 <- trans_beta$new(dataset = dataset, measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
 t1$plot_ordination(plot_color = "Group")
+```
+
+```{r, out.width = "500px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/Notes_group_order_2.png")
 ```
 
 

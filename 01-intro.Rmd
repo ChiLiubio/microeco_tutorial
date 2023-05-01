@@ -53,7 +53,9 @@ library(microeco)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# this can show all the functions and the detailed descriptions of the microtable class
+# show all the classes and tutorial links
+?microeco
+# show the detailed description of the class microtable
 # same with: help(microtable)
 ?microtable
 ```
@@ -64,7 +66,7 @@ For Windows system, RTools (https://cran.r-project.org/bin/windows/Rtools/) is n
 
 ## Dependence
 
-### Important packages
+### Description
 To keep the start and use of microeco package simplified, 
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
 So the question is that the user may encounter an error when using a class or function that invoke an additional package like this:
@@ -86,46 +88,83 @@ In addition, some packages, e.g. SpiecEasi, are released on github and can not b
 
 The solutions:
 
-1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
+1. Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.
 
 2. Install the packages in advance. 
-This is recommended if the user is interested in most of the methods of microeco package and want to run a large number of examples in this tutorial.
+This is recommended if the user is interested in most of the methods and want to run a large number of examples in this tutorial.
+If so, please read all of the following sections and install these packages.
 
 
 ### CRAN packages
 
-We show some packages that are published in CRAN and not installed automatically.
-Those packages are necessary to reproduce some parts of the tutorial.
-
-```{r, echo = FALSE, eval = TRUE}
-pre_pac <- read.delim("prerequite_packages.tsv")
-```
-
-```{r, echo = FALSE, eval = TRUE}
-knitr::kable(pre_pac)
-```
-
-Then, if you want to install these packages or some of them, you can do like this:
+Some packages released in CRAN can not be installed automatically.
+These packages are necessary to reproduce some parts of the tutorial.
+If you want to install all of these packages or some of them, please run this:
 
 ```{r, echo = TRUE, eval = FALSE}
-# If a package is not installed, it will be installed from CRAN.
+# allow more waiting time for the downloading of each package
+options(timeout = 1000)
+# If a package is not installed, it will be installed from CRAN
 # First select the packages of interest
-packages <- c("MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "picante", "pheatmap", "igraph", "rgexf", 
-    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally")
+tmp <- c("microeco", "file2meco", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
+    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "MicrobiomeStat", "ggraph", "networkD3")
 # Now check or install
-for(x in packages){
+for(x in tmp){
 	if(!require(x, character.only = TRUE)) {
 		install.packages(x, dependencies = TRUE)
 	}
 }
 ```
 
-### ggtree
-Plotting the cladogram from LEfSe result requires the ggtree package in bioconductor (https://bioconductor.org/packages/release/bioc/html/ggtree.html).
+### Bioconductor packages
+
+Some dependent packages are deposited in bioconductor (https://bioconductor.org).
+Please run the following commands to install them one by one.
+Several packages may be installed from source.
+So, for the Windows system, please make sure RTools has been installed (https://chiliubio.github.io/microeco_tutorial/intro.html#rtools).
+
+
 ```{r, echo = TRUE, eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+install.packages("BiocManager")
+install.packages("WGCNA", repos = BiocManager::repositories())
 BiocManager::install("ggtree")
+BiocManager::install("metagenomeSeq")
+BiocManager::install("ALDEx2")
+BiocManager::install("ANCOMBC")
 ```
+
+
+### Github packages
+
+A part of dependent packages in some methods comes from Github (https://github.com/).
+Each package from the GitHub platform is accompanied by installation instructions. 
+However, due to the network instability of the platform, certain packages may fail to install online. 
+As a result, in order to facilitate quick and convenient installation, 
+we have collected these GitHub-dependent packages and consolidated them within a dedicated project repository (https://github.com/ChiLiubio/microeco_dependence).
+Please run the following commands to install them.
+For the Windows system, first make sure RTools has been installed (https://chiliubio.github.io/microeco_tutorial/intro.html#rtools).
+
+```{r, echo = TRUE, eval = FALSE}
+# downloading link of the compressed archive
+url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.17.0/microeco_dependence.zip"
+# allow more time for the downloading in R
+options(timeout = 2000)
+# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory
+download.file(url = url, destfile = "microeco_dependence.zip")
+# uncompress the file in R
+tmp <- "microeco_dependence"
+unzip(paste0(tmp, ".zip"))
+# install devtools
+if(!require("devtools", character.only = TRUE)){install.packages("devtools", dependencies = TRUE)}
+# run these one by one
+devtools::install_local(paste0(tmp, "/", "SpiecEasi-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "mixedCCA-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "SPRING-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "NetCoMi-main.zip"), repos = BiocManager::repositories())
+devtools::install_local(paste0(tmp, "/", "beem-static-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "chorddiag-master.zip"), dependencies = TRUE)
+```
+
 
 ### Gephi
 Gephi is an excellent network visualization tool and used to open the saved network file, 

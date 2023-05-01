@@ -14,7 +14,7 @@ Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
 t.test, ANOVA, Scheirer Ray Hare test,
 ANCOMBC [@Lin_Analysis_2020], ALDEx2 [@Fernandes_Unifying_2014],
-DESeq2 [@Michael_Moderated_2014], beta regression [@Betaregression_2010], etc.
+DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010], etc.
 Given that multiple approaches are available, 
 it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
@@ -184,15 +184,13 @@ t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_
 head(t1$res_diff)
 ```
 
-The method 'metagenomeSeq' and 'ancombc2' depend on the metagenomeSeq package and ANCOMBC package, respectively.
-The method 'ALDEx2_t' and 'ALDEx2_kw' depend on the ALDEx2 package.
+The method 'metagenomeSeq' [@Paulson_Differential_2013] and 'ancombc2' [@Lin_Analysis_2020] depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method 'ALDEx2_t' and 'ALDEx2_kw' depend on the ALDEx2 package [@Fernandes_Unifying_2014].
 These three packages are all deposited on the Bioconductor.
 
 ```{r, echo = TRUE, eval = FALSE}
 # zero-inflated log-normal model-based differential test method from metagenomeSeq package
-# please first install metagenomeSeq package
-if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install("metagenomeSeq")
+# If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")
 t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
 t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
@@ -200,8 +198,8 @@ t1$plot_diff_bar(use_number = 1:20)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see the description of the methods
-BiocManager::install("ALDEx2")
+# 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see detailed description of the methods
+# If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
 t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"))
@@ -218,11 +216,22 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 
 ```{r, echo = TRUE, eval = FALSE}
 # ANCOMBC method
-BiocManager::install("ANCOMBC")
+# If ANCOMBC package is not installed, please first run: BiocManager::install("ANCOMBC")
 t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Family")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 t1$plot_diff_bar(use_number = 1:20)
+```
+
+The method 'linda' [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
+
+```{r, echo = TRUE, eval = FALSE}
+# LinDA method
+# If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU")
+t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", taxa_level = "Genus")
+View(t1$res_diff)
 ```
 
 
@@ -492,7 +501,7 @@ t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pe
 # Spearman correlation using NetCoMi package
 t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
 # SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.003)
 # SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
 t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
 # CCLasso method based on NetCoMi package

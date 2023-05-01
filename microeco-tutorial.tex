@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.16.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-04-22}
+\date{2023-05-01}
 
 \begin{document}
 \maketitle
@@ -219,7 +219,9 @@ and click the link of the function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# this can show all the functions and the detailed descriptions of the microtable class}
+\CommentTok{\# show all the classes and tutorial links}
+\NormalTok{?microeco}
+\CommentTok{\# show the detailed description of the class microtable}
 \CommentTok{\# same with: help(microtable)}
 \NormalTok{?microtable}
 \end{Highlighting}
@@ -233,8 +235,8 @@ For Windows system, RTools (\url{https://cran.r-project.org/bin/windows/Rtools/}
 \hypertarget{dependence}{%
 \section{Dependence}\label{dependence}}
 
-\hypertarget{important-packages}{%
-\subsection{Important packages}\label{important-packages}}
+\hypertarget{description}{%
+\subsection{Description}\label{description}}
 
 To keep the start and use of microeco package simplified,
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
@@ -263,68 +265,30 @@ The solutions:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or bioconductor or github. Just try it.
+  Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.
 \item
   Install the packages in advance.
-  This is recommended if the user is interested in most of the methods of microeco package and want to run a large number of examples in this tutorial.
+  This is recommended if the user is interested in most of the methods and want to run a large number of examples in this tutorial.
+  If so, please read all of the following sections and install these packages.
 \end{enumerate}
 
 \hypertarget{cran-packages}{%
 \subsection{CRAN packages}\label{cran-packages}}
 
-We show some packages that are published in CRAN and not installed automatically.
-Those packages are necessary to reproduce some parts of the tutorial.
-
-\begin{tabular}{l|l|l}
-\hline
-Package & where & description\\
-\hline
-MASS & trans\_diff class & linear discriminant analysis\\
-\hline
-GUniFrac & cal\_betadiv() & UniFrac distance matrix\\
-\hline
-ggpubr & plot\_alpha() & some plotting functions\\
-\hline
-randomForest & trans\_diff class & random forest analysis\\
-\hline
-ggdendro & plot\_clustering() & plotting clustering dendrogram\\
-\hline
-ggrepel & trans\_rda class & reduce the text overlap in the plot\\
-\hline
-agricolae & cal\_diff() & multiple comparisons in anova\\
-\hline
-picante & cal\_alphadiv() & Faith’s phylogenetic alpha diversity\\
-\hline
-pheatmap & plot\_cor(pheatmap = TRUE) & correlation heatmap with clustering dendrogram\\
-\hline
-tidytree & trans\_diff class & plot the taxonomic tree\\
-\hline
-igraph & trans\_network class & network related operations\\
-\hline
-rgexf & save\_network() & save network with gexf style\\
-\hline
-ggalluvial & plot\_bar(use\_alluvium = TRUE) & alluvial plot\\
-\hline
-ggh4x & plot\_bar & multiple facets\\
-\hline
-FSA & trans\_alpha and trans\_diff class & Dunn's Kruskal-Wallis Multiple Comparisons\\
-\hline
-rcompanion & trans\_alpha class & convert asterisk signif to letters\\
-\hline
-gridExtra & trans\_diff class & merge plots\\
-\hline
-\end{tabular}
-
-Then, if you want to install these packages or some of them, you can do like this:
+Some packages released in CRAN can not be installed automatically.
+These packages are necessary to reproduce some parts of the tutorial.
+If you want to install all of these packages or some of them, please run this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# If a package is not installed, it will be installed from CRAN.}
+\CommentTok{\# allow more waiting time for the downloading of each package}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{1000}\NormalTok{)}
+\CommentTok{\# If a package is not installed, it will be installed from CRAN}
 \CommentTok{\# First select the packages of interest}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"file2meco"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"MicrobiomeStat"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{)}
 \CommentTok{\# Now check or install}
-\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
+\ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ tmp)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
         \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{    \}}
@@ -332,15 +296,56 @@ Then, if you want to install these packages or some of them, you can do like thi
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ggtree}{%
-\subsection{ggtree}\label{ggtree}}
+\hypertarget{bioconductor-packages}{%
+\subsection{Bioconductor packages}\label{bioconductor-packages}}
 
-Plotting the cladogram from LEfSe result requires the ggtree package in bioconductor (\url{https://bioconductor.org/packages/release/bioc/html/ggtree.html}).
+Some dependent packages are deposited in bioconductor (\url{https://bioconductor.org}).
+Please run the following commands to install them one by one.
+Several packages may be installed from source.
+So, for the Windows system, please make sure RTools has been installed (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#rtools}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ggtree"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"metagenomeSeq"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ALDEx2"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{github-packages}{%
+\subsection{Github packages}\label{github-packages}}
+
+A part of dependent packages in some methods comes from Github (\url{https://github.com/}).
+Each package from the GitHub platform is accompanied by installation instructions.
+However, due to the network instability of the platform, certain packages may fail to install online.
+As a result, in order to facilitate quick and convenient installation,
+we have collected these GitHub-dependent packages and consolidated them within a dedicated project repository (\url{https://github.com/ChiLiubio/microeco_dependence}).
+Please run the following commands to install them.
+For the Windows system, first make sure RTools has been installed (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#rtools}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# downloading link of the compressed archive}
+\NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{"https://github.com/ChiLiubio/microeco\_dependence/releases/download/v0.17.0/microeco\_dependence.zip"}
+\CommentTok{\# allow more time for the downloading in R}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{2000}\NormalTok{)}
+\CommentTok{\# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory}
+\FunctionTok{download.file}\NormalTok{(}\AttributeTok{url =}\NormalTok{ url, }\AttributeTok{destfile =} \StringTok{"microeco\_dependence.zip"}\NormalTok{)}
+\CommentTok{\# uncompress the file in R}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \StringTok{"microeco\_dependence"}
+\FunctionTok{unzip}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{".zip"}\NormalTok{))}
+\CommentTok{\# install devtools}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"devtools"}\NormalTok{, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{))\{}\FunctionTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)\}}
+\CommentTok{\# run these one by one}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"SpiecEasi{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"mixedCCA{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"SPRING{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"NetCoMi{-}main.zip"}\NormalTok{), }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"beem{-}static{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"chorddiag{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1004,10 +1009,11 @@ The function \texttt{save\_abund()} can be used to save the taxa abundance file 
 \end{Shaded}
 
 All the abundance tables can also be merged into one to save from v0.15.0.
+This type of file format can be opened directly by other software, such as STAMP.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# tab{-}delimited, i.e. map format}
+\CommentTok{\# tab{-}delimited, i.e. mpa format}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{merge\_all =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# remove those unclassified}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_abund}\NormalTok{(}\AttributeTok{merge\_all =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{rm\_un =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{rm\_pattern =} \StringTok{"\_\_$|Sedis$"}\NormalTok{, }\AttributeTok{quote =} \ConstantTok{FALSE}\NormalTok{)}
@@ -1431,7 +1437,7 @@ Line chart is very useful to show the abundance change of taxa along time, space
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{()}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.3}\NormalTok{), }\AttributeTok{xtext\_type\_hor =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2270,7 +2276,7 @@ Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Te
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups \textgreater{} 2),
 t.test, ANOVA, Scheirer Ray Hare test,
 ANCOMBC \citep{Lin_Analysis_2020}, ALDEx2 \citep{Fernandes_Unifying_2014},
-DESeq2 \citep{Michael_Moderated_2014}, beta regression \citep{Betaregression_2010}, etc.
+DESeq2 \citep{Michael_Moderated_2014}, LinDA \citep{LinDA_Zhou_2022}, beta regression \citep{Betaregression_2010}, etc.
 Given that multiple approaches are available,
 it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
@@ -2465,16 +2471,14 @@ The following are the examples for the methods `KW', `KW\_dunn', `wilcox', `t.te
 \end{Highlighting}
 \end{Shaded}
 
-The method `metagenomeSeq' and `ancombc2' depend on the metagenomeSeq package and ANCOMBC package, respectively.
-The method `ALDEx2\_t' and `ALDEx2\_kw' depend on the ALDEx2 package.
+The method `metagenomeSeq' \citep{Paulson_Differential_2013} and `ancombc2' \citep{Lin_Analysis_2020} depend on the metagenomeSeq package and ANCOMBC package, respectively.
+The method `ALDEx2\_t' and `ALDEx2\_kw' depend on the ALDEx2 package \citep{Fernandes_Unifying_2014}.
 These three packages are all deposited on the Bioconductor.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# zero{-}inflated log{-}normal model{-}based differential test method from metagenomeSeq package}
-\CommentTok{\# please first install metagenomeSeq package}
-\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"metagenomeSeq"}\NormalTok{)}
+\CommentTok{\# If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
@@ -2484,8 +2488,8 @@ These three packages are all deposited on the Bioconductor.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{} and \textquotesingle{}ALDEx2\_kw\textquotesingle{} methods; use ?trans\_diff to see the description of the methods}
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ALDEx2"}\NormalTok{)}
+\CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{} and \textquotesingle{}ALDEx2\_kw\textquotesingle{} methods; use ?trans\_diff to see detailed description of the methods}
+\CommentTok{\# If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")}
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{}}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
@@ -2503,11 +2507,24 @@ These three packages are all deposited on the Bioconductor.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# ANCOMBC method}
-\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ANCOMBC"}\NormalTok{)}
+\CommentTok{\# If ANCOMBC package is not installed, please first run: BiocManager::install("ANCOMBC")}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The method `linda' \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# LinDA method}
+\CommentTok{\# If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group+Type"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2843,7 +2860,7 @@ Pearson or Spearman with data normalization based on NetCoMi package \citep{Pesc
 \CommentTok{\# Spearman correlation using NetCoMi package}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{, }\AttributeTok{use\_NetCoMi\_pearson\_spearman =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"SpiecEasi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.003}\NormalTok{)}
 \CommentTok{\# SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"sparcc"}\NormalTok{, }\AttributeTok{use\_sparcc\_method =} \StringTok{"NetCoMi"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# CCLasso method based on NetCoMi package}
@@ -3183,7 +3200,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Apr 22 14:06:21 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Mon May  1 17:23:38 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3213,9 +3230,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.387 & 0.364 & 9.08 \\
-CW & 435 & 0.5631 & 0.296 & 0.2866 & 14.3 \\
-TW & 435 & 0.6247 & 0.4169 & 0.4002 & 9.914 \\
+IW & 435 & 0.6539 & 0.388 & 0.364 & 9.088 \\
+CW & 435 & 0.5628 & 0.2955 & 0.2864 & 14.32 \\
+TW & 435 & 0.6243 & 0.4153 & 0.3998 & 9.906 \\
 \bottomrule()
 \end{longtable}
 
@@ -4803,20 +4820,11 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \FunctionTok{data}\NormalTok{(dataset)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## The ordination result is stored in object$res_ordination ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-301-1.pdf}
+\begin{center}\includegraphics[width=500px]{Images/Notes_group_order_1} \end{center}
 
 Then we assign factors to the `Group' in sample\_table of dataset.
 We can find the changed group order in the legend and colors in the plot.
@@ -4825,35 +4833,13 @@ We can find the changed group order in the legend and colors in the plot.
 \begin{Highlighting}[]
 \NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Group }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{))}
 \FunctionTok{str}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 'data.frame':    90 obs. of  4 variables:
-##  $ SampleID: chr  "S1" "S2" "S3" "S4" ...
-##  $ Group   : Factor w/ 3 levels "IW","TW","CW": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Type    : chr  "NE" "NE" "NE" "NE" ...
-##  $ Saline  : chr  "Non-saline soil" "Non-saline soil" "Non-saline soil" "Non-saline soil" ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## The ordination result is stored in object$res_ordination ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{microeco-tutorial_files/figure-latex/unnamed-chunk-302-1.pdf}
+\begin{center}\includegraphics[width=500px]{Images/Notes_group_order_2} \end{center}
 
 \hypertarget{add-layers-to-plot}{%
 \section{add layers to plot}\label{add-layers-to-plot}}
@@ -5497,11 +5483,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change along groups is stored in object$res_change_pair ...
-\end{verbatim}
-
-\begin{verbatim}
-## Abundance change summary is stored in object$res_change ...
+## Abundance change data is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -5573,11 +5555,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change along groups is stored in object$res_change_pair ...
-\end{verbatim}
-
-\begin{verbatim}
-## Abundance change summary is stored in object$res_change ...
+## Abundance change data is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}
