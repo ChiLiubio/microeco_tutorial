@@ -240,6 +240,13 @@ dataset$rarefy_samples(sample.size = 10000)
 dataset$sample_sums() %>% range
 ```
 
+For v0.17.0, the function `save_table` can be performed to save all the basic data in microtable object to local files,
+including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
+
+```{r, echo = TRUE, eval = FALSE}
+dataset$save_table(dirpath = "basic_files", sep = ",")
+```
+
 Then, let's calculate the taxa abundance at each taxonomic rank using `cal_abund()`.
 This function **generate a list called taxa_abund stored in the microtable object**. 
 This list contain several data frame of the abundance information at each taxonomic rank.

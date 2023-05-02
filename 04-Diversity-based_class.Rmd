@@ -89,7 +89,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 t1$plot_alpha(measure = "Chao1")
-t1$plot_alpha(measure = "Chao1", order_x_mean = TRUE, add_sig_text_size = 6)
+t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, add_sig_text_size = 6)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -109,11 +109,11 @@ Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$res_diff %<>% base::subset(Significance != "ns")
-t1$plot_alpha(measure = "Chao1", xtext_size = 15)
+t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox_nons.png")
+knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
 From the v0.12.0, the trans_alpha class supports the differential test of groups within each group by using the by_group parameter.

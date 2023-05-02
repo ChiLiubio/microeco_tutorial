@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.16.0)},
+  pdftitle={Tutorial for R microeco package (v0.17.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.16.0)}
+\title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-05-01}
+\date{2023-05-02}
 
 \begin{document}
 \maketitle
@@ -161,15 +161,14 @@ Besides, we also developed the file2meco package (\url{https://github.com/ChiLiu
 \chapter{Introduction}\label{intro}}
 
 The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyze microbiome data fast.
-So a series of commonly-used and cutting-edge approaches are implemented.
-To facilitate the data mining, the whole structure of microeco package are highly modularized to
-make users conveniently remember, search and use the classes.
-It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
-apply those files to other tools according to the format requirement.
-Main files stored in the object of each class are the frequently-used data.frame format.
-So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
-Before starting the specific usage of each class, let's first introduce several key points.
+The primary objective behind the development of this package is to assist users in rapidly analyzing microbiome data,
+utilizing a range of cutting-edge and commonly adopted methodologies.
+To facilitate data mining, every component of the microeco package has been modularized to ensure that users can easily recall, search, and employ classes.
+It is important to note that, in addition to being demonstrated in the tutorial,
+users can also save intermediate files within each object and utilize them with other tools according to formatting necessities.
+Main data stored in the object of each class are the frequently-used data.frame format,
+thereby making it effortless to save, modify, and employ intermediate and outcome files with other microbial ecology tools.
+Prior to exploring the specific utilization of each class, we shall first introduce a few critical points.
 
 \hypertarget{framework}{%
 \section{Framework}\label{framework}}
@@ -246,28 +245,29 @@ So the question is that the user may encounter an error when using a class or fu
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \StringTok{"SpiecEasi"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{Error in t1$cal\_network(network\_method = "SpiecEasi"): igraph package not installed ...}
+\NormalTok{Error in test$cal\_network(network\_method = "SpiecEasi"): SpiecEasi package is not installed!}
 \end{Highlighting}
 \end{Shaded}
 
-The reason is that network construction requires igraph package. We donot put the igraph and some other packages on the ``Imports'' part of microeco package.
-In addition, some packages, e.g.~SpiecEasi, are released on github and can not be installed automatically.
+The reason is that network construction with `SpiecEasi' method requires SpiecEasi package to be installed.
+This package is deposited in GitHub and can not be installed automatically.
+In addition, we donot put some packages released in CRAN and Bioconductor on the ``Imports'' part of microeco package.
 
 The solutions:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Install the package when encounter such an error. Actually, it's very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.
+  Install the missing package when encounter such an error. Actually, it's very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.
 \item
-  Install the packages in advance.
+  Install all the packages in advance.
   This is recommended if the user is interested in most of the methods and want to run a large number of examples in this tutorial.
   If so, please read all of the following sections and install these packages.
 \end{enumerate}
@@ -286,7 +286,7 @@ If you want to install all of these packages or some of them, please run this:
 \CommentTok{\# If a package is not installed, it will be installed from CRAN}
 \CommentTok{\# First select the packages of interest}
 \NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"file2meco"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"MicrobiomeStat"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{)}
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{, }\StringTok{"MicrobiomeStat"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ tmp)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -346,6 +346,8 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"NetCoMi{-}main.zip"}\NormalTok{), }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"beem{-}static{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"chorddiag{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"ggradar{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"ggnested{-}main.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -933,6 +935,15 @@ The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_data
 ## [1] 10000 10000
 \end{verbatim}
 
+For v0.17.0, the function \texttt{save\_table} can be performed to save all the basic data in microtable object to local files,
+including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{save\_table}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"basic\_files"}\NormalTok{, }\AttributeTok{sep =} \StringTok{","}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 Then, let's calculate the taxa abundance at each taxonomic rank using \texttt{cal\_abund()}.
 This function \textbf{generate a list called taxa\_abund stored in the microtable object}.
 This list contain several data frame of the abundance information at each taxonomic rank.
@@ -1337,8 +1348,8 @@ We first show the bar plot example.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# create trans\_abund object}
-\CommentTok{\# use 10 Phyla with the highest abundance in the dataset.}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
+\CommentTok{\# select top 8 abundant Phyla.}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1361,7 +1372,7 @@ As the sample number is large, we do not show the sample names in x axis and add
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=750px]{Images/plot_bar} \end{center}
+\begin{center}\includegraphics[width=750px]{Images/trans_abund_barplot1} \end{center}
 
 Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
 
@@ -1372,7 +1383,7 @@ Two or more facets are supported with the facet parameter from v0.14.0 by provid
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=750px]{Images/plot_bar_facet2} \end{center}
+\begin{center}\includegraphics[width=750px]{Images/trans_abund_barplot_facet2} \end{center}
 
 The default operation can filter all the unclassified taxa (i.e.~p\_\_ or g\_\_ in tax\_table that has been processed by \texttt{tidy\_taxonomy} function),
 as those unknown taxa are generally meaningless.
@@ -1387,11 +1398,11 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \CommentTok{\# require ggalluvial package}
 \CommentTok{\# use\_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering}
 \CommentTok{\# bar\_type = "notfull" can discard \textquotesingle{}others\textquotesingle{}; select another color palette}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_type\_hor =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{6}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=40in]{Images/plot_bar_allu} \end{center}
+\begin{center}\includegraphics[width=40in]{Images/trans_abund_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
 Note that, from v0.16.0, the parameter \texttt{group\_morestats\ =\ TRUE} can be used to add more summary statistics in the return \texttt{data\_abund} when \texttt{groupmean} parameter is provided.
@@ -1405,7 +1416,7 @@ Note that, from v0.16.0, the parameter \texttt{group\_morestats\ =\ TRUE} can be
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=400px]{Images/plot_bar_mean} \end{center}
+\begin{center}\includegraphics[width=400px]{Images/trans_abund_barplot_groupmean} \end{center}
 
 The box plot is an excellent way to intuitionally show abundance distribution across groups.
 
@@ -1438,7 +1449,7 @@ Line chart is very useful to show the abundance change of taxa along time, space
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{()}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Type"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.3}\NormalTok{), }\AttributeTok{xtext\_type\_hor =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.3}\NormalTok{), }\AttributeTok{xtext\_angle =} \DecValTok{0}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1451,10 +1462,63 @@ Then, we show the pie chart with the group mean values.
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{6}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# all pie chart in one row}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_pie}\NormalTok{(}\AttributeTok{facet\_nrow =} \DecValTok{1}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_pie}\NormalTok{(}\AttributeTok{facet\_nrow =} \DecValTok{1}\NormalTok{, }\AttributeTok{add\_label =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_pie} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_abund_pie} \end{center}
+
+The donut and radar charts are implemented from v0.17.0.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_donut}\NormalTok{(}\AttributeTok{label =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_donut}\NormalTok{(}\AttributeTok{label =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/trans_abund_donut} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_radar}\NormalTok{(}\AttributeTok{values.radar =} \FunctionTok{c}\NormalTok{(}\StringTok{"0\%"}\NormalTok{, }\StringTok{"25\%"}\NormalTok{, }\StringTok{"50\%"}\NormalTok{), }\AttributeTok{grid.min =} \DecValTok{0}\NormalTok{, }\AttributeTok{grid.mid =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{grid.max =} \FloatTok{0.5}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_radar}\NormalTok{(}\AttributeTok{values.radar =} \FunctionTok{c}\NormalTok{(}\StringTok{"0\%"}\NormalTok{, }\StringTok{"25\%"}\NormalTok{, }\StringTok{"50\%"}\NormalTok{), }\AttributeTok{grid.min =} \DecValTok{0}\NormalTok{, }\AttributeTok{grid.mid =} \FloatTok{0.25}\NormalTok{, }\AttributeTok{grid.max =} \FloatTok{0.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/trans_abund_radar} \end{center}
+
+The ternary plot can be used for the case with three samples/groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_tern}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/trans_abund_ternary} \end{center}
+
+When the hierarchical abundance data of two levels is needed to be shown in bar plot, the nested legend can be used.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# require ggnested package; see https://chiliubio.github.io/microeco\_tutorial/intro.html\#dependence}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{), }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{)}
+\CommentTok{\# fixed number in each phylum}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{30}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{4}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
+\CommentTok{\# sum others in each phylum}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{30}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{3}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{high\_level\_add\_other =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/trans_abund_barplot_ggnested} \end{center}
 
 \hypertarget{key-points-1}{%
 \subsection{Key points}\label{key-points-1}}
@@ -1583,8 +1647,8 @@ We use bar plot to show the composition at the Genus level.
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 \CommentTok{\# transform and plot}
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t2, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"part"}\NormalTok{, }\AttributeTok{legend\_text\_italic =}\NormalTok{ T, }\AttributeTok{ylab\_title =} \StringTok{"Frequency (\%)"}\NormalTok{, }\AttributeTok{xtext\_type\_hor =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{),}
-    \AttributeTok{order\_x =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW\&CW"}\NormalTok{, }\StringTok{"IW\&TW"}\NormalTok{, }\StringTok{"CW\&TW"}\NormalTok{, }\StringTok{"IW\&CW\&TW"}\NormalTok{))}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"part"}\NormalTok{, }\AttributeTok{legend\_text\_italic =}\NormalTok{ T, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{),}
+    \AttributeTok{order\_x =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW\&CW"}\NormalTok{, }\StringTok{"IW\&TW"}\NormalTok{, }\StringTok{"CW\&TW"}\NormalTok{, }\StringTok{"IW\&CW\&TW"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Frequency (\%)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1595,7 +1659,8 @@ We also try to use pie chart to show the compositions at the Phylum level.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t2, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_pie}\NormalTok{(}\AttributeTok{facet\_nrow =} \DecValTok{3}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{rev}\NormalTok{(}\FunctionTok{c}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{), }\StringTok{"grey50"}\NormalTok{)))}
+\NormalTok{t3}\SpecialCharTok{$}\NormalTok{data\_abund}\SpecialCharTok{$}\NormalTok{Sample }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{unique}\NormalTok{(.))}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_pie}\NormalTok{(}\AttributeTok{facet\_nrow =} \DecValTok{3}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{), }\StringTok{"grey50"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2817,7 +2882,7 @@ The \texttt{trans\_comm} function can be used to convert the node classification
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 \NormalTok{tmp2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
 \NormalTok{tmp2}\SpecialCharTok{$}\NormalTok{data\_abund}\SpecialCharTok{$}\NormalTok{Sample }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{rownames}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{sample\_table))}
-\NormalTok{tmp2}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{xtext\_type\_hor =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Paired"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"OTUs ratio (\%)"}\NormalTok{)}
+\NormalTok{tmp2}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Paired"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"OTUs ratio (\%)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2833,7 +2898,7 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_sum\_links}\NormalTok{(}\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
 \CommentTok{\# require chorddiag package; see https://github.com/mattflor/chorddiag}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{10}\NormalTok{, }\StringTok{"Paired"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3200,7 +3265,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Mon May  1 17:23:38 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue May  2 17:35:58 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3230,9 +3295,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.388 & 0.364 & 9.088 \\
-CW & 435 & 0.5628 & 0.2955 & 0.2864 & 14.32 \\
-TW & 435 & 0.6243 & 0.4153 & 0.3998 & 9.906 \\
+IW & 435 & 0.6538 & 0.3868 & 0.3639 & 9.115 \\
+CW & 435 & 0.5633 & 0.2968 & 0.2867 & 14.32 \\
+TW & 435 & 0.6241 & 0.4158 & 0.3995 & 9.877 \\
 \bottomrule()
 \end{longtable}
 
@@ -3248,6 +3313,13 @@ TW & 435 & 0.6243 & 0.4153 & 0.3998 & 9.906 \\
 \CommentTok{\# for pNST method, phylogenetic tree is needed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST}\NormalTok{(}\AttributeTok{method =} \StringTok{"pNST"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# convert long format table to square matrix}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_convert}\NormalTok{(}\DecValTok{10}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4863,26 +4935,31 @@ make the plot using the data (generally data.frame class) stored in the object.
 \hypertarget{colors-for-many-groups}{%
 \section{colors for many groups}\label{colors-for-many-groups}}
 
-In general, the color palette in the ploting function is enough for the settings of groups or samples,
-such as RColorBrewer::brewer.pal(12, ``Paired'').
-If the user has too many groups (e.g.~20), the color\_palette\_20 can be used. It has 20 colors with paired combinations.
-If this is still not enough, the randomcoloR package can be used for generating more colors.
+Within the R microeco package, for the visualization of discrete data,
+\texttt{RColorBrewer::brewer.pal(8,\ "Dark2")} is employed as the default color generation option.
+As this palette encompasses merely eight unique colors,
+users who require additional variations or seek to switch to a different color palette are advised to utilize the \texttt{paletteer} package (\url{https://r-charts.com/color-palettes/}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{color\_palette\_20}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  [1] "#1f77b4" "#aec7e8" "#ff7f0e" "#ffbb78" "#2ca02c" "#98df8a" "#d62728"
-##  [8] "#ff9896" "#9467bd" "#c5b0d5" "#8c564b" "#c49c94" "#e377c2" "#f7b6d2"
-## [15] "#7f7f7f" "#c7c7c7" "#bcbd22" "#dbdb8d" "#17becf" "#9edae5"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{barplot}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{col =}\NormalTok{ color\_palette\_20)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"paletteer"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"paletteer"}\NormalTok{)}
+\CommentTok{\# examples}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"RColorBrewer::Spectral"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"RColorBrewer::Set3"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"RColorBrewer::Paired"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::nrc\_npg"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::default\_aaas"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::lanonc\_lancet"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::default\_nejm"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::category10\_d3"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_10\_Light"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_10\_Medium"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_Cyclic"}\NormalTok{)}
+\CommentTok{\# 20 color values}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::category20c\_d3"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::category20\_d3"}\NormalTok{)}
+\FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_20"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

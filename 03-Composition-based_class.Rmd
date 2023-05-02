@@ -14,8 +14,8 @@ We first show the bar plot example.
 
 ```{r, echo = TRUE}
 # create trans_abund object
-# use 10 Phyla with the highest abundance in the dataset.
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10)
+# select top 8 abundant Phyla.
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8)
 # t1 object now include the transformed abundance data t1$abund_data and other elements for the following plotting
 ```
 
@@ -27,7 +27,7 @@ t1$plot_bar(others_color = "grey70", facet = "Group", xtext_keep = FALSE, legend
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar.png")
+knitr::include_graphics("Images/trans_abund_barplot1.png")
 ```
 
 Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
@@ -38,7 +38,7 @@ t1$plot_bar(others_color = "grey70", facet = c("Group", "Type"), xtext_keep = FA
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_facet2.png")
+knitr::include_graphics("Images/trans_abund_barplot_facet2.png")
 ```
 
 The default operation can filter all the unclassified taxa (i.e. p__ or g__ in tax_table that has been processed by `tidy_taxonomy` function), 
@@ -53,16 +53,15 @@ t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
 # bar_type = "notfull" can discard 'others'; select another color palette
-t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, xtext_type_hor = FALSE, xtext_size = 6, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_allu.png")
+knitr::include_graphics("Images/trans_abund_bar_allu.png")
 ```
 
 The bar plot can also be performed with group mean values.
 Note that, from v0.16.0, the parameter `group_morestats = TRUE` can be used to add more summary statistics in the return `data_abund` when `groupmean` parameter is provided.
-
 
 ```{r, echo = TRUE, eval = FALSE}
 # The groupmean parameter can be used to obtain the group-mean barplot.
@@ -72,7 +71,7 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```
 
 ```{r, out.width = "400px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_mean.png")
+knitr::include_graphics("Images/trans_abund_barplot_groupmean.png")
 ```
 
 The box plot is an excellent way to intuitionally show abundance distribution across groups.
@@ -80,7 +79,7 @@ The box plot is an excellent way to intuitionally show abundance distribution ac
 ```{r, echo = TRUE, eval = FALSE}
 # show 15 taxa at Class level
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 15)
-t1$plot_box(group = "Group")
+t1$plot_box(group = "Group", xtext_angle = 30)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -105,7 +104,7 @@ Line chart is very useful to show the abundance change of taxa along time, space
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5)
 t1$plot_line()
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, groupmean = "Type")
-t1$plot_line(position = position_dodge(0.3), xtext_type_hor = TRUE)
+t1$plot_line(position = position_dodge(0.3), xtext_angle = 0)
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
@@ -118,11 +117,70 @@ Then, we show the pie chart with the group mean values.
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 6, groupmean = "Group")
 # all pie chart in one row
 t1$plot_pie(facet_nrow = 1)
+t1$plot_pie(facet_nrow = 1, add_label = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_pie.png")
+knitr::include_graphics("Images/trans_abund_pie.png")
 ```
+
+The donut and radar charts are implemented from v0.17.0. 
+Please install the dependent packages according to the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1$plot_donut(label = FALSE)
+t1$plot_donut(label = TRUE)
+```
+
+```{r, out.width = "650px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_donut.png")
+```
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1$plot_radar(values.radar = c("0%", "25%", "50%"), grid.min = 0, grid.mid = 0.25, grid.max = 0.5)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Type")
+t1$plot_radar(values.radar = c("0%", "25%", "50%"), grid.min = 0, grid.mid = 0.25, grid.max = 0.5)
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_radar.png")
+```
+
+The ternary plot can be used for the case with three samples/groups.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1$plot_tern()
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_ternary.png")
+```
+
+
+
+
+When the hierarchical abundance data of two levels is needed to be shown in bar plot, the nested legend can be used.
+
+```{r, echo = TRUE, eval = FALSE}
+# require ggnested package; see https://chiliubio.github.io/microeco_tutorial/intro.html#dependence
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 10, high_level = "Phylum", prefix = "\\|")
+test1$plot_bar(ggnested = TRUE, facet = c("Group", "Type"), xtext_angle = 30)
+# fixed number in each phylum
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 4)
+test1$plot_bar(ggnested = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
+# sum others in each phylum
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, prefix = "\\|")
+test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_barplot_ggnested.png")
+```
+
+
 
 ### Key points
 
@@ -222,8 +280,8 @@ We use bar plot to show the composition at the Genus level.
 t2$cal_abund()
 # transform and plot
 t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 8)
-t3$plot_bar(bar_type = "part", legend_text_italic = T, ylab_title = "Frequency (%)", xtext_type_hor = FALSE, color_values = RColorBrewer::brewer.pal(8, "Set2"),
-	order_x = c("IW", "CW", "TW", "IW&CW", "IW&TW", "CW&TW", "IW&CW&TW"))
+t3$plot_bar(bar_type = "part", legend_text_italic = T, xtext_angle = 30, color_values = RColorBrewer::brewer.pal(8, "Set2"),
+	order_x = c("IW", "CW", "TW", "IW&CW", "IW&TW", "CW&TW", "IW&CW&TW")) + ylab("Frequency (%)")
 ```
 
 
@@ -235,7 +293,8 @@ We also try to use pie chart to show the compositions at the Phylum level.
 
 ```{r, echo = TRUE, eval = FALSE}
 t3 <- trans_abund$new(dataset = t2, taxrank = "Phylum", ntaxa = 8)
-t3$plot_pie(facet_nrow = 3, color_values = rev(c(RColorBrewer::brewer.pal(8, "Dark2"), "grey50")))
+t3$data_abund$Sample %<>% factor(., levels = unique(.))
+t3$plot_pie(facet_nrow = 3, color_values = c(RColorBrewer::brewer.pal(8, "Dark2"), "grey50"))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}

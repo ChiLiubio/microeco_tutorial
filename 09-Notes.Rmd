@@ -116,7 +116,6 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# The groupmean parameter can be used to obtain the group-mean barplot.
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
 g1 <- t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
 g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
@@ -126,19 +125,39 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
 
-## colors for many groups
+## colors for more groups
 
-In general, the color palette in the ploting function is enough for the settings of groups or samples,
-such as RColorBrewer::brewer.pal(12, "Paired").
-If the user has too many groups (e.g. 20), the color_palette_20 can be used. It has 20 colors with paired combinations.
-If this is still not enough, the randomcoloR package can be used for generating more colors.
+Within the R microeco package, for the visualization of discrete data, 
+`RColorBrewer::brewer.pal(8, "Dark2")` is employed as the default color generation option. 
+As this palette encompasses merely eight unique colors, 
+users who require additional variations or seek to switch to a different color palette are advised to utilize the `paletteer` package (https://r-charts.com/color-palettes/).
 
-```{r, echo = TRUE, eval = TRUE}
-color_palette_20
+```{r, echo = TRUE, eval = FALSE}
+install.packages("paletteer")
+library("paletteer")
+# examples
+paletteer_d("RColorBrewer::Spectral")
+paletteer_d("RColorBrewer::Set3")
+paletteer_d("RColorBrewer::Paired")
+paletteer_d("ggsci::nrc_npg")
+paletteer_d("ggsci::default_aaas")
+paletteer_d("ggsci::lanonc_lancet")
+paletteer_d("ggsci::default_nejm")
+paletteer_d("ggsci::category10_d3")
+paletteer_d("ggthemes::Classic_10_Light")
+paletteer_d("ggthemes::Classic_10_Medium")
+paletteer_d("ggthemes::Classic_Cyclic")
+# 20 color values
+paletteer_d("ggsci::category20c_d3")
+paletteer_d("ggsci::category20_d3")
+paletteer_d("ggthemes::Classic_20")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-barplot(1:20, col = color_palette_20)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_10_Medium"))
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 20, groupmean = "Group")
+t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_20"))
 ```
 
 ## customized data input
@@ -149,16 +168,6 @@ From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL datas
 t1 <- trans_env$new()
 t1 <- trans_alpha$new(dataset = NULL, group = NULL)
 ```
-
-
-
-
-
-
-
-
-
-
 
 
 

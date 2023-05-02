@@ -460,7 +460,7 @@ tmp$tidy_dataset()
 tmp$cal_abund()
 tmp2 <- trans_abund$new(tmp, taxrank = "Phylum", ntaxa = 10)
 tmp2$data_abund$Sample %<>% factor(., levels = rownames(tmp$sample_table))
-tmp2$plot_line(xtext_type_hor = TRUE, color_values = RColorBrewer::brewer.pal(12, "Paired")) + ylab("OTUs ratio (%)")
+tmp2$plot_line(xtext_angle = 30, color_values = RColorBrewer::brewer.pal(12, "Paired")) + ylab("OTUs ratio (%)")
 ```
 
 The function `cal_sum_links` can sum the links (edge) number from one taxa to another or within the same taxa. 
@@ -474,7 +474,7 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_sum_links(taxa_level = "Phylum")
 # require chorddiag package; see https://github.com/mattflor/chorddiag
-t1$plot_sum_links(plot_pos = TRUE, plot_num = 10)
+t1$plot_sum_links(plot_pos = TRUE, plot_num = 10, color_values = RColorBrewer::brewer.pal(10, "Paired"))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -638,7 +638,7 @@ t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
 t2$cal_group_distance_diff(method = "wilcox")
 # plot the results
-g1 <- t2$plot_group_distance()
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -676,7 +676,7 @@ t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
 t2$cal_group_distance()
 # statistical analysis
 t2$cal_group_distance_diff(method = "wilcox")
-g1 <- t2$plot_group_distance()
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -689,7 +689,7 @@ BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover
 
 ```{r, echo = TRUE, eval=FALSE}
 # null model run 500 times
-t1$cal_ses_betamntd(runs=500, abundance.weighted = TRUE)
+t1$cal_ses_betamntd(runs = 500, abundance.weighted = TRUE, null.model = "taxa.labels")
 # return t1$res_ses_betamntd
 ```
 
@@ -701,6 +701,13 @@ t1$res_ses_betamntd <- as.matrix(read.csv("Files/cal_ses_betamntd.csv", row.name
 ```{r, echo = FALSE}
 # show t1$res_ses_betamntd
 pander::pander(t1$res_ses_betamntd[1:5, 1:5])
+```
+
+If the dataset is large, it is faster with use_iCAMP = TRUE for betaNTI.
+
+```{r, echo = TRUE, eval=FALSE}
+tmp <- "./test1"; dir.create(tmp)
+t1$cal_ses_betamntd(runs = 1000, abundance.weighted = TRUE, use_iCAMP = TRUE, iCAMP_tempdir = tmp)
 ```
 
 
@@ -763,11 +770,16 @@ t1$cal_NST_test(method = "nst.boot")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
+# convert long format table to square matrix
+# the 10th column: MST.ij.bray in t1$res_NST$index.pair
+test <- t1$cal_NST_convert(10)
+```
+
+```{r, echo = TRUE, eval = FALSE}
 # for pNST method, phylogenetic tree is needed
 t1$cal_NST(method = "pNST", group = "Group", output.rand = TRUE, SES = TRUE)
 t1$cal_NST_test(method = "nst.boot")
 ```
-
 
 For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal_NTI and cal_NRI, respectively.
 

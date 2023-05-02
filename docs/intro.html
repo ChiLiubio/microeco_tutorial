@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Introduction | Tutorial for R microeco package (v0.16.0)</title>
+  <title>Chapter 2 Introduction | Tutorial for R microeco package (v0.17.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.16.0)" />
+  <meta property="og:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.17.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.16.0)" />
+  <meta name="twitter:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v0.17.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -332,7 +332,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.16.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.17.0)</a>
           </h1>
         </div>
 
@@ -343,15 +343,14 @@ div.csl-indent {
 <div id="intro" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Introduction<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The microeco package has several advantages compared to other packages in R.
-The main goal of developing this package is to help users analyze microbiome data fast.
-So a series of commonly-used and cutting-edge approaches are implemented.
-To facilitate the data mining, the whole structure of microeco package are highly modularized to
-make users conveniently remember, search and use the classes.
-It is notable that, beside the demonstration in the tutorial, users can also save the intermediate files in each object and
-apply those files to other tools according to the format requirement.
-Main files stored in the object of each class are the frequently-used data.frame format.
-So the intermediate and result files are easily saved, modified and used for other tools in microbial ecology.
-Before starting the specific usage of each class, let’s first introduce several key points.</p>
+The primary objective behind the development of this package is to assist users in rapidly analyzing microbiome data,
+utilizing a range of cutting-edge and commonly adopted methodologies.
+To facilitate data mining, every component of the microeco package has been modularized to ensure that users can easily recall, search, and employ classes.
+It is important to note that, in addition to being demonstrated in the tutorial,
+users can also save intermediate files within each object and utilize them with other tools according to formatting necessities.
+Main data stored in the object of each class are the frequently-used data.frame format,
+thereby making it effortless to save, modify, and employ intermediate and outcome files with other microbial ecology tools.
+Prior to exploring the specific utilization of each class, we shall first introduce a few critical points.</p>
 <div id="framework" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Framework<a href="intro.html#framework" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is a rough framework for users to fast understand the design of microeco package.</p>
@@ -402,16 +401,17 @@ the installation of microeco only depend on several packages, which are compulso
 So the question is that the user may encounter an error when using a class or function that invoke an additional package like this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="intro.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb3-2"><a href="intro.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb3-3"><a href="intro.html#cb3-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb3-4"><a href="intro.html#cb3-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="intro.html#cb4-1" aria-hidden="true" tabindex="-1"></a>Error in t1$cal_network(network_method = &quot;SpiecEasi&quot;): igraph package not installed ...</span></code></pre></div>
+<span id="cb3-3"><a href="intro.html#cb3-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb3-4"><a href="intro.html#cb3-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">network_method =</span> <span class="st">&quot;SpiecEasi&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="intro.html#cb4-1" aria-hidden="true" tabindex="-1"></a>Error in test$cal_network(network_method = &quot;SpiecEasi&quot;): SpiecEasi package is not installed!</span></code></pre></div>
 <p><br>
-The reason is that network construction requires igraph package. We donot put the igraph and some other packages on the “Imports” part of microeco package.
-In addition, some packages, e.g. SpiecEasi, are released on github and can not be installed automatically.</p>
+The reason is that network construction with ‘SpiecEasi’ method requires SpiecEasi package to be installed.
+This package is deposited in GitHub and can not be installed automatically.
+In addition, we donot put some packages released in CRAN and Bioconductor on the “Imports” part of microeco package.</p>
 <p>The solutions:</p>
 <ol style="list-style-type: decimal">
-<li><p>Install the package when encounter such an error. Actually, it’s very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.</p></li>
-<li><p>Install the packages in advance.
+<li><p>Install the missing package when encounter such an error. Actually, it’s very easy to install the packages from CRAN or Bioconductor or Github. Just have a try.</p></li>
+<li><p>Install all the packages in advance.
 This is recommended if the user is interested in most of the methods and want to run a large number of examples in this tutorial.
 If so, please read all of the following sections and install these packages.</p></li>
 </ol>
@@ -426,7 +426,7 @@ If you want to install all of these packages or some of them, please run this:</
 <span id="cb5-3"><a href="intro.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If a package is not installed, it will be installed from CRAN</span></span>
 <span id="cb5-4"><a href="intro.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># First select the packages of interest</span></span>
 <span id="cb5-5"><a href="intro.html#cb5-5" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;microeco&quot;</span>, <span class="st">&quot;file2meco&quot;</span>, <span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;GUniFrac&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;randomForest&quot;</span>, <span class="st">&quot;ggdendro&quot;</span>, <span class="st">&quot;ggrepel&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;picante&quot;</span>, <span class="st">&quot;pheatmap&quot;</span>, <span class="st">&quot;rgexf&quot;</span>, </span>
-<span id="cb5-6"><a href="intro.html#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;rcompanion&quot;</span>, <span class="st">&quot;FSA&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;NST&quot;</span>, <span class="st">&quot;GGally&quot;</span>, <span class="st">&quot;MicrobiomeStat&quot;</span>, <span class="st">&quot;ggraph&quot;</span>, <span class="st">&quot;networkD3&quot;</span>)</span>
+<span id="cb5-6"><a href="intro.html#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ggalluvial&quot;</span>, <span class="st">&quot;ggh4x&quot;</span>, <span class="st">&quot;rcompanion&quot;</span>, <span class="st">&quot;FSA&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;aplot&quot;</span>, <span class="st">&quot;NST&quot;</span>, <span class="st">&quot;GGally&quot;</span>, <span class="st">&quot;ggtern&quot;</span>, <span class="st">&quot;MicrobiomeStat&quot;</span>, <span class="st">&quot;ggraph&quot;</span>, <span class="st">&quot;networkD3&quot;</span>, <span class="st">&quot;poweRlaw&quot;</span>)</span>
 <span id="cb5-7"><a href="intro.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Now check or install</span></span>
 <span id="cb5-8"><a href="intro.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> tmp){</span>
 <span id="cb5-9"><a href="intro.html#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
@@ -473,7 +473,9 @@ For the Windows system, first make sure RTools has been installed (<a href="http
 <span id="cb7-15"><a href="intro.html#cb7-15" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;SPRING-master.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb7-16"><a href="intro.html#cb7-16" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;NetCoMi-main.zip&quot;</span>), <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span>
 <span id="cb7-17"><a href="intro.html#cb7-17" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;beem-static-master.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-18"><a href="intro.html#cb7-18" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;chorddiag-master.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb7-18"><a href="intro.html#cb7-18" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;chorddiag-master.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-19"><a href="intro.html#cb7-19" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;ggradar-master.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-20"><a href="intro.html#cb7-20" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_local</span>(<span class="fu">paste0</span>(tmp, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;ggnested-main.zip&quot;</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="gephi" class="section level3 hasAnchor" number="2.5.5">
 <h3><span class="header-section-number">2.5.5</span> Gephi<a href="intro.html#gephi" class="anchor-section" aria-label="Anchor link to header"></a></h3>

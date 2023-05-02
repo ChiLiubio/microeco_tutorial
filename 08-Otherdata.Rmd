@@ -67,7 +67,7 @@ test$tidy_dataset()
 # rel = FALSE donot use relative abundance, use the raw RPK
 test$cal_abund(select_cols = 1:3, rel = FALSE)
 test1 <- trans_abund$new(test, taxrank = "Level.2", ntaxa = 10)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", color_values = RColorBrewer::brewer.pal(12, "Set3")) + ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -82,7 +82,7 @@ test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", color_values = RColorBrewer::brewer.pal(12, "Set3")) + ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -135,7 +135,7 @@ data2$cal_spe_func_perc(abundance_weighted = FALSE)
 data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
 # use trans_abund to plot
 t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
-t1$plot_box(group = "donor_status") + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
+t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
