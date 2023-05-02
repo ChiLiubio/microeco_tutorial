@@ -208,6 +208,7 @@ devtools::install_local(paste0(tmp, "/", "beem-static-master.zip"), dependencies
 devtools::install_local(paste0(tmp, "/", "chorddiag-master.zip"), dependencies = TRUE)
 devtools::install_local(paste0(tmp, "/", "ggradar-master.zip"), dependencies = TRUE)
 devtools::install_local(paste0(tmp, "/", "ggnested-main.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "ggcor-1-master.zip"), dependencies = TRUE)
 ```
 
 
@@ -839,7 +840,7 @@ The box plot is an excellent way to intuitionally show abundance distribution ac
 ```{r, echo = TRUE, eval = FALSE}
 # show 15 taxa at Class level
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 15)
-t1$plot_box(group = "Group")
+t1$plot_box(group = "Group", xtext_angle = 30)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -884,7 +885,8 @@ t1$plot_pie(facet_nrow = 1, add_label = TRUE)
 knitr::include_graphics("Images/trans_abund_pie.png")
 ```
 
-The donut and radar charts are implemented from v0.17.0.
+The donut and radar charts are implemented from v0.17.0. 
+Please install the dependent packages according to the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
@@ -931,7 +933,7 @@ test1$plot_bar(ggnested = TRUE, facet = c("Group", "Type"), xtext_angle = 30)
 test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 4)
 test1$plot_bar(ggnested = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
 # sum others in each phylum
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, prefix = "\\|")
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, prefix = "\\|")
 test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
 ```
 
@@ -1196,7 +1198,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 t1$plot_alpha(measure = "Chao1")
-t1$plot_alpha(measure = "Chao1", order_x_mean = TRUE, add_sig_text_size = 6)
+t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, add_sig_text_size = 6)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -1216,11 +1218,11 @@ Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$res_diff %<>% base::subset(Significance != "ns")
-t1$plot_alpha(measure = "Chao1", xtext_size = 15)
+t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox_nons.png")
+knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
 From the v0.12.0, the trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
@@ -2047,7 +2049,7 @@ t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
 t2$cal_group_distance_diff(method = "wilcox")
 # plot the results
-g1 <- t2$plot_group_distance()
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -2085,7 +2087,7 @@ t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
 t2$cal_group_distance()
 # statistical analysis
 t2$cal_group_distance_diff(method = "wilcox")
-g1 <- t2$plot_group_distance()
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -2098,7 +2100,7 @@ BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover
 
 ```{r, echo = TRUE, eval=FALSE}
 # null model run 500 times
-t1$cal_ses_betamntd(runs=500, abundance.weighted = TRUE)
+t1$cal_ses_betamntd(runs = 500, abundance.weighted = TRUE, null.model = "taxa.labels")
 # return t1$res_ses_betamntd
 ```
 
@@ -2110,6 +2112,13 @@ t1$res_ses_betamntd <- as.matrix(read.csv("Files/cal_ses_betamntd.csv", row.name
 ```{r, echo = FALSE}
 # show t1$res_ses_betamntd
 pander::pander(t1$res_ses_betamntd[1:5, 1:5])
+```
+
+If the dataset is large, it is faster with use_iCAMP = TRUE for betaNTI.
+
+```{r, echo = TRUE, eval=FALSE}
+tmp <- "./test1"; dir.create(tmp)
+t1$cal_ses_betamntd(runs = 1000, abundance.weighted = TRUE, use_iCAMP = TRUE, iCAMP_tempdir = tmp)
 ```
 
 
@@ -2172,14 +2181,15 @@ t1$cal_NST_test(method = "nst.boot")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# for pNST method, phylogenetic tree is needed
-t1$cal_NST(method = "pNST", group = "Group", output.rand = TRUE, SES = TRUE)
-t1$cal_NST_test(method = "nst.boot")
+# convert long format table to square matrix
+# the 10th column: MST.ij.bray in t1$res_NST$index.pair
+test <- t1$cal_NST_convert(10)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# convert long format table to square matrix
-test <- t1$cal_NST_convert(10)
+# for pNST method, phylogenetic tree is needed
+t1$cal_NST(method = "pNST", group = "Group", output.rand = TRUE, SES = TRUE)
+t1$cal_NST_test(method = "nst.boot")
 ```
 
 For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal_NTI and cal_NRI, respectively.
@@ -3037,7 +3047,7 @@ test$tidy_dataset()
 test$cal_abund(select_cols = 1:3, rel = FALSE)
 test$taxa_abund$Superclass1 %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Superclass1", ntaxa = 10)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)")
+test1$plot_bar(facet = "Group") + ylab("Abundance (RPK)")
 # select both function and taxa
 test$cal_abund(select_cols = c("Superclass1", "Phylum", "Genus"), rel = TRUE)
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
@@ -3253,7 +3263,7 @@ test$tidy_dataset()
 # rel = FALSE donot use relative abundance, use the raw RPK
 test$cal_abund(select_cols = 1:3, rel = FALSE)
 test1 <- trans_abund$new(test, taxrank = "Level.2", ntaxa = 10)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", color_values = RColorBrewer::brewer.pal(12, "Set3")) + ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -3268,7 +3278,7 @@ test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
-test1$plot_bar(facet = "Group", ylab_title = "Abundance (RPK)", color_values = RColorBrewer::brewer.pal(12, "Set3"))
+test1$plot_bar(facet = "Group", color_values = RColorBrewer::brewer.pal(12, "Set3")) + ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -3321,7 +3331,7 @@ data2$cal_spe_func_perc(abundance_weighted = FALSE)
 data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
 # use trans_abund to plot
 t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
-t1$plot_box(group = "donor_status") + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
+t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -3463,7 +3473,6 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# The groupmean parameter can be used to obtain the group-mean barplot.
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
 g1 <- t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
 g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
@@ -3473,7 +3482,7 @@ g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 knitr::include_graphics("Images/plot_bar_mean_classic.png")
 ```
 
-## colors for many groups
+## colors for more groups
 
 Within the R microeco package, for the visualization of discrete data, 
 `RColorBrewer::brewer.pal(8, "Dark2")` is employed as the default color generation option. 
@@ -3501,6 +3510,13 @@ paletteer_d("ggsci::category20_d3")
 paletteer_d("ggthemes::Classic_20")
 ```
 
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_10_Medium"))
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 20, groupmean = "Group")
+t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_20"))
+```
+
 ## customized data input
 
 From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL dataset input for some customized usage of some functions in those classes.
@@ -3509,16 +3525,6 @@ From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL datas
 t1 <- trans_env$new()
 t1 <- trans_alpha$new(dataset = NULL, group = NULL)
 ```
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -4167,7 +4173,8 @@ x2 %<>% dplyr::mutate(rd = cut(r, breaks = c(-Inf, 0.3, 0.6, Inf), labels = c("<
 
 # cobine two tables
 plot_table <- rbind(x1, x2)
-# require ggcor package (https://github.com/mj163163/ggcor-1)
+# install ggcor package from (https://github.com/mj163163/ggcor-1)
+# or follow the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages)
 library(ggplot2)
 library(ggcor)
 set_scale()
@@ -4187,12 +4194,6 @@ g1
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_env_mantel_ggcor.png")
 ```
-
-
-
-
-
-
 
 
 

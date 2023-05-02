@@ -348,6 +348,7 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"chorddiag{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"ggradar{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"ggnested{-}main.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_local}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(tmp, }\StringTok{"/"}\NormalTok{, }\StringTok{"ggcor{-}1{-}master.zip"}\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1424,7 +1425,7 @@ The box plot is an excellent way to intuitionally show abundance distribution ac
 \begin{Highlighting}[]
 \CommentTok{\# show 15 taxa at Class level}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{15}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1469,6 +1470,7 @@ Then, we show the pie chart with the group mean values.
 \begin{center}\includegraphics[width=600px]{Images/trans_abund_pie} \end{center}
 
 The donut and radar charts are implemented from v0.17.0.
+Please install the dependent packages according to the steps (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1513,7 +1515,7 @@ When the hierarchical abundance data of two levels is needed to be shown in bar 
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{30}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{4}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
 \CommentTok{\# sum others in each phylum}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{30}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{3}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{20}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{3}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{high\_level\_add\_other =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -1945,7 +1947,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{order\_x\_mean =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{6}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{boxplot\_add =} \StringTok{"jitter"}\NormalTok{, }\AttributeTok{order\_x\_mean =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{6}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1965,11 +1967,11 @@ Let's try to remove the `ns' in the label by manipulating the object\$res\_diff.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ base}\SpecialCharTok{::}\FunctionTok{subset}\NormalTok{(Significance }\SpecialCharTok{!=} \StringTok{"ns"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{15}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{boxplot\_add =} \StringTok{"dotplot"}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{15}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox_nons} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_alpha_wilcox_nons} \end{center}
 
 From the v0.12.0, the trans\_alpha class supports the differential test of groups within each group by using the by\_group parameter.
 
@@ -3095,7 +3097,7 @@ revealing that the basal phylogenetic turnover in TW is high.
 \CommentTok{\# see the help document for more methods, e.g. "anova" and "KW\_dunn"}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
 \CommentTok{\# plot the results}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
 \NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3133,7 +3135,7 @@ revealing that the strength of variable selection in CW and TW may be similar un
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
 \CommentTok{\# statistical analysis}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{()}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
 \NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3145,7 +3147,7 @@ BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# null model run 500 times}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betamntd}\NormalTok{(}\AttributeTok{runs=}\DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betamntd}\NormalTok{(}\AttributeTok{runs =} \DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{null.model =} \StringTok{"taxa.labels"}\NormalTok{)}
 \CommentTok{\# return t1$res\_ses\_betamntd}
 \end{Highlighting}
 \end{Shaded}
@@ -3180,6 +3182,15 @@ S5
 \textbf{S5} & 1.236 & 0.8991 & 0.02069 & -1.085 & 0 \\
 \bottomrule()
 \end{longtable}
+
+If the dataset is large, it is faster with use\_iCAMP = TRUE for betaNTI.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \StringTok{"./test1"}\NormalTok{; }\FunctionTok{dir.create}\NormalTok{(tmp)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betamntd}\NormalTok{(}\AttributeTok{runs =} \DecValTok{1000}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{use\_iCAMP =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{iCAMP\_tempdir =}\NormalTok{ tmp)}
+\end{Highlighting}
+\end{Shaded}
 
 RCbray (Bray-Curtis-based Raup-Crick) can be calculated using function cal\_rcbray()
 to assess whether the compositional turnover was governed primarily by drift \citep{Chase_null_2011}.
@@ -3265,7 +3276,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May  2 17:35:58 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue May  2 21:02:03 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3295,9 +3306,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3868 & 0.3639 & 9.115 \\
-CW & 435 & 0.5633 & 0.2968 & 0.2867 & 14.32 \\
-TW & 435 & 0.6241 & 0.4158 & 0.3995 & 9.877 \\
+IW & 435 & 0.6537 & 0.3866 & 0.3637 & 9.125 \\
+CW & 435 & 0.5629 & 0.2958 & 0.2865 & 14.33 \\
+TW & 435 & 0.624 & 0.4154 & 0.3995 & 9.918 \\
 \bottomrule()
 \end{longtable}
 
@@ -3310,16 +3321,17 @@ TW & 435 & 0.6241 & 0.4158 & 0.3995 & 9.877 \\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# for pNST method, phylogenetic tree is needed}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST}\NormalTok{(}\AttributeTok{method =} \StringTok{"pNST"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
+\CommentTok{\# convert long format table to square matrix}
+\CommentTok{\# the 10th column: MST.ij.bray in t1$res\_NST$index.pair}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_convert}\NormalTok{(}\DecValTok{10}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# convert long format table to square matrix}
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_convert}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\CommentTok{\# for pNST method, phylogenetic tree is needed}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST}\NormalTok{(}\AttributeTok{method =} \StringTok{"pNST"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{output.rand =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{SES =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_NST\_test}\NormalTok{(}\AttributeTok{method =} \StringTok{"nst.boot"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4459,7 +4471,7 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Superclass1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Superclass1"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \CommentTok{\# select both function and taxa}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Superclass1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
@@ -4693,7 +4705,7 @@ Here, we show some detailed examples using KEGG pathway results.
 \CommentTok{\# rel = FALSE donot use relative abundance, use the raw RPK}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Level.2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{))}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4708,7 +4720,7 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Level}\FloatTok{.1} \SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{ylab\_title =} \StringTok{"Abundance (RPK)"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{))}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4761,7 +4773,7 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \NormalTok{data1}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Trait }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(data2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc))}
 \CommentTok{\# use trans\_abund to plot}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ data1, }\AttributeTok{taxrank =} \StringTok{"Trait"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"donor\_status"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative population abundance (\%)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{13}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"donor\_status"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative population abundance (\%)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{13}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4923,7 +4935,6 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# The groupmean parameter can be used to obtain the group{-}mean barplot.}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{others\_color =} \StringTok{"grey70"}\NormalTok{, }\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{18}\NormalTok{))}
@@ -4932,8 +4943,8 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 \begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
 
-\hypertarget{colors-for-many-groups}{%
-\section{colors for many groups}\label{colors-for-many-groups}}
+\hypertarget{colors-for-more-groups}{%
+\section{colors for more groups}\label{colors-for-more-groups}}
 
 Within the R microeco package, for the visualization of discrete data,
 \texttt{RColorBrewer::brewer.pal(8,\ "Dark2")} is employed as the default color generation option.
@@ -4960,6 +4971,15 @@ users who require additional variations or seek to switch to a different color p
 \FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::category20c\_d3"}\NormalTok{)}
 \FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggsci::category20\_d3"}\NormalTok{)}
 \FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_20"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_10\_Medium"}\NormalTok{))}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{20}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{paletteer\_d}\NormalTok{(}\StringTok{"ggthemes::Classic\_20"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5828,7 +5848,8 @@ Please install \texttt{ggcor} package according to the document (\url{https://gi
 
 \CommentTok{\# cobine two tables}
 \NormalTok{plot\_table }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(x1, x2)}
-\CommentTok{\# require ggcor package (https://github.com/mj163163/ggcor{-}1)}
+\CommentTok{\# install ggcor package from (https://github.com/mj163163/ggcor{-}1)}
+\CommentTok{\# or follow the steps (https://chiliubio.github.io/microeco\_tutorial/intro.html\#github{-}packages)}
 \FunctionTok{library}\NormalTok{(ggplot2)}
 \FunctionTok{library}\NormalTok{(ggcor)}
 \FunctionTok{set\_scale}\NormalTok{()}
