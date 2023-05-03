@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-02" />
+<meta name="date" content="2023-05-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -367,7 +367,7 @@ LEfSe combines the non-parametric test and linear discriminant analysis <span cl
 <span id="cb146-4"><a href="model-based-class.html#cb146-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">4</span>)</span>
 <span id="cb146-5"><a href="model-based-class.html#cb146-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we show 20 taxa with the highest LDA (log10)</span></span>
 <span id="cb146-6"><a href="model-based-class.html#cb146-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span></code></pre></div>
-<p><img src="Images/plot_lefse_bar.png" width="700px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_lefse_bar.png" width="700px" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="model-based-class.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show part of the table</span></span>
 <span id="cb147-2"><a href="model-based-class.html#cb147-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>)]</span></code></pre></div>
 <table>
@@ -420,7 +420,7 @@ LEfSe combines the non-parametric test and linear discriminant analysis <span cl
 </table>
 <p>Then, we plot the abundance of biomarkers detected by LEfSe.</p>
 <div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="model-based-class.html#cb148-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span></code></pre></div>
-<p><img src="Images/plot_lefse_diff_abund.png" width="650px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_lefse_abund.png" width="650px" style="display: block; margin: auto;" /></p>
 <p>Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
 As an example, we only select the highest 200 abundant taxa in the tree and 50 differential features.
@@ -430,7 +430,7 @@ We only show the full taxonomic label at Phylum level and use letters at other l
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="model-based-class.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clade_label_level 5 represent phylum level in this analysis</span></span>
 <span id="cb149-2"><a href="model-based-class.html#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggtree package</span></span>
 <span id="cb149-3"><a href="model-based-class.html#cb149-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_cladogram</span>(<span class="at">use_taxa_num =</span> <span class="dv">200</span>, <span class="at">use_feature_num =</span> <span class="dv">50</span>, <span class="at">clade_label_level =</span> <span class="dv">5</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span></code></pre></div>
-<p><img src="Images/plot_lefse_cladogram.png" width="1000px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_lefse_cladogram.png" width="1000px" style="display: block; margin: auto;" /></p>
 <p>There may be a problem related with the taxonomic labels in the plot.
 When there are too many levels shown, the taxonomic labels can have too much overlap.
 However, if only Phylum labels are indicated, the taxa in the legend with marked letters are too many.
@@ -443,7 +443,7 @@ At this time, taxa can be manually choosed to show like the following operation.
 <span id="cb150-6"><a href="model-based-class.html#cb150-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then use parameter select_show_labels to show</span></span>
 <span id="cb150-7"><a href="model-based-class.html#cb150-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_cladogram</span>(<span class="at">use_taxa_num =</span> <span class="dv">200</span>, <span class="at">use_feature_num =</span> <span class="dv">50</span>, <span class="at">select_show_labels =</span> use_labels)</span>
 <span id="cb150-8"><a href="model-based-class.html#cb150-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we can see that more taxa names appear in the tree</span></span></code></pre></div>
-<p><img src="Images/plot_lefse_cladogram_1.png" width="1000px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_lefse_cladogram_1.png" width="1000px" style="display: block; margin: auto;" /></p>
 <p>The ‘rf’ method depends on the random forest<span class="citation">(<a href="#ref-Beck_Machine_2014" role="doc-biblioref">Beck and Foster 2014</a>; <a href="#ref-Yatsunenko_Human_2012" role="doc-biblioref">Yatsunenko et al. 2012</a>)</span> and the non-parametric test.
 The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
 MeanDecreaseGini is selected as the indicator value in the analysis.</p>
@@ -460,17 +460,17 @@ MeanDecreaseGini is selected as the indicator value in the analysis.</p>
 <span id="cb151-11"><a href="model-based-class.html#cb151-11" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> g1 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb151-12"><a href="model-based-class.html#cb151-12" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> g2 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span>
 <span id="cb151-13"><a href="model-based-class.html#cb151-13" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(g1, g2, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fl">1.7</span>))</span></code></pre></div>
-<p><img src="Images/plot_rf_diff_abund.png" width="800px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_rf_diff_abund.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
 Now adding labels supports all the differential test methods.</p>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="model-based-class.html#cb152-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb152-2"><a href="model-based-class.html#cb152-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter something not needed to show</span></span>
 <span id="cb152-3"><a href="model-based-class.html#cb152-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Significance <span class="sc">%in%</span> <span class="st">&quot;***&quot;</span>)</span>
-<span id="cb152-4"><a href="model-based-class.html#cb152-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">add_sig =</span> T, <span class="at">add_sig_label =</span> <span class="st">&quot;Significance&quot;</span>)</span></code></pre></div>
-<p><img src="Images/plot_diff_abund_siglabel_wilcox.png" width="700px" style="display: block; margin: auto;" /></p>
+<span id="cb152-4"><a href="model-based-class.html#cb152-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">add_sig =</span> T, <span class="at">add_sig_label =</span> <span class="st">&quot;Significance&quot;</span>)</span></code></pre></div>
+<p><img src="Images/trans_diff_siglabel_wilcox.png" width="700px" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="model-based-class.html#cb153-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb153-2"><a href="model-based-class.html#cb153-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">add_sig =</span> T, <span class="at">coord_flip =</span> F)</span></code></pre></div>
-<p><img src="Images/plot_diff_abund_siglabel_anova.png" width="700px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_diff_siglabel_anova.png" width="700px" style="display: block; margin: auto;" /></p>
 <p>Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.</p>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="model-based-class.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metastat analysis at Genus level</span></span>
 <span id="cb154-2"><a href="model-based-class.html#cb154-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;metastat&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>)</span>
@@ -480,8 +480,8 @@ Now adding labels supports all the differential test methods.</p>
 the metastat can run the comparisons for each paired group. So there are three pairs in t1$res_diff$Comparison.
 For the abundance plotting, the user should use select_group to select the required pair.</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="model-based-class.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select_group should be one of groups in t1$res_diff$Comparison</span></span>
-<span id="cb155-2"><a href="model-based-class.html#cb155-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">select_group =</span> <span class="st">&quot;CW - TW&quot;</span>)</span></code></pre></div>
-<p><img src="Images/plot_metastat_1.png" width="650px" style="display: block; margin: auto;" /></p>
+<span id="cb155-2"><a href="model-based-class.html#cb155-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">select_group =</span> <span class="st">&quot;CW - TW&quot;</span>, <span class="at">coord_flip =</span> F)</span></code></pre></div>
+<p><img src="Images/trans_diff_metastat_1.png" width="650px" style="display: block; margin: auto;" /></p>
 <p>The following are the examples for the methods ‘KW’, ‘KW_dunn’, ‘wilcox’, ‘t.test’ and ‘anova’.</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="model-based-class.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kruskal-Wallis Rank Sum Test for all groups (&gt;= 2)</span></span>
 <span id="cb156-2"><a href="model-based-class.html#cb156-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;KW&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;all&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
@@ -723,10 +723,10 @@ get node properties table, edge properties table and adjacency matrix from netwo
 <p>Then, let’s plot the node classification in terms of the within-module connectivity and among-module connectivity.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="model-based-class.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add_label = TRUE can be used to directly add text label for points</span></span>
 <span id="cb169-2"><a href="model-based-class.html#cb169-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Images/plot_taxa_roles.png" width="700px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_network_taxa_roles.png" width="700px" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="model-based-class.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot node roles with phylum information</span></span>
 <span id="cb170-2"><a href="model-based-class.html#cb170-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Images/plot_taxa_roles_2.png" width="800px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_network_taxa_roles_2.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Now, we show the eigengene analysis of modules.
 The eigengene of a module, i.e. the first principal component of PCA, represents the main variance of the abundance in the species of the module.</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="model-based-class.html#cb171-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_eigen</span>()</span>
@@ -738,7 +738,7 @@ The eigengene of a module, i.e. the first principal component of PCA, represent
 <span id="cb172-4"><a href="model-based-class.html#cb172-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t1<span class="sc">$</span>res_eigen)</span>
 <span id="cb172-5"><a href="model-based-class.html#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the correlation heatmap</span></span>
 <span id="cb172-6"><a href="model-based-class.html#cb172-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
-<p><img src="Images/Env_module_eigen.png" width="600px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_network_env_module_eigen.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>The <code>subset_network</code> function can be applied to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.</p>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="model-based-class.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a sub network that contains all nodes in module M1</span></span>
@@ -789,7 +789,7 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 <div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="model-based-class.html#cb177-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_sum_links</span>(<span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
 <span id="cb177-2"><a href="model-based-class.html#cb177-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require chorddiag package; see https://github.com/mattflor/chorddiag</span></span>
 <span id="cb177-3"><a href="model-based-class.html#cb177-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">plot_pos =</span> <span class="cn">TRUE</span>, <span class="at">plot_num =</span> <span class="dv">10</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">10</span>, <span class="st">&quot;Paired&quot;</span>))</span></code></pre></div>
-<p><img src="Images/plot_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_network_sum_links.png" width="700px" style="display: block; margin: auto;" /></p>
 <p>For the correlation network, there are also other available correlation/association calculation options,
 such as Bray–Curtis (1-dissimilarity), SparCC <span class="citation">(<a href="#ref-Friedman_Inferring_2012" role="doc-biblioref">Friedman and Alm 2012</a>)</span>, CCLasso <span class="citation">(<a href="#ref-Fang_CCLasso_2015" role="doc-biblioref">Fang et al. 2015</a>)</span>,
 Pearson or Spearman with data normalization based on NetCoMi package <span class="citation">(<a href="#ref-Peschel_NetCoMi_2021" role="doc-biblioref">Peschel et al. 2021</a>)</span>.</p>
@@ -897,7 +897,7 @@ under the specific hypothesis <span class="citation">(<a href="#ref-Stegen_Quant
 <span id="cb183-3"><a href="model-based-class.html#cb183-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_mantel_corr</span></span>
 <span id="cb183-4"><a href="model-based-class.html#cb183-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the mantel correlogram</span></span>
 <span id="cb183-5"><a href="model-based-class.html#cb183-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_mantel_corr</span>()</span></code></pre></div>
-<p><img src="Images/plot_mantel_corr.png" width="600px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_nullmodel_mantel_corr.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>betaNRI(ses.betampd) is used to show the ‘basal’ phylogenetic turnover.
 Compared to betaNTI, it can capture more turnover information associated with the deep phylogeny.
 It is noted that there are many null models with the development in the several decades of community ecology.
@@ -923,7 +923,7 @@ revealing that the basal phylogenetic turnover in TW is high.</p>
 <span id="cb185-9"><a href="model-based-class.html#cb185-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results</span></span>
 <span id="cb185-10"><a href="model-based-class.html#cb185-10" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span>
 <span id="cb185-11"><a href="model-based-class.html#cb185-11" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Images/plot_betaNRI_one_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_nullmodel_betaNRI_one_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
 you should calculate the results for each group, respectively.
 The results show that, when we perform betaNRI for each group respectively,
@@ -954,7 +954,7 @@ revealing that the strength of variable selection in CW and TW may be similar un
 <span id="cb186-23"><a href="model-based-class.html#cb186-23" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
 <span id="cb186-24"><a href="model-based-class.html#cb186-24" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span>
 <span id="cb186-25"><a href="model-based-class.html#cb186-25" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Images/plot_betaNRI_each_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/trans_nullmodel_betaNRI_each_dataset.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover <span class="citation">(<a href="#ref-Stegen_Quantifying_2013" role="doc-biblioref">Stegen et al. 2013</a>)</span>.</p>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="model-based-class.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co"># null model run 500 times</span></span>
 <span id="cb187-2"><a href="model-based-class.html#cb187-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ses_betamntd</span>(<span class="at">runs =</span> <span class="dv">500</span>, <span class="at">abundance.weighted =</span> <span class="cn">TRUE</span>, <span class="at">null.model =</span> <span class="st">&quot;taxa.labels&quot;</span>)</span>
@@ -1085,7 +1085,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb194-3"><a href="model-based-class.html#cb194-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Tue May  2 20:59:15 2023. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Wed May  3 16:38:22 2023. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1110,26 +1110,26 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.6537</td>
-<td align="center">0.3866</td>
-<td align="center">0.3637</td>
-<td align="center">9.079</td>
+<td align="center">0.6539</td>
+<td align="center">0.3875</td>
+<td align="center">0.364</td>
+<td align="center">9.074</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5632</td>
-<td align="center">0.2957</td>
-<td align="center">0.2867</td>
-<td align="center">14.35</td>
+<td align="center">0.5627</td>
+<td align="center">0.2955</td>
+<td align="center">0.2864</td>
+<td align="center">14.42</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.624</td>
-<td align="center">0.4151</td>
-<td align="center">0.3994</td>
-<td align="center">9.869</td>
+<td align="center">0.6243</td>
+<td align="center">0.4145</td>
+<td align="center">0.3998</td>
+<td align="center">9.854</td>
 </tr>
 </tbody>
 </table>

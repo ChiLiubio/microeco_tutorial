@@ -814,7 +814,7 @@ t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
 # bar_type = "notfull" can discard 'others'; select another color palette
-t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+p <- t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
@@ -844,7 +844,7 @@ t1$plot_box(group = "Group", xtext_angle = 30)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_box.png")
+knitr::include_graphics("Images/trans_abund_boxplot.png")
 ```
 
 Then we show the heatmap with the high abundant genera.
@@ -856,7 +856,7 @@ t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE)
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_heatmap.png")
+knitr::include_graphics("Images/trans_abund_heatmap.png")
 ```
 
 Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
@@ -869,7 +869,7 @@ t1$plot_line(position = position_dodge(0.3), xtext_angle = 0)
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_line_type.png")
+knitr::include_graphics("Images/trans_abund_line.png")
 ```
 
 Then, we show the pie chart with the group mean values.
@@ -1017,7 +1017,7 @@ g1[[2]]
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_venn_bar_type.png")
+knitr::include_graphics("Images/trans_venn_3.png")
 ```
 
 Generally, after getting the intersection results, we do not know who those shared or unique taxa are.
@@ -1202,7 +1202,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, ad
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_letter.png")
+knitr::include_graphics("Images/trans_alpha_group_letter.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1211,7 +1211,7 @@ t1$plot_alpha(measure = "Chao1", shape = "Group")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox.png")
+knitr::include_graphics("Images/trans_alpha_group_wilcox.png")
 ```
 
 Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
@@ -1234,7 +1234,7 @@ t1$plot_alpha(measure = "Shannon")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox_bygroup.png")
+knitr::include_graphics("Images/trans_alpha_wilcox_bygroup.png")
 ```
 
 
@@ -1267,8 +1267,8 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 We first show the ordination using PCoA (principal coordinates analysis).
 
 ```{r, echo = TRUE, eval = TRUE}
-# we first create an trans_beta object
-# measure parameter can invoke the distance matrix in dataset$beta_diversity
+# create an trans_beta object
+# measure parameter must be one of names(dataset$beta_diversity)
 t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
@@ -1282,7 +1282,7 @@ t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("po
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_ordination.png")
+knitr::include_graphics("Images/trans_beta_ordination.png")
 ```
 
 More examples on different options.
@@ -1316,7 +1316,7 @@ t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_group_distance_within.png")
+knitr::include_graphics("Images/trans_beta_group_distance_within.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1327,18 +1327,23 @@ t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_group_distance_between.png")
+knitr::include_graphics("Images/trans_beta_group_distance_between.png")
 ```
 
 Clustering plot is also a frequently used method.
 
 ```{r, echo = TRUE, eval = FALSE}
+# extract a part of data
+d1 <- clone(dataset)
+d1$sample_table %<>% subset(Group %in% c("CW", "TW"))
+d1$tidy_dataset()
+t1 <- trans_beta$new(dataset = d1, group = "Group")
 # use replace_name to set the label name, group parameter used to set the color
-t1$plot_clustering(group = "Group", replace_name = c("Saline", "Type"))
+t1$plot_clustering(group = "Type", replace_name = c("Type"))
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_clustering.png")
+knitr::include_graphics("Images/trans_beta_clustering.png")
 ```
 
 
@@ -1445,7 +1450,7 @@ t1$plot_diff_bar(use_number = 1:30, width = 0.8, group_order = c("CW", "IW", "TW
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_bar.png")
+knitr::include_graphics("Images/trans_diff_lefse_bar.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1465,7 +1470,7 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("CW", "IW", "TW"))
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_diff_abund.png")
+knitr::include_graphics("Images/trans_diff_lefse_abund.png")
 ```
 
 Then, we show the cladogram of the differential features in the taxonomic tree.
@@ -1482,7 +1487,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, clade_label_lev
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_cladogram.png")
+knitr::include_graphics("Images/trans_diff_lefse_cladogram.png")
 ```
 
 There may be a problem related with the taxonomic labels in the plot.
@@ -1502,7 +1507,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_lab
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_cladogram_1.png")
+knitr::include_graphics("Images/trans_diff_lefse_cladogram_1.png")
 ```
 
 The 'rf' method depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
@@ -1526,7 +1531,7 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rf_diff_abund.png")
+knitr::include_graphics("Images/trans_diff_rf_diff_abund.png")
 ```
 
 The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
@@ -1536,11 +1541,11 @@ Now adding labels supports all the differential test methods.
 t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 # filter something not needed to show
 t1$res_diff %<>% subset(Significance %in% "***")
-t1$plot_diff_abund(use_number = 1:20, add_sig = T, add_sig_label = "Significance")
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, add_sig_label = "Significance")
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_diff_abund_siglabel_wilcox.png")
+knitr::include_graphics("Images/trans_diff_siglabel_wilcox.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1549,7 +1554,7 @@ t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
+knitr::include_graphics("Images/trans_diff_siglabel_anova.png")
 ```
 
 Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
@@ -1567,11 +1572,11 @@ For the abundance plotting, the user should use select_group to select the requi
 
 ```{r, echo = TRUE, eval = FALSE}
 # select_group should be one of groups in t1$res_diff$Comparison
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", coord_flip = F)
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_metastat_1.png")
+knitr::include_graphics("Images/trans_diff_metastat_1.png")
 ```
 
 
@@ -1783,7 +1788,7 @@ t1$plot_taxa_roles(use_type = 1)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_taxa_roles.png")
+knitr::include_graphics("Images/trans_network_taxa_roles.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1792,7 +1797,7 @@ t1$plot_taxa_roles(use_type = 2)
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_taxa_roles_2.png")
+knitr::include_graphics("Images/trans_network_taxa_roles_2.png")
 ```
 
 Now, we show the eigengene analysis of modules.
@@ -1815,7 +1820,7 @@ t2$plot_cor()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/Env_module_eigen.png")
+knitr::include_graphics("Images/trans_network_env_module_eigen.png")
 ```
 
 The `subset_network` function can be applied to extract a part of nodes and edges among these nodes from the network.
@@ -1889,7 +1894,7 @@ t1$plot_sum_links(plot_pos = TRUE, plot_num = 10, color_values = RColorBrewer::b
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_sum_links.png")
+knitr::include_graphics("Images/trans_network_sum_links.png")
 ```
 
 For the correlation network, there are also other available correlation/association calculation options, 
@@ -2016,7 +2021,7 @@ t1$plot_mantel_corr()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_mantel_corr.png")
+knitr::include_graphics("Images/trans_nullmodel_mantel_corr.png")
 ```
 
 betaNRI(ses.betampd) is used to show the 'basal' phylogenetic turnover.
@@ -2054,7 +2059,7 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_betaNRI_one_dataset.png")
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_one_dataset.png")
 ```
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
@@ -2092,7 +2097,7 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_betaNRI_each_dataset.png")
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
 ```
 
 
@@ -2459,7 +2464,7 @@ for(i in colnames(t1$data_env)){
 plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
 ```
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_env_diff_all.png")
+knitr::include_graphics("Images/trans_env_diff_all.png")
 ```
 
 From v0.12.0, trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
@@ -2470,7 +2475,7 @@ t1$plot_diff(measure = "pH", add_sig_text_size = 5)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_env_diff_bygroup.png")
+knitr::include_graphics("Images/trans_env_diff_bygroup.png")
 ```
 
 Then we show the autocorrelations among variables.
@@ -2504,7 +2509,7 @@ t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rda_dbrda.png")
+knitr::include_graphics("Images/trans_env_rda_dbrda.png")
 ```
 
 From v0.14.0, the function `cal_ordination_anova` is implemented to check the significance of the ordination model instead of the encapsulation in `cal_ordination`.
@@ -2528,7 +2533,7 @@ t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rda_genus.png")
+knitr::include_graphics("Images/trans_env_rda_genus.png")
 ```
 
 For more visualization styles, run the following examples.
@@ -2601,7 +2606,7 @@ please use **other_taxa** parameter in cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
-t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_level = "Genus")
+t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
@@ -2610,7 +2615,7 @@ t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_ggplot.png")
+knitr::include_graphics("Images/trans_env_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
@@ -2624,7 +2629,7 @@ t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9,
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_pheatmap.png")
+knitr::include_graphics("Images/trans_env_corr_pheatmap.png")
 ```
 
 Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
@@ -2638,7 +2643,7 @@ t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_ggplot_groups.png")
+knitr::include_graphics("Images/trans_env_corr_ggplot_groups.png")
 ```
 
 
@@ -2651,11 +2656,11 @@ t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
 # try to use ggplot2 with clustering plot
 # require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)
-t1$plot_cor(cluster_ggplot = "row")
+t1$plot_cor(cluster_ggplot = "both")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_alpha_diversity.png")
+knitr::include_graphics("Images/trans_env_corr_alpha_diversity.png")
 ```
 
 The function `plot_scatterfit` in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
@@ -2668,14 +2673,15 @@ t1$plot_scatterfit(
 	x = "pH", 
 	y = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
 	type = "cor",
-	point_alpha = 0.1, label.x.npc = "center", label.y.npc = "bottom", 
+	point_size = 3, point_alpha = 0.1, 
+	label.x.npc = "center", label.y.npc = "bottom", 
 	x_axis_title = "Euclidean distance of pH", 
 	y_axis_title = "Bray-Curtis distance"
 	)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_scatterfit_cor.png")
+knitr::include_graphics("Images/trans_env_scatterfit_cor.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2688,11 +2694,11 @@ t1$plot_scatterfit(
 	group_order = c("CW", "TW", "IW"),
 	point_size = 3, point_alpha = 0.3, line_se = FALSE, line_size = 1.5, shape_values = c(16, 17, 7),
     y_axis_title = "Euclidean distance of pH", x_axis_title = "Bray-Curtis distance"
-)
+	) + theme(axis.title = element_text(size = 17))
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_scatterfit_lmgroup.png")
+knitr::include_graphics("Images/trans_env_scatterfit_lmgroup.png")
 ```
 
 

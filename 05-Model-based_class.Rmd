@@ -34,7 +34,7 @@ t1$plot_diff_bar(use_number = 1:30, width = 0.8, group_order = c("CW", "IW", "TW
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_bar.png")
+knitr::include_graphics("Images/trans_diff_lefse_bar.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -54,7 +54,7 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("CW", "IW", "TW"))
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_diff_abund.png")
+knitr::include_graphics("Images/trans_diff_lefse_abund.png")
 ```
 
 Then, we show the cladogram of the differential features in the taxonomic tree.
@@ -71,7 +71,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, clade_label_lev
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_cladogram.png")
+knitr::include_graphics("Images/trans_diff_lefse_cladogram.png")
 ```
 
 There may be a problem related with the taxonomic labels in the plot.
@@ -91,7 +91,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_lab
 ```
 
 ```{r, out.width = "1000px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_cladogram_1.png")
+knitr::include_graphics("Images/trans_diff_lefse_cladogram_1.png")
 ```
 
 The 'rf' method depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
@@ -115,7 +115,7 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rf_diff_abund.png")
+knitr::include_graphics("Images/trans_diff_rf_diff_abund.png")
 ```
 
 The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
@@ -125,11 +125,11 @@ Now adding labels supports all the differential test methods.
 t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 # filter something not needed to show
 t1$res_diff %<>% subset(Significance %in% "***")
-t1$plot_diff_abund(use_number = 1:20, add_sig = T, add_sig_label = "Significance")
+t1$plot_diff_abund(use_number = 1:10, add_sig = T, add_sig_label = "Significance")
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_diff_abund_siglabel_wilcox.png")
+knitr::include_graphics("Images/trans_diff_siglabel_wilcox.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -138,7 +138,7 @@ t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_diff_abund_siglabel_anova.png")
+knitr::include_graphics("Images/trans_diff_siglabel_anova.png")
 ```
 
 Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
@@ -156,11 +156,11 @@ For the abundance plotting, the user should use select_group to select the requi
 
 ```{r, echo = TRUE, eval = FALSE}
 # select_group should be one of groups in t1$res_diff$Comparison
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
+t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", coord_flip = F)
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_metastat_1.png")
+knitr::include_graphics("Images/trans_diff_metastat_1.png")
 ```
 
 
@@ -372,7 +372,7 @@ t1$plot_taxa_roles(use_type = 1)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_taxa_roles.png")
+knitr::include_graphics("Images/trans_network_taxa_roles.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -381,7 +381,7 @@ t1$plot_taxa_roles(use_type = 2)
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_taxa_roles_2.png")
+knitr::include_graphics("Images/trans_network_taxa_roles_2.png")
 ```
 
 Now, we show the eigengene analysis of modules.
@@ -404,7 +404,7 @@ t2$plot_cor()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/Env_module_eigen.png")
+knitr::include_graphics("Images/trans_network_env_module_eigen.png")
 ```
 
 The `subset_network` function can be applied to extract a part of nodes and edges among these nodes from the network.
@@ -478,7 +478,7 @@ t1$plot_sum_links(plot_pos = TRUE, plot_num = 10, color_values = RColorBrewer::b
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_sum_links.png")
+knitr::include_graphics("Images/trans_network_sum_links.png")
 ```
 
 For the correlation network, there are also other available correlation/association calculation options, 
@@ -605,7 +605,7 @@ t1$plot_mantel_corr()
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_mantel_corr.png")
+knitr::include_graphics("Images/trans_nullmodel_mantel_corr.png")
 ```
 
 betaNRI(ses.betampd) is used to show the 'basal' phylogenetic turnover.
@@ -643,7 +643,7 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_betaNRI_one_dataset.png")
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_one_dataset.png")
 ```
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
@@ -681,7 +681,7 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_betaNRI_each_dataset.png")
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
 ```
 
 

@@ -93,7 +93,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, ad
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_letter.png")
+knitr::include_graphics("Images/trans_alpha_group_letter.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -102,7 +102,7 @@ t1$plot_alpha(measure = "Chao1", shape = "Group")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox.png")
+knitr::include_graphics("Images/trans_alpha_group_wilcox.png")
 ```
 
 Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
@@ -125,7 +125,7 @@ t1$plot_alpha(measure = "Shannon")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_alpha_wilcox_bygroup.png")
+knitr::include_graphics("Images/trans_alpha_wilcox_bygroup.png")
 ```
 
 
@@ -158,8 +158,8 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 We first show the ordination using PCoA (principal coordinates analysis).
 
 ```{r, echo = TRUE, eval = TRUE}
-# we first create an trans_beta object
-# measure parameter can invoke the distance matrix in dataset$beta_diversity
+# create an trans_beta object
+# measure parameter must be one of names(dataset$beta_diversity)
 t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
@@ -173,7 +173,7 @@ t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("po
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_ordination.png")
+knitr::include_graphics("Images/trans_beta_ordination.png")
 ```
 
 More examples on different options.
@@ -207,7 +207,7 @@ t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_group_distance_within.png")
+knitr::include_graphics("Images/trans_beta_group_distance_within.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -218,18 +218,23 @@ t1$plot_group_distance(boxplot_add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_group_distance_between.png")
+knitr::include_graphics("Images/trans_beta_group_distance_between.png")
 ```
 
 Clustering plot is also a frequently used method.
 
 ```{r, echo = TRUE, eval = FALSE}
+# extract a part of data
+d1 <- clone(dataset)
+d1$sample_table %<>% subset(Group %in% c("CW", "TW"))
+d1$tidy_dataset()
+t1 <- trans_beta$new(dataset = d1, group = "Group")
 # use replace_name to set the label name, group parameter used to set the color
-t1$plot_clustering(group = "Group", replace_name = c("Saline", "Type"))
+t1$plot_clustering(group = "Type", replace_name = c("Type"))
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_clustering.png")
+knitr::include_graphics("Images/trans_beta_clustering.png")
 ```
 
 

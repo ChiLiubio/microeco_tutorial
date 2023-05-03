@@ -60,7 +60,7 @@ for(i in colnames(t1$data_env)){
 plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
 ```
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_env_diff_all.png")
+knitr::include_graphics("Images/trans_env_diff_all.png")
 ```
 
 From v0.12.0, trans_env class supports the differential test of groups within each group by using the by_group parameter in cal_diff function.
@@ -71,7 +71,7 @@ t1$plot_diff(measure = "pH", add_sig_text_size = 5)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_env_diff_bygroup.png")
+knitr::include_graphics("Images/trans_env_diff_bygroup.png")
 ```
 
 Then we show the autocorrelations among variables.
@@ -105,7 +105,7 @@ t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rda_dbrda.png")
+knitr::include_graphics("Images/trans_env_rda_dbrda.png")
 ```
 
 From v0.14.0, the function `cal_ordination_anova` is implemented to check the significance of the ordination model instead of the encapsulation in `cal_ordination`.
@@ -129,7 +129,7 @@ t1$plot_ordination(plot_color = "Group")
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_rda_genus.png")
+knitr::include_graphics("Images/trans_env_rda_genus.png")
 ```
 
 For more visualization styles, run the following examples.
@@ -202,7 +202,7 @@ please use **other_taxa** parameter in cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
-t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", rf_taxa_level = "Genus")
+t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
 # then create trans_env object
 t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
@@ -211,7 +211,7 @@ t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_ggplot.png")
+knitr::include_graphics("Images/trans_env_corr_ggplot.png")
 ```
 
 The pheatmap method is also available.
@@ -225,7 +225,7 @@ t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9,
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_pheatmap.png")
+knitr::include_graphics("Images/trans_env_corr_pheatmap.png")
 ```
 
 Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
@@ -239,7 +239,7 @@ t1$plot_cor()
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_ggplot_groups.png")
+knitr::include_graphics("Images/trans_env_corr_ggplot_groups.png")
 ```
 
 
@@ -252,11 +252,11 @@ t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 t1$cal_cor(add_abund_table = dataset$alpha_diversity)
 # try to use ggplot2 with clustering plot
 # require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)
-t1$plot_cor(cluster_ggplot = "row")
+t1$plot_cor(cluster_ggplot = "both")
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_corr_alpha_diversity.png")
+knitr::include_graphics("Images/trans_env_corr_alpha_diversity.png")
 ```
 
 The function `plot_scatterfit` in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
@@ -269,14 +269,15 @@ t1$plot_scatterfit(
 	x = "pH", 
 	y = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
 	type = "cor",
-	point_alpha = 0.1, label.x.npc = "center", label.y.npc = "bottom", 
+	point_size = 3, point_alpha = 0.1, 
+	label.x.npc = "center", label.y.npc = "bottom", 
 	x_axis_title = "Euclidean distance of pH", 
 	y_axis_title = "Bray-Curtis distance"
 	)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_scatterfit_cor.png")
+knitr::include_graphics("Images/trans_env_scatterfit_cor.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -289,11 +290,11 @@ t1$plot_scatterfit(
 	group_order = c("CW", "TW", "IW"),
 	point_size = 3, point_alpha = 0.3, line_se = FALSE, line_size = 1.5, shape_values = c(16, 17, 7),
     y_axis_title = "Euclidean distance of pH", x_axis_title = "Bray-Curtis distance"
-)
+	) + theme(axis.title = element_text(size = 17))
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_scatterfit_lmgroup.png")
+knitr::include_graphics("Images/trans_env_scatterfit_lmgroup.png")
 ```
 
 

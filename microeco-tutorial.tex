@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-05-02}
+\date{2023-05-03}
 
 \begin{document}
 \maketitle
@@ -1399,11 +1399,11 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \CommentTok{\# require ggalluvial package}
 \CommentTok{\# use\_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering}
 \CommentTok{\# bar\_type = "notfull" can discard \textquotesingle{}others\textquotesingle{}; select another color palette}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
+\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=40in]{Images/trans_abund_bar_allu} \end{center}
+\begin{center}\includegraphics[width=20in]{Images/trans_abund_bar_allu} \end{center}
 
 The bar plot can also be performed with group mean values.
 Note that, from v0.16.0, the parameter \texttt{group\_morestats\ =\ TRUE} can be used to add more summary statistics in the return \texttt{data\_abund} when \texttt{groupmean} parameter is provided.
@@ -1429,7 +1429,7 @@ The box plot is an excellent way to intuitionally show abundance distribution ac
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_box} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_abund_boxplot} \end{center}
 
 Then we show the heatmap with the high abundant genera.
 
@@ -1441,7 +1441,7 @@ Then we show the heatmap with the high abundant genera.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=750px]{Images/plot_heatmap} \end{center}
+\begin{center}\includegraphics[width=750px]{Images/trans_abund_heatmap} \end{center}
 
 Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
 
@@ -1454,7 +1454,7 @@ Line chart is very useful to show the abundance change of taxa along time, space
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=750px]{Images/plot_line_type} \end{center}
+\begin{center}\includegraphics[width=750px]{Images/trans_abund_line} \end{center}
 
 Then, we show the pie chart with the group mean values.
 
@@ -1606,7 +1606,7 @@ This way is generally called UpSet plot. Please see the help document for more p
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_venn_bar_type} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/trans_venn_3} \end{center}
 
 Generally, after getting the intersection results, we do not know who those shared or unique taxa are.
 The composition of the unique or shared species may account for the different and similar parts of ecological characteristics across groups\citep{Mendes_Deciphering_2011}.
@@ -1951,7 +1951,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_alpha_letter} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_alpha_group_letter} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1960,7 +1960,7 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_alpha_group_wilcox} \end{center}
 
 Let's try to remove the `ns' in the label by manipulating the object\$res\_diff.
 
@@ -1983,7 +1983,7 @@ From the v0.12.0, the trans\_alpha class supports the differential test of group
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_alpha_wilcox_bygroup} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_alpha_wilcox_bygroup} \end{center}
 
 Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
 
@@ -2024,8 +2024,8 @@ We first show the ordination using PCoA (principal coordinates analysis).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# we first create an trans\_beta object}
-\CommentTok{\# measure parameter can invoke the distance matrix in dataset$beta\_diversity}
+\CommentTok{\# create an trans\_beta object}
+\CommentTok{\# measure parameter must be one of names(dataset$beta\_diversity)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2041,7 +2041,7 @@ We first show the ordination using PCoA (principal coordinates analysis).
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_ordination} \end{center}
+\begin{center}\includegraphics[width=650px]{Images/trans_beta_ordination} \end{center}
 
 More examples on different options.
 
@@ -2077,7 +2077,7 @@ Then we plot and compare the group distances.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=500px]{Images/plot_group_distance_within} \end{center}
+\begin{center}\includegraphics[width=500px]{Images/trans_beta_group_distance_within} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2088,18 +2088,23 @@ Then we plot and compare the group distances.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=500px]{Images/plot_group_distance_between} \end{center}
+\begin{center}\includegraphics[width=500px]{Images/trans_beta_group_distance_between} \end{center}
 
 Clustering plot is also a frequently used method.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# extract a part of data}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{d1}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Group }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{))}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# use replace\_name to set the label name, group parameter used to set the color}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_clustering}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{replace\_name =} \FunctionTok{c}\NormalTok{(}\StringTok{"Saline"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_clustering}\NormalTok{(}\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{replace\_name =} \FunctionTok{c}\NormalTok{(}\StringTok{"Type"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=550px]{Images/plot_clustering} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/trans_beta_clustering} \end{center}
 
 PerMANOVA\citep{Anderson_Austral_2001} can be applied to the differential test of distances among groups via the \texttt{cal\_manova} function developed
 based on the \texttt{adonis2} function of vegan package.
@@ -2364,7 +2369,7 @@ LEfSe combines the non-parametric test and linear discriminant analysis \citep{S
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_lefse_bar} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_diff_lefse_bar} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2406,7 +2411,7 @@ Then, we plot the abundance of biomarkers detected by LEfSe.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_lefse_diff_abund} \end{center}
+\begin{center}\includegraphics[width=650px]{Images/trans_diff_lefse_abund} \end{center}
 
 Then, we show the cladogram of the differential features in the taxonomic tree.
 There are too many taxa in this dataset.
@@ -2423,7 +2428,7 @@ We only show the full taxonomic label at Phylum level and use letters at other l
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=1000px]{Images/plot_lefse_cladogram} \end{center}
+\begin{center}\includegraphics[width=1000px]{Images/trans_diff_lefse_cladogram} \end{center}
 
 There may be a problem related with the taxonomic labels in the plot.
 When there are too many levels shown, the taxonomic labels can have too much overlap.
@@ -2443,7 +2448,7 @@ At this time, taxa can be manually choosed to show like the following operation.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=1000px]{Images/plot_lefse_cladogram_1} \end{center}
+\begin{center}\includegraphics[width=1000px]{Images/trans_diff_lefse_cladogram_1} \end{center}
 
 The `rf' method depends on the random forest\citep{Beck_Machine_2014, Yatsunenko_Human_2012} and the non-parametric test.
 The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
@@ -2467,7 +2472,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_rf_diff_abund} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/trans_diff_rf_diff_abund} \end{center}
 
 The significance label can also be added in the abundance plot controlled by add\_sig parameter and other related parameters.
 Now adding labels supports all the differential test methods.
@@ -2477,11 +2482,11 @@ Now adding labels supports all the differential test methods.
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \CommentTok{\# filter something not needed to show}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Significance }\SpecialCharTok{\%in\%} \StringTok{"***"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{add\_sig\_label =} \StringTok{"Significance"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{add\_sig\_label =} \StringTok{"Significance"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_wilcox} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_diff_siglabel_wilcox} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2490,7 +2495,7 @@ Now adding labels supports all the differential test methods.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_diff_abund_siglabel_anova} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_diff_siglabel_anova} \end{center}
 
 Metastat depends on the permutations and t-test and performs well on the sparse data for paired groups test.
 
@@ -2510,11 +2515,11 @@ For the abundance plotting, the user should use select\_group to select the requ
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# select\_group should be one of groups in t1$res\_diff$Comparison}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{, }\AttributeTok{coord\_flip =}\NormalTok{ F)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_metastat_1} \end{center}
+\begin{center}\includegraphics[width=650px]{Images/trans_diff_metastat_1} \end{center}
 
 The following are the examples for the methods `KW', `KW\_dunn', `wilcox', `t.test' and `anova'.
 
@@ -2788,7 +2793,7 @@ Then, let's plot the node classification in terms of the within-module connectiv
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_taxa_roles} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_network_taxa_roles} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2797,7 +2802,7 @@ Then, let's plot the node classification in terms of the within-module connectiv
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_taxa_roles_2} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/trans_network_taxa_roles_2} \end{center}
 
 Now, we show the eigengene analysis of modules.
 The eigengene of a module, i.e.~the first principal component of PCA, represents the main variance of the abundance in the species of the module.
@@ -2822,7 +2827,7 @@ Then we perform correlation heatmap to show the associations between eigengenes 
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/Env_module_eigen} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_network_env_module_eigen} \end{center}
 
 The \texttt{subset\_network} function can be applied to extract a part of nodes and edges among these nodes from the network.
 In this function, you should provide the nodes you need using the node parameter.
@@ -2904,7 +2909,7 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_sum_links} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_network_sum_links} \end{center}
 
 For the correlation network, there are also other available correlation/association calculation options,
 such as Bray--Curtis (1-dissimilarity), SparCC \citep{Friedman_Inferring_2012}, CCLasso \citep{Fang_CCLasso_2015},
@@ -3063,7 +3068,7 @@ We first check the phylogenetic signal.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_mantel_corr} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_nullmodel_mantel_corr} \end{center}
 
 betaNRI(ses.betampd) is used to show the `basal' phylogenetic turnover.
 Compared to betaNTI, it can capture more turnover information associated with the deep phylogeny.
@@ -3102,7 +3107,7 @@ revealing that the basal phylogenetic turnover in TW is high.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=550px]{Images/plot_betaNRI_one_dataset} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_one_dataset} \end{center}
 
 Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
 you should calculate the results for each group, respectively.
@@ -3140,7 +3145,7 @@ revealing that the strength of variable selection in CW and TW may be similar un
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=550px]{Images/plot_betaNRI_each_dataset} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_each_dataset} \end{center}
 
 BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover \citep{Stegen_Quantifying_2013}.
 
@@ -3276,7 +3281,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May  2 21:02:03 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Wed May  3 16:41:05 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3306,9 +3311,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3866 & 0.3637 & 9.125 \\
-CW & 435 & 0.5629 & 0.2958 & 0.2865 & 14.33 \\
-TW & 435 & 0.624 & 0.4154 & 0.3995 & 9.918 \\
+IW & 435 & 0.6535 & 0.3879 & 0.3636 & 9.078 \\
+CW & 435 & 0.5631 & 0.2963 & 0.2866 & 14.33 \\
+TW & 435 & 0.6248 & 0.4171 & 0.4003 & 9.855 \\
 \bottomrule()
 \end{longtable}
 
@@ -3691,7 +3696,7 @@ Let's perform the ANOVA and show the letters in the box plot. We use list to sto
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=750px]{Images/plot_env_diff_all} \end{center}
+\begin{center}\includegraphics[width=750px]{Images/trans_env_diff_all} \end{center}
 
 From v0.12.0, trans\_env class supports the differential test of groups within each group by using the by\_group parameter in cal\_diff function.
 
@@ -3702,7 +3707,7 @@ From v0.12.0, trans\_env class supports the differential test of groups within e
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_env_diff_bygroup} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_env_diff_bygroup} \end{center}
 
 Then we show the autocorrelations among variables.
 
@@ -3738,7 +3743,7 @@ Then let's show the RDA analysis (db-RDA and RDA).
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_rda_dbrda} \end{center}
+\begin{center}\includegraphics[width=650px]{Images/trans_env_rda_dbrda} \end{center}
 
 From v0.14.0, the function \texttt{cal\_ordination\_anova} is implemented to check the significance of the ordination model instead of the encapsulation in \texttt{cal\_ordination}.
 Furthermore, the function \texttt{cal\_ordination\_envfit} can be used to get the contribution of each variables to the model.
@@ -3764,7 +3769,7 @@ Then, let's try to do RDA at the Genus level.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=650px]{Images/plot_rda_genus} \end{center}
+\begin{center}\includegraphics[width=650px]{Images/trans_env_rda_genus} \end{center}
 
 For more visualization styles, run the following examples.
 
@@ -3894,7 +3899,7 @@ please use \textbf{other\_taxa} parameter in cal\_cor function.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# first create trans\_diff object as a demonstration}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{rf\_taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \CommentTok{\# then create trans\_env object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \CommentTok{\# use other\_taxa to select taxa you need}
@@ -3903,7 +3908,7 @@ please use \textbf{other\_taxa} parameter in cal\_cor function.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_env_corr_ggplot} \end{center}
 
 The pheatmap method is also available.
 Note that, besides the \textbf{color\_vector} parameter,
@@ -3917,7 +3922,7 @@ Note that, besides the \textbf{color\_vector} parameter,
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_pheatmap} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_env_corr_pheatmap} \end{center}
 
 Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
 \textbf{by\_group parameter} can be used for this goal.
@@ -3931,7 +3936,7 @@ Sometimes, if it is needed to study the correlations between environmental varia
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_corr_ggplot_groups} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/trans_env_corr_ggplot_groups} \end{center}
 
 If the user is concerned with the relationship between environmental factors and alpha diversity,
 please use \textbf{add\_abund\_table} parameter in the cal\_cor function.
@@ -3943,11 +3948,11 @@ please use \textbf{add\_abund\_table} parameter in the cal\_cor function.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
 \CommentTok{\# try to use ggplot2 with clustering plot}
 \CommentTok{\# require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco\_tutorial/intro.html\#dependence)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"row"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"both"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=600px]{Images/plot_corr_alpha_diversity} \end{center}
+\begin{center}\includegraphics[width=600px]{Images/trans_env_corr_alpha_diversity} \end{center}
 
 The function \texttt{plot\_scatterfit} in trans\_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
 
@@ -3959,14 +3964,15 @@ The function \texttt{plot\_scatterfit} in trans\_env class is designed for the s
     \AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }
     \AttributeTok{y =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env)], }
     \AttributeTok{type =} \StringTok{"cor"}\NormalTok{,}
-    \AttributeTok{point\_alpha =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{, }\AttributeTok{label.y.npc =} \StringTok{"bottom"}\NormalTok{, }
+    \AttributeTok{point\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{point\_alpha =} \FloatTok{0.1}\NormalTok{, }
+    \AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{, }\AttributeTok{label.y.npc =} \StringTok{"bottom"}\NormalTok{, }
     \AttributeTok{x\_axis\_title =} \StringTok{"Euclidean distance of pH"}\NormalTok{, }
     \AttributeTok{y\_axis\_title =} \StringTok{"Bray{-}Curtis distance"}
 \NormalTok{    )}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_cor} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/trans_env_scatterfit_cor} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3979,11 +3985,11 @@ The function \texttt{plot\_scatterfit} in trans\_env class is designed for the s
     \AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{),}
     \AttributeTok{point\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{point\_alpha =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{line\_size =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{shape\_values =} \FunctionTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{17}\NormalTok{, }\DecValTok{7}\NormalTok{),}
     \AttributeTok{y\_axis\_title =} \StringTok{"Euclidean distance of pH"}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"Bray{-}Curtis distance"}
-\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{17}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=550px]{Images/plot_scatterfit_lmgroup} \end{center}
+\begin{center}\includegraphics[width=550px]{Images/trans_env_scatterfit_lmgroup} \end{center}
 
 Other examples.
 
