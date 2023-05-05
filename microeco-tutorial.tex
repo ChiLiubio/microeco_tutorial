@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-05-03}
+\date{2023-05-04}
 
 \begin{document}
 \maketitle
@@ -3281,7 +3281,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed May  3 16:41:05 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu May  4 17:05:37 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3311,9 +3311,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6535 & 0.3879 & 0.3636 & 9.078 \\
-CW & 435 & 0.5631 & 0.2963 & 0.2866 & 14.33 \\
-TW & 435 & 0.6248 & 0.4171 & 0.4003 & 9.855 \\
+IW & 435 & 0.6536 & 0.3864 & 0.3638 & 9.161 \\
+CW & 435 & 0.5626 & 0.2955 & 0.2862 & 14.35 \\
+TW & 435 & 0.6244 & 0.4152 & 0.3998 & 9.887 \\
 \bottomrule()
 \end{longtable}
 
@@ -4473,11 +4473,15 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \CommentTok{\# Let\textquotesingle{}s try more interesting usages with microeco}
 \NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{humann2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{db =} \StringTok{"MetaCyc"}\NormalTok{, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\CommentTok{\# rel = FALSE donot use relative abundance}
+\CommentTok{\# rel = FALSE sum original abundance instead of relative abundance}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Superclass1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Superclass1"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
+\CommentTok{\# use\_percentage = FALSE disable percentage for relative abundance}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Superclass1"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# reassign ylab title instead of default \textquotesingle{}Relative Abundance\textquotesingle{}}
+\NormalTok{test1}\SpecialCharTok{$}\NormalTok{ylabname }\OtherTok{\textless{}{-}} \StringTok{"Abundance (RPK)"}
+\CommentTok{\# bar\_type = "notfull" show original abundance instead of normalized 0{-}1}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
 \CommentTok{\# select both function and taxa}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Superclass1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
@@ -4490,8 +4494,8 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \CommentTok{\# taxa biomarker}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{4}\SpecialCharTok{:}\DecValTok{9}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
-\CommentTok{\# p\_adjust\_method = NULL shut down the p value adjustment}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \ConstantTok{NULL}\NormalTok{)}
+\CommentTok{\# p\_adjust\_method = "none" shut down the p value adjustment}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"none"}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{threshold =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -4639,6 +4643,29 @@ Two example files of PICRUSt2 output in file2meco package were used to show the 
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{viromescan}{%
+\section{ViromeScan}\label{viromescan}}
+
+ViromeScan \citep{Rampelli_ViromeScan_2016} is a tool for metagenomic viral community profiling.
+The input of \texttt{vs2meco} function must be a folder containing all the directories named by sample names.
+Each sample directory should have the original output files generated by ViromeScan software.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(file2meco)}
+\CommentTok{\# use viromescan directory inside the package}
+\NormalTok{dir\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"viromescan"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{vs2meco}\NormalTok{(dir\_path)}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# d1$taxa\_abund$Family is same with the percentage output of viromescan at }
+\CommentTok{\# Family level, i.e. Family\_level\_results{-}\%.txt file}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# d1$taxa\_abund$Family is same with the count output of viromescan at }
+\CommentTok{\# Family level, i.e. Family\_level\_results{-}Counts.txt file}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{other-dataset}{%
 \chapter{Other dataset}\label{other-dataset}}
 
@@ -4710,12 +4737,13 @@ Here, we show some detailed examples using KEGG pathway results.
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# rel = FALSE donot use relative abundance, use the raw RPK}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Level.2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
+\CommentTok{\# use\_percentage = FALSE disable percentage for relative abundance}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Level.2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_HUMANN_KEGG_bar} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/file2meco_HUMANN_KEGG_bar} \end{center}
 
 Then, we select both function and taxa to see which taxa those high abundant pathways come from.
 
@@ -4725,12 +4753,12 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Level.1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Level}\FloatTok{.1} \SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{12}\NormalTok{, }\StringTok{"Set3"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_part\_prefix =}\NormalTok{ T, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=800px]{Images/plot_HUMANN_KEGG_bar_taxafunc} \end{center}
+\begin{center}\includegraphics[width=800px]{Images/file2meco_HUMANN_KEGG_bar_taxafunc} \end{center}
 
 Let's run LEfSe to find some functional biomarkers to differentiate two groups.
 
@@ -4743,7 +4771,7 @@ Let's run LEfSe to find some functional biomarkers to differentiate two groups.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics[width=700px]{Images/plot_HUMANN_KEGG_lefse_bar} \end{center}
+\begin{center}\includegraphics[width=700px]{Images/file2meco_HUMANN_KEGG_lefse_bar} \end{center}
 
 \hypertarget{gut-microbiome}{%
 \section{Gut microbiome}\label{gut-microbiome}}
