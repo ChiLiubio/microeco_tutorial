@@ -4231,6 +4231,88 @@ knitr::include_graphics("Images/plot_env_mantel_ggcor.png")
 ```
 
 
+## PCoA + boxplot
+
+In the sections involving trans_venn and trans_env classes, 
+we mentioned some combination graphs generated based on the `aplot` package. 
+Here, we continue to use the `aplot` and `microeco` packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs. 
+Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods. 
+Firstly, we use `trans_beta` class to compute PCoA, then perform differential testing based on the `cal_diff` function in `trans_env` class.
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(magrittr)
+library(ggplot2)
+library(aplot)
+theme_set(theme_bw())
+data(dataset)
+# PCoA
+t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+t1$cal_ordination(ordination = "PCoA")
+# extract the axis scores
+tmp <- t1$res_ordination$scores
+# use differential test in trans_env class
+t2 <- trans_env$new(dataset = dataset, add_data = tmp[, 1:2])
+# 'KW_dunn' for non-parametric test
+t2$cal_diff(group = "Group", method = "anova")
+```
+
+Then, employ the plotting functions in `t1` and `t2` objects for visualization.
+
+```{r, echo = TRUE, eval = FALSE}
+p1 <- t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
+# groups order in p2 is same with p1; use legend.position = "none" to remove redundant legend
+p2 <- t2$plot_diff(measure = "PCo1", add_sig = T) + theme_bw() + coord_flip() + 
+	theme(legend.position = "none", axis.title.x = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank())
+p3 <- t2$plot_diff(measure = "PCo2", add_sig = T) + theme_bw() + 
+	theme(legend.position = "none", axis.title.y = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())
+# height of the upper figure and width of the right-hand figure are both 0.2-fold of the main figure
+g <- p1 %>% insert_top(p2, height = 0.2) %>% insert_right(p3, width = 0.2)
+g
+```
+
+```{r, out.width = "650px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/Other_PCoA_boxplot1.png")
+```
+
+
+At this point, 
+we notice that the horizontal axis of the upper figure and the vertical axis of the right-hand figure do not correspond precisely with those of the main figure. 
+Therefore, if we proceed with these graphs, 
+the axis ticks of the upper and right-hand figures should be kept. 
+If the user requires complete correspondence of the ticks, 
+further control over the coordinate axes should be implemented. 
+Here, we manually control the coordinate range.
+
+```{r, echo = TRUE, eval = FALSE}
+# use 1.4-fold of the scores as axis ranges
+x_lim <- range(tmp[, 1]) * 1.4
+y_lim <- range(tmp[, 2]) * 1.4
+# limit x and y axis without any extension
+p1 <- p1 + scale_y_continuous(limits = y_lim, expand = c(0, 0)) + 
+	scale_x_continuous(limits = x_lim, expand = c(0, 0))
+# limit x axis of upper figure (it's y axis when flipped)
+p2 <- p2 + scale_y_continuous(limits = x_lim, expand = c(0, 0))
+# limit y axis of right-hand figure
+p3 <- p3 + scale_y_continuous(limits = y_lim, expand = c(0, 0))
+g <- p1 %>% insert_top(p2, height = 0.2) %>% insert_right(p3, width = 0.2)
+g
+```
+
+Now, the ticks of the coordinate axes fully correspond, and we may selectively remove the ticks on the upper and right-hand figures.
+
+```{r, echo = TRUE, eval = FALSE}
+p2 <- p2 + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+p3 <- p3 + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+g <- p1 %>% insert_top(p2, height = 0.2) %>% insert_right(p3, width = 0.2)
+g
+# save g to computer
+ggsave("test1.pdf", g, width = 7, height= 6)
+```
+
+```{r, out.width = "650px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/Other_PCoA_boxplot2.png")
+```
 
 
 

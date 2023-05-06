@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-04" />
+<meta name="date" content="2023-05-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -319,6 +319,7 @@ div.csl-indent {
 <li class="chapter" data-level="14.4" data-path="other-examples-1.html"><a href="other-examples-1.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>14.4</b> Question of prefix in the taxa</a></li>
 <li class="chapter" data-level="14.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>14.5</b> The use of phylogenetic tree</a></li>
 <li class="chapter" data-level="14.6" data-path="other-examples-1.html"><a href="other-examples-1.html#mantel-test-correlation-heatmap"><i class="fa fa-check"></i><b>14.6</b> Mantel test + Correlation heatmap</a></li>
+<li class="chapter" data-level="14.7" data-path="other-examples-1.html"><a href="other-examples-1.html#pcoa-boxplot"><i class="fa fa-check"></i><b>14.7</b> PCoA + boxplot</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -432,6 +433,67 @@ Please install <code>ggcor</code> package according to the document (<a href="ht
 <span id="cb363-48"><a href="other-examples-1.html#cb363-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb363-49"><a href="other-examples-1.html#cb363-49" aria-hidden="true" tabindex="-1"></a>g1</span></code></pre></div>
 <p><img src="Images/plot_env_mantel_ggcor.png" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pcoa-boxplot" class="section level2 hasAnchor" number="14.7">
+<h2><span class="header-section-number">14.7</span> PCoA + boxplot<a href="other-examples-1.html#pcoa-boxplot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the sections involving trans_venn and trans_env classes,
+we mentioned some combination graphs generated based on the <code>aplot</code> package.
+Here, we continue to use the <code>aplot</code> and <code>microeco</code> packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs.
+Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods.
+Firstly, we use <code>trans_beta</code> class to compute PCoA, then perform differential testing based on the <code>cal_diff</code> function in <code>trans_env</code> class.</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="other-examples-1.html#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb364-2"><a href="other-examples-1.html#cb364-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb364-3"><a href="other-examples-1.html#cb364-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb364-4"><a href="other-examples-1.html#cb364-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
+<span id="cb364-5"><a href="other-examples-1.html#cb364-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb364-6"><a href="other-examples-1.html#cb364-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb364-7"><a href="other-examples-1.html#cb364-7" aria-hidden="true" tabindex="-1"></a><span class="co"># PCoA</span></span>
+<span id="cb364-8"><a href="other-examples-1.html#cb364-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb364-9"><a href="other-examples-1.html#cb364-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span>
+<span id="cb364-10"><a href="other-examples-1.html#cb364-10" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the axis scores</span></span>
+<span id="cb364-11"><a href="other-examples-1.html#cb364-11" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_ordination<span class="sc">$</span>scores</span>
+<span id="cb364-12"><a href="other-examples-1.html#cb364-12" aria-hidden="true" tabindex="-1"></a><span class="co"># use differential test in trans_env class</span></span>
+<span id="cb364-13"><a href="other-examples-1.html#cb364-13" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> tmp[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb364-14"><a href="other-examples-1.html#cb364-14" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;KW_dunn&#39; for non-parametric test</span></span>
+<span id="cb364-15"><a href="other-examples-1.html#cb364-15" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span></code></pre></div>
+<p>Then, employ the plotting functions in <code>t1</code> and <code>t2</code> objects for visualization.</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="other-examples-1.html#cb365-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_shape =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;ellipse&quot;</span>))</span>
+<span id="cb365-2"><a href="other-examples-1.html#cb365-2" aria-hidden="true" tabindex="-1"></a><span class="co"># groups order in p2 is same with p1; use legend.position = &quot;none&quot; to remove redundant legend</span></span>
+<span id="cb365-3"><a href="other-examples-1.html#cb365-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;PCo1&quot;</span>, <span class="at">add_sig =</span> T) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb365-4"><a href="other-examples-1.html#cb365-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb365-5"><a href="other-examples-1.html#cb365-5" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;PCo2&quot;</span>, <span class="at">add_sig =</span> T) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb365-6"><a href="other-examples-1.html#cb365-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb365-7"><a href="other-examples-1.html#cb365-7" aria-hidden="true" tabindex="-1"></a><span class="co"># height of the upper figure and width of the right-hand figure are both 0.2-fold of the main figure</span></span>
+<span id="cb365-8"><a href="other-examples-1.html#cb365-8" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> p1 <span class="sc">%&gt;%</span> <span class="fu">insert_top</span>(p2, <span class="at">height =</span> <span class="fl">0.2</span>) <span class="sc">%&gt;%</span> <span class="fu">insert_right</span>(p3, <span class="at">width =</span> <span class="fl">0.2</span>)</span>
+<span id="cb365-9"><a href="other-examples-1.html#cb365-9" aria-hidden="true" tabindex="-1"></a>g</span></code></pre></div>
+<p><img src="Images/Other_PCoA_boxplot1.png" width="650px" style="display: block; margin: auto;" /></p>
+<p>At this point,
+we notice that the horizontal axis of the upper figure and the vertical axis of the right-hand figure do not correspond precisely with those of the main figure.
+Therefore, if we proceed with these graphs,
+the axis ticks of the upper and right-hand figures should be kept.
+If the user requires complete correspondence of the ticks,
+further control over the coordinate axes should be implemented.
+Here, we manually control the coordinate range.</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="other-examples-1.html#cb366-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use 1.4-fold of the scores as axis ranges</span></span>
+<span id="cb366-2"><a href="other-examples-1.html#cb366-2" aria-hidden="true" tabindex="-1"></a>x_lim <span class="ot">&lt;-</span> <span class="fu">range</span>(tmp[, <span class="dv">1</span>]) <span class="sc">*</span> <span class="fl">1.4</span></span>
+<span id="cb366-3"><a href="other-examples-1.html#cb366-3" aria-hidden="true" tabindex="-1"></a>y_lim <span class="ot">&lt;-</span> <span class="fu">range</span>(tmp[, <span class="dv">2</span>]) <span class="sc">*</span> <span class="fl">1.4</span></span>
+<span id="cb366-4"><a href="other-examples-1.html#cb366-4" aria-hidden="true" tabindex="-1"></a><span class="co"># limit x and y axis without any extension</span></span>
+<span id="cb366-5"><a href="other-examples-1.html#cb366-5" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> p1 <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> y_lim, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> </span>
+<span id="cb366-6"><a href="other-examples-1.html#cb366-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> x_lim, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb366-7"><a href="other-examples-1.html#cb366-7" aria-hidden="true" tabindex="-1"></a><span class="co"># limit x axis of upper figure (it&#39;s y axis when flipped)</span></span>
+<span id="cb366-8"><a href="other-examples-1.html#cb366-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> p2 <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> x_lim, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb366-9"><a href="other-examples-1.html#cb366-9" aria-hidden="true" tabindex="-1"></a><span class="co"># limit y axis of right-hand figure</span></span>
+<span id="cb366-10"><a href="other-examples-1.html#cb366-10" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> p3 <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> y_lim, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb366-11"><a href="other-examples-1.html#cb366-11" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> p1 <span class="sc">%&gt;%</span> <span class="fu">insert_top</span>(p2, <span class="at">height =</span> <span class="fl">0.2</span>) <span class="sc">%&gt;%</span> <span class="fu">insert_right</span>(p3, <span class="at">width =</span> <span class="fl">0.2</span>)</span>
+<span id="cb366-12"><a href="other-examples-1.html#cb366-12" aria-hidden="true" tabindex="-1"></a>g</span></code></pre></div>
+<p>Now, the ticks of the coordinate axes fully correspond, and we may selectively remove the ticks on the upper and right-hand figures.</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="other-examples-1.html#cb367-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> p2 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb367-2"><a href="other-examples-1.html#cb367-2" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> p3 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb367-3"><a href="other-examples-1.html#cb367-3" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> p1 <span class="sc">%&gt;%</span> <span class="fu">insert_top</span>(p2, <span class="at">height =</span> <span class="fl">0.2</span>) <span class="sc">%&gt;%</span> <span class="fu">insert_right</span>(p3, <span class="at">width =</span> <span class="fl">0.2</span>)</span>
+<span id="cb367-4"><a href="other-examples-1.html#cb367-4" aria-hidden="true" tabindex="-1"></a>g</span>
+<span id="cb367-5"><a href="other-examples-1.html#cb367-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save g to computer</span></span>
+<span id="cb367-6"><a href="other-examples-1.html#cb367-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;test1.pdf&quot;</span>, g, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height=</span> <span class="dv">6</span>)</span></code></pre></div>
+<p><img src="Images/Other_PCoA_boxplot2.png" width="650px" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

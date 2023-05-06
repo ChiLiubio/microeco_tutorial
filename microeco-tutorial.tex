@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-05-04}
+\date{2023-05-05}
 
 \begin{document}
 \maketitle
@@ -3281,7 +3281,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu May  4 17:05:37 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri May  5 21:18:49 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3311,9 +3311,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3864 & 0.3638 & 9.161 \\
-CW & 435 & 0.5626 & 0.2955 & 0.2862 & 14.35 \\
-TW & 435 & 0.6244 & 0.4152 & 0.3998 & 9.887 \\
+IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.127 \\
+CW & 435 & 0.5629 & 0.2958 & 0.2865 & 14.36 \\
+TW & 435 & 0.6246 & 0.416 & 0.4 & 9.793 \\
 \bottomrule()
 \end{longtable}
 
@@ -5902,6 +5902,93 @@ Please install \texttt{ggcor} package according to the document (\url{https://gi
 \end{Shaded}
 
 \begin{center}\includegraphics[width=650px]{Images/plot_env_mantel_ggcor} \end{center}
+
+\hypertarget{pcoa-boxplot}{%
+\section{PCoA + boxplot}\label{pcoa-boxplot}}
+
+In the sections involving trans\_venn and trans\_env classes,
+we mentioned some combination graphs generated based on the \texttt{aplot} package.
+Here, we continue to use the \texttt{aplot} and \texttt{microeco} packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs.
+Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods.
+Firstly, we use \texttt{trans\_beta} class to compute PCoA, then perform differential testing based on the \texttt{cal\_diff} function in \texttt{trans\_env} class.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(aplot)}
+\FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
+\FunctionTok{data}\NormalTok{(dataset)}
+\CommentTok{\# PCoA}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\CommentTok{\# extract the axis scores}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_ordination}\SpecialCharTok{$}\NormalTok{scores}
+\CommentTok{\# use differential test in trans\_env class}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ tmp[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{])}
+\CommentTok{\# \textquotesingle{}KW\_dunn\textquotesingle{} for non{-}parametric test}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then, employ the plotting functions in \texttt{t1} and \texttt{t2} objects for visualization.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{, }\StringTok{"ellipse"}\NormalTok{))}
+\CommentTok{\# groups order in p2 is same with p1; use legend.position = "none" to remove redundant legend}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =} \StringTok{"PCo1"}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T) }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{, }\AttributeTok{axis.title.x =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.text.y =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.ticks.y =} \FunctionTok{element\_blank}\NormalTok{())}
+\NormalTok{p3 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =} \StringTok{"PCo2"}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T) }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{, }\AttributeTok{axis.title.y =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.text.x =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.ticks.x =} \FunctionTok{element\_blank}\NormalTok{())}
+\CommentTok{\# height of the upper figure and width of the right{-}hand figure are both 0.2{-}fold of the main figure}
+\NormalTok{g }\OtherTok{\textless{}{-}}\NormalTok{ p1 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_top}\NormalTok{(p2, }\AttributeTok{height =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_right}\NormalTok{(p3, }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{g}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/Other_PCoA_boxplot1} \end{center}
+
+At this point,
+we notice that the horizontal axis of the upper figure and the vertical axis of the right-hand figure do not correspond precisely with those of the main figure.
+Therefore, if we proceed with these graphs,
+the axis ticks of the upper and right-hand figures should be kept.
+If the user requires complete correspondence of the ticks,
+further control over the coordinate axes should be implemented.
+Here, we manually control the coordinate range.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use 1.4{-}fold of the scores as axis ranges}
+\NormalTok{x\_lim }\OtherTok{\textless{}{-}} \FunctionTok{range}\NormalTok{(tmp[, }\DecValTok{1}\NormalTok{]) }\SpecialCharTok{*} \FloatTok{1.4}
+\NormalTok{y\_lim }\OtherTok{\textless{}{-}} \FunctionTok{range}\NormalTok{(tmp[, }\DecValTok{2}\NormalTok{]) }\SpecialCharTok{*} \FloatTok{1.4}
+\CommentTok{\# limit x and y axis without any extension}
+\NormalTok{p1 }\OtherTok{\textless{}{-}}\NormalTok{ p1 }\SpecialCharTok{+} \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =}\NormalTok{ y\_lim, }\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{+} 
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{limits =}\NormalTok{ x\_lim, }\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\CommentTok{\# limit x axis of upper figure (it\textquotesingle{}s y axis when flipped)}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =}\NormalTok{ x\_lim, }\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\CommentTok{\# limit y axis of right{-}hand figure}
+\NormalTok{p3 }\OtherTok{\textless{}{-}}\NormalTok{ p3 }\SpecialCharTok{+} \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =}\NormalTok{ y\_lim, }\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{g }\OtherTok{\textless{}{-}}\NormalTok{ p1 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_top}\NormalTok{(p2, }\AttributeTok{height =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_right}\NormalTok{(p3, }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{g}
+\end{Highlighting}
+\end{Shaded}
+
+Now, the ticks of the coordinate axes fully correspond, and we may selectively remove the ticks on the upper and right-hand figures.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.ticks.x =} \FunctionTok{element\_blank}\NormalTok{())}
+\NormalTok{p3 }\OtherTok{\textless{}{-}}\NormalTok{ p3 }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.y =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.ticks.y =} \FunctionTok{element\_blank}\NormalTok{())}
+\NormalTok{g }\OtherTok{\textless{}{-}}\NormalTok{ p1 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_top}\NormalTok{(p2, }\AttributeTok{height =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{insert\_right}\NormalTok{(p3, }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{g}
+\CommentTok{\# save g to computer}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"test1.pdf"}\NormalTok{, g, }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height=} \DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/Other_PCoA_boxplot2} \end{center}
 
   \bibliography{book.bib,packages.bib}
 
