@@ -118,13 +118,13 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Tutorial for R microeco package (v0.17.0)},
-  pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li},
+  pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Tutorial for R microeco package (v0.17.0)}
-\author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li}
-\date{2023-05-05}
+\author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
+\date{2023-05-09}
 
 \begin{document}
 \maketitle
@@ -281,12 +281,12 @@ If you want to install all of these packages or some of them, please run this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# allow more waiting time for the downloading of each package}
+\CommentTok{\# allow more waiting time to download each package}
 \FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{1000}\NormalTok{)}
 \CommentTok{\# If a package is not installed, it will be installed from CRAN}
 \CommentTok{\# First select the packages of interest}
-\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"file2meco"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{, }\StringTok{"MicrobiomeStat"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ tmp)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -307,6 +307,8 @@ So, for the Windows system, please make sure RTools has been installed (\url{htt
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"MicrobiomeStat"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"ggtree"}\NormalTok{)}
 \NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"metagenomeSeq"}\NormalTok{)}
@@ -330,7 +332,7 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 \begin{Highlighting}[]
 \CommentTok{\# downloading link of the compressed archive}
 \NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{"https://github.com/ChiLiubio/microeco\_dependence/releases/download/v0.17.0/microeco\_dependence.zip"}
-\CommentTok{\# allow more time for the downloading in R}
+\CommentTok{\# allow more time to download the zip file in R}
 \FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{2000}\NormalTok{)}
 \CommentTok{\# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory}
 \FunctionTok{download.file}\NormalTok{(}\AttributeTok{url =}\NormalTok{ url, }\AttributeTok{destfile =} \StringTok{"microeco\_dependence.zip"}\NormalTok{)}
@@ -3281,7 +3283,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri May  5 21:18:49 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue May  9 13:51:38 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3311,9 +3313,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.127 \\
-CW & 435 & 0.5629 & 0.2958 & 0.2865 & 14.36 \\
-TW & 435 & 0.6246 & 0.416 & 0.4 & 9.793 \\
+IW & 435 & 0.6536 & 0.3872 & 0.3637 & 9.101 \\
+CW & 435 & 0.5629 & 0.2956 & 0.2865 & 14.4 \\
+TW & 435 & 0.6246 & 0.4164 & 0.4 & 9.858 \\
 \bottomrule()
 \end{longtable}
 

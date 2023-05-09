@@ -1,6 +1,6 @@
 --- 
 title: "Tutorial for R microeco package (v0.17.0)"
-author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Minjie Yao, Xiangzhen Li"
+author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -145,12 +145,12 @@ These packages are necessary to reproduce some parts of the tutorial.
 If you want to install all of these packages or some of them, please run this:
 
 ```{r, echo = TRUE, eval = FALSE}
-# allow more waiting time for the downloading of each package
+# allow more waiting time to download each package
 options(timeout = 1000)
 # If a package is not installed, it will be installed from CRAN
 # First select the packages of interest
-tmp <- c("microeco", "file2meco", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
-    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "ggtern", "MicrobiomeStat", "ggraph", "networkD3", "poweRlaw")
+tmp <- c("microeco", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
+    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "ggraph", "networkD3", "poweRlaw", "ggtern")
 # Now check or install
 for(x in tmp){
 	if(!require(x, character.only = TRUE)) {
@@ -159,6 +159,7 @@ for(x in tmp){
 }
 ```
 
+
 ### Bioconductor packages
 
 Some dependent packages are deposited in bioconductor (https://bioconductor.org).
@@ -166,9 +167,10 @@ Please run the following commands to install them one by one.
 Several packages may be installed from source.
 So, for the Windows system, please make sure RTools has been installed (https://chiliubio.github.io/microeco_tutorial/intro.html#rtools).
 
-
 ```{r, echo = TRUE, eval = FALSE}
 install.packages("BiocManager")
+install.packages("file2meco", repos = BiocManager::repositories())
+install.packages("MicrobiomeStat", repos = BiocManager::repositories())
 install.packages("WGCNA", repos = BiocManager::repositories())
 BiocManager::install("ggtree")
 BiocManager::install("metagenomeSeq")
@@ -190,7 +192,7 @@ For the Windows system, first make sure RTools has been installed (https://chili
 ```{r, echo = TRUE, eval = FALSE}
 # downloading link of the compressed archive
 url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.17.0/microeco_dependence.zip"
-# allow more time for the downloading in R
+# allow more time to download the zip file in R
 options(timeout = 2000)
 # If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory
 download.file(url = url, destfile = "microeco_dependence.zip")
