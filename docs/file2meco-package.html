@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-09" />
+<meta name="date" content="2023-05-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,7 +264,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2</a></li>
 <li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
 <li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
-<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2</a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2braken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Braken</a></li>
 <li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
 <li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
 <li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
@@ -348,11 +348,13 @@ div.csl-indent {
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
 can be easily achieved with the package file2meco (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>).
 The idea of creating file2meco package comes from a study involved in complex metagenomic analysis <span class="citation">(<a href="#ref-Liu_Microbial_2022" role="doc-biblioref">Liu et al. 2022</a>)</span>.
-The following examples are applied to the file2meco package v0.5.0.</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="file2meco-package.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install file2meco</span></span>
-<span id="cb271-2"><a href="file2meco-package.html#cb271-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/ChiLiubio/file2meco</span></span>
-<span id="cb271-3"><a href="file2meco-package.html#cb271-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb271-4"><a href="file2meco-package.html#cb271-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;file2meco&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span></code></pre></div>
+Note that the <code>sample_table</code> parameter in each function of file2meco package supports various metadata input format, including<br />
+1) comma seperated file with the suffix .csv or tab seperated file with the suffix .tsv or .txt;<br />
+2) Excel file with the suffix .xlsx or .xls;<br />
+3) data.frame object in R session.</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="file2meco-package.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install file2meco package if not found</span></span>
+<span id="cb271-2"><a href="file2meco-package.html#cb271-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb271-3"><a href="file2meco-package.html#cb271-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;file2meco&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;file2meco&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span></code></pre></div>
 <p>▲ Trouble shooting:<br />
 • The files in the following examples all come from the package file2meco and are found by the function <code>system.file</code> automatically irrespective of Operating System.
 When the user imports a file, please donot use this function.
@@ -369,15 +371,16 @@ please use the function <code>getwd</code> to find the working directory or dire
 <span id="cb272-4"><a href="file2meco-package.html#cb272-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s run the examples</span></span>
 <span id="cb272-5"><a href="file2meco-package.html#cb272-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package</span></span>
 <span id="cb272-6"><a href="file2meco-package.html#cb272-6" aria-hidden="true" tabindex="-1"></a>otu_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;otu_table_raw.txt&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb272-7"><a href="file2meco-package.html#cb272-7" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample_info.csv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb272-8"><a href="file2meco-package.html#cb272-8" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb272-9"><a href="file2meco-package.html#cb272-9" aria-hidden="true" tabindex="-1"></a><span class="co"># if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.</span></span>
-<span id="cb272-10"><a href="file2meco-package.html#cb272-10" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb272-11"><a href="file2meco-package.html#cb272-11" aria-hidden="true" tabindex="-1"></a><span class="co"># contruct microtable object</span></span>
-<span id="cb272-12"><a href="file2meco-package.html#cb272-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path)</span>
-<span id="cb272-13"><a href="file2meco-package.html#cb272-13" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path)</span>
-<span id="cb272-14"><a href="file2meco-package.html#cb272-14" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path)</span>
-<span id="cb272-15"><a href="file2meco-package.html#cb272-15" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path, <span class="at">rep_fasta =</span> rep_fasta_path)</span></code></pre></div>
+<span id="cb272-7"><a href="file2meco-package.html#cb272-7" aria-hidden="true" tabindex="-1"></a><span class="co"># csv file of metadata</span></span>
+<span id="cb272-8"><a href="file2meco-package.html#cb272-8" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample_info.csv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb272-9"><a href="file2meco-package.html#cb272-9" aria-hidden="true" tabindex="-1"></a>phylo_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep_phylo.tre&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb272-10"><a href="file2meco-package.html#cb272-10" aria-hidden="true" tabindex="-1"></a><span class="co"># if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.</span></span>
+<span id="cb272-11"><a href="file2meco-package.html#cb272-11" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb272-12"><a href="file2meco-package.html#cb272-12" aria-hidden="true" tabindex="-1"></a><span class="co"># contruct microtable object</span></span>
+<span id="cb272-13"><a href="file2meco-package.html#cb272-13" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path)</span>
+<span id="cb272-14"><a href="file2meco-package.html#cb272-14" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path)</span>
+<span id="cb272-15"><a href="file2meco-package.html#cb272-15" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path)</span>
+<span id="cb272-16"><a href="file2meco-package.html#cb272-16" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime1meco</span>(otu_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">phylo_tree =</span> phylo_file_path, <span class="at">rep_fasta =</span> rep_fasta_path)</span></code></pre></div>
 </div>
 <div id="qiime2" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> QIIME2<a href="file2meco-package.html#qiime2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -387,20 +390,21 @@ The example data is the ASV (amplicon sequence variant) abundance table based on
 <span id="cb273-2"><a href="file2meco-package.html#cb273-2" aria-hidden="true" tabindex="-1"></a>?qiime2meco</span>
 <span id="cb273-3"><a href="file2meco-package.html#cb273-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use data files inside the package which were downloaded from (https://docs.qiime2.org/2022.2/tutorials/pd-mice/).</span></span>
 <span id="cb273-4"><a href="file2meco-package.html#cb273-4" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;dada2_table.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb273-5"><a href="file2meco-package.html#cb273-5" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb273-6"><a href="file2meco-package.html#cb273-6" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb273-7"><a href="file2meco-package.html#cb273-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
-<span id="cb273-8"><a href="file2meco-package.html#cb273-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(abund_file_path)</span>
-<span id="cb273-9"><a href="file2meco-package.html#cb273-9" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path)</span>
-<span id="cb273-10"><a href="file2meco-package.html#cb273-10" aria-hidden="true" tabindex="-1"></a><span class="co"># add phylogenetic tree and fasta for more demonstrations</span></span>
-<span id="cb273-11"><a href="file2meco-package.html#cb273-11" aria-hidden="true" tabindex="-1"></a><span class="co"># please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/tree.qza</span></span>
-<span id="cb273-12"><a href="file2meco-package.html#cb273-12" aria-hidden="true" tabindex="-1"></a><span class="co"># the file name is &#39;tree.qza&#39;; put it into the R working directory</span></span>
-<span id="cb273-13"><a href="file2meco-package.html#cb273-13" aria-hidden="true" tabindex="-1"></a>tree_data <span class="ot">&lt;-</span> <span class="st">&quot;tree.qza&quot;</span></span>
-<span id="cb273-14"><a href="file2meco-package.html#cb273-14" aria-hidden="true" tabindex="-1"></a><span class="co"># please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/dada2_rep_set.qza</span></span>
-<span id="cb273-15"><a href="file2meco-package.html#cb273-15" aria-hidden="true" tabindex="-1"></a><span class="co"># the file name is &#39;dada2_rep_set.qza&#39;; put it into the R working directory</span></span>
-<span id="cb273-16"><a href="file2meco-package.html#cb273-16" aria-hidden="true" tabindex="-1"></a>rep_data <span class="ot">&lt;-</span> <span class="st">&quot;dada2_rep_set.qza&quot;</span></span>
-<span id="cb273-17"><a href="file2meco-package.html#cb273-17" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path, <span class="at">phylo_tree =</span> tree_data, <span class="at">rep_fasta =</span> rep_data, <span class="at">auto_tidy =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb273-18"><a href="file2meco-package.html#cb273-18" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
+<span id="cb273-5"><a href="file2meco-package.html#cb273-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tsv file of metadata</span></span>
+<span id="cb273-6"><a href="file2meco-package.html#cb273-6" aria-hidden="true" tabindex="-1"></a>sample_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample-metadata.tsv&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb273-7"><a href="file2meco-package.html#cb273-7" aria-hidden="true" tabindex="-1"></a>taxonomy_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;taxonomy.qza&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb273-8"><a href="file2meco-package.html#cb273-8" aria-hidden="true" tabindex="-1"></a><span class="co"># construct microtable object</span></span>
+<span id="cb273-9"><a href="file2meco-package.html#cb273-9" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(abund_file_path)</span>
+<span id="cb273-10"><a href="file2meco-package.html#cb273-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qiime2meco</span>(abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path)</span>
+<span id="cb273-11"><a href="file2meco-package.html#cb273-11" aria-hidden="true" tabindex="-1"></a><span class="co"># add phylogenetic tree and fasta for more demonstrations</span></span>
+<span id="cb273-12"><a href="file2meco-package.html#cb273-12" aria-hidden="true" tabindex="-1"></a><span class="co"># please download tree from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/tree.qza</span></span>
+<span id="cb273-13"><a href="file2meco-package.html#cb273-13" aria-hidden="true" tabindex="-1"></a><span class="co"># the file name is &#39;tree.qza&#39;; put it into the R working directory</span></span>
+<span id="cb273-14"><a href="file2meco-package.html#cb273-14" aria-hidden="true" tabindex="-1"></a>tree_data <span class="ot">&lt;-</span> <span class="st">&quot;tree.qza&quot;</span></span>
+<span id="cb273-15"><a href="file2meco-package.html#cb273-15" aria-hidden="true" tabindex="-1"></a><span class="co"># please download fasta from https://docs.qiime2.org/2022.2/data/tutorials/pd-mice/dada2_rep_set.qza</span></span>
+<span id="cb273-16"><a href="file2meco-package.html#cb273-16" aria-hidden="true" tabindex="-1"></a><span class="co"># the file name is &#39;dada2_rep_set.qza&#39;; put it into the R working directory</span></span>
+<span id="cb273-17"><a href="file2meco-package.html#cb273-17" aria-hidden="true" tabindex="-1"></a>rep_data <span class="ot">&lt;-</span> <span class="st">&quot;dada2_rep_set.qza&quot;</span></span>
+<span id="cb273-18"><a href="file2meco-package.html#cb273-18" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">qiime2meco</span>(abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">taxonomy_table =</span> taxonomy_file_path, <span class="at">phylo_tree =</span> tree_data, <span class="at">rep_fasta =</span> rep_data, <span class="at">auto_tidy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb273-19"><a href="file2meco-package.html#cb273-19" aria-hidden="true" tabindex="-1"></a>test1</span></code></pre></div>
 </div>
 <div id="humann" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> HUMAnN<a href="file2meco-package.html#humann" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -463,13 +467,14 @@ The format of MetaPhlAn classification results is usually called ‘mpa’ forma
 The mpa2meco function is developed for this format conversion to microtable object.
 See the following example of Kraken2 part.</p>
 </div>
-<div id="kraken2" class="section level2 hasAnchor" number="8.5">
-<h2><span class="header-section-number">8.5</span> Kraken2<a href="file2meco-package.html#kraken2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="kraken2braken" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Kraken2/Braken<a href="file2meco-package.html#kraken2braken" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
 Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
 That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 Kraken2 <span class="citation">(<a href="#ref-Wood_Improved_2019" role="doc-biblioref">Wood, Lu, and Langmead 2019</a>)</span> is the newest version.
-The merged Kraken2 results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (<a href="https://ccb.jhu.edu/software/krakentools/" class="uri">https://ccb.jhu.edu/software/krakentools/</a>).</p>
+Braken <span class="citation">(<a href="#ref-Lu_Bracken_2017" role="doc-biblioref">Lu et al. 2017</a>)</span> can be applied to estimate species abundance following the Kraken analysis.
+The merged Kraken2/Braken results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (<a href="https://ccb.jhu.edu/software/krakentools/" class="uri">https://ccb.jhu.edu/software/krakentools/</a>).</p>
 <div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="file2meco-package.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the example is metagenomic classification result</span></span>
 <span id="cb276-2"><a href="file2meco-package.html#cb276-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use the raw data files stored inside the package</span></span>
 <span id="cb276-3"><a href="file2meco-package.html#cb276-3" aria-hidden="true" tabindex="-1"></a>abund_file_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_kraken2_merge.txt&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
@@ -582,6 +587,9 @@ Franzosa, Eric A., Lauren J. McIver, Gholamali Rahnavard, Luke R. Thompson, Mela
 </div>
 <div id="ref-Liu_Microbial_2022" class="csl-entry">
 Liu, Chi, Xiangzhen Li, Felipe R. P. Mansoldo, Jiaxing An, Yongping Kou, Xiao Zhang, Junming Wang, Jianxiong Zeng, Alane B. Vermelho, and Minjie Yao. 2022. <span>“Microbial Habitat Specificity Largely Affects Microbial Co-Occurrence Patterns and Functional Profiles in Wetland Soils.”</span> Journal Article. <em>Geoderma</em> 418: 115866. <a href="https://doi.org/10.1016/j.geoderma.2022.115866">https://doi.org/10.1016/j.geoderma.2022.115866</a>.
+</div>
+<div id="ref-Lu_Bracken_2017" class="csl-entry">
+Lu, Jennifer, Florian P Breitwieser, Peter Thielen, and Steven L Salzberg. 2017. <span>“Bracken: Estimating Species Abundance in Metagenomics Data.”</span> Journal Article. <em>PeerJ Computer Science</em> 3: e104. <a href="https://doi.org/10.7717/peerj-cs.104">https://doi.org/10.7717/peerj-cs.104</a>.
 </div>
 <div id="ref-Mcmurdie_phyloseq_2013" class="csl-entry">
 Mcmurdie, Paul J, and Susan Holmes. 2013. <span>“Phyloseq: An r Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data.”</span> Journal Article. <em>Plos One</em> 8 (4): e61217.

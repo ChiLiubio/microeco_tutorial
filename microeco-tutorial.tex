@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-05-09}
+\date{2023-05-11}
 
 \begin{document}
 \maketitle
@@ -470,7 +470,7 @@ The dashed line denotes the key objects (input or output of functions) that dese
 
 　Many tools can be used for the bioinformatic analysis of amplicon sequencing data, such as QIIME \citep{Caporaso_QIIME_2010}, QIIME2 \citep{Bolyen_Reproducible_2019},
 usearch (\url{https://www.drive5.com/usearch/}), mothur \citep{Schloss_Introducing_2009},
-SILVAngs (\url{https://ngs.arb-silva.de/silvangs/}),
+SILVAngs (\url{https://ngs.arb-silva.de/silvangs/}), LotuS2 \citep{Ozkurt_LotuS2_2022},
 and RDP (\url{http://rdp.cme.msu.edu/}).
 Although the formats of result files may vary across tools, the main contents can be generally classified into the following parts:
 (1) OTU/ASV table, i.e.~the feature-sample abundance table;
@@ -2589,7 +2589,7 @@ These three packages are all deposited on the Bioconductor.
 \end{Highlighting}
 \end{Shaded}
 
-The method `linda' \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat package.
+The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2602,13 +2602,16 @@ The method `linda' \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat package
 \end{Highlighting}
 \end{Shaded}
 
+The method \texttt{DESeq2} from DESeq2 package is also supported and no longer demonstrated here.
+Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}} for each feature.
+
 \hypertarget{key-points-5}{%
 \subsection{Key points}\label{key-points-5}}
 
 \begin{itemize}
 \tightlist
 \item
-  trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = ``none'' or NULL can close the p value adjustment.
+  trans\_diff\$new: In trans\_diff\$new, p\_adjust\_method = ``none'' can close the p value adjustment.
   This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and
   where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.
 \item
@@ -2844,7 +2847,7 @@ In this function, you should provide the nodes you need using the node parameter
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Then let's show how to extract sub-network for samples and the whole analysis flow.}
+Then let's show how to extract sub-network for samples \citep{Ma_Geographic_2016}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2856,7 +2859,7 @@ In this function, you should provide the nodes you need using the node parameter
 \CommentTok{\# then t2 have a network for \textquotesingle{}S1\textquotesingle{} and can be used for further analysis}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\StringTok{"S1.gexf"}\NormalTok{)}
-\CommentTok{\# please use a loop for more samples}
+\CommentTok{\# please use a loop for all samples}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3283,7 +3286,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue May  9 13:51:38 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu May 11 13:46:34 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3313,9 +3316,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3872 & 0.3637 & 9.101 \\
-CW & 435 & 0.5629 & 0.2956 & 0.2865 & 14.4 \\
-TW & 435 & 0.6246 & 0.4164 & 0.4 & 9.858 \\
+IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.101 \\
+CW & 435 & 0.5629 & 0.2964 & 0.2865 & 14.25 \\
+TW & 435 & 0.6248 & 0.4166 & 0.4003 & 9.821 \\
 \bottomrule()
 \end{longtable}
 
@@ -4374,14 +4377,16 @@ In the microtable class part, we showed the basic way about how to create microt
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
 can be easily achieved with the package file2meco (\url{https://github.com/ChiLiubio/file2meco}).
 The idea of creating file2meco package comes from a study involved in complex metagenomic analysis \citep{Liu_Microbial_2022}.
-The following examples are applied to the file2meco package v0.5.0.
+Note that the \texttt{sample\_table} parameter in each function of file2meco package supports various metadata input format, including\\
+1) comma seperated file with the suffix .csv or tab seperated file with the suffix .tsv or .txt;\\
+2) Excel file with the suffix .xlsx or .xls;\\
+3) data.frame object in R session.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# install file2meco}
-\CommentTok{\# https://github.com/ChiLiubio/file2meco}
+\CommentTok{\# install file2meco package if not found}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4406,6 +4411,7 @@ The qiime1meco() function can be used to construct the microtable object using t
 \CommentTok{\# Let\textquotesingle{}s run the examples}
 \CommentTok{\# use the raw data files stored inside the package}
 \NormalTok{otu\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"otu\_table\_raw.txt"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# csv file of metadata}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample\_info.csv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{phylo\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"rep\_phylo.tre"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.}
@@ -4430,6 +4436,7 @@ The example data is the ASV (amplicon sequence variant) abundance table based on
 \NormalTok{?qiime2meco}
 \CommentTok{\# use data files inside the package which were downloaded from (https://docs.qiime2.org/2022.2/tutorials/pd{-}mice/).}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
+\CommentTok{\# tsv file of metadata}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{taxonomy\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"taxonomy.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \CommentTok{\# construct microtable object}
@@ -4520,14 +4527,15 @@ The format of MetaPhlAn classification results is usually called `mpa' format.
 The mpa2meco function is developed for this format conversion to microtable object.
 See the following example of Kraken2 part.
 
-\hypertarget{kraken2}{%
-\section{Kraken2}\label{kraken2}}
+\hypertarget{kraken2braken}{%
+\section{Kraken2/Braken}\label{kraken2braken}}
 
 Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
 Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
 That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 Kraken2 \citep{Wood_Improved_2019} is the newest version.
-The merged Kraken2 results can be obtained by merge\_metaphlan\_tables.py from MetaPhlAn or combine\_mpa.py from KrakenTools (\url{https://ccb.jhu.edu/software/krakentools/}).
+Braken \citep{Lu_Bracken_2017} can be applied to estimate species abundance following the Kraken analysis.
+The merged Kraken2/Braken results can be obtained by merge\_metaphlan\_tables.py from MetaPhlAn or combine\_mpa.py from KrakenTools (\url{https://ccb.jhu.edu/software/krakentools/}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5064,8 +5072,8 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 \hypertarget{trans_norm}{%
 \section{trans\_norm}\label{trans_norm}}
 
-The class trans\_norm provide several data normalization approaches for the microtable object.
-The output is also a microtable object.
+The class trans\_norm provide several data normalization or transformation approaches for the microtable object or data.frame object.
+The format of output will be same with the input.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5075,11 +5083,17 @@ The output is also a microtable object.
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
 \CommentTok{\# Centered log{-}ratio normalization}
 \NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CLR"}\NormalTok{)}
-\CommentTok{\# returned test2 is another microtable object}
-\CommentTok{\# Cumulative sum scaling normalization. Require metagenomeSeq package to be installed.}
+\CommentTok{\# test2 is another microtable object}
+\CommentTok{\# Cumulative sum scaling normalization}
 \NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CCS"}\NormalTok{)}
+\CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
+\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
 \CommentTok{\# log transformation}
 \NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
+\CommentTok{\# Arc sine square root transformation}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Genus)}
+\NormalTok{test3 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"AST"}\NormalTok{)}
+\CommentTok{\# test3 is data.frame format}
 \end{Highlighting}
 \end{Shaded}
 

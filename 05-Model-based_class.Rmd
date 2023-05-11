@@ -223,7 +223,7 @@ t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig
 t1$plot_diff_bar(use_number = 1:20)
 ```
 
-The method 'linda' [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
+The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # LinDA method
@@ -234,11 +234,13 @@ t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", 
 View(t1$res_diff)
 ```
 
+The method `DESeq2` from DESeq2 package is also supported and no longer demonstrated here.
+Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option `method = 'lme'` for each feature.
 
 
 ### Key points
 
-  + trans_diff\$new: In trans_diff\$new, p_adjust_method = "none" or NULL can close the p value adjustment. 
+  + trans_diff\$new: In trans_diff\$new, p_adjust_method = "none" can close the p value adjustment. 
     This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and 
 	where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.
   + trans_diff\$new: this class has a strict requirement on the taxonomic information, 
@@ -418,7 +420,7 @@ t1$subset_network(node = t1$res_node_table %>% base::subset(module == "M1") %>% 
 t1$subset_network(edge = "+")
 ```
 
-**Then let's show how to extract sub-network for samples and the whole analysis flow.**
+Then let's show how to extract sub-network for samples [@Ma_Geographic_2016].
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
@@ -429,7 +431,7 @@ t2$res_network <- sub1
 # then t2 have a network for 'S1' and can be used for further analysis
 t2$cal_module()
 t2$save_network("S1.gexf")
-# please use a loop for more samples
+# please use a loop for all samples
 ```
 
 We also add the function `plot_network` to directly plot the network in R, including the static network and dynamic network.

@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-09" />
+<meta name="date" content="2023-05-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,7 +264,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2</a></li>
 <li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
 <li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
-<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2</a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2braken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Braken</a></li>
 <li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
 <li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
 <li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
@@ -365,19 +365,25 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 </div>
 <div id="trans_norm" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> trans_norm<a href="mecodev-package.html#trans_norm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The class trans_norm provide several data normalization approaches for the microtable object.
-The output is also a microtable object.</p>
+<p>The class trans_norm provide several data normalization or transformation approaches for the microtable object or data.frame object.
+The format of output will be same with the input.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="mecodev-package.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb305-2"><a href="mecodev-package.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecodev)</span>
 <span id="cb305-3"><a href="mecodev-package.html#cb305-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
 <span id="cb305-4"><a href="mecodev-package.html#cb305-4" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_norm<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset)</span>
 <span id="cb305-5"><a href="mecodev-package.html#cb305-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Centered log-ratio normalization</span></span>
 <span id="cb305-6"><a href="mecodev-package.html#cb305-6" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;CLR&quot;</span>)</span>
-<span id="cb305-7"><a href="mecodev-package.html#cb305-7" aria-hidden="true" tabindex="-1"></a><span class="co"># returned test2 is another microtable object</span></span>
-<span id="cb305-8"><a href="mecodev-package.html#cb305-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative sum scaling normalization. Require metagenomeSeq package to be installed.</span></span>
+<span id="cb305-7"><a href="mecodev-package.html#cb305-7" aria-hidden="true" tabindex="-1"></a><span class="co"># test2 is another microtable object</span></span>
+<span id="cb305-8"><a href="mecodev-package.html#cb305-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative sum scaling normalization</span></span>
 <span id="cb305-9"><a href="mecodev-package.html#cb305-9" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;CCS&quot;</span>)</span>
-<span id="cb305-10"><a href="mecodev-package.html#cb305-10" aria-hidden="true" tabindex="-1"></a><span class="co"># log transformation</span></span>
-<span id="cb305-11"><a href="mecodev-package.html#cb305-11" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;log&quot;</span>)</span></code></pre></div>
+<span id="cb305-10"><a href="mecodev-package.html#cb305-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Total sum scaling, dividing counts by the sequencing depth</span></span>
+<span id="cb305-11"><a href="mecodev-package.html#cb305-11" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;TSS&quot;</span>)</span>
+<span id="cb305-12"><a href="mecodev-package.html#cb305-12" aria-hidden="true" tabindex="-1"></a><span class="co"># log transformation</span></span>
+<span id="cb305-13"><a href="mecodev-package.html#cb305-13" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;log&quot;</span>)</span>
+<span id="cb305-14"><a href="mecodev-package.html#cb305-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Arc sine square root transformation</span></span>
+<span id="cb305-15"><a href="mecodev-package.html#cb305-15" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_norm<span class="sc">$</span><span class="fu">new</span>(dataset<span class="sc">$</span>taxa_abund<span class="sc">$</span>Genus)</span>
+<span id="cb305-16"><a href="mecodev-package.html#cb305-16" aria-hidden="true" tabindex="-1"></a>test3 <span class="ot">&lt;-</span> test1<span class="sc">$</span><span class="fu">norm</span>(<span class="at">method =</span> <span class="st">&quot;AST&quot;</span>)</span>
+<span id="cb305-17"><a href="mecodev-package.html#cb305-17" aria-hidden="true" tabindex="-1"></a><span class="co"># test3 is data.frame format</span></span></code></pre></div>
 </div>
 <div id="trans_ts" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> trans_ts<a href="mecodev-package.html#trans_ts" class="anchor-section" aria-label="Anchor link to header"></a></h2>

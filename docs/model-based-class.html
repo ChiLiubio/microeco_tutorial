@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-09" />
+<meta name="date" content="2023-05-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,7 +264,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2</a></li>
 <li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
 <li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
-<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2"><i class="fa fa-check"></i><b>8.5</b> Kraken2</a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2braken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Braken</a></li>
 <li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
 <li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
 <li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
@@ -528,18 +528,20 @@ These three packages are all deposited on the Bioconductor.</p>
 <span id="cb159-4"><a href="model-based-class.html#cb159-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">select_group =</span> <span class="st">&quot;CW - TW&quot;</span>)</span>
 <span id="cb159-5"><a href="model-based-class.html#cb159-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>), <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb159-6"><a href="model-based-class.html#cb159-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code></pre></div>
-<p>The method ‘linda’ <span class="citation">(<a href="#ref-LinDA_Zhou_2022" role="doc-biblioref">Zhou et al. 2022</a>)</span> depends on the MicrobiomeStat package.</p>
+<p>The method <code>linda</code> <span class="citation">(<a href="#ref-LinDA_Zhou_2022" role="doc-biblioref">Zhou et al. 2022</a>)</span> depends on the MicrobiomeStat package.</p>
 <div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="model-based-class.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LinDA method</span></span>
 <span id="cb160-2"><a href="model-based-class.html#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="co"># If MicrobiomeStat package is not installed, please first run: install.packages(&quot;MicrobiomeStat&quot;)</span></span>
 <span id="cb160-3"><a href="model-based-class.html#cb160-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;linda&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>)</span>
 <span id="cb160-4"><a href="model-based-class.html#cb160-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>), <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb160-5"><a href="model-based-class.html#cb160-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;linda&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group+Type&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>)</span>
 <span id="cb160-6"><a href="model-based-class.html#cb160-6" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span></code></pre></div>
+<p>The method <code>DESeq2</code> from DESeq2 package is also supported and no longer demonstrated here.
+Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option <code>method = 'lme'</code> for each feature.</p>
 </div>
 <div id="key-points-5" class="section level3 hasAnchor" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> Key points<a href="model-based-class.html#key-points-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>trans_diff$new: In trans_diff$new, p_adjust_method = “none” or NULL can close the p value adjustment.
+<li>trans_diff$new: In trans_diff$new, p_adjust_method = “none” can close the p value adjustment.
 This is useful in cases where very few significant taxa are found (generally no significant feature found after adjustment) and
 where LEfSe result is needed to be compared with that from Galaxy server or other LEfSe python version.</li>
 <li>trans_diff$new: this class has a strict requirement on the taxonomic information,
@@ -748,7 +750,7 @@ In this function, you should provide the nodes you need using the node parameter
 <span id="cb173-3"><a href="model-based-class.html#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return a new network with igraph class</span></span>
 <span id="cb173-4"><a href="model-based-class.html#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract sub network in which all edge labels are &quot;+&quot;, i.e. positive edges</span></span>
 <span id="cb173-5"><a href="model-based-class.html#cb173-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
-<p><strong>Then let’s show how to extract sub-network for samples and the whole analysis flow.</strong></p>
+<p>Then let’s show how to extract sub-network for samples <span class="citation">(<a href="#ref-Ma_Geographic_2016" role="doc-biblioref">Ma et al. 2016</a>)</span>.</p>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="model-based-class.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the sub-network of sample &#39;S1&#39;</span></span>
 <span id="cb174-2"><a href="model-based-class.html#cb174-2" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> dataset<span class="sc">$</span>otu_table <span class="sc">%&gt;%</span> .[.[, <span class="st">&quot;S1&quot;</span>] <span class="sc">!=</span> <span class="dv">0</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb174-3"><a href="model-based-class.html#cb174-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the &#39;clone&#39; function explanation</span></span>
@@ -757,7 +759,7 @@ In this function, you should provide the nodes you need using the node parameter
 <span id="cb174-6"><a href="model-based-class.html#cb174-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then t2 have a network for &#39;S1&#39; and can be used for further analysis</span></span>
 <span id="cb174-7"><a href="model-based-class.html#cb174-7" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_module</span>()</span>
 <span id="cb174-8"><a href="model-based-class.html#cb174-8" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;S1.gexf&quot;</span>)</span>
-<span id="cb174-9"><a href="model-based-class.html#cb174-9" aria-hidden="true" tabindex="-1"></a><span class="co"># please use a loop for more samples</span></span></code></pre></div>
+<span id="cb174-9"><a href="model-based-class.html#cb174-9" aria-hidden="true" tabindex="-1"></a><span class="co"># please use a loop for all samples</span></span></code></pre></div>
 <p>We also add the function <code>plot_network</code> to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See <a href="https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html" class="uri">https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html</a> and <a href="https://kateto.net/network-visualization" class="uri">https://kateto.net/network-visualization</a> for more
@@ -1087,7 +1089,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb194-3"><a href="model-based-class.html#cb194-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Tue May  9 13:48:45 2023. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Thu May 11 13:43:38 2023. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1113,25 +1115,25 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <td align="center">IW</td>
 <td align="center">435</td>
 <td align="center">0.6538</td>
-<td align="center">0.387</td>
+<td align="center">0.3869</td>
 <td align="center">0.3639</td>
-<td align="center">9.085</td>
+<td align="center">9.075</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5628</td>
-<td align="center">0.2958</td>
-<td align="center">0.2864</td>
-<td align="center">14.33</td>
+<td align="center">0.5629</td>
+<td align="center">0.296</td>
+<td align="center">0.2865</td>
+<td align="center">14.34</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
 <td align="center">0.6246</td>
-<td align="center">0.4164</td>
-<td align="center">0.4001</td>
-<td align="center">9.834</td>
+<td align="center">0.4159</td>
+<td align="center">0.4</td>
+<td align="center">9.803</td>
 </tr>
 </tbody>
 </table>
@@ -1324,6 +1326,9 @@ Liu, Chi, Minjie Yao, James C Stegen, Junpeng Rui, Jiabao Li, and Xiangzhen Li. 
 </div>
 <div id="ref-Michael_Moderated_2014" class="csl-entry">
 Love, Michael I., Wolfgang Huber, and Simon Anders. 2014. <span>“Moderated Estimation of Fold Change and Dispersion for RNA-Seq Data with DESeq2.”</span> <em>Genome Biology</em> 15: 550. <a href="https://doi.org/10.1186/s13059-014-0550-8">https://doi.org/10.1186/s13059-014-0550-8</a>.
+</div>
+<div id="ref-Ma_Geographic_2016" class="csl-entry">
+Ma, Bin, Haizhen Wang, Melissa Dsouza, Jun Lou, Yan He, Zhongmin Dai, Philip C Brookes, Jianming Xu, and Jack A Gilbert. 2016. <span>“Geographic Patterns of Co-Occurrence Network Topological Features for Soil Microbiota at Continental Scale in Eastern China.”</span> Journal Article. <em>ISME J</em> 10 (8): 1891–901. <a href="https://doi.org/10.1038/ismej.2015.261">https://doi.org/10.1038/ismej.2015.261</a>.
 </div>
 <div id="ref-Nearing_Microbiome_2022" class="csl-entry">
 Nearing, Jacob T, Gavin M Douglas, Molly G Hayes, Jocelyn MacDonald, Dhwani K Desai, Nicole Allward, Casey Jones, Robyn J Wright, Akhilesh S Dhanani, and André M Comeau. 2022. <span>“Microbiome Differential Abundance Methods Produce Different Results Across 38 Datasets.”</span> Journal Article. <em>Nature Communications</em> 13 (1): 1–16.

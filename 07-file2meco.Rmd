@@ -4,13 +4,16 @@ In the microtable class part, we showed the basic way about how to create microt
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq) 
 can be easily achieved with the package file2meco (https://github.com/ChiLiubio/file2meco).
 The idea of creating file2meco package comes from a study involved in complex metagenomic analysis [@Liu_Microbial_2022].
-The following examples are applied to the file2meco package v0.5.0.
+Note that the `sample_table` parameter in each function of file2meco package supports various metadata input format, including  
+1) comma seperated file with the suffix .csv or tab seperated file with the suffix .tsv or .txt;  
+2) Excel file with the suffix .xlsx or .xls;  
+3) data.frame object in R session.
+
 
 ```{r, echo = TRUE, eval = FALSE}
-# install file2meco
-# https://github.com/ChiLiubio/file2meco
+# install file2meco package if not found
 if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-install.packages("file2meco", repos = BiocManager::repositories())
+if(!require("file2meco")) install.packages("file2meco", repos = BiocManager::repositories())
 ```
 ▲ Trouble shooting:  
 • The files in the following examples all come from the package file2meco and are found by the function `system.file` automatically irrespective of Operating System.
@@ -33,6 +36,7 @@ library(file2meco)
 # Let's run the examples
 # use the raw data files stored inside the package
 otu_file_path <- system.file("extdata", "otu_table_raw.txt", package="file2meco")
+# csv file of metadata
 sample_file_path <- system.file("extdata", "sample_info.csv", package="file2meco")
 phylo_file_path <- system.file("extdata", "rep_phylo.tre", package="file2meco")
 # if you want to use Tax4Fun2 approach, you need read the representative sequences and add it to the microtable object.
@@ -56,6 +60,7 @@ library(file2meco)
 ?qiime2meco
 # use data files inside the package which were downloaded from (https://docs.qiime2.org/2022.2/tutorials/pd-mice/).
 abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
+# tsv file of metadata
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
@@ -143,12 +148,14 @@ The mpa2meco function is developed for this format conversion to microtable obje
 See the following example of Kraken2 part.
 
 
-## Kraken2
+## Kraken2/Braken
+
 Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
 Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database. 
 That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 Kraken2 [@Wood_Improved_2019] is the newest version.
-The merged Kraken2 results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (https://ccb.jhu.edu/software/krakentools/).
+Braken [@Lu_Bracken_2017] can be applied to estimate species abundance following the Kraken analysis.
+The merged Kraken2/Braken results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (https://ccb.jhu.edu/software/krakentools/).
 
 ```{r, echo = TRUE, eval = FALSE}
 # the example is metagenomic classification result
