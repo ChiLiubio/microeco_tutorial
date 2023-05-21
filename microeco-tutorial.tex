@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.17.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-05-11}
+\date{2023-05-21}
 
 \begin{document}
 \maketitle
@@ -493,8 +493,8 @@ In this tutorial, the data inside the package was employed to show some basic op
 \hypertarget{prepare-the-example-data}{%
 \subsection{Prepare the example data}\label{prepare-the-example-data}}
 
-　The 16S rRNA gene sequencing results in the example data of the package is used to show the main part of the tutorial.
-This dataset is the 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al. \citep{An_Soil_2019},
+　The example data inside the microeco package is used to show the main part of the tutorial.
+This dataset arose from 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al. \citep{An_Soil_2019},
 who surveyed soil prokaryotic communities in Chinese inland wetlands (IW),
 coastal wetland (CW) and Tibet plateau wetlands (TW) using amplicon sequencing.
 These wetlands include both saline and non-saline samples (classified for the tutorial).
@@ -3286,7 +3286,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu May 11 13:46:34 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sun May 21 10:33:46 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3316,9 +3316,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.101 \\
-CW & 435 & 0.5629 & 0.2964 & 0.2865 & 14.25 \\
-TW & 435 & 0.6248 & 0.4166 & 0.4003 & 9.821 \\
+IW & 435 & 0.6537 & 0.3879 & 0.3638 & 9.111 \\
+CW & 435 & 0.5628 & 0.2951 & 0.2863 & 14.35 \\
+TW & 435 & 0.6247 & 0.4163 & 0.4001 & 9.875 \\
 \bottomrule()
 \end{longtable}
 
@@ -4028,6 +4028,10 @@ Other examples.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{pvalue\_trim =} \DecValTok{3}\NormalTok{, }\AttributeTok{cor\_coef\_trim =} \DecValTok{3}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y =} \StringTok{"TOC"}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{,}
     \AttributeTok{shape\_values =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y\_axis\_title =} \StringTok{"TOC"}\NormalTok{)}
+\CommentTok{\# correlation between relative abundance of Genus{-}Arthrobacter and pH}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{unlist}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Genus[}\StringTok{"k\_\_Bacteria|p\_\_Actinobacteria|c\_\_Actinobacteria|o\_\_Micrococcales|f\_\_Micrococcaceae|g\_\_Arthrobacter"}\NormalTok{, ])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y =}\NormalTok{ tmp, }\AttributeTok{point\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{point\_alpha =} \FloatTok{0.3}\NormalTok{, }
+    \AttributeTok{y\_axis\_title =} \StringTok{"Arthrobacter"}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"pH"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5061,9 +5065,9 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 \NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
 \NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# trans\_rarefy class}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{alphadiv =} \StringTok{"Shannon"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{4000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{8000}\NormalTok{))}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{4000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{8000}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{rep}\NormalTok{(}\StringTok{"grey"}\NormalTok{, }\DecValTok{100}\NormalTok{), }\AttributeTok{show\_point =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{show\_legend =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

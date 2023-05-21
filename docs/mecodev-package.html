@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-11" />
+<meta name="date" content="2023-05-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -358,9 +358,9 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 <span id="cb304-7"><a href="mecodev-package.html#cb304-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S)</span>
 <span id="cb304-8"><a href="mecodev-package.html#cb304-8" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
 <span id="cb304-9"><a href="mecodev-package.html#cb304-9" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_rarefy class</span></span>
-<span id="cb304-10"><a href="mecodev-package.html#cb304-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
-<span id="cb304-11"><a href="mecodev-package.html#cb304-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">show_point =</span> <span class="cn">FALSE</span>, <span class="at">add_fitting =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb304-12"><a href="mecodev-package.html#cb304-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">100</span>), <span class="at">show_point =</span> <span class="cn">TRUE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>, <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<span id="cb304-10"><a href="mecodev-package.html#cb304-10" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(dataset, <span class="at">alphadiv =</span> <span class="st">&quot;Observed&quot;</span>, <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>))</span>
+<span id="cb304-11"><a href="mecodev-package.html#cb304-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">show_point =</span> <span class="cn">FALSE</span>, <span class="at">add_fitting =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb304-12"><a href="mecodev-package.html#cb304-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">show_point =</span> <span class="cn">FALSE</span>, <span class="at">add_fitting =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Images/plot_trans_rarefy.png" width="550px" style="display: block; margin: auto;" /></p>
 </div>
 <div id="trans_norm" class="section level2 hasAnchor" number="11.2">

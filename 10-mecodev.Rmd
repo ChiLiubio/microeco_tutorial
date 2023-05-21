@@ -15,9 +15,9 @@ set.seed(123)
 dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
 dataset$tidy_dataset()
 # trans_rarefy class
-t1 <- trans_rarefy$new(dataset, alphadiv = "Shannon", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1 <- trans_rarefy$new(dataset, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = FALSE)
 t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
-t1$plot_rarefy(color_values = rep("grey", 100), show_point = TRUE, add_fitting = FALSE, show_legend = FALSE)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
