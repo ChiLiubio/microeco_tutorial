@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.17.0)"
+title: "Tutorial for R microeco package (v0.19.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -533,6 +533,9 @@ dataset$sample_sums() %>% range
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 it is optional to perform the resampling to make the sequence number equal for each sample.
 The function `rarefy_samples` can invoke the function `tidy_dataset` automatically before and after the rarefying.
+In v0.19.0, `method = 'SRS'` is available to perfom normalization by scaling with ranked subsampling [@Beule_normalization_2020].
+The default method is `method = 'rarefying'`.
+
 
 ```{r, echo = TRUE}
 # As an example, use 10000 sequences in each sample
@@ -864,7 +867,7 @@ knitr::include_graphics("Images/trans_abund_heatmap.png")
 Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 5)
 t1$plot_line()
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, groupmean = "Type")
 t1$plot_line(position = position_dodge(0.3), xtext_angle = 0)
@@ -943,6 +946,27 @@ test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, f
 knitr::include_graphics("Images/trans_abund_barplot_ggnested.png")
 ```
 
+The `coord_flip` parameter in `plot_bar` function can be changed to make the coordinate axis flipped.
+The clustering plot can also be added in the bar plot.
+In this case, the coordinate axis will be flipped automatically for better visualization.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+g1 <- t1$plot_bar(coord_flip = TRUE)
+g1 <- g1 + theme_classic() + theme(axis.title.x = element_text(size = 16), axis.ticks.y = element_blank(), axis.line.y = element_blank())
+g1
+g1 <- t1$plot_bar(clustering_plot = TRUE)
+# In this case, g1 (aplot object) is the combination of different ggplot objects
+# to adjust the main plot, please select g1[[1]]
+g1[[1]] <- g1[[1]] + theme_classic() + theme(axis.title.x = element_text(size = 16), axis.ticks.y = element_blank(), axis.line.y = element_blank())
+g1
+# save the figure
+ggsave("test.png", g1, width = 8, height = 5)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_barplot_groupmean_clustering_flip.png")
+```
 
 
 ### Key points
@@ -989,11 +1013,13 @@ knitr::include_graphics("Images/trans_venn_1.png")
 ```
 
 When the groups are too many to show with venn plot, using petal plot is better.
+To assign different colors in petals, please provide multiple colors to `petal_color` parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
 dataset1 <- dataset$merge_samples(use_group = "Type")
 t1 <- trans_venn$new(dataset1)
+t1$plot_venn(petal_plot = TRUE, petal_color = RColorBrewer::brewer.pal(8, "Dark2"))
 t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a = 3, petal_move_xy = 3.8, petal_color_center = "#BEBADA")
 ```
 
@@ -1123,7 +1149,7 @@ Creating the object of trans_alpha class can invoke the alpha_diversity data sto
 
 ### Example
 
-Creating trans_alpha object have two return data.frame with prefix 'data_': `data_alpha` and `data_stat`.
+Creating `trans_alpha` object can return two data.frame with prefix 'data_': `data_alpha` and `data_stat`.
 The data_alpha is used for the following differential test and visualization.
 
 
@@ -1246,6 +1272,26 @@ Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way fa
 # require rcompanion package to be installed
 t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 ```
+
+
+Linear mixed-effects model can be selected with the `method = "lme"`.
+This model is implemented based on the `lmerTest` package.
+For more parameters, please see `lmerTest::lmer` function.
+Please use parameter passing when more parameters are needed.
+For the formula usage, please follow this (https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html).
+In the return table, conditional R2 is the total variance explained by fixed and random effects, 
+and marginal R2 is the variance explained by fixed effects.
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require("lmerTest")) install.packages("lmerTest")
+t1 <- trans_alpha$new(dataset = dataset)
+# just using (1|Type) as an example to show the random effect
+t1$cal_diff(method = "lme", formula = "Group + (1|Type)")
+View(t1$res_diff)
+# return_model = TRUE can return original models, i.e. object$res_model
+t1$cal_diff(method = "lme", formula = "Group + (1|Type)", return_model = TRUE)
+```
+
 
 ### Key points
 
@@ -1432,7 +1478,8 @@ Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
 t.test, ANOVA, Scheirer Ray Hare test,
 ANCOMBC [@Lin_Analysis_2020], ALDEx2 [@Fernandes_Unifying_2014],
-DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010], etc.
+DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010],
+linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available, 
 it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
@@ -1652,8 +1699,35 @@ t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", 
 View(t1$res_diff)
 ```
 
-The method `DESeq2` from DESeq2 package is also supported and no longer demonstrated here.
-Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option `method = 'lme'` for each feature.
+### More options
+
+The dependence packages in the following examples are not mentioned in the previous package dependence part (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
+The method `DESeq2` from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
+The linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lme'` for each feature by
+invoking this method in the trans_alpha class.
+For more details and parameter passing, please see the trans_alpha part.
+
+```{r, echo = TRUE, eval = FALSE}
+# AST: arc sine square root transformation
+if(!require("lmerTest")) install.packages("lmerTest")
+t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
+View(t1$res_diff)
+```
+
+The generalized linear mixed model is implemented based on the glmmTMB package.
+In this example, we use beta distribution function as the family function, 
+because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require("glmmTMB")) install.packages("glmmTMB")
+d1 <- clone(dataset)
+# eliminate the boundary 0 and 1
+d1$taxa_abund$Phylum %<>% {. + 1e-10} %>% {./(1 + 2e-10)}
+t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formula = "Group + (1|Type)", 
+	family = glmmTMB::beta_family(link = "logit"), filter_thres = 0.001)
+View(t1$res_diff)
+```
+
 
 
 ### Key points
@@ -1665,6 +1739,12 @@ Additionally, the Linear Mixed-Effects Models from lmerTest package can also be 
     make sure `tidy_taxonomy()` function has been performed for the `tax_table` in `microtable` object.
   + trans_diff\$new: creating this class invokes one or more tables in `taxa_abund` list, which is stored in `microtable` object.
   + trans_diff\$plot_diff_cladogram: `clade_label_size`, `clade_label_size_add` and `clade_label_size_log` can control the text size all together in the cladogram.
+  + trans_diff\$new: from v0.19.0, `transformation` parameter can be employed to transform or normalize relative abundance data based on the mecodev package for
+    those methods coming from trans_alpha class ("KW", "KW_dunn", "wilcox", "t.test", "anova", "scheirerRayHare", "betareg", "lme", "glmm"). 
+    For example, `transformation = 'AST'` represents the arc sine square root transformation.
+  + trans_diff\$plot_diff_bar: from v0.19.0, `color_group_map = TRUE` can be added in `plot_diff_bar` function to 
+    fix the color in each group when part of groups are not shown in the plot, which is especially useful when multiple approaches or data are needed to run the same step.
+
 
 
 ## trans_network class

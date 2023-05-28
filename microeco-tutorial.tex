@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.17.0)},
+  pdftitle={Tutorial for R microeco package (v0.19.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.17.0)}
+\title{Tutorial for R microeco package (v0.19.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-05-21}
+\date{2023-05-28}
 
 \begin{document}
 \maketitle
@@ -912,6 +912,8 @@ Then let's use sample\_sums() to check the sequence numbers in each sample.
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 it is optional to perform the resampling to make the sequence number equal for each sample.
 The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_dataset} automatically before and after the rarefying.
+In v0.19.0, \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available to perfom normalization by scaling with ranked subsampling \citep{Beule_normalization_2020}.
+The default method is \texttt{method\ =\ \textquotesingle{}rarefying\textquotesingle{}}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -921,7 +923,7 @@ The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_data
 \end{Shaded}
 
 \begin{verbatim}
-## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...
+## 530 features are removed because they are no longer present in any sample after random subsampling ...
 \end{verbatim}
 
 \begin{verbatim}
@@ -1449,7 +1451,7 @@ Line chart is very useful to show the abundance change of taxa along time, space
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{()}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{5}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_line}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\FloatTok{0.3}\NormalTok{), }\AttributeTok{xtext\_angle =} \DecValTok{0}\NormalTok{)}
@@ -1524,6 +1526,28 @@ When the hierarchical abundance data of two levels is needed to be shown in bar 
 
 \begin{center}\includegraphics[width=700px]{Images/trans_abund_barplot_ggnested} \end{center}
 
+The \texttt{coord\_flip} parameter in \texttt{plot\_bar} function can be changed to make the coordinate axis flipped.
+The clustering plot can also be added in the bar plot.
+In this case, the coordinate axis will be flipped automatically for better visualization.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ g1 }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{), }\AttributeTok{axis.ticks.y =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.line.y =} \FunctionTok{element\_blank}\NormalTok{())}
+\NormalTok{g1}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{clustering\_plot =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# In this case, g1 (aplot object) is the combination of different ggplot objects}
+\CommentTok{\# to adjust the main plot, please select g1[[1]]}
+\NormalTok{g1[[}\DecValTok{1}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ g1[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{), }\AttributeTok{axis.ticks.y =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.line.y =} \FunctionTok{element\_blank}\NormalTok{())}
+\NormalTok{g1}
+\CommentTok{\# save the figure}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"test.png"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/trans_abund_barplot_groupmean_clustering_flip} \end{center}
+
 \hypertarget{key-points-1}{%
 \subsection{Key points}\label{key-points-1}}
 
@@ -1577,12 +1601,14 @@ we first merge samples according to the ``Group'' column of sample\_table.
 \begin{center}\includegraphics[width=500px]{Images/trans_venn_1} \end{center}
 
 When the groups are too many to show with venn plot, using petal plot is better.
+To assign different colors in petals, please provide multiple colors to \texttt{petal\_color} parameter.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use "Type" column in sample\_table}
 \NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_color =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_center\_size =} \DecValTok{50}\NormalTok{, }\AttributeTok{petal\_r =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{petal\_a =} \DecValTok{3}\NormalTok{, }\AttributeTok{petal\_move\_xy =} \FloatTok{3.8}\NormalTok{, }\AttributeTok{petal\_color\_center =} \StringTok{"\#BEBADA"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1727,7 +1753,7 @@ Creating the object of trans\_alpha class can invoke the alpha\_diversity data s
 \hypertarget{example-2}{%
 \subsection{Example}\label{example-2}}
 
-Creating trans\_alpha object have two return data.frame with prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
+Creating \texttt{trans\_alpha} object can return two data.frame with prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
 The data\_alpha is used for the following differential test and visualization.
 
 \begin{Shaded}
@@ -1993,6 +2019,26 @@ Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way fa
 \begin{Highlighting}[]
 \CommentTok{\# require rcompanion package to be installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"scheirerRayHare"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Linear mixed-effects model can be selected with the \texttt{method\ =\ "lme"}.
+This model is implemented based on the \texttt{lmerTest} package.
+For more parameters, please see \texttt{lmerTest::lmer} function.
+Please use parameter passing when more parameters are needed.
+For the formula usage, please follow this (\url{https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html}).
+In the return table, conditional R2 is the total variance explained by fixed and random effects,
+and marginal R2 is the variance explained by fixed effects.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
+\CommentTok{\# just using (1|Type) as an example to show the random effect}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\CommentTok{\# return\_model = TRUE can return original models, i.e. object$res\_model}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{, }\AttributeTok{return\_model =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2350,7 +2396,8 @@ Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Te
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups \textgreater{} 2),
 t.test, ANOVA, Scheirer Ray Hare test,
 ANCOMBC \citep{Lin_Analysis_2020}, ALDEx2 \citep{Fernandes_Unifying_2014},
-DESeq2 \citep{Michael_Moderated_2014}, LinDA \citep{LinDA_Zhou_2022}, beta regression \citep{Betaregression_2010}, etc.
+DESeq2 \citep{Michael_Moderated_2014}, LinDA \citep{LinDA_Zhou_2022}, beta regression \citep{Betaregression_2010},
+linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available,
 it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
@@ -2602,8 +2649,39 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 \end{Highlighting}
 \end{Shaded}
 
-The method \texttt{DESeq2} from DESeq2 package is also supported and no longer demonstrated here.
-Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}} for each feature.
+\hypertarget{more-options}{%
+\subsection{More options}\label{more-options}}
+
+The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
+The method \texttt{DESeq2} from DESeq2 package is also supported in the trans\_diff class and no longer demonstrated here.
+The linear mixed-effects models from lmerTest package can be fitted with the option \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}} for each feature by
+invoking this method in the trans\_alpha class.
+For more details and parameter passing, please see the trans\_alpha part.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# AST: arc sine square root transformation}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+(1|Type)"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{transformation =} \StringTok{"AST"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\end{Highlighting}
+\end{Shaded}
+
+The generalized linear mixed model is implemented based on the glmmTMB package.
+In this example, we use beta distribution function as the family function,
+because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"glmmTMB"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"glmmTMB"}\NormalTok{)}
+\NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\CommentTok{\# eliminate the boundary 0 and 1}
+\NormalTok{d1}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ \{. }\SpecialCharTok{+} \FloatTok{1e{-}10}\NormalTok{\} }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ \{.}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FloatTok{2e{-}10}\NormalTok{)\}}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{method =} \StringTok{"glmm"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{, }
+    \AttributeTok{family =}\NormalTok{ glmmTMB}\SpecialCharTok{::}\FunctionTok{beta\_family}\NormalTok{(}\AttributeTok{link =} \StringTok{"logit"}\NormalTok{), }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{key-points-5}{%
 \subsection{Key points}\label{key-points-5}}
@@ -2621,6 +2699,13 @@ Additionally, the Linear Mixed-Effects Models from lmerTest package can also be 
   trans\_diff\$new: creating this class invokes one or more tables in \texttt{taxa\_abund} list, which is stored in \texttt{microtable} object.
 \item
   trans\_diff\$plot\_diff\_cladogram: \texttt{clade\_label\_size}, \texttt{clade\_label\_size\_add} and \texttt{clade\_label\_size\_log} can control the text size all together in the cladogram.
+\item
+  trans\_diff\$new: from v0.19.0, \texttt{transformation} parameter can be employed to transform or normalize relative abundance data based on the mecodev package for
+  those methods coming from trans\_alpha class (``KW'', ``KW\_dunn'', ``wilcox'', ``t.test'', ``anova'', ``scheirerRayHare'', ``betareg'', ``lme'', ``glmm'').
+  For example, \texttt{transformation\ =\ \textquotesingle{}AST\textquotesingle{}} represents the arc sine square root transformation.
+\item
+  trans\_diff\$plot\_diff\_bar: from v0.19.0, \texttt{color\_group\_map\ =\ TRUE} can be added in \texttt{plot\_diff\_bar} function to
+  fix the color in each group when part of groups are not shown in the plot, which is especially useful when multiple approaches or data are needed to run the same step.
 \end{itemize}
 
 \hypertarget{trans_network-class}{%
@@ -3286,7 +3371,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun May 21 10:33:46 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sun May 28 17:13:40 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3316,9 +3401,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3879 & 0.3638 & 9.111 \\
-CW & 435 & 0.5628 & 0.2951 & 0.2863 & 14.35 \\
-TW & 435 & 0.6247 & 0.4163 & 0.4001 & 9.875 \\
+IW & 435 & 0.6536 & 0.3866 & 0.3637 & 9.067 \\
+CW & 435 & 0.5628 & 0.2956 & 0.2864 & 14.36 \\
+TW & 435 & 0.624 & 0.4159 & 0.3995 & 9.907 \\
 \bottomrule()
 \end{longtable}
 
@@ -5634,7 +5719,11 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change data is stored in object$res_change ...
+## Abundance change along groups is stored in object$res_change_pair ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change summary is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -5706,7 +5795,11 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{verbatim}
 
 \begin{verbatim}
-## Abundance change data is stored in object$res_change ...
+## Abundance change along groups is stored in object$res_change_pair ...
+\end{verbatim}
+
+\begin{verbatim}
+## Abundance change summary is stored in object$res_change ...
 \end{verbatim}
 
 \begin{Shaded}

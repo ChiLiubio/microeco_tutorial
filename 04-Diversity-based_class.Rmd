@@ -12,7 +12,7 @@ Creating the object of trans_alpha class can invoke the alpha_diversity data sto
 
 ### Example
 
-Creating trans_alpha object have two return data.frame with prefix 'data_': `data_alpha` and `data_stat`.
+Creating `trans_alpha` object can return two data.frame with prefix 'data_': `data_alpha` and `data_stat`.
 The data_alpha is used for the following differential test and visualization.
 
 
@@ -135,6 +135,26 @@ Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way fa
 # require rcompanion package to be installed
 t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 ```
+
+
+Linear mixed-effects model can be selected with the `method = "lme"`.
+This model is implemented based on the `lmerTest` package.
+For more parameters, please see `lmerTest::lmer` function.
+Please use parameter passing when more parameters are needed.
+For the formula usage, please follow this (https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html).
+In the return table, conditional R2 is the total variance explained by fixed and random effects, 
+and marginal R2 is the variance explained by fixed effects.
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require("lmerTest")) install.packages("lmerTest")
+t1 <- trans_alpha$new(dataset = dataset)
+# just using (1|Type) as an example to show the random effect
+t1$cal_diff(method = "lme", formula = "Group + (1|Type)")
+View(t1$res_diff)
+# return_model = TRUE can return original models, i.e. object$res_model
+t1$cal_diff(method = "lme", formula = "Group + (1|Type)", return_model = TRUE)
+```
+
 
 ### Key points
 

@@ -233,6 +233,9 @@ dataset$sample_sums() %>% range
 Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
 it is optional to perform the resampling to make the sequence number equal for each sample.
 The function `rarefy_samples` can invoke the function `tidy_dataset` automatically before and after the rarefying.
+In v0.19.0, `method = 'SRS'` is available to perfom normalization by scaling with ranked subsampling [@Beule_normalization_2020].
+The default method is `method = 'rarefying'`.
+
 
 ```{r, echo = TRUE}
 # As an example, use 10000 sequences in each sample

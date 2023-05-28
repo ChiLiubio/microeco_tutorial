@@ -101,7 +101,7 @@ knitr::include_graphics("Images/trans_abund_heatmap.png")
 Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5)
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 5)
 t1$plot_line()
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, groupmean = "Type")
 t1$plot_line(position = position_dodge(0.3), xtext_angle = 0)
@@ -180,6 +180,27 @@ test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, f
 knitr::include_graphics("Images/trans_abund_barplot_ggnested.png")
 ```
 
+The `coord_flip` parameter in `plot_bar` function can be changed to make the coordinate axis flipped.
+The clustering plot can also be added in the bar plot.
+In this case, the coordinate axis will be flipped automatically for better visualization.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+g1 <- t1$plot_bar(coord_flip = TRUE)
+g1 <- g1 + theme_classic() + theme(axis.title.x = element_text(size = 16), axis.ticks.y = element_blank(), axis.line.y = element_blank())
+g1
+g1 <- t1$plot_bar(clustering_plot = TRUE)
+# In this case, g1 (aplot object) is the combination of different ggplot objects
+# to adjust the main plot, please select g1[[1]]
+g1[[1]] <- g1[[1]] + theme_classic() + theme(axis.title.x = element_text(size = 16), axis.ticks.y = element_blank(), axis.line.y = element_blank())
+g1
+# save the figure
+ggsave("test.png", g1, width = 8, height = 5)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_abund_barplot_groupmean_clustering_flip.png")
+```
 
 
 ### Key points
@@ -226,11 +247,13 @@ knitr::include_graphics("Images/trans_venn_1.png")
 ```
 
 When the groups are too many to show with venn plot, using petal plot is better.
+To assign different colors in petals, please provide multiple colors to `petal_color` parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
 dataset1 <- dataset$merge_samples(use_group = "Type")
 t1 <- trans_venn$new(dataset1)
+t1$plot_venn(petal_plot = TRUE, petal_color = RColorBrewer::brewer.pal(8, "Dark2"))
 t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a = 3, petal_move_xy = 3.8, petal_color_center = "#BEBADA")
 ```
 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.17.0)</title>
+  <title>Chapter 3 Basic class | Tutorial for R microeco package (v0.19.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.17.0)" />
+  <meta property="og:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.19.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.17.0)" />
+  <meta name="twitter:title" content="Chapter 3 Basic class | Tutorial for R microeco package (v0.19.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-21" />
+<meta name="date" content="2023-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -222,7 +222,8 @@ div.csl-indent {
 <li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-4"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
-<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.2</b> Key points</a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#more-options"><i class="fa fa-check"></i><b>6.1.2</b> More options</a></li>
+<li class="chapter" data-level="6.1.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.3</b> Key points</a></li>
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
 <ul>
@@ -334,7 +335,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.17.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v0.19.0)</a>
           </h1>
         </div>
 
@@ -749,10 +750,12 @@ Please also see the help document of the microtable class for detailed descripti
 <pre><code>## [1] 10316 37087</code></pre>
 <p>Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
 it is optional to perform the resampling to make the sequence number equal for each sample.
-The function <code>rarefy_samples</code> can invoke the function <code>tidy_dataset</code> automatically before and after the rarefying.</p>
+The function <code>rarefy_samples</code> can invoke the function <code>tidy_dataset</code> automatically before and after the rarefying.
+In v0.19.0, <code>method = 'SRS'</code> is available to perfom normalization by scaling with ranked subsampling <span class="citation">(<a href="#ref-Beule_normalization_2020" role="doc-biblioref">Beule and Karlovsky 2020</a>)</span>.
+The default method is <code>method = 'rarefying'</code>.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basic-class.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As an example, use 10000 sequences in each sample</span></span>
 <span id="cb44-2"><a href="basic-class.html#cb44-2" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">rarefy_samples</span>(<span class="at">sample.size =</span> <span class="dv">10000</span>)</span></code></pre></div>
-<pre><code>## 530 OTUs were removed because they are no longer present in any sample after random subsampling ...</code></pre>
+<pre><code>## 530 features are removed because they are no longer present in any sample after random subsampling ...</code></pre>
 <pre><code>## 530 taxa are removed from the otu_table, as the abundance is 0 ...</code></pre>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basic-class.html#cb47-1" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span></code></pre></div>
 <pre><code>## [1] 10000 10000</code></pre>
@@ -1009,6 +1012,9 @@ the class can not recognize this modification, the user should use <code>tidy_da
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-An_Soil_2019" class="csl-entry">
 An, Jiaxing, Chi Liu, Qian Wang, Minjie Yao, Junpeng Rui, Shiheng Zhang, and Xiangzhen Li. 2019. <span>“Soil Bacterial Community Structure in Chinese Wetlands.”</span> Journal Article. <em>Geoderma</em> 337: 290–99.
+</div>
+<div id="ref-Beule_normalization_2020" class="csl-entry">
+Beule, Lukas, and Petr Karlovsky. 2020. <span>“Improved Normalization of Species Count Data in Ecology by Scaling with Ranked Subsampling (SRS): Application to Microbial Communities.”</span> Journal Article. <em>PeerJ</em> 8: e9593. <a href="https://doi.org/10.7717/peerj.9593">https://doi.org/10.7717/peerj.9593</a>.
 </div>
 <div id="ref-Bolyen_Reproducible_2019" class="csl-entry">
 Bolyen, E., J. R. Rideout, M. R. Dillon, N. A. Bokulich, C. C. Abnet, G. A. Al-Ghalith, H. Alexander, et al. 2019. <span>“Reproducible, Interactive, Scalable and Extensible Microbiome Data Science Using QIIME 2.”</span> Journal Article. <em>Nat Biotechnol</em> 37 (8): 852–57. <a href="https://doi.org/10.1038/s41587-019-0209-9">https://doi.org/10.1038/s41587-019-0209-9</a>.

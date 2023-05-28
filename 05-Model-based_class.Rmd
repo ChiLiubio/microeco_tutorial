@@ -14,7 +14,8 @@ Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
 t.test, ANOVA, Scheirer Ray Hare test,
 ANCOMBC [@Lin_Analysis_2020], ALDEx2 [@Fernandes_Unifying_2014],
-DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010], etc.
+DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010],
+linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available, 
 it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
@@ -234,8 +235,35 @@ t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", 
 View(t1$res_diff)
 ```
 
-The method `DESeq2` from DESeq2 package is also supported and no longer demonstrated here.
-Additionally, the Linear Mixed-Effects Models from lmerTest package can also be fitted with the option `method = 'lme'` for each feature.
+### More options
+
+The dependence packages in the following examples are not mentioned in the previous package dependence part (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
+The method `DESeq2` from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
+The linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lme'` for each feature by
+invoking this method in the trans_alpha class.
+For more details and parameter passing, please see the trans_alpha part.
+
+```{r, echo = TRUE, eval = FALSE}
+# AST: arc sine square root transformation
+if(!require("lmerTest")) install.packages("lmerTest")
+t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
+View(t1$res_diff)
+```
+
+The generalized linear mixed model is implemented based on the glmmTMB package.
+In this example, we use beta distribution function as the family function, 
+because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require("glmmTMB")) install.packages("glmmTMB")
+d1 <- clone(dataset)
+# eliminate the boundary 0 and 1
+d1$taxa_abund$Phylum %<>% {. + 1e-10} %>% {./(1 + 2e-10)}
+t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formula = "Group + (1|Type)", 
+	family = glmmTMB::beta_family(link = "logit"), filter_thres = 0.001)
+View(t1$res_diff)
+```
+
 
 
 ### Key points
@@ -247,6 +275,12 @@ Additionally, the Linear Mixed-Effects Models from lmerTest package can also be 
     make sure `tidy_taxonomy()` function has been performed for the `tax_table` in `microtable` object.
   + trans_diff\$new: creating this class invokes one or more tables in `taxa_abund` list, which is stored in `microtable` object.
   + trans_diff\$plot_diff_cladogram: `clade_label_size`, `clade_label_size_add` and `clade_label_size_log` can control the text size all together in the cladogram.
+  + trans_diff\$new: from v0.19.0, `transformation` parameter can be employed to transform or normalize relative abundance data based on the mecodev package for
+    those methods coming from trans_alpha class ("KW", "KW_dunn", "wilcox", "t.test", "anova", "scheirerRayHare", "betareg", "lme", "glmm"). 
+    For example, `transformation = 'AST'` represents the arc sine square root transformation.
+  + trans_diff\$plot_diff_bar: from v0.19.0, `color_group_map = TRUE` can be added in `plot_diff_bar` function to 
+    fix the color in each group when part of groups are not shown in the plot, which is especially useful when multiple approaches or data are needed to run the same step.
+
 
 
 ## trans_network class
