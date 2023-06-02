@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-05-28" />
+<meta name="date" content="2023-06-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -347,13 +347,15 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 13</span> mecoturn package<a href="mecoturn-package.html#mecoturn-package" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The mecoturn package is designed to study microbial turnover along plant compartments originally (<a href="https://github.com/ChiLiubio/mecoturn" class="uri">https://github.com/ChiLiubio/mecoturn</a>).
 Generally speaking, it can be used in any case associated with a gradient.</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="mecoturn-package.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required packages</span></span>
-<span id="cb326-2"><a href="mecoturn-package.html#cb326-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;mecoturn&quot;</span>, <span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;lmerTest&quot;</span>, <span class="st">&quot;betareg&quot;</span>)</span>
-<span id="cb326-3"><a href="mecoturn-package.html#cb326-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
-<span id="cb326-4"><a href="mecoturn-package.html#cb326-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb326-5"><a href="mecoturn-package.html#cb326-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb326-6"><a href="mecoturn-package.html#cb326-6" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb326-7"><a href="mecoturn-package.html#cb326-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="mecoturn-package.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mecoturn v0.2.0</span></span>
+<span id="cb326-2"><a href="mecoturn-package.html#cb326-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;mecoturn&quot;</span>)</span>
+<span id="cb326-3"><a href="mecoturn-package.html#cb326-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check and install dependent packages</span></span>
+<span id="cb326-4"><a href="mecoturn-package.html#cb326-4" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;lmerTest&quot;</span>, <span class="st">&quot;betareg&quot;</span>, <span class="st">&quot;glmmTMB&quot;</span>)</span>
+<span id="cb326-5"><a href="mecoturn-package.html#cb326-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
+<span id="cb326-6"><a href="mecoturn-package.html#cb326-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)){</span>
+<span id="cb326-7"><a href="mecoturn-package.html#cb326-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x)</span>
+<span id="cb326-8"><a href="mecoturn-package.html#cb326-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb326-9"><a href="mecoturn-package.html#cb326-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div id="betaturn-class" class="section level2 hasAnchor" number="13.1">
 <h2><span class="header-section-number">13.1</span> betaturn class<a href="mecoturn-package.html#betaturn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The betaturn class is used to study the turnover of communities, i.e. beta diversity along a gradient <span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span>.
@@ -362,7 +364,8 @@ Creating betaturn object can generate the dissimilarity matrix stored in the obj
 The example data <code>wheat_16S</code> is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
 In <code>wheat_16S$sample_table</code>, the <code>Type</code> column represents the niches, i.e. plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
 The <code>Plant_ID</code> column denotes each unique plant individual that the samples belong to.
-The <code>Region</code> column means the sampling region of those plants. Each region has five plant individuals.</p>
+The <code>Region</code> column means the sampling region of those plants.
+Each region has five plant individuals.</p>
 <div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="mecoturn-package.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
 <span id="cb327-2"><a href="mecoturn-package.html#cb327-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb327-3"><a href="mecoturn-package.html#cb327-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
@@ -514,24 +517,37 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 <span id="cb365-10"><a href="mecoturn-package.html#cb365-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span>
 <span id="cb365-11"><a href="mecoturn-package.html#cb365-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span>
 <span id="cb365-12"><a href="mecoturn-package.html#cb365-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot</span>(<span class="at">point_size =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p>Then let’s show the linear mixed-effects models.</p>
+<p>Then let’s show the linear mixed-effects model to analyze both the fixed and random effects.</p>
 <div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="mecoturn-package.html#cb366-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>)</span>
 <span id="cb366-2"><a href="mecoturn-package.html#cb366-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 + Type | Region)&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>)</span>
 <span id="cb366-3"><a href="mecoturn-package.html#cb366-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span></code></pre></div>
 <p>For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data,
 which is not normally distributed or homoscedastic generally.
-Beta regression is suitable for the proportion data (bound at 0 and 1).
-It can be conducted with the betareg function in the betareg package <span class="citation">(<a href="#ref-Betaregression_2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span> and has been implemented in the mecoturn package.</p>
+Beta regression is suitable for the proportion data (bound at 0 and 1) <span class="citation">(<a href="#ref-Douma_Analysing_2019" role="doc-biblioref">Douma, Weedon, and Warton 2019</a>)</span>.
+This method is implemented based on the betareg package <span class="citation">(<a href="#ref-Betaregression_2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span>.</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="mecoturn-package.html#cb367-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for all samples</span></span>
 <span id="cb367-2"><a href="mecoturn-package.html#cb367-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
 <span id="cb367-3"><a href="mecoturn-package.html#cb367-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;betareg&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type&quot;</span>)</span>
 <span id="cb367-4"><a href="mecoturn-package.html#cb367-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span></code></pre></div>
 <div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="mecoturn-package.html#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for different regions</span></span>
 <span id="cb368-2"><a href="mecoturn-package.html#cb368-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb368-3"><a href="mecoturn-package.html#cb368-3" aria-hidden="true" tabindex="-1"></a><span class="co"># measure can designate a taxon</span></span>
+<span id="cb368-3"><a href="mecoturn-package.html#cb368-3" aria-hidden="true" tabindex="-1"></a><span class="co"># measure can be assigned with a taxon</span></span>
 <span id="cb368-4"><a href="mecoturn-package.html#cb368-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;betareg&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>)</span>
 <span id="cb368-5"><a href="mecoturn-package.html#cb368-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff</span>
 <span id="cb368-6"><a href="mecoturn-package.html#cb368-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot</span>(<span class="at">point_size =</span> <span class="dv">2</span>, <span class="at">select_taxon =</span> <span class="st">&quot;p__Proteobacteria&quot;</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>), <span class="at">rect_fill =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>When both the random effects and beta distribution fitting are considered in the model,
+generalized linear mixed model can be employed with the family function beta distribution function.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="mecoturn-package.html#cb369-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb369-2"><a href="mecoturn-package.html#cb369-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;glmm&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1|Region)&quot;</span>, <span class="at">return_model =</span> <span class="cn">TRUE</span>, <span class="at">group2num =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb369-3"><a href="mecoturn-package.html#cb369-3" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span>
+<span id="cb369-4"><a href="mecoturn-package.html#cb369-4" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the original models</span></span>
+<span id="cb369-5"><a href="mecoturn-package.html#cb369-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_model</span>
+<span id="cb369-6"><a href="mecoturn-package.html#cb369-6" aria-hidden="true" tabindex="-1"></a><span class="co"># without the random effect term</span></span>
+<span id="cb369-7"><a href="mecoturn-package.html#cb369-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;glmm&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">return_model =</span> <span class="cn">TRUE</span>, <span class="at">group2num =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb369-8"><a href="mecoturn-package.html#cb369-8" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_model</span>
+<span id="cb369-9"><a href="mecoturn-package.html#cb369-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use anova to compare models</span></span>
+<span id="cb369-10"><a href="mecoturn-package.html#cb369-10" aria-hidden="true" tabindex="-1"></a><span class="co"># names(m1)[1]: p__Proteobacteria</span></span>
+<span id="cb369-11"><a href="mecoturn-package.html#cb369-11" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1[[<span class="dv">1</span>]], m2[[<span class="dv">1</span>]])</span></code></pre></div>
 
 </div>
 </div>
@@ -542,6 +558,9 @@ Anderson, M. J., T. O. Crist, J. M. Chase, M. Vellend, B. D. Inouye, A. L. Frees
 </div>
 <div id="ref-Betaregression_2010" class="csl-entry">
 Cribari-Neto, Francisco, and Achim Zeileis. 2010. <span>“Beta Regression in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 34 (2): 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">https://doi.org/10.18637/jss.v034.i02</a>.
+</div>
+<div id="ref-Douma_Analysing_2019" class="csl-entry">
+Douma, Jacob C., James T. Weedon, and David Warton. 2019. <span>“Analysing Continuous Proportions in Ecology and Evolution: A Practical Introduction to Beta and Dirichlet Regression.”</span> Journal Article. <em>Methods in Ecology and Evolution</em> 10 (9): 1412–30. <a href="https://doi.org/10.1111/2041-210x.13234">https://doi.org/10.1111/2041-210x.13234</a>.
 </div>
 </div>
             </section>

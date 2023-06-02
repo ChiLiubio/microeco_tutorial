@@ -4052,11 +4052,13 @@ Generally speaking, it can be used in any case associated with a gradient.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# install the required packages
-packages <- c("mecoturn", "agricolae", "lmerTest", "betareg")
+# mecoturn v0.2.0
+install.packages("mecoturn")
+# check and install dependent packages
+packages <- c("agricolae", "lmerTest", "betareg", "glmmTMB")
 for(x in packages){
-	if(!require(x, character.only = TRUE)) {
-		install.packages(x, dependencies = TRUE)
+	if(!require(x, character.only = TRUE)){
+		install.packages(x)
 	}
 }
 ```
@@ -4069,7 +4071,8 @@ Creating betaturn object can generate the dissimilarity matrix stored in the obj
 The example data `wheat_16S` is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
 In `wheat_16S$sample_table`, the `Type` column represents the niches, i.e. plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
 The `Plant_ID` column denotes each unique plant individual that the samples belong to.
-The `Region` column means the sampling region of those plants. Each region has five plant individuals.
+The `Region` column means the sampling region of those plants. 
+Each region has five plant individuals.
 
 ```{r, echo = TRUE, eval = FALSE}
 library(mecoturn)
@@ -4192,7 +4195,7 @@ head(t1$res_change)
 t1$plot(point_size = 2)
 ```
 
-Then let's show the linear mixed-effects models.
+Then let's show the linear mixed-effects model to analyze both the fixed and random effects.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = "Region")
@@ -4202,9 +4205,8 @@ t1$res_diff
 
 For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data, 
 which is not normally distributed or homoscedastic generally.
-Beta regression is suitable for the proportion data (bound at 0 and 1).
-It can be conducted with the betareg function in the betareg package [@Betaregression_2010] and has been implemented in the mecoturn package.
-
+Beta regression is suitable for the proportion data (bound at 0 and 1) [@Douma_Analysing_2019].
+This method is implemented based on the betareg package [@Betaregression_2010].
 
 ```{r, echo = TRUE, eval = FALSE}
 # for all samples
@@ -4221,6 +4223,28 @@ t1$cal_diff(method = "betareg", formula = "Type", measure = "p__Proteobacteria")
 t1$res_diff
 t1$plot(point_size = 2, select_taxon = "p__Proteobacteria", plot_type = c("point", "smooth"), rect_fill = FALSE)
 ```
+
+When both the random effects and beta distribution fitting are considered in the model, 
+generalized linear mixed model can be employed with the family function beta distribution function.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), filter_thres = 0.001)
+t1$cal_diff(method = "glmm", formula = "Type + (1|Region)", return_model = TRUE, group2num = TRUE)
+View(t1$res_diff)
+# extract the original models
+m1 <- t1$res_model
+# without the random effect term
+t1$cal_diff(method = "glmm", formula = "Type", return_model = TRUE, group2num = TRUE)
+m2 <- t1$res_model
+# use anova to compare models
+# names(m1)[1]: p__Proteobacteria
+anova(m1[[1]], m2[[1]])
+```
+
+
+
+
+
 
 
 <!--chapter:end:12-mecoturn.Rmd-->

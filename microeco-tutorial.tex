@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.19.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-05-28}
+\date{2023-06-01}
 
 \begin{document}
 \maketitle
@@ -927,7 +927,7 @@ The default method is \texttt{method\ =\ \textquotesingle{}rarefying\textquotesi
 \end{verbatim}
 
 \begin{verbatim}
-## 530 taxa are removed from the otu_table, as the abundance is 0 ...
+## 530 taxa with 0 abundance are removed from the otu_table ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -3371,7 +3371,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun May 28 17:13:40 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Jun  1 21:58:09 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3401,9 +3401,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3866 & 0.3637 & 9.067 \\
-CW & 435 & 0.5628 & 0.2956 & 0.2864 & 14.36 \\
-TW & 435 & 0.624 & 0.4159 & 0.3995 & 9.907 \\
+IW & 435 & 0.6538 & 0.3865 & 0.3639 & 9.111 \\
+CW & 435 & 0.5632 & 0.2966 & 0.2868 & 14.33 \\
+TW & 435 & 0.6247 & 0.4162 & 0.4001 & 9.835 \\
 \bottomrule()
 \end{longtable}
 
@@ -5542,11 +5542,13 @@ Generally speaking, it can be used in any case associated with a gradient.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# install the required packages}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mecoturn"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"lmerTest"}\NormalTok{, }\StringTok{"betareg"}\NormalTok{)}
+\CommentTok{\# mecoturn v0.2.0}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"mecoturn"}\NormalTok{)}
+\CommentTok{\# check and install dependent packages}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"agricolae"}\NormalTok{, }\StringTok{"lmerTest"}\NormalTok{, }\StringTok{"betareg"}\NormalTok{, }\StringTok{"glmmTMB"}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
-    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
-        \FunctionTok{install.packages}\NormalTok{(x, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{))\{}
+        \FunctionTok{install.packages}\NormalTok{(x)}
 \NormalTok{    \}}
 \NormalTok{\}}
 \end{Highlighting}
@@ -5561,7 +5563,8 @@ Creating betaturn object can generate the dissimilarity matrix stored in the obj
 The example data \texttt{wheat\_16S} is the amplicon sequencing data of 16S rDNA of wheat samples from different regions.
 In \texttt{wheat\_16S\$sample\_table}, the \texttt{Type} column represents the niches, i.e.~plant compartments, including S (bulk soil), RS (rhizosphere soil) and R (root endophyte).
 The \texttt{Plant\_ID} column denotes each unique plant individual that the samples belong to.
-The \texttt{Region} column means the sampling region of those plants. Each region has five plant individuals.
+The \texttt{Region} column means the sampling region of those plants.
+Each region has five plant individuals.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5875,7 +5878,7 @@ The upper operations can also be applied to different groups.
 \end{Highlighting}
 \end{Shaded}
 
-Then let's show the linear mixed-effects models.
+Then let's show the linear mixed-effects model to analyze both the fixed and random effects.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5887,8 +5890,8 @@ Then let's show the linear mixed-effects models.
 
 For the relative abundance fitting, common parametric tests like anova is not a good way since the dependent variable is proportion data,
 which is not normally distributed or homoscedastic generally.
-Beta regression is suitable for the proportion data (bound at 0 and 1).
-It can be conducted with the betareg function in the betareg package \citep{Betaregression_2010} and has been implemented in the mecoturn package.
+Beta regression is suitable for the proportion data (bound at 0 and 1) \citep{Douma_Analysing_2019}.
+This method is implemented based on the betareg package \citep{Betaregression_2010}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5907,6 +5910,25 @@ It can be conducted with the betareg function in the betareg package \citep{Beta
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"betareg"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{point\_size =} \DecValTok{2}\NormalTok{, }\AttributeTok{select\_taxon =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{, }\AttributeTok{plot\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{, }\StringTok{"smooth"}\NormalTok{), }\AttributeTok{rect\_fill =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+When both the random effects and beta distribution fitting are considered in the model,
+generalized linear mixed model can be employed with the family function beta distribution function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"glmm"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type + (1|Region)"}\NormalTok{, }\AttributeTok{return\_model =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{group2num =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\CommentTok{\# extract the original models}
+\NormalTok{m1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_model}
+\CommentTok{\# without the random effect term}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"glmm"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{return\_model =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{group2num =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{m2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_model}
+\CommentTok{\# use anova to compare models}
+\CommentTok{\# names(m1)[1]: p\_\_Proteobacteria}
+\FunctionTok{anova}\NormalTok{(m1[[}\DecValTok{1}\NormalTok{]], m2[[}\DecValTok{1}\NormalTok{]])}
 \end{Highlighting}
 \end{Shaded}
 
