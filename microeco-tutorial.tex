@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.19.0)},
+  pdftitle={Tutorial for R microeco package (v0.20.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.19.0)}
+\title{Tutorial for R microeco package (v0.20.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-06-01}
+\date{2023-07-01}
 
 \begin{document}
 \maketitle
@@ -1860,6 +1860,10 @@ IW - CW - TW & InvSimpson & CW & 0.8083 & 0.8083 & ns \\
 \end{Shaded}
 
 \begin{verbatim}
+## P value adjustment method: holm ...
+\end{verbatim}
+
+\begin{verbatim}
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
@@ -1969,13 +1973,16 @@ The multi-factor analysis of variance is also supported with the \texttt{formula
 \end{Shaded}
 
 The plot\_alpha function add the significance label by searching the results in \textbf{object\$res\_diff} instead of calculating the significance again.
-Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
+Now, let's plot the alpha diversity for each group, and add the anova result.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{boxplot\_add =} \StringTok{"jitter"}\NormalTok{, }\AttributeTok{order\_x\_mean =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{6}\NormalTok{)}
+\CommentTok{\# y\_increase can adjust the distance from the letters to the highest point}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{y\_increase =} \FloatTok{0.3}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{y\_increase =} \FloatTok{0.1}\NormalTok{)}
+\CommentTok{\# add\_sig\_text\_size: letter size adjustment}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{add\_sig\_text\_size =} \DecValTok{6}\NormalTok{, }\AttributeTok{boxplot\_add =} \StringTok{"jitter"}\NormalTok{, }\AttributeTok{order\_x\_mean =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1985,6 +1992,9 @@ Now, let us plot the mean and se of alpha diversity for each group, and add the 
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{shape =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# y\_start: starting height for the first label}
+\CommentTok{\# y\_increase: increased height for each label}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{shape =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{y\_start =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{y\_increase =} \FloatTok{0.1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3371,7 +3381,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Jun  1 21:58:09 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Jul  1 10:35:22 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3401,9 +3411,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3865 & 0.3639 & 9.111 \\
-CW & 435 & 0.5632 & 0.2966 & 0.2868 & 14.33 \\
-TW & 435 & 0.6247 & 0.4162 & 0.4001 & 9.835 \\
+IW & 435 & 0.6541 & 0.3877 & 0.3642 & 9.105 \\
+CW & 435 & 0.5628 & 0.2957 & 0.2864 & 14.36 \\
+TW & 435 & 0.6246 & 0.4159 & 0.4001 & 9.857 \\
 \bottomrule()
 \end{longtable}
 
@@ -4107,7 +4117,8 @@ Other examples.
 \NormalTok{ggplot2}\SpecialCharTok{::}\FunctionTok{ggsave}\NormalTok{(}\StringTok{"test.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \DecValTok{6}\NormalTok{)}
 \CommentTok{\# For regression, lm\_equation = FALSE can be applied to not display the equation.}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{lm\_equation =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{lm\_equation =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# use line\_alpha to adjust the transparency of the confidence interval}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{lm\_equation =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{line\_alpha =} \FloatTok{0.3}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{point\_alpha =}\NormalTok{ .}\DecValTok{3}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{line\_se\_color =} \StringTok{"grey90"}\NormalTok{, }\AttributeTok{label\_sep =} \StringTok{","}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{, }\AttributeTok{label.y.npc =} \StringTok{"bottom"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{y =} \DecValTok{2}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{pvalue\_trim =} \DecValTok{3}\NormalTok{, }\AttributeTok{cor\_coef\_trim =} \DecValTok{3}\NormalTok{)}
@@ -5906,7 +5917,7 @@ This method is implemented based on the betareg package \citep{Betaregression_20
 \begin{Highlighting}[]
 \CommentTok{\# for different regions}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\CommentTok{\# measure can designate a taxon}
+\CommentTok{\# measure can be assigned with a taxon}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"betareg"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{point\_size =} \DecValTok{2}\NormalTok{, }\AttributeTok{select\_taxon =} \StringTok{"p\_\_Proteobacteria"}\NormalTok{, }\AttributeTok{plot\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"point"}\NormalTok{, }\StringTok{"smooth"}\NormalTok{), }\AttributeTok{rect\_fill =} \ConstantTok{FALSE}\NormalTok{)}

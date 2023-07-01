@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.19.0)"
+title: "Tutorial for R microeco package (v0.20.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -1221,12 +1221,15 @@ head(t1$res_diff)
 
 
 The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
-Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
+Now, let's plot the alpha diversity for each group, and add the anova result.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
-t1$plot_alpha(measure = "Chao1")
-t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, add_sig_text_size = 6)
+# y_increase can adjust the distance from the letters to the highest point
+t1$plot_alpha(measure = "Chao1", y_increase = 0.3)
+t1$plot_alpha(measure = "Chao1", y_increase = 0.1)
+# add_sig_text_size: letter size adjustment
+t1$plot_alpha(measure = "Chao1", add_sig_text_size = 6, boxplot_add = "jitter", order_x_mean = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -1236,6 +1239,9 @@ knitr::include_graphics("Images/trans_alpha_group_letter.png")
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "wilcox")
 t1$plot_alpha(measure = "Chao1", shape = "Group")
+# y_start: starting height for the first label
+# y_increase: increased height for each label
+t1$plot_alpha(measure = "Chao1", shape = "Group", y_start = 0.1, y_increase = 0.1)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -2810,7 +2816,8 @@ g1
 ggplot2::ggsave("test.pdf", g1, width = 8, height = 6)
 # For regression, lm_equation = FALSE can be applied to not display the equation.
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = TRUE)
-t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = FALSE)
+# use line_alpha to adjust the transparency of the confidence interval
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = FALSE, line_alpha = 0.3)
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", point_alpha = .3, line_se = FALSE)
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", line_se_color = "grey90", label_sep = ",", label.x.npc = "center", label.y.npc = "bottom")
 t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim = 3)
@@ -4218,7 +4225,7 @@ t1$res_diff
 ```{r, echo = TRUE, eval = FALSE}
 # for different regions
 t1 <- taxaturn$new(wheat_16S, taxa_level = "Phylum", group = "Type", ordered_group = c("S", "RS", "R"), by_ID = "Plant_ID", by_group = "Region", filter_thres = 0.001)
-# measure can designate a taxon
+# measure can be assigned with a taxon
 t1$cal_diff(method = "betareg", formula = "Type", measure = "p__Proteobacteria")
 t1$res_diff
 t1$plot(point_size = 2, select_taxon = "p__Proteobacteria", plot_type = c("point", "smooth"), rect_fill = FALSE)

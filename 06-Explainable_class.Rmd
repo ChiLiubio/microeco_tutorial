@@ -322,7 +322,8 @@ g1
 ggplot2::ggsave("test.pdf", g1, width = 8, height = 6)
 # For regression, lm_equation = FALSE can be applied to not display the equation.
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = TRUE)
-t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = FALSE)
+# use line_alpha to adjust the transparency of the confidence interval
+t1$plot_scatterfit(x = 1, y = 2, type = "lm", lm_equation = FALSE, line_alpha = 0.3)
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", point_alpha = .3, line_se = FALSE)
 t1$plot_scatterfit(x = 1, y = 2, type = "lm", line_se_color = "grey90", label_sep = ",", label.x.npc = "center", label.y.npc = "bottom")
 t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim = 3)

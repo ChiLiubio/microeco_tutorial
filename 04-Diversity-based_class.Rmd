@@ -84,12 +84,15 @@ head(t1$res_diff)
 
 
 The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
-Now, let us plot the mean and se of alpha diversity for each group, and add the anova result.
+Now, let's plot the alpha diversity for each group, and add the anova result.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
-t1$plot_alpha(measure = "Chao1")
-t1$plot_alpha(measure = "Chao1", boxplot_add = "jitter", order_x_mean = TRUE, add_sig_text_size = 6)
+# y_increase can adjust the distance from the letters to the highest point
+t1$plot_alpha(measure = "Chao1", y_increase = 0.3)
+t1$plot_alpha(measure = "Chao1", y_increase = 0.1)
+# add_sig_text_size: letter size adjustment
+t1$plot_alpha(measure = "Chao1", add_sig_text_size = 6, boxplot_add = "jitter", order_x_mean = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -99,6 +102,9 @@ knitr::include_graphics("Images/trans_alpha_group_letter.png")
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "wilcox")
 t1$plot_alpha(measure = "Chao1", shape = "Group")
+# y_start: starting height for the first label
+# y_increase: increased height for each label
+t1$plot_alpha(measure = "Chao1", shape = "Group", y_start = 0.1, y_increase = 0.1)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
