@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-07-01" />
+<meta name="date" content="2023-07-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -321,6 +321,7 @@ div.csl-indent {
 <li class="chapter" data-level="14.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>14.5</b> The use of phylogenetic tree</a></li>
 <li class="chapter" data-level="14.6" data-path="other-examples-1.html"><a href="other-examples-1.html#mantel-test-correlation-heatmap"><i class="fa fa-check"></i><b>14.6</b> Mantel test + Correlation heatmap</a></li>
 <li class="chapter" data-level="14.7" data-path="other-examples-1.html"><a href="other-examples-1.html#pcoa-boxplot"><i class="fa fa-check"></i><b>14.7</b> PCoA + boxplot</a></li>
+<li class="chapter" data-level="14.8" data-path="other-examples-1.html"><a href="other-examples-1.html#faprotax-differential-test"><i class="fa fa-check"></i><b>14.8</b> FAPROTAX + differential test</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -441,7 +442,7 @@ Please install <code>ggcor</code> package according to the document (<a href="ht
 we mentioned some combination graphs generated based on the <code>aplot</code> package.
 Here, we continue to use the <code>aplot</code> and <code>microeco</code> packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs.
 Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods.
-Firstly, we use <code>trans_beta</code> class to compute PCoA, then perform differential testing based on the <code>cal_diff</code> function in <code>trans_env</code> class.</p>
+Firstly, we use <code>trans_beta</code> class to compute PCoA, then perform differential test based on the <code>cal_diff</code> function in <code>trans_env</code> class.</p>
 <div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="other-examples-1.html#cb372-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb372-2"><a href="other-examples-1.html#cb372-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb372-3"><a href="other-examples-1.html#cb372-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -453,7 +454,7 @@ Firstly, we use <code>trans_beta</code> class to compute PCoA, then perform diff
 <span id="cb372-9"><a href="other-examples-1.html#cb372-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCoA&quot;</span>)</span>
 <span id="cb372-10"><a href="other-examples-1.html#cb372-10" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the axis scores</span></span>
 <span id="cb372-11"><a href="other-examples-1.html#cb372-11" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_ordination<span class="sc">$</span>scores</span>
-<span id="cb372-12"><a href="other-examples-1.html#cb372-12" aria-hidden="true" tabindex="-1"></a><span class="co"># use differential test in trans_env class</span></span>
+<span id="cb372-12"><a href="other-examples-1.html#cb372-12" aria-hidden="true" tabindex="-1"></a><span class="co"># differential test with trans_env class</span></span>
 <span id="cb372-13"><a href="other-examples-1.html#cb372-13" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> tmp[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
 <span id="cb372-14"><a href="other-examples-1.html#cb372-14" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;KW_dunn&#39; for non-parametric test</span></span>
 <span id="cb372-15"><a href="other-examples-1.html#cb372-15" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span></code></pre></div>
@@ -495,6 +496,25 @@ Here, we manually control the coordinate range.</p>
 <span id="cb375-5"><a href="other-examples-1.html#cb375-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save g to computer</span></span>
 <span id="cb375-6"><a href="other-examples-1.html#cb375-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;test1.pdf&quot;</span>, g, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height=</span> <span class="dv">6</span>)</span></code></pre></div>
 <p><img src="Images/Other_PCoA_boxplot2.png" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="faprotax-differential-test" class="section level2 hasAnchor" number="14.8">
+<h2><span class="header-section-number">14.8</span> FAPROTAX + differential test<a href="other-examples-1.html#faprotax-differential-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the <code>trans_func</code> section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
+Now, we go ahead and use <code>trans_diff</code> class to demonstrate the differential test of the abundances of OTUs with the traits across groups.</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="other-examples-1.html#cb376-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb376-2"><a href="other-examples-1.html#cb376-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb376-3"><a href="other-examples-1.html#cb376-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
+<span id="cb376-4"><a href="other-examples-1.html#cb376-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;FAPROTAX&quot;</span>)</span>
+<span id="cb376-5"><a href="other-examples-1.html#cb376-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_spe_func_perc</span>(<span class="at">abundance_weighted =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb376-6"><a href="other-examples-1.html#cb376-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use list to prepare data</span></span>
+<span id="cb376-7"><a href="other-examples-1.html#cb376-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb376-8"><a href="other-examples-1.html#cb376-8" aria-hidden="true" tabindex="-1"></a><span class="co"># transpose res_spe_func_perc to be a data.frame like taxonomic abundance</span></span>
+<span id="cb376-9"><a href="other-examples-1.html#cb376-9" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>func <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(t1<span class="sc">$</span>res_spe_func_perc), <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb376-10"><a href="other-examples-1.html#cb376-10" aria-hidden="true" tabindex="-1"></a><span class="co"># assign the list as taxa_abund in your microtable object</span></span>
+<span id="cb376-11"><a href="other-examples-1.html#cb376-11" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>taxa_abund <span class="ot">&lt;-</span> tmp</span>
+<span id="cb376-12"><a href="other-examples-1.html#cb376-12" aria-hidden="true" tabindex="-1"></a><span class="co"># use trans_diff class to perform differential test</span></span>
+<span id="cb376-13"><a href="other-examples-1.html#cb376-13" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;all&quot;</span>)</span>
+<span id="cb376-14"><a href="other-examples-1.html#cb376-14" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">add_sig =</span> T) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">&quot;Relative abundance (%)&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

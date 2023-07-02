@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.20.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-07-01}
+\date{2023-07-02}
 
 \begin{document}
 \maketitle
@@ -3381,7 +3381,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Jul  1 10:35:22 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Jul  2 19:32:48 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3411,9 +3411,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6541 & 0.3877 & 0.3642 & 9.105 \\
-CW & 435 & 0.5628 & 0.2957 & 0.2864 & 14.36 \\
-TW & 435 & 0.6246 & 0.4159 & 0.4001 & 9.857 \\
+IW & 435 & 0.654 & 0.3877 & 0.3641 & 9.134 \\
+CW & 435 & 0.5626 & 0.2961 & 0.2862 & 14.29 \\
+TW & 435 & 0.6244 & 0.4154 & 0.3998 & 9.858 \\
 \bottomrule()
 \end{longtable}
 
@@ -4270,7 +4270,9 @@ acetoclastic\_methanogenesis
 \bottomrule()
 \end{longtable}
 
-Then we also take an example to show the percentages of the OTUs for each trait in network modules.
+For the differential test of the abundance percentages across groups,
+please move to another part (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#faprotax-differential-test}).
+Then we take another example to show the percentages of the OTUs for each trait in network modules.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4298,9 +4300,10 @@ Then we also take an example to show the percentages of the OTUs for each trait 
 \end{Highlighting}
 \end{Shaded}
 
+Then we try to correlate the percentage data in \texttt{res\_spe\_func\_perc} to environmental variables.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# then we try to correlate the res\_spe\_func\_perc of communities to environmental variables}
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
@@ -6056,7 +6059,7 @@ In the sections involving trans\_venn and trans\_env classes,
 we mentioned some combination graphs generated based on the \texttt{aplot} package.
 Here, we continue to use the \texttt{aplot} and \texttt{microeco} packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs.
 Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods.
-Firstly, we use \texttt{trans\_beta} class to compute PCoA, then perform differential testing based on the \texttt{cal\_diff} function in \texttt{trans\_env} class.
+Firstly, we use \texttt{trans\_beta} class to compute PCoA, then perform differential test based on the \texttt{cal\_diff} function in \texttt{trans\_env} class.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6071,7 +6074,7 @@ Firstly, we use \texttt{trans\_beta} class to compute PCoA, then perform differe
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# extract the axis scores}
 \NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_ordination}\SpecialCharTok{$}\NormalTok{scores}
-\CommentTok{\# use differential test in trans\_env class}
+\CommentTok{\# differential test with trans\_env class}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ tmp[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{])}
 \CommentTok{\# \textquotesingle{}KW\_dunn\textquotesingle{} for non{-}parametric test}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
@@ -6135,6 +6138,32 @@ Now, the ticks of the coordinate axes fully correspond, and we may selectively r
 \end{Shaded}
 
 \begin{center}\includegraphics[width=650px]{Images/Other_PCoA_boxplot2} \end{center}
+
+\hypertarget{faprotax-differential-test}{%
+\section{FAPROTAX + differential test}\label{faprotax-differential-test}}
+
+In the \texttt{trans\_func} section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
+Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the differential test of the abundances of OTUs with the traits across groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# use list to prepare data}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\CommentTok{\# transpose res\_spe\_func\_perc to be a data.frame like taxonomic abundance}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# assign the list as taxa\_abund in your microtable object}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
+\CommentTok{\# use trans\_diff class to perform differential test}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"all"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{add\_sig =}\NormalTok{ T) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 
   \bibliography{book.bib,packages.bib}
 

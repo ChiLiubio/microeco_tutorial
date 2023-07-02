@@ -110,7 +110,7 @@ In the sections involving trans_venn and trans_env classes,
 we mentioned some combination graphs generated based on the `aplot` package. 
 Here, we continue to use the `aplot` and `microeco` packages to demonstrate how to add boxplots of coordinate scores to PCoA graphs. 
 Similar combination graphs can be easily manipulated, so we no longer include this type of visualization in the plotting functions of ordination methods. 
-Firstly, we use `trans_beta` class to compute PCoA, then perform differential testing based on the `cal_diff` function in `trans_env` class.
+Firstly, we use `trans_beta` class to compute PCoA, then perform differential test based on the `cal_diff` function in `trans_env` class.
 
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
@@ -124,7 +124,7 @@ t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 t1$cal_ordination(ordination = "PCoA")
 # extract the axis scores
 tmp <- t1$res_ordination$scores
-# use differential test in trans_env class
+# differential test with trans_env class
 t2 <- trans_env$new(dataset = dataset, add_data = tmp[, 1:2])
 # 'KW_dunn' for non-parametric test
 t2$cal_diff(group = "Group", method = "anova")
@@ -186,6 +186,42 @@ ggsave("test1.pdf", g, width = 7, height= 6)
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/Other_PCoA_boxplot2.png")
 ```
+
+
+## FAPROTAX + differential test
+
+In the `trans_func` section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
+Now, we go ahead and use `trans_diff` class to demonstrate the differential test of the abundances of OTUs with the traits across groups.
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+data(dataset)
+t1 <- trans_func$new(dataset)
+t1$cal_spe_func(prok_database = "FAPROTAX")
+t1$cal_spe_func_perc(abundance_weighted = TRUE)
+# use list to prepare data
+tmp <- list()
+# transpose res_spe_func_perc to be a data.frame like taxonomic abundance
+tmp$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
+# assign the list as taxa_abund in your microtable object
+dataset$taxa_abund <- tmp
+# use trans_diff class to perform differential test
+t2 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "all")
+t2$plot_diff_abund(add_sig = T) + ggplot2::ylab("Relative abundance (%)")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

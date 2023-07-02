@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-07-01" />
+<meta name="date" content="2023-07-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -321,6 +321,7 @@ div.csl-indent {
 <li class="chapter" data-level="14.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>14.5</b> The use of phylogenetic tree</a></li>
 <li class="chapter" data-level="14.6" data-path="other-examples-1.html"><a href="other-examples-1.html#mantel-test-correlation-heatmap"><i class="fa fa-check"></i><b>14.6</b> Mantel test + Correlation heatmap</a></li>
 <li class="chapter" data-level="14.7" data-path="other-examples-1.html"><a href="other-examples-1.html#pcoa-boxplot"><i class="fa fa-check"></i><b>14.7</b> PCoA + boxplot</a></li>
+<li class="chapter" data-level="14.8" data-path="other-examples-1.html"><a href="other-examples-1.html#faprotax-differential-test"><i class="fa fa-check"></i><b>14.8</b> FAPROTAX + differential test</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -823,7 +824,9 @@ The idea identifying prokaryotic traits and functional redundancy was initially 
 </tr>
 </tbody>
 </table>
-<p>Then we also take an example to show the percentages of the OTUs for each trait in network modules.</p>
+<p>For the differential test of the abundance percentages across groups,
+please move to another part (<a href="https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#faprotax-differential-test" class="uri">https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#faprotax-differential-test</a>).
+Then we take another example to show the percentages of the OTUs for each trait in network modules.</p>
 <div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="explainable-class.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="co"># construct a network for the example</span></span>
 <span id="cb263-2"><a href="explainable-class.html#cb263-2" aria-hidden="true" tabindex="-1"></a>network <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cal_cor =</span> <span class="st">&quot;base&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0001</span>, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
 <span id="cb263-3"><a href="explainable-class.html#cb263-3" aria-hidden="true" tabindex="-1"></a>network<span class="sc">$</span><span class="fu">cal_network</span>(<span class="at">p_thres =</span> <span class="fl">0.01</span>, <span class="at">COR_cut =</span> <span class="fl">0.7</span>)</span>
@@ -839,10 +842,10 @@ The idea identifying prokaryotic traits and functional redundancy was initially 
 <span id="cb264-2"><a href="explainable-class.html#cb264-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span>func_group_list</span>
 <span id="cb264-3"><a href="explainable-class.html#cb264-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use show_prok_func to see the detailed information of prokaryotic traits</span></span>
 <span id="cb264-4"><a href="explainable-class.html#cb264-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">show_prok_func</span>(<span class="st">&quot;methanotrophy&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="explainable-class.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="co"># then we try to correlate the res_spe_func_perc of communities to environmental variables</span></span>
-<span id="cb265-2"><a href="explainable-class.html#cb265-2" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
-<span id="cb265-3"><a href="explainable-class.html#cb265-3" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t2<span class="sc">$</span>res_spe_func_perc, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb265-4"><a href="explainable-class.html#cb265-4" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Then we try to correlate the percentage data in <code>res_spe_func_perc</code> to environmental variables.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="explainable-class.html#cb265-1" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
+<span id="cb265-2"><a href="explainable-class.html#cb265-2" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> t2<span class="sc">$</span>res_spe_func_perc, <span class="at">cor_method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb265-3"><a href="explainable-class.html#cb265-3" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_cor</span>(<span class="at">pheatmap =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Images/plot_func_perc_corr.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun <span class="citation">(<a href="#ref-Aßhauer_Tax4Fun_2015" role="doc-biblioref">Aßhauer et al. 2015</a>)</span> requires a strict input file format associated with the taxonomic information.
 To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.

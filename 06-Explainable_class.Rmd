@@ -398,7 +398,9 @@ t2$cal_spe_func_perc(abundance_weighted = FALSE)
 pander::pander(t2$res_spe_func_perc[1:5, 1:2])
 ```
 
-Then we also take an example to show the percentages of the OTUs for each trait in network modules.
+For the differential test of the abundance percentages across groups, 
+please move to another part (https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#faprotax-differential-test).
+Then we take another example to show the percentages of the OTUs for each trait in network modules.
 
 ```{r, echo = TRUE, eval = FALSE}
 # construct a network for the example
@@ -423,9 +425,9 @@ t2$func_group_list
 t2$show_prok_func("methanotrophy")
 ```
 
+Then we try to correlate the percentage data in `res_spe_func_perc` to environmental variables.
 
 ```{r, echo = TRUE, eval = FALSE}
-# then we try to correlate the res_spe_func_perc of communities to environmental variables
 t3 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
 t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
 t3$plot_cor(pheatmap = TRUE)
