@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.20.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-07-02}
+\date{2023-07-19}
 
 \begin{document}
 \maketitle
@@ -1860,10 +1860,6 @@ IW - CW - TW & InvSimpson & CW & 0.8083 & 0.8083 & ns \\
 \end{Shaded}
 
 \begin{verbatim}
-## P value adjustment method: holm ...
-\end{verbatim}
-
-\begin{verbatim}
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
@@ -3381,7 +3377,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Jul  2 19:32:48 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Wed Jul 19 20:35:01 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3411,9 +3407,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3877 & 0.3641 & 9.134 \\
-CW & 435 & 0.5626 & 0.2961 & 0.2862 & 14.29 \\
-TW & 435 & 0.6244 & 0.4154 & 0.3998 & 9.858 \\
+IW & 435 & 0.6536 & 0.3864 & 0.3637 & 9.154 \\
+CW & 435 & 0.5631 & 0.296 & 0.2866 & 14.31 \\
+TW & 435 & 0.6245 & 0.4158 & 0.3999 & 9.881 \\
 \bottomrule()
 \end{longtable}
 
@@ -5783,14 +5779,14 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ##                 Taxa    Direction   Change S -> RS | Significance
 ## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
 ## 2  p__Actinobacteria S -> RS -> R Increase                     ns
-## 3 p__Armatimonadetes S -> RS -> R Decrease                     ns
+## 3 p__Armatimonadetes S -> RS -> R Decrease                      *
 ## 4   p__Bacteroidetes S -> RS -> R      +|-                     ns
 ## 5     p__Chloroflexi S -> RS -> R Decrease                     **
 ## 6   p__Cyanobacteria S -> RS -> R Decrease                     ns
 ##   RS -> R | Significance
 ## 1                    ***
 ## 2                     **
-## 3                      *
+## 3                     **
 ## 4                     ns
 ## 5                    ***
 ## 6                     **
@@ -5860,7 +5856,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ##                 Taxa    Direction   Change S -> RS | Significance
 ## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
 ## 2  p__Actinobacteria S -> RS -> R                              ns
-## 3 p__Armatimonadetes S -> RS -> R                               *
+## 3 p__Armatimonadetes S -> RS -> R                              **
 ## 4   p__Bacteroidetes S -> RS -> R                               *
 ## 5     p__Chloroflexi S -> RS -> R                             ***
 ## 6   p__Cyanobacteria S -> RS -> R                              ns
@@ -5870,7 +5866,7 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 ## 3                    ***
 ## 4                     ns
 ## 5                    ***
-## 6                     **
+## 6                    ***
 \end{verbatim}
 
 The upper operations can also be applied to different groups.
@@ -5958,24 +5954,24 @@ We encourage users to contribute some unique, special or helpful examples inspir
 The flexibility of the package design can be reflected on many aspects.
 In some cases, it is possible to tactfully handle some particular challenges.
 For example, Dr.Jarrod contribute a cool answer to the question that how to use custom taxa and the order in bar plot by modifying the data inside the object.
-This is a discussion topic in microeco Discussions part. Here is the link (\url{https://github.com/ChiLiubio/microeco/discussions/45}).
+This is a discussion topic in microeco Discussions (\url{https://github.com/ChiLiubio/microeco/discussions/45}).
 
-\hypertarget{the-importance-of-tidy_taxonomy-function}{%
-\section{The importance of tidy\_taxonomy function}\label{the-importance-of-tidy_taxonomy-function}}
+\hypertarget{tidy_taxonomy-function}{%
+\section{tidy\_taxonomy function}\label{tidy_taxonomy-function}}
 
 The taxonomic classification with standard prefix is very important for some analyses,
 e.g.~taxonomic abundance plotting and biomarker finding.
-The tidy\_taxonomy function in microeco package is designed to make the taxa having standard prefix.
-See those Issues for the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}), (\url{https://github.com/ChiLiubio/microeco/issues/22})
+The \texttt{tidy\_taxonomy} function in microeco package is designed to make the taxa having standard prefix.
+See those Issues with the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}), (\url{https://github.com/ChiLiubio/microeco/issues/22})
 and (\url{https://github.com/ChiLiubio/microeco/issues/231}).
 
 \hypertarget{show-the-abundance-of-unknown-taxa}{%
 \section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa}}
 
-In the trans\_abund class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
+In the \texttt{trans\_abund} class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
 Sometimes, these unknown taxa may be useful to represent uncultured species.
-Under the circumstance, the abundance of unknown taxa can be used to show the ratio of uncultured taxa in the system.
-Please see the solution in this topic of Issues (\url{https://github.com/ChiLiubio/microeco/issues/165}).
+Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
+Please see the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
 
 \hypertarget{question-of-prefix-in-the-taxa}{%
 \section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}}
@@ -6161,6 +6157,41 @@ Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the different
 \CommentTok{\# use trans\_diff class to perform differential test}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"all"}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{add\_sig =}\NormalTok{ T) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{rda-results-output}{%
+\section{RDA results output}\label{rda-results-output}}
+
+In some analyses, it is often necessary to preserve intermediate files of various analysis results,
+and not all files are in the data.frame format.
+For example, in RDA analysis, the \texttt{res\_ordination\_R2} generated by \texttt{cal\_ordination} function is a numeric vector,
+and the \texttt{res\_ordination\_envfit} generated by the \texttt{cal\_ordination\_envfit} function is of envfit class.
+For those outputs, we can utilize the \texttt{capture.output} function to redirect the contents displayed in the dialogue box into a file.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\FunctionTok{data}\NormalTok{(env\_data\_16S)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"RDA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\CommentTok{\# get the significance of the terms}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination\_anova}\NormalTok{()}
+\CommentTok{\# fit factors onto the ordination to get R2 for each factor}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination\_envfit}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{plot\_shape =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{ggplot2}\SpecialCharTok{::}\FunctionTok{ggsave}\NormalTok{(}\StringTok{"RDA.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \FloatTok{6.5}\NormalTok{)}
+\CommentTok{\# use capture.output to save output}
+\FunctionTok{capture.output}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_R2, }\AttributeTok{file =} \StringTok{"RDA\_R2.txt"}\NormalTok{)}
+\FunctionTok{capture.output}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_envfit, }\AttributeTok{file =} \StringTok{"RDA\_envfit.txt"}\NormalTok{)}
+\CommentTok{\# save data.frame objects}
+\FunctionTok{write.table}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_terms, }\StringTok{"RDA\_anova\_termsig.txt"}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\FunctionTok{write.table}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_axis, }\StringTok{"RDA\_anova\_axissig.txt"}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\FunctionTok{write.table}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_trans}\SpecialCharTok{$}\NormalTok{df\_sites, }\StringTok{"RDA\_axis\_sample.txt"}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\FunctionTok{write.table}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_trans}\SpecialCharTok{$}\NormalTok{df\_arrows, }\StringTok{"RDA\_axis\_term.txt"}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\FunctionTok{write.table}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination\_trans}\SpecialCharTok{$}\NormalTok{df\_arrows\_spe, }\StringTok{"RDA\_axis\_taxa.txt"}\NormalTok{, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
