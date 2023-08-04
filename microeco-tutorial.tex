@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v0.20.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-07-19}
+\date{2023-08-04}
 
 \begin{document}
 \maketitle
@@ -331,7 +331,7 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# downloading link of the compressed archive}
-\NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{"https://github.com/ChiLiubio/microeco\_dependence/releases/download/v0.17.0/microeco\_dependence.zip"}
+\NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{"https://github.com/ChiLiubio/microeco\_dependence/releases/download/v0.20.0/microeco\_dependence.zip"}
 \CommentTok{\# allow more time to download the zip file in R}
 \FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{2000}\NormalTok{)}
 \CommentTok{\# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory}
@@ -3377,7 +3377,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Jul 19 20:35:01 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Aug  4 14:48:53 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3407,9 +3407,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3864 & 0.3637 & 9.154 \\
-CW & 435 & 0.5631 & 0.296 & 0.2866 & 14.31 \\
-TW & 435 & 0.6245 & 0.4158 & 0.3999 & 9.881 \\
+IW & 435 & 0.6541 & 0.3865 & 0.3641 & 9.097 \\
+CW & 435 & 0.5629 & 0.2955 & 0.2865 & 14.28 \\
+TW & 435 & 0.6248 & 0.4161 & 0.4002 & 9.819 \\
 \bottomrule()
 \end{longtable}
 
@@ -5990,7 +5990,7 @@ One of Issues referred to the basic use of phylogenetic tree in the microeco pac
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
 In this example, we show how to extend the mantel test results from \texttt{trans\_env} class with the package ggcor.
-Please install \texttt{ggcor} package according to the document (\url{https://github.com/mj163163/ggcor-1}).
+Please install \texttt{ggcor} package according to the document (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#github-packages}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6027,20 +6027,20 @@ Please install \texttt{ggcor} package according to the document (\url{https://gi
 
 \CommentTok{\# cobine two tables}
 \NormalTok{plot\_table }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(x1, x2)}
-\CommentTok{\# install ggcor package from (https://github.com/mj163163/ggcor{-}1)}
-\CommentTok{\# or follow the steps (https://chiliubio.github.io/microeco\_tutorial/intro.html\#github{-}packages)}
+\CommentTok{\# install ggcor following the steps (https://chiliubio.github.io/microeco\_tutorial/intro.html\#github{-}packages)}
 \FunctionTok{library}\NormalTok{(ggplot2)}
 \FunctionTok{library}\NormalTok{(ggcor)}
 \FunctionTok{set\_scale}\NormalTok{()}
 
-\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{quickcor}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env, }\AttributeTok{type =} \StringTok{"upper"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{quickcor}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env, }\AttributeTok{type =} \StringTok{"upper"}\NormalTok{, }\AttributeTok{cor.test =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{show.diag =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
     \FunctionTok{geom\_square}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{geom\_mark}\NormalTok{(}\AttributeTok{sig.thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{markonly =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
     \FunctionTok{anno\_link}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{colour =}\NormalTok{ pd, }\AttributeTok{size =}\NormalTok{ rd), }\AttributeTok{data =}\NormalTok{ plot\_table) }\SpecialCharTok{+}
     \FunctionTok{scale\_size\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{+}
     \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#D95F02"}\NormalTok{, }\StringTok{"\#1B9E77"}\NormalTok{, }\StringTok{"\#A2A2A288"}\NormalTok{)) }\SpecialCharTok{+}
     \FunctionTok{guides}\NormalTok{(}\AttributeTok{size =} \FunctionTok{guide\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mantel\textquotesingle{}s r"}\NormalTok{, }\AttributeTok{override.aes =} \FunctionTok{list}\NormalTok{(}\AttributeTok{colour =} \StringTok{"grey35"}\NormalTok{), }\AttributeTok{order =} \DecValTok{2}\NormalTok{),}
-        \AttributeTok{colour =} \FunctionTok{guide\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mantel\textquotesingle{}s p"}\NormalTok{, }\AttributeTok{override.aes =} \FunctionTok{list}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{), }\AttributeTok{order =} \DecValTok{1}\NormalTok{),}
-        \AttributeTok{fill =} \FunctionTok{guide\_colorbar}\NormalTok{(}\AttributeTok{title =} \StringTok{"Pearson\textquotesingle{}s r"}\NormalTok{, }\AttributeTok{order =} \DecValTok{3}\NormalTok{))}
+           \AttributeTok{colour =} \FunctionTok{guide\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mantel\textquotesingle{}s p"}\NormalTok{, }\AttributeTok{override.aes =} \FunctionTok{list}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{), }\AttributeTok{order =} \DecValTok{1}\NormalTok{),}
+           \AttributeTok{fill =} \FunctionTok{guide\_colorbar}\NormalTok{(}\AttributeTok{title =} \StringTok{"Pearson\textquotesingle{}s r"}\NormalTok{, }\AttributeTok{order =} \DecValTok{3}\NormalTok{))}
 
 \NormalTok{g1}
 \end{Highlighting}

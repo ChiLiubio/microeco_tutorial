@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-07-19" />
+<meta name="date" content="2023-08-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -385,7 +385,7 @@ and (<a href="https://github.com/ChiLiubio/microeco/issues/15" class="uri">https
 <h2><span class="header-section-number">14.6</span> Mantel test + Correlation heatmap<a href="other-examples-1.html#mantel-test-correlation-heatmap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
 In this example, we show how to extend the mantel test results from <code>trans_env</code> class with the package ggcor.
-Please install <code>ggcor</code> package according to the document (<a href="https://github.com/mj163163/ggcor-1" class="uri">https://github.com/mj163163/ggcor-1</a>).</p>
+Please install <code>ggcor</code> package according to the document (<a href="https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages</a>).</p>
 <div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="other-examples-1.html#cb370-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare data</span></span>
 <span id="cb370-2"><a href="other-examples-1.html#cb370-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb370-3"><a href="other-examples-1.html#cb370-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
@@ -419,20 +419,20 @@ Please install <code>ggcor</code> package according to the document (<a href="ht
 <span id="cb370-31"><a href="other-examples-1.html#cb370-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb370-32"><a href="other-examples-1.html#cb370-32" aria-hidden="true" tabindex="-1"></a><span class="co"># cobine two tables</span></span>
 <span id="cb370-33"><a href="other-examples-1.html#cb370-33" aria-hidden="true" tabindex="-1"></a>plot_table <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x1, x2)</span>
-<span id="cb370-34"><a href="other-examples-1.html#cb370-34" aria-hidden="true" tabindex="-1"></a><span class="co"># install ggcor package from (https://github.com/mj163163/ggcor-1)</span></span>
-<span id="cb370-35"><a href="other-examples-1.html#cb370-35" aria-hidden="true" tabindex="-1"></a><span class="co"># or follow the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages)</span></span>
-<span id="cb370-36"><a href="other-examples-1.html#cb370-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb370-37"><a href="other-examples-1.html#cb370-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcor)</span>
-<span id="cb370-38"><a href="other-examples-1.html#cb370-38" aria-hidden="true" tabindex="-1"></a><span class="fu">set_scale</span>()</span>
-<span id="cb370-39"><a href="other-examples-1.html#cb370-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb370-40"><a href="other-examples-1.html#cb370-40" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">quickcor</span>(t1<span class="sc">$</span>data_env, <span class="at">type =</span> <span class="st">&quot;upper&quot;</span>) <span class="sc">+</span></span>
-<span id="cb370-41"><a href="other-examples-1.html#cb370-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_square</span>() <span class="sc">+</span></span>
+<span id="cb370-34"><a href="other-examples-1.html#cb370-34" aria-hidden="true" tabindex="-1"></a><span class="co"># install ggcor following the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages)</span></span>
+<span id="cb370-35"><a href="other-examples-1.html#cb370-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb370-36"><a href="other-examples-1.html#cb370-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcor)</span>
+<span id="cb370-37"><a href="other-examples-1.html#cb370-37" aria-hidden="true" tabindex="-1"></a><span class="fu">set_scale</span>()</span>
+<span id="cb370-38"><a href="other-examples-1.html#cb370-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb370-39"><a href="other-examples-1.html#cb370-39" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">quickcor</span>(t1<span class="sc">$</span>data_env, <span class="at">type =</span> <span class="st">&quot;upper&quot;</span>, <span class="at">cor.test =</span> <span class="cn">TRUE</span>, <span class="at">show.diag =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb370-40"><a href="other-examples-1.html#cb370-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_square</span>() <span class="sc">+</span></span>
+<span id="cb370-41"><a href="other-examples-1.html#cb370-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_mark</span>(<span class="at">sig.thres =</span> <span class="fl">0.05</span>, <span class="at">markonly =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
 <span id="cb370-42"><a href="other-examples-1.html#cb370-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anno_link</span>(<span class="fu">aes</span>(<span class="at">colour =</span> pd, <span class="at">size =</span> rd), <span class="at">data =</span> plot_table) <span class="sc">+</span></span>
 <span id="cb370-43"><a href="other-examples-1.html#cb370-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_size_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
 <span id="cb370-44"><a href="other-examples-1.html#cb370-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#D95F02&quot;</span>, <span class="st">&quot;#1B9E77&quot;</span>, <span class="st">&quot;#A2A2A288&quot;</span>)) <span class="sc">+</span></span>
 <span id="cb370-45"><a href="other-examples-1.html#cb370-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">size =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Mantel&#39;s r&quot;</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">colour =</span> <span class="st">&quot;grey35&quot;</span>), <span class="at">order =</span> <span class="dv">2</span>),</span>
-<span id="cb370-46"><a href="other-examples-1.html#cb370-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Mantel&#39;s p&quot;</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>), <span class="at">order =</span> <span class="dv">1</span>),</span>
-<span id="cb370-47"><a href="other-examples-1.html#cb370-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="fu">guide_colorbar</span>(<span class="at">title =</span> <span class="st">&quot;Pearson&#39;s r&quot;</span>, <span class="at">order =</span> <span class="dv">3</span>))</span>
+<span id="cb370-46"><a href="other-examples-1.html#cb370-46" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Mantel&#39;s p&quot;</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>), <span class="at">order =</span> <span class="dv">1</span>),</span>
+<span id="cb370-47"><a href="other-examples-1.html#cb370-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">guide_colorbar</span>(<span class="at">title =</span> <span class="st">&quot;Pearson&#39;s r&quot;</span>, <span class="at">order =</span> <span class="dv">3</span>))</span>
 <span id="cb370-48"><a href="other-examples-1.html#cb370-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb370-49"><a href="other-examples-1.html#cb370-49" aria-hidden="true" tabindex="-1"></a>g1</span></code></pre></div>
 <p><img src="Images/plot_env_mantel_ggcor.png" width="650px" style="display: block; margin: auto;" /></p>

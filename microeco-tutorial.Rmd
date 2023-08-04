@@ -191,7 +191,7 @@ For the Windows system, first make sure RTools has been installed (https://chili
 
 ```{r, echo = TRUE, eval = FALSE}
 # downloading link of the compressed archive
-url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.17.0/microeco_dependence.zip"
+url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
 # allow more time to download the zip file in R
 options(timeout = 2000)
 # If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory
@@ -4305,7 +4305,7 @@ One of Issues referred to the basic use of phylogenetic tree in the microeco pac
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
 In this example, we show how to extend the mantel test results from `trans_env` class with the package ggcor.
-Please install `ggcor` package according to the document (https://github.com/mj163163/ggcor-1).
+Please install `ggcor` package according to the document (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages).
 
 ```{r, echo = TRUE, eval = FALSE}
 # prepare data
@@ -4341,20 +4341,20 @@ x2 %<>% dplyr::mutate(rd = cut(r, breaks = c(-Inf, 0.3, 0.6, Inf), labels = c("<
 
 # cobine two tables
 plot_table <- rbind(x1, x2)
-# install ggcor package from (https://github.com/mj163163/ggcor-1)
-# or follow the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages)
+# install ggcor following the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#github-packages)
 library(ggplot2)
 library(ggcor)
 set_scale()
 
-g1 <- quickcor(t1$data_env, type = "upper") +
-	geom_square() +
-	anno_link(aes(colour = pd, size = rd), data = plot_table) +
-	scale_size_manual(values = c(0.5, 1.5, 3)) +
-	scale_colour_manual(values = c("#D95F02", "#1B9E77", "#A2A2A288")) +
-	guides(size = guide_legend(title = "Mantel's r", override.aes = list(colour = "grey35"), order = 2),
-		colour = guide_legend(title = "Mantel's p", override.aes = list(size = 3), order = 1),
-		fill = guide_colorbar(title = "Pearson's r", order = 3))
+g1 <- quickcor(t1$data_env, type = "upper", cor.test = TRUE, show.diag = FALSE) +
+    geom_square() +
+	geom_mark(sig.thres = 0.05, markonly = TRUE, color = "white") +
+    anno_link(aes(colour = pd, size = rd), data = plot_table) +
+    scale_size_manual(values = c(0.5, 1.5, 3)) +
+    scale_colour_manual(values = c("#D95F02", "#1B9E77", "#A2A2A288")) +
+    guides(size = guide_legend(title = "Mantel's r", override.aes = list(colour = "grey35"), order = 2),
+           colour = guide_legend(title = "Mantel's p", override.aes = list(size = 3), order = 1),
+           fill = guide_colorbar(title = "Pearson's r", order = 3))
 
 g1
 ```
