@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v0.20.0)"
+title: "Tutorial for R microeco package (v1.0.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -293,6 +293,16 @@ The user can also assign the output a name and use the ggplot2-style grammers to
 Each data table used for visualization is stored in the object and can be saved for the customized analysis.
 Of course, the user can also directly modify the class and reload them to use.
 Any contribution of a modified class is appreciated via Github-Pull requests (https://github.com/ChiLiubio/microeco_tutorial/pulls) or Email (liuchi0426@126.com).
+
+
+## Rstudio
+The modular design of help documentation can facilitate the document viewing. 
+However, in Rtudio, there may be instances where the links fail to navigate properly. 
+In such cases, the issue can be resolved by reopening a document window, as illustrated in the figure below.
+
+```{r, out.width = "800px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/Rstudio_link_redirection.jpg")
+```
 
 
 
@@ -1198,7 +1208,9 @@ head(t1$res_diff)
 t1$cal_diff(method = "t.test")
 ```
 
-Then, let's try to use anova.
+Then, let's try to use anova. 
+From v1.0.0, the `alpha` parameter can be used to adjust the significance threshold (default: 0.05) of multiple comparisons when method is 'anova' or 'KW_dunn'.
+
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 # return t1$res_diff
@@ -1441,6 +1453,15 @@ t1$cal_manova(manova_set = "Group + Type")
 pander::pander(t1$res_manova)
 ```
 
+From v1.0.0, ANOSIM method is also available.
+
+```{r, echo = TRUE, eval = FALSE}
+# the group parameter is not necessary when it is provided in creating the object
+t1$cal_anosim(group = "Group")
+t1$res_anosim
+t1$cal_anosim(group = "Group", paired = TRUE)
+t1$res_anosim
+```
 
 PERMDISP[@Anderson_Navigating_2011] is implemented to test multivariate homogeneity of groups dispersions (variances) based on the `betadisper` function of vegan package.
 
@@ -2523,6 +2544,7 @@ new_test
 ```
 
 Now let's use env_cols to select the required columns from sample_table in the microtable object.
+From v1.0.0, the parameter `standardize = TRUE` is available to standardize each variable.
 
 ```{r, echo = TRUE}
 t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)

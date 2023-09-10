@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v0.20.0)},
+  pdftitle={Tutorial for R microeco package (v1.0.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v0.20.0)}
+\title{Tutorial for R microeco package (v1.0.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-08-04}
+\date{2023-09-10}
 
 \begin{document}
 \maketitle
@@ -452,6 +452,15 @@ The user can also assign the output a name and use the ggplot2-style grammers to
 Each data table used for visualization is stored in the object and can be saved for the customized analysis.
 Of course, the user can also directly modify the class and reload them to use.
 Any contribution of a modified class is appreciated via Github-Pull requests (\url{https://github.com/ChiLiubio/microeco_tutorial/pulls}) or Email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
+
+\hypertarget{rstudio}{%
+\section{Rstudio}\label{rstudio}}
+
+The modular design of help documentation can facilitate the document viewing.
+However, in Rtudio, there may be instances where the links fail to navigate properly.
+In such cases, the issue can be resolved by reopening a document window, as illustrated in the figure below.
+
+\begin{center}\includegraphics[width=800px]{Images/Rstudio_link_redirection} \end{center}
 
 \hypertarget{basic-class}{%
 \chapter{Basic class}\label{basic-class}}
@@ -863,7 +872,7 @@ We also remove OTUs with the taxonomic assignments ``mitochondria'' or ``chlorop
 \end{Shaded}
 
 \begin{verbatim}
-## Total 34 taxa are removed from tax_table ...
+## Total 34 features are removed from tax_table ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -1860,6 +1869,10 @@ IW - CW - TW & InvSimpson & CW & 0.8083 & 0.8083 & ns \\
 \end{Shaded}
 
 \begin{verbatim}
+## P value adjustment method: holm ...
+\end{verbatim}
+
+\begin{verbatim}
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
@@ -1884,17 +1897,17 @@ MonoLetter
 \midrule()
 \endhead
 Observed & Dunn's Kruskal-Wallis Multiple
-Comparisons & CW & a & a \\
-Observed & Dunn's Kruskal-Wallis Multiple
 Comparisons & IW & a & a \\
 Observed & Dunn's Kruskal-Wallis Multiple
 Comparisons & TW & a & a \\
-Chao1 & Dunn's Kruskal-Wallis Multiple
+Observed & Dunn's Kruskal-Wallis Multiple
 Comparisons & CW & a & a \\
 Chao1 & Dunn's Kruskal-Wallis Multiple
-Comparisons & IW & b & b \\
+Comparisons & IW & a & a \\
 Chao1 & Dunn's Kruskal-Wallis Multiple
 Comparisons & TW & ab & ab \\
+Chao1 & Dunn's Kruskal-Wallis Multiple
+Comparisons & CW & b & b \\
 \bottomrule()
 \end{longtable}
 
@@ -1910,6 +1923,7 @@ Comparisons & TW & ab & ab \\
 \end{Shaded}
 
 Then, let's try to use anova.
+From v1.0.0, the \texttt{alpha} parameter can be used to adjust the significance threshold (default: 0.05) of multiple comparisons when method is `anova' or `KW\_dunn'.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2327,6 +2341,18 @@ Pr(\textgreater F)
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
 \bottomrule()
 \end{longtable}
+
+From v1.0.0, ANOSIM method is also available.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the group parameter is not necessary when it is provided in creating the object}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_anosim}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_anosim}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_anosim}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{paired =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_anosim}
+\end{Highlighting}
+\end{Shaded}
 
 PERMDISP\citep{Anderson_Navigating_2011} is implemented to test multivariate homogeneity of groups dispersions (variances) based on the \texttt{betadisper} function of vegan package.
 
@@ -3377,7 +3403,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Aug  4 14:48:53 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Sep 10 16:55:28 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3407,9 +3433,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6541 & 0.3865 & 0.3641 & 9.097 \\
-CW & 435 & 0.5629 & 0.2955 & 0.2865 & 14.28 \\
-TW & 435 & 0.6248 & 0.4161 & 0.4002 & 9.819 \\
+IW & 435 & 0.6541 & 0.3879 & 0.3642 & 9.133 \\
+CW & 435 & 0.5627 & 0.295 & 0.2863 & 14.41 \\
+TW & 435 & 0.6242 & 0.4163 & 0.3996 & 9.813 \\
 \bottomrule()
 \end{longtable}
 
@@ -3722,6 +3748,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 \end{verbatim}
 
 Now let's use env\_cols to select the required columns from sample\_table in the microtable object.
+From v1.0.0, the parameter \texttt{standardize\ =\ TRUE} is available to standardize each variable.
 
 \begin{Shaded}
 \begin{Highlighting}[]
