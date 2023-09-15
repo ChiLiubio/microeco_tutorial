@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-09-10" />
+<meta name="date" content="2023-09-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -350,15 +350,15 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 13</span> mecoturn package<a href="mecoturn-package.html#mecoturn-package" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The mecoturn package is designed to study microbial turnover along plant compartments originally (<a href="https://github.com/ChiLiubio/mecoturn" class="uri">https://github.com/ChiLiubio/mecoturn</a>).
 Generally speaking, it can be used in any case associated with a gradient.</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="mecoturn-package.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mecoturn v0.2.0</span></span>
-<span id="cb328-2"><a href="mecoturn-package.html#cb328-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;mecoturn&quot;</span>)</span>
-<span id="cb328-3"><a href="mecoturn-package.html#cb328-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check and install dependent packages</span></span>
-<span id="cb328-4"><a href="mecoturn-package.html#cb328-4" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;agricolae&quot;</span>, <span class="st">&quot;lmerTest&quot;</span>, <span class="st">&quot;betareg&quot;</span>, <span class="st">&quot;glmmTMB&quot;</span>)</span>
-<span id="cb328-5"><a href="mecoturn-package.html#cb328-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
-<span id="cb328-6"><a href="mecoturn-package.html#cb328-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)){</span>
-<span id="cb328-7"><a href="mecoturn-package.html#cb328-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x)</span>
-<span id="cb328-8"><a href="mecoturn-package.html#cb328-8" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb328-9"><a href="mecoturn-package.html#cb328-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="mecoturn-package.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mecoturn v0.3.0</span></span>
+<span id="cb330-2"><a href="mecoturn-package.html#cb330-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;mecoturn&quot;</span>)</span>
+<span id="cb330-3"><a href="mecoturn-package.html#cb330-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check and install dependent packages</span></span>
+<span id="cb330-4"><a href="mecoturn-package.html#cb330-4" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;agricolae&quot;</span>)</span>
+<span id="cb330-5"><a href="mecoturn-package.html#cb330-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> packages){</span>
+<span id="cb330-6"><a href="mecoturn-package.html#cb330-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)){</span>
+<span id="cb330-7"><a href="mecoturn-package.html#cb330-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">install.packages</span>(x)</span>
+<span id="cb330-8"><a href="mecoturn-package.html#cb330-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb330-9"><a href="mecoturn-package.html#cb330-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div id="betaturn-class" class="section level2 hasAnchor" number="13.1">
 <h2><span class="header-section-number">13.1</span> betaturn class<a href="mecoturn-package.html#betaturn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The betaturn class is used to study the turnover of communities, i.e. beta diversity along a gradient <span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span>.
@@ -369,21 +369,93 @@ In <code>wheat_16S$sample_table</code>, the <code>Type</code> column represents 
 The <code>Plant_ID</code> column denotes each unique plant individual that the samples belong to.
 The <code>Region</code> column means the sampling region of those plants.
 Each region has five plant individuals.</p>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="mecoturn-package.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
-<span id="cb329-2"><a href="mecoturn-package.html#cb329-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb329-3"><a href="mecoturn-package.html#cb329-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
-<span id="cb329-4"><a href="mecoturn-package.html#cb329-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document of betaturn</span></span>
-<span id="cb329-5"><a href="mecoturn-package.html#cb329-5" aria-hidden="true" tabindex="-1"></a>?betaturn</span>
-<span id="cb329-6"><a href="mecoturn-package.html#cb329-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use &#39;bray&#39;, i.e. Bray-Curtis dissimilarity, as the example</span></span>
-<span id="cb329-7"><a href="mecoturn-package.html#cb329-7" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> betaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
+<p><img src="Images/mecoturn_betaturn.png" width="1000px" style="display: block; margin: auto;" /></p>
+<p>Schematic diagrams of the framework in betaturn class.
+In the flow chart,
+Roman numeral represents the data for the input or output of associated step.
+Arabic numeral within brackets denotes the step for the corresponding operation.
+The workflow of betaturn class consists of the dissimilarity matrix generation, matrix conversion, differential test and visualization.
+The core of the workflow is the matrix conversion, which can be classified into two cases (step 5 and 8) in the Figure.<br />
+Ⅰ: Feature abundance table: microtable$otu_table object.
+The microtable object can be created by the microtable class (R6 class) in microeco package.
+The feature abundance table denotes the amplicon sequence variants (ASV) table or operational taxonomic units (OTU) abundance table in a study and should be data.frame format.<br />
+Ⅱ: Phylogenetic tree: microtable$phylo_tree object.
+It represents reconstructed phylogenetic tree based on the representative sequences and should be “phylo” format coming from read.tree function in ape package.
+It is designed for calculating phylogenetic distance matrix of beta diversity,
+such as mean nearest taxon distance (betaMNTD) and UniFrac metrics.<br />
+Ⅲ: Sample information table: microtable$sample_table object. It is the sample metadata and must be data.frame format.
+The ‘Type’ column represents plant compartments (including bulk soil) or other ordered groups used for the following comparison.
+S: bulk soil; RS: rhizosphere soil; R: root endophyte.
+The ‘Plant_ID’ column denotes each plant, by which the ordered distance transformation can be accomplished.<br />
+Ⅳ: Dissimilarity matrix: symmetric distance matrix in betaturn$dataset$beta_diversity list.
+The names of both the rows and columns of this symmetrical matrix are the sample names and they are correspondingly aligned as well.<br />
+Ⅴ: Converted table: betaturn$res_group_distance object.
+It is the output of function cal_group_distance of betaturn class with the parameter “within_group = FALSE”.
+The table conversion is performed between any two samples of ‘Type’ column in Ⅲ,
+but the combination of any two samples is constrained by the by_group parameter,
+i.e. the conversion is only completed within the same plant according to ‘Plant_ID’ column of Ⅲ in the example,
+which is one of the key features of the mecoturn package.
+The converted distance table has a new ‘Type’ column as the combination of the elements in ‘Type’ column of original sample information table.
+The ordered_group is designed optionally to sort the group order in the result.<br />
+Ⅵ: Statistical analysis: betaturn$res_group_distance_diff object.
+The approaches that used to compare means or medians across groups (i.e. groups in ‘Type’ column of Ⅲ)
+are adapted from the cal_diff function of trans_alpha class in microeco package.
+By accessing the data in betaturn$res_group_distance object,
+correlation and regression analysis can be easily conducted with the trans_env class of microeco package.<br />
+Ⅶ: Visualization: the ggplot2 object for the mode-“within_group = FALSE”.<br />
+Ⅷ: Sample information table similar with Ⅲ.
+In this example, “Region” column represents that the plants are collected from different regions.
+It is used to show the mode-“within_group = TRUE”.<br />
+Ⅸ: Converted table: similar with Ⅴ, but it is generated with the parameter “within_group = TRUE” in cal_group_distance function of betaturn class.
+The table conversion is accomplished within each element of the “Region” column in Ⅷ for this study.
+It can also be other column, such as “Plant_ID”.
+Any two samples within an element of “Region” column will be combined.
+Under such a circumstance,
+by_group parameter is designed to generate the additional combinations related to the ‘Type’ and ‘Plant_ID’ columns in this study used for the following filtering.
+So, in the mode-“within_group = TRUE”, the aim of by_group parameter is to create the combinations of groups as the table shows,
+not to play a role of restriction of the by_group in the mode-“within_group = FALSE”.<br />
+Ⅹ: Filtered table: similar with Ⅸ.
+Here, the filtered table is an example to show the flexible manipulation on the converted table.
+In this example, needless rows (combined by different plants) are deleted by customized operation in order to generate a final table for the following statistics and visualization.<br />
+Ⅺ: Visualization: ggplot2 object for the mode-“within_group = TRUE”.<br />
+(1): betaturn$new function with the parameter measure = “bray” (Bray-Curtis dissimilarity) or measure = “jaccard” (Jaccard dissimilarity).
+Several beta diversity metrics are provided to obtain the distance matrix by creating betaturn object.<br />
+(2): betaturn$new function with the parameter measure = “wei_unifrac”, “unwei_unifrac”, “betaMPD” or “betaMNTD”.
+Several distance metrics of phylogenetic beta diversity require both the file Ⅰ and Ⅱ.<br />
+(3): betaturn$new function with the parameter measure = “RCbray”. RCbray: Raup–Crick based Bray-Curtis dissimilarity.<br />
+(4): betaturn$new function with the parameter measure = “betaNRI”, “betaNTI” or “ses_UniFrac”.<br />
+Phylogenetic beta diversity, plus null model, can be used to obtain the standardized effect size of observed phylogenetic beta diversity.
+betaNTI: beta nearest taxon index; betaNRI: beta net relatedness index; ses_UniFrac: standardized effect size of UniFrac distance.<br />
+(5): betaturn$cal_group_distance(within_group = FALSE, …).
+The distance matrix can be converted to a long format table according to the group classifications in Ⅲ.
+The ‘Plant_ID’ (or other name) is used for guiding the file conversion in the mode-“within_group = FALSE” of Ⅴ.
+The new ‘Type’ in Ⅴ is generated by combining paired plant compartments.<br />
+(6): betaturn$cal_group_distance_diff function.
+The differential test can be performed with several available approaches shown in the Ⅵ.<br />
+(7): betaturn$plot_group_distance function.
+The visualization is implemented based on R ggplo2 and ggpubr packages.
+The differential test results in step (6) can be mapped to the plot automatically.<br />
+(8): betaturn$cal_group_distance(within_group = TRUE, …).
+This step is similar with step (5), but it is performed by the function cal_group_distance with the parameter “within_group = TRUE”.<br />
+(9): customized manipulation on betaturn$res_group_distance file.
+This step is to manipulate the file res_group_distance in the betaturn object and delete useless rows in the file according to the customized requirement.<br />
+(10): Similar with step (6).<br />
+(11): Similar with step (7).</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="mecoturn-package.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
+<span id="cb331-2"><a href="mecoturn-package.html#cb331-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb331-3"><a href="mecoturn-package.html#cb331-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
+<span id="cb331-4"><a href="mecoturn-package.html#cb331-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document of betaturn</span></span>
+<span id="cb331-5"><a href="mecoturn-package.html#cb331-5" aria-hidden="true" tabindex="-1"></a>?betaturn</span>
+<span id="cb331-6"><a href="mecoturn-package.html#cb331-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use &#39;bray&#39;, i.e. Bray-Curtis dissimilarity, as the example</span></span>
+<span id="cb331-7"><a href="mecoturn-package.html#cb331-7" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> betaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
 <pre><code>## The distance matrix is stored in object$beta_diversity list ...</code></pre>
 <p>The matrix conversion is the core step in the betaturn class.
 It has two cases: <code>within_group = TRUE</code> and <code>within_group = FALSE</code>.
 The case <code>within_group = FALSE</code> means the distance conversion is carried out between any two elements of <code>Type</code> column (<code>group</code> parameter).
 The parameter <code>by_group</code> is used to constrain the conversion, i.e. the conversion is performed for each plant.</p>
-<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="mecoturn-package.html#cb331-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="mecoturn-package.html#cb333-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span></code></pre></div>
 <pre><code>## The result is stored in object$res_group_distance ...</code></pre>
-<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="mecoturn-package.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="mecoturn-package.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
 <pre><code>##       Value    Type          Plant_ID
 ## 1 0.7844286 S vs RS Northwest_Wheat_1
 ## 2 0.7922857 S vs RS Northwest_Wheat_2
@@ -392,9 +464,9 @@ The parameter <code>by_group</code> is used to constrain the conversion, i.e. t
 ## 5 0.7151429 S vs RS Northwest_Wheat_5
 ## 6 0.6704286 S vs RS      East_Wheat_1</code></pre>
 <p>The combinations of <code>Type</code> may be not well-organized. We use <code>ordered_group</code> parameter to sort them and <code>sep</code> parameter to assign the direction.</p>
-<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="mecoturn-package.html#cb335-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="mecoturn-package.html#cb337-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>)</span></code></pre></div>
 <pre><code>## The result is stored in object$res_group_distance ...</code></pre>
-<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="mecoturn-package.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="mecoturn-package.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span></code></pre></div>
 <pre><code>##       Value    Type          Plant_ID
 ## 1 0.7844286 S -&gt; RS Northwest_Wheat_1
 ## 2 0.7922857 S -&gt; RS Northwest_Wheat_2
@@ -403,109 +475,167 @@ The parameter <code>by_group</code> is used to constrain the conversion, i.e. t
 ## 5 0.7151429 S -&gt; RS Northwest_Wheat_5
 ## 6 0.6704286 S -&gt; RS      East_Wheat_1</code></pre>
 <p>The <code>cal_group_distance_diff</code> function can be used to perform the statistical analysis.</p>
-<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="mecoturn-package.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon rank sum test</span></span>
-<span id="cb339-2"><a href="mecoturn-package.html#cb339-2" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb339-3"><a href="mecoturn-package.html#cb339-3" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test by adding by_ID</span></span>
-<span id="cb339-4"><a href="mecoturn-package.html#cb339-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span>
-<span id="cb339-5"><a href="mecoturn-package.html#cb339-5" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot</span></span>
-<span id="cb339-6"><a href="mecoturn-package.html#cb339-6" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="mecoturn-package.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon rank sum test</span></span>
+<span id="cb341-2"><a href="mecoturn-package.html#cb341-2" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb341-3"><a href="mecoturn-package.html#cb341-3" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test by adding by_ID</span></span>
+<span id="cb341-4"><a href="mecoturn-package.html#cb341-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>)</span>
+<span id="cb341-5"><a href="mecoturn-package.html#cb341-5" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot</span></span>
+<span id="cb341-6"><a href="mecoturn-package.html#cb341-6" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
 <p>The parameter <code>add_cols</code> can be used to add other columns in <code>sample_table</code> to the final table when <code>within_group = FALSE</code>.
 This is especially useful when the statistical analysis will be performed for different groups.</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="mecoturn-package.html#cb340-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
-<span id="cb340-2"><a href="mecoturn-package.html#cb340-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
-<span id="cb340-3"><a href="mecoturn-package.html#cb340-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon test for each region</span></span>
-<span id="cb340-4"><a href="mecoturn-package.html#cb340-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>)</span>
-<span id="cb340-5"><a href="mecoturn-package.html#cb340-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="mecoturn-package.html#cb342-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb342-2"><a href="mecoturn-package.html#cb342-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
+<span id="cb342-3"><a href="mecoturn-package.html#cb342-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Wilcoxon test for each region</span></span>
+<span id="cb342-4"><a href="mecoturn-package.html#cb342-4" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb342-5"><a href="mecoturn-package.html#cb342-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>()</span></code></pre></div>
 <p>Then let’s use linear mixed-effects model to check the random effects of plants.
 For the usages of the <code>formula</code> in linear mixed-effects model (lme4 package), see <a href="https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html" class="uri">https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html</a></p>
-<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="mecoturn-package.html#cb341-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
-<span id="cb341-2"><a href="mecoturn-package.html#cb341-2" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept and slope of Region</span></span>
-<span id="cb341-3"><a href="mecoturn-package.html#cb341-3" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 + Type| Region)&quot;</span>)</span>
-<span id="cb341-4"><a href="mecoturn-package.html#cb341-4" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID</span></span>
-<span id="cb341-5"><a href="mecoturn-package.html#cb341-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Plant_ID)&quot;</span>)</span>
-<span id="cb341-6"><a href="mecoturn-package.html#cb341-6" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID nested in Region</span></span>
-<span id="cb341-7"><a href="mecoturn-package.html#cb341-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Region/Plant_ID)&quot;</span>)</span>
-<span id="cb341-8"><a href="mecoturn-package.html#cb341-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance_diff</span></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="mecoturn-package.html#cb343-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">within_group =</span> <span class="cn">FALSE</span>, <span class="at">by_group =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; -&gt; &quot;</span>, <span class="at">add_cols =</span> <span class="st">&quot;Region&quot;</span>)</span>
+<span id="cb343-2"><a href="mecoturn-package.html#cb343-2" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept and slope of Region</span></span>
+<span id="cb343-3"><a href="mecoturn-package.html#cb343-3" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 + Type| Region)&quot;</span>)</span>
+<span id="cb343-4"><a href="mecoturn-package.html#cb343-4" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID</span></span>
+<span id="cb343-5"><a href="mecoturn-package.html#cb343-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Plant_ID)&quot;</span>)</span>
+<span id="cb343-6"><a href="mecoturn-package.html#cb343-6" aria-hidden="true" tabindex="-1"></a><span class="co"># random intercept of Plant_ID nested in Region</span></span>
+<span id="cb343-7"><a href="mecoturn-package.html#cb343-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Type + (1 | Region/Plant_ID)&quot;</span>)</span>
+<span id="cb343-8"><a href="mecoturn-package.html#cb343-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance_diff</span></code></pre></div>
 <p>Another case <code>within_group = TURE</code> means the distance conversion is performed according to each element of the group.
 For example, when <code>group = "Region"</code>, any two samples within an element of <code>"Region"</code> column will be combined.
 In this scenario, by_group parameter is designed to generate the additional combinations related to other columns.</p>
-<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="mecoturn-package.html#cb342-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>, <span class="at">group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">by_group =</span> <span class="fu">c</span>(<span class="st">&quot;Type&quot;</span>, <span class="st">&quot;Plant_ID&quot;</span>))</span>
-<span id="cb342-2"><a href="mecoturn-package.html#cb342-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
-<span id="cb342-3"><a href="mecoturn-package.html#cb342-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the combinations not coming from the same plant</span></span>
-<span id="cb342-4"><a href="mecoturn-package.html#cb342-4" aria-hidden="true" tabindex="-1"></a>all_plants <span class="ot">&lt;-</span> <span class="fu">unique</span>(wheat_16S<span class="sc">$</span>sample_table<span class="sc">$</span>Plant_ID)</span>
-<span id="cb342-5"><a href="mecoturn-package.html#cb342-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Plant_ID <span class="sc">%in%</span> <span class="fu">paste0</span>(all_plants, <span class="st">&quot; vs &quot;</span>, all_plants), ]</span>
-<span id="cb342-6"><a href="mecoturn-package.html#cb342-6" aria-hidden="true" tabindex="-1"></a><span class="co"># compare values across regions</span></span>
-<span id="cb342-7"><a href="mecoturn-package.html#cb342-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
-<span id="cb342-8"><a href="mecoturn-package.html#cb342-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">add_sig_text_size =</span> <span class="fl">5.6</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="mecoturn-package.html#cb344-1" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>, <span class="at">group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">by_group =</span> <span class="fu">c</span>(<span class="st">&quot;Type&quot;</span>, <span class="st">&quot;Plant_ID&quot;</span>))</span>
+<span id="cb344-2"><a href="mecoturn-package.html#cb344-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b1<span class="sc">$</span>res_group_distance)</span>
+<span id="cb344-3"><a href="mecoturn-package.html#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the combinations not coming from the same plant</span></span>
+<span id="cb344-4"><a href="mecoturn-package.html#cb344-4" aria-hidden="true" tabindex="-1"></a>all_plants <span class="ot">&lt;-</span> <span class="fu">unique</span>(wheat_16S<span class="sc">$</span>sample_table<span class="sc">$</span>Plant_ID)</span>
+<span id="cb344-5"><a href="mecoturn-package.html#cb344-5" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span>res_group_distance <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Plant_ID <span class="sc">%in%</span> <span class="fu">paste0</span>(all_plants, <span class="st">&quot; vs &quot;</span>, all_plants), ]</span>
+<span id="cb344-6"><a href="mecoturn-package.html#cb344-6" aria-hidden="true" tabindex="-1"></a><span class="co"># compare values across regions</span></span>
+<span id="cb344-7"><a href="mecoturn-package.html#cb344-7" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
+<span id="cb344-8"><a href="mecoturn-package.html#cb344-8" aria-hidden="true" tabindex="-1"></a>b1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">add_sig_text_size =</span> <span class="fl">5.6</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>)</span></code></pre></div>
 </div>
 <div id="taxaturn-class" class="section level2 hasAnchor" number="13.2">
 <h2><span class="header-section-number">13.2</span> taxaturn class<a href="mecoturn-package.html#taxaturn-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The taxaturn class refers to microbial abundance change along a gradient.
 Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.</p>
-<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="mecoturn-package.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study the abundance change of phyla by comparing the mean abundances without the consideration of plants</span></span>
-<span id="cb343-2"><a href="mecoturn-package.html#cb343-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="cn">NULL</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
-<pre><code>## No taxa_abund found. First calculate it with cal_abund function ...</code></pre>
+<p><img src="Images/mecoturn_taxaturn.png" width="1000px" style="display: block; margin: auto;" /></p>
+<p>The core of this workflow is the abundance change summary and statistical analysis,
+which can be classified into two cases: by_ID = NULL and by_ID = “Plant_ID” in the example (step 1 or 4, and step 8 in the Figure).<br />
+Ⅰ: Taxonomic abundance table: the table (data.frame format) in microtable$taxa_abund list.
+It denotes taxonomic abundance table with the data.frame format at a specific taxonomic level.<br />
+Ⅱ: Sample information table: the sample metadata, i.e. sample_table in microtable object.
+The ‘Type’ column represents the plant compartments or other ordered groups used for the following comparisons.
+The ‘Plant_ID’ column denotes each plant, which can guide the comparison of abundances for each plant when by_ID = “Plant_ID”.
+“Region” column is used for the cases with by_group = “Region”.<br />
+Ⅲ: Summarized abundance: taxaturn$res_abund object.
+This summarized abundance table is converted under the condition of by_ID = NULL and by_group = NULL.
+Under this condition, the abundance is summarized by the groups of “Type” column of Ⅱ in order to generate ‘Mean’ and ‘SD’ in the result (mean and standard deviation of each group).
+‘N’ is the sample number in each group.<br />
+Ⅳ: Abundance change table: res_change_pair (the upper one) and res_change (the table below) in the taxaturn object.
+The change pattern along the ordered groups is generated according to the mean abundance in Ⅲ for each taxon.
+The res_change_pair table has all paired abundance difference values between two neighboring niches for each taxon (the abundance of the latter minus that of the former).
+The res_change is the following summary information of difference values along ordered paired groups in res_change_pair table.
+In res_change table, there are three types of changes: ‘Increase’, ‘Decrease’ and others (fluctuation with the combination of ‘+’, ‘-’ or ‘0’,
+or nothing when no consistent result is obtained across plants).<br />
+Ⅴ: Statistical analysis.
+The approaches include beta regression model and differential abundance test between two groups.
+The differential abundance test is designed for the comparison of two groups,
+such as differential test between S and RS or between RS and R.
+There are two implemented approaches: t-Test and Wilcoxon Rank Sum Test.<br />
+Ⅵ: Summarized abundance. Similar with Ⅲ, but the Mean and SD are performed by both the group (‘Type’) and by_group (‘Region’). So N is less than that in Ⅲ.<br />
+Ⅶ: Abundance change table. Similar with Ⅳ, but the ‘change’ trend is summarized for different regions, respectively.<br />
+Ⅷ: Summarized abundance. As by_ID is provided (“Plant_ID”), the N is 1. The Mean is the abundance of each sample of each plant. SD is not available (NA).<br />
+Ⅸ: Abundance change table: res_change_pair (the upper one) and res_change (the table below) in the taxaturn object.
+The res_change_pair is a little different from that in Ⅳ, because it is calculated for each individual plant.
+So the table has a column named by_ID (“Plant_ID”).
+This table is particularly useful for the association between abundance difference values and environmental factors.
+The res_change table is the summary result of res_change_pair table.
+For the case ‘by_group = NULL’, the data in res_change is the consistent abundance comparison along ordered groups and across all the plants.<br />
+Ⅹ: Abundance change table.
+Different from the res_change table of Ⅸ, the res_change table in Ⅹ is generated according to the by_group (‘Region’).
+So the result is the consistent abundance comparisons along ordered groups within each region.
+Note that the res_change_pair table is not shown here as it is same with res_change_pair in Ⅸ,
+because the parameter by_group = “Region” only affects the change summary result.<br />
+Ⅺ: Statistical analysis. Different from Ⅴ, some approaches for this case (by_ID is provided) necessitates consideration of the paired data,
+such as paired t-Test and paired Wilcoxon Rank Sum Test. The input data will be first sorted by the elements in “Plant_ID” column of Ⅱ.
+The linear mixed-effects model can be used to test the random effects of plant individuals similar with the Ⅵ.
+To better fit the relative abundance (bounded by 0 and 1),
+the family function of generalized linear mixed model (GLMM) in taxaturn class is fixed with the beta distribution function, and the link function is “logit” function.
+The correlation and regression analysis can be performed by means of the trans_env class of microeco package.<br />
+(1) and (2): taxaturn$new function. The parameter by_ID = NULL and by_group = NULL is applied in this example.
+Creating taxaturn object can generate Ⅲ (i.e. res_abund) in the object.
+If the taxonomic abundance (i.e. taxa_abund list) in the input microtable object is NULL,
+the function can automatically invoke the cal_abund function in microtable object to calculate it.<br />
+Creating taxaturn object can also create Ⅳ (i.e. res_change_pair and res_change) in the object.<br />
+(3): taxaturn$cal_diff function. The cal_diff function in taxaturn class is designed to perform the differential test.<br />
+(4) and (5): taxaturn$new function. Similar with step (1). The parameter by_ID = NULL and by_group = “Region” is used in this example.<br />
+(6): Similar with step (3).<br />
+(7): taxaturn$plot function. The plot function in taxaturn class is used to plot the abundance along ordered groups and generate a ggplot2 object.<br />
+(8) and (9): taxaturn$new function with the parameter by_ID = “Plant_ID” and by_group = NULL.<br />
+(10): taxaturn$cal_diff function. For the case that by_ID parameter is provided,
+the differential abundance test between two groups are designed for the paired data.<br />
+(8) and (11): taxaturn$new function with the parameter by_ID = “Plant_ID” and by_group = “Region”.<br />
+(12): Similar with step (10).<br />
+(13): Similar with step (7). For the case that by_ID parameter is provided, abundance visualization is performed for each element of by_ID parameter,
+i.e. each plant individual in this example.</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="mecoturn-package.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="co"># study the abundance change of phyla by comparing the mean abundances without the consideration of plants</span></span>
+<span id="cb345-2"><a href="mecoturn-package.html#cb345-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="cn">NULL</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
 <pre><code>## Taxa abundance data is stored in object$res_abund ...</code></pre>
 <pre><code>## Abundance change along groups is stored in object$res_change_pair ...</code></pre>
 <pre><code>## Abundance change summary is stored in object$res_change ...</code></pre>
-<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="mecoturn-package.html#cb348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
-<pre><code>##                 Taxa    Direction   Change
-## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease
-## 2  p__Actinobacteria S -&gt; RS -&gt; R Increase
-## 3 p__Armatimonadetes S -&gt; RS -&gt; R Decrease
-## 4   p__Bacteroidetes S -&gt; RS -&gt; R      +|-
-## 5     p__Chloroflexi S -&gt; RS -&gt; R Decrease
-## 6   p__Cyanobacteria S -&gt; RS -&gt; R Decrease</code></pre>
-<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="mecoturn-package.html#cb350-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="mecoturn-package.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                             Taxa    Direction   Change
+## 1   k__Archaea|p__Thaumarchaeota S -&gt; RS -&gt; R Decrease
+## 2   k__Bacteria|p__Acidobacteria S -&gt; RS -&gt; R Decrease
+## 3  k__Bacteria|p__Actinobacteria S -&gt; RS -&gt; R Increase
+## 4 k__Bacteria|p__Armatimonadetes S -&gt; RS -&gt; R Decrease
+## 5   k__Bacteria|p__Bacteroidetes S -&gt; RS -&gt; R      +|-
+## 6     k__Bacteria|p__Chloroflexi S -&gt; RS -&gt; R Decrease</code></pre>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="mecoturn-package.html#cb351-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <pre><code>## Raw differential test results are stored in object$res_diff_raw ...</code></pre>
 <pre><code>## Differential test results have been added into object$res_change ...</code></pre>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="mecoturn-package.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
-<pre><code>##                 Taxa    Direction   Change S -&gt; RS | Significance
-## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
-## 2  p__Actinobacteria S -&gt; RS -&gt; R Increase                     ns
-## 3 p__Armatimonadetes S -&gt; RS -&gt; R Decrease                      *
-## 4   p__Bacteroidetes S -&gt; RS -&gt; R      +|-                     ns
-## 5     p__Chloroflexi S -&gt; RS -&gt; R Decrease                     **
-## 6   p__Cyanobacteria S -&gt; RS -&gt; R Decrease                     ns
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="mecoturn-package.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
+<pre><code>##                             Taxa    Direction   Change S -&gt; RS | Significance
+## 1   k__Archaea|p__Thaumarchaeota S -&gt; RS -&gt; R Decrease                    ***
+## 2   k__Bacteria|p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
+## 3  k__Bacteria|p__Actinobacteria S -&gt; RS -&gt; R Increase                     ns
+## 4 k__Bacteria|p__Armatimonadetes S -&gt; RS -&gt; R Decrease                      *
+## 5   k__Bacteria|p__Bacteroidetes S -&gt; RS -&gt; R      +|-                     ns
+## 6     k__Bacteria|p__Chloroflexi S -&gt; RS -&gt; R Decrease                     **
 ##   RS -&gt; R | Significance
 ## 1                    ***
-## 2                     **
+## 2                    ***
 ## 3                     **
-## 4                     ns
-## 5                    ***
-## 6                     **</code></pre>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="mecoturn-package.html#cb355-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the abundance change by summarizing the results for each plant individual</span></span>
-<span id="cb355-2"><a href="mecoturn-package.html#cb355-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
-<pre><code>## No taxa_abund found. First calculate it with cal_abund function ...</code></pre>
+## 4                     **
+## 5                     ns
+## 6                    ***</code></pre>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="mecoturn-package.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the abundance change by summarizing the results for each plant individual</span></span>
+<span id="cb356-2"><a href="mecoturn-package.html#cb356-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> taxaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">ordered_group =</span> <span class="fu">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;RS&quot;</span>, <span class="st">&quot;R&quot;</span>), <span class="at">by_ID =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">by_group =</span> <span class="cn">NULL</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span></code></pre></div>
 <pre><code>## Taxa abundance data is stored in object$res_abund ...</code></pre>
 <pre><code>## Abundance change along groups is stored in object$res_change_pair ...</code></pre>
 <pre><code>## Abundance change summary is stored in object$res_change ...</code></pre>
 <div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="mecoturn-package.html#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
-<pre><code>##                 Taxa    Direction   Change
-## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease
-## 2  p__Actinobacteria S -&gt; RS -&gt; R         
-## 3 p__Armatimonadetes S -&gt; RS -&gt; R         
-## 4   p__Bacteroidetes S -&gt; RS -&gt; R         
-## 5     p__Chloroflexi S -&gt; RS -&gt; R         
-## 6   p__Cyanobacteria S -&gt; RS -&gt; R</code></pre>
+<pre><code>##                             Taxa    Direction   Change
+## 1   k__Archaea|p__Thaumarchaeota S -&gt; RS -&gt; R         
+## 2   k__Bacteria|p__Acidobacteria S -&gt; RS -&gt; R Decrease
+## 3  k__Bacteria|p__Actinobacteria S -&gt; RS -&gt; R         
+## 4 k__Bacteria|p__Armatimonadetes S -&gt; RS -&gt; R         
+## 5   k__Bacteria|p__Bacteroidetes S -&gt; RS -&gt; R         
+## 6     k__Bacteria|p__Chloroflexi S -&gt; RS -&gt; R</code></pre>
 <div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="mecoturn-package.html#cb362-1" aria-hidden="true" tabindex="-1"></a><span class="co"># paired Wilcoxon test</span></span>
 <span id="cb362-2"><a href="mecoturn-package.html#cb362-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>, <span class="at">p_adjust_method =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <pre><code>## Raw differential test results are stored in object$res_diff_raw ...</code></pre>
 <pre><code>## Differential test results have been added into object$res_change ...</code></pre>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="mecoturn-package.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_change)</span></code></pre></div>
-<pre><code>##                 Taxa    Direction   Change S -&gt; RS | Significance
-## 1   p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
-## 2  p__Actinobacteria S -&gt; RS -&gt; R                              ns
-## 3 p__Armatimonadetes S -&gt; RS -&gt; R                              **
-## 4   p__Bacteroidetes S -&gt; RS -&gt; R                               *
-## 5     p__Chloroflexi S -&gt; RS -&gt; R                             ***
-## 6   p__Cyanobacteria S -&gt; RS -&gt; R                              ns
+<pre><code>##                             Taxa    Direction   Change S -&gt; RS | Significance
+## 1   k__Archaea|p__Thaumarchaeota S -&gt; RS -&gt; R                             ***
+## 2   k__Bacteria|p__Acidobacteria S -&gt; RS -&gt; R Decrease                    ***
+## 3  k__Bacteria|p__Actinobacteria S -&gt; RS -&gt; R                              ns
+## 4 k__Bacteria|p__Armatimonadetes S -&gt; RS -&gt; R                              **
+## 5   k__Bacteria|p__Bacteroidetes S -&gt; RS -&gt; R                               *
+## 6     k__Bacteria|p__Chloroflexi S -&gt; RS -&gt; R                             ***
 ##   RS -&gt; R | Significance
 ## 1                    ***
-## 2                     **
-## 3                    ***
-## 4                     ns
-## 5                    ***
+## 2                    ***
+## 3                     **
+## 4                    ***
+## 5                     ns
 ## 6                    ***</code></pre>
 <p>The upper operations can also be applied to different groups.</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="mecoturn-package.html#cb367-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for each region without the consideration of plants</span></span>

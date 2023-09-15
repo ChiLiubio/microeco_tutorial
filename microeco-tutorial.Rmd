@@ -4083,10 +4083,10 @@ Generally speaking, it can be used in any case associated with a gradient.
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# mecoturn v0.2.0
+# mecoturn v0.3.0
 install.packages("mecoturn")
 # check and install dependent packages
-packages <- c("agricolae", "lmerTest", "betareg", "glmmTMB")
+packages <- c("agricolae")
 for(x in packages){
 	if(!require(x, character.only = TRUE)){
 		install.packages(x)
@@ -4104,6 +4104,84 @@ In `wheat_16S$sample_table`, the `Type` column represents the niches, i.e. plant
 The `Plant_ID` column denotes each unique plant individual that the samples belong to.
 The `Region` column means the sampling region of those plants. 
 Each region has five plant individuals.
+
+```{r, out.width = "1000px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/mecoturn_betaturn.png")
+```
+
+Schematic diagrams of the framework in betaturn class.
+In the flow chart,
+Roman numeral represents the data for the input or output of associated step.
+Arabic numeral within brackets denotes the step for the corresponding operation.
+The workflow of betaturn class consists of the dissimilarity matrix generation, matrix conversion, differential test and visualization.
+The core of the workflow is the matrix conversion, which can be classified into two cases (step 5 and 8) in the Figure.  
+Ⅰ: Feature abundance table: microtable\$otu_table object.
+The microtable object can be created by the microtable class (R6 class) in microeco package.
+The feature abundance table denotes the amplicon sequence variants (ASV) table or operational taxonomic units (OTU) abundance table in a study and should be data.frame format.  
+Ⅱ: Phylogenetic tree: microtable\$phylo_tree object.
+It represents reconstructed phylogenetic tree based on the representative sequences and should be "phylo" format coming from read.tree function in ape package.
+It is designed for calculating phylogenetic distance matrix of beta diversity,
+such as mean nearest taxon distance (betaMNTD) and UniFrac metrics.  
+Ⅲ: Sample information table: microtable\$sample_table object. It is the sample metadata and must be data.frame format. 
+The 'Type' column represents plant compartments (including bulk soil) or other ordered groups used for the following comparison.
+S: bulk soil; RS: rhizosphere soil; R: root endophyte.
+The 'Plant_ID' column denotes each plant, by which the ordered distance transformation can be accomplished.   
+Ⅳ: Dissimilarity matrix: symmetric distance matrix in betaturn\$dataset\$beta_diversity list.
+The names of both the rows and columns of this symmetrical matrix are the sample names and they are correspondingly aligned as well.  
+Ⅴ: Converted table: betaturn\$res_group_distance object.
+It is the output of function cal_group_distance of betaturn class with the parameter "within_group = FALSE".
+The table conversion is performed between any two samples of 'Type' column in Ⅲ,
+but the combination of any two samples is constrained by the by_group parameter, 
+i.e. the conversion is only completed within the same plant according to 'Plant_ID' column of Ⅲ in the example,
+which is one of the key features of the mecoturn package.
+The converted distance table has a new 'Type' column as the combination of the elements in 'Type' column of original sample information table.
+The ordered_group is designed optionally to sort the group order in the result.  
+Ⅵ: Statistical analysis: betaturn\$res_group_distance_diff object. 
+The approaches that used to compare means or medians across groups (i.e. groups in 'Type' column of Ⅲ) 
+are adapted from the cal_diff function of trans_alpha class in microeco package.
+By accessing the data in betaturn\$res_group_distance object,
+correlation and regression analysis can be easily conducted with the trans_env class of microeco package.  
+Ⅶ: Visualization: the ggplot2 object for the mode-"within_group = FALSE".  
+Ⅷ: Sample information table similar with Ⅲ.
+In this example, "Region" column represents that the plants are collected from different regions.
+It is used to show the mode-"within_group = TRUE".  
+Ⅸ: Converted table: similar with Ⅴ, but it is generated with the parameter "within_group = TRUE" in cal_group_distance function of betaturn class.
+The table conversion is accomplished within each element of the "Region" column in Ⅷ for this study.
+It can also be other column, such as "Plant_ID".
+Any two samples within an element of "Region" column will be combined.
+Under such a circumstance, 
+by_group parameter is designed to generate the additional combinations related to the 'Type' and 'Plant_ID' columns in this study used for the following filtering.
+So, in the mode-"within_group = TRUE", the aim of by_group parameter is to create the combinations of groups as the table shows, 
+not to play a role of restriction of the by_group in the mode-"within_group = FALSE".  
+Ⅹ: Filtered table: similar with Ⅸ.
+Here, the filtered table is an example to show the flexible manipulation on the converted table.
+In this example, needless rows (combined by different plants) are deleted by customized operation in order to generate a final table for the following statistics and visualization.  
+Ⅺ: Visualization: ggplot2 object for the mode-"within_group = TRUE".  
+(1): betaturn\$new function with the parameter measure = "bray" (Bray-Curtis dissimilarity) or measure = "jaccard" (Jaccard dissimilarity). 
+Several beta diversity metrics are provided to obtain the distance matrix by creating betaturn object.  
+(2): betaturn\$new function with the parameter measure = "wei_unifrac", "unwei_unifrac", "betaMPD" or "betaMNTD".
+Several distance metrics of phylogenetic beta diversity require both the file Ⅰ and Ⅱ.  
+(3): betaturn\$new function with the parameter measure = "RCbray". RCbray: Raup–Crick based Bray-Curtis dissimilarity.  
+(4): betaturn\$new function with the parameter measure = "betaNRI", "betaNTI" or "ses_UniFrac".  
+Phylogenetic beta diversity, plus null model, can be used to obtain the standardized effect size of observed phylogenetic beta diversity.
+betaNTI: beta nearest taxon index; betaNRI: beta net relatedness index; ses_UniFrac: standardized effect size of UniFrac distance.  
+(5): betaturn\$cal_group_distance(within_group = FALSE, ...).
+The distance matrix can be converted to a long format table according to the group classifications in Ⅲ.
+The 'Plant_ID' (or other name) is used for guiding the file conversion in the mode-"within_group = FALSE" of Ⅴ. 
+The new 'Type' in Ⅴ is generated by combining paired plant compartments.  
+(6): betaturn\$cal_group_distance_diff function.
+The differential test can be performed with several available approaches shown in the Ⅵ.  
+(7): betaturn\$plot_group_distance function.
+The visualization is implemented based on R ggplo2 and ggpubr packages. 
+The differential test results in step (6) can be mapped to the plot automatically.  
+(8): betaturn\$cal_group_distance(within_group = TRUE, ...).
+This step is similar with step (5), but it is performed by the function cal_group_distance with the parameter "within_group = TRUE".  
+(9): customized manipulation on betaturn\$res_group_distance file. 
+This step is to manipulate the file res_group_distance in the betaturn object and delete useless rows in the file according to the customized requirement.  
+(10): Similar with step (6).  
+(11): Similar with step (7).  
+
+
 
 ```{r, echo = TRUE, eval = FALSE}
 library(mecoturn)
@@ -4194,6 +4272,73 @@ b1$plot_group_distance(add_sig_text_size = 5.6, xtext_angle = 30)
 
 The taxaturn class refers to microbial abundance change along a gradient.
 Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.
+
+```{r, out.width = "1000px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/mecoturn_taxaturn.png")
+```
+
+The core of this workflow is the abundance change summary and statistical analysis, 
+which can be classified into two cases: by_ID = NULL and by_ID = "Plant_ID" in the example (step 1 or 4, and step 8 in the Figure).  
+Ⅰ: Taxonomic abundance table: the table (data.frame format) in microtable\$taxa_abund list. 
+It denotes taxonomic abundance table with the data.frame format at a specific taxonomic level.  
+Ⅱ: Sample information table: the sample metadata, i.e. sample_table in microtable object. 
+The 'Type' column represents the plant compartments or other ordered groups used for the following comparisons.
+The 'Plant_ID' column denotes each plant, which can guide the comparison of abundances for each plant when by_ID = "Plant_ID".
+"Region" column is used for the cases with by_group = "Region".  
+Ⅲ: Summarized abundance: taxaturn\$res_abund object.
+This summarized abundance table is converted under the condition of by_ID = NULL and by_group = NULL.
+Under this condition, the abundance is summarized by the groups of "Type" column of Ⅱ in order to generate 'Mean' and 'SD' in the result (mean and standard deviation of each group).
+'N' is the sample number in each group.  
+Ⅳ: Abundance change table: res_change_pair (the upper one) and res_change (the table below) in the taxaturn object.
+The change pattern along the ordered groups is generated according to the mean abundance in Ⅲ for each taxon.
+The res_change_pair table has all paired abundance difference values between two neighboring niches for each taxon (the abundance of the latter minus that of the former).
+The res_change is the following summary information of difference values along ordered paired groups in res_change_pair table.
+In res_change table, there are three types of changes: 'Increase', 'Decrease' and others (fluctuation with the combination of '+', '-' or '0', 
+or nothing when no consistent result is obtained across plants).  
+Ⅴ: Statistical analysis. 
+The approaches include beta regression model and differential abundance test between two groups.
+The differential abundance test is designed for the comparison of two groups, 
+such as differential test between S and RS or between RS and R.
+There are two implemented approaches: t-Test and Wilcoxon Rank Sum Test.  
+Ⅵ: Summarized abundance. Similar with Ⅲ, but the Mean and SD are performed by both the group ('Type') and by_group ('Region'). So N is less than that in Ⅲ.  
+Ⅶ: Abundance change table. Similar with Ⅳ, but the 'change' trend is summarized for different regions, respectively.  
+Ⅷ: Summarized abundance. As by_ID is provided ("Plant_ID"), the N is 1. The Mean is the abundance of each sample of each plant. SD is not available (NA).  
+Ⅸ: Abundance change table: res_change_pair (the upper one) and res_change (the table below) in the taxaturn object.
+The res_change_pair is a little different from that in Ⅳ, because it is calculated for each individual plant.
+So the table has a column named by_ID ("Plant_ID").
+This table is particularly useful for the association between abundance difference values and environmental factors.
+The res_change table is the summary result of res_change_pair table.
+For the case 'by_group = NULL', the data in res_change is the consistent abundance comparison along ordered groups and across all the plants.  
+Ⅹ: Abundance change table. 
+Different from the res_change table of Ⅸ, the res_change table in Ⅹ is generated according to the by_group ('Region'). 
+So the result is the consistent abundance comparisons along ordered groups within each region.
+Note that the res_change_pair table is not shown here as it is same with res_change_pair in Ⅸ, 
+because the parameter by_group = "Region" only affects the change summary result.  
+Ⅺ: Statistical analysis. Different from Ⅴ, some approaches for this case (by_ID is provided) necessitates consideration of the paired data,
+such as paired t-Test and paired Wilcoxon Rank Sum Test. The input data will be first sorted by the elements in "Plant_ID" column of Ⅱ.
+The linear mixed-effects model can be used to test the random effects of plant individuals similar with the Ⅵ.
+To better fit the relative abundance (bounded by 0 and 1), 
+the family function of generalized linear mixed model (GLMM) in taxaturn class is fixed with the beta distribution function, and the link function is "logit" function.
+The correlation and regression analysis can be performed by means of the trans_env class of microeco package.  
+(1) and (2): taxaturn\$new function. The parameter by_ID = NULL and by_group = NULL is applied in this example.
+Creating taxaturn object can generate Ⅲ (i.e. res_abund) in the object.
+If the taxonomic abundance (i.e. taxa_abund list) in the input microtable object is NULL, 
+the function can automatically invoke the cal_abund function in microtable object to calculate it.  
+Creating taxaturn object can also create Ⅳ (i.e. res_change_pair and res_change) in the object.  
+(3): taxaturn\$cal_diff function. The cal_diff function in taxaturn class is designed to perform the differential test.  
+(4) and (5): taxaturn\$new function. Similar with step (1). The parameter by_ID = NULL and by_group = "Region" is used in this example.   
+(6): Similar with step (3).  
+(7): taxaturn\$plot function. The plot function in taxaturn class is used to plot the abundance along ordered groups and generate a ggplot2 object.  
+(8) and (9): taxaturn\$new function with the parameter by_ID = "Plant_ID" and by_group = NULL.  
+(10): taxaturn\$cal_diff function. For the case that by_ID parameter is provided,
+the differential abundance test between two groups are designed for the paired data.  
+(8) and (11): taxaturn\$new function with the parameter by_ID = "Plant_ID" and by_group = "Region".  
+(12): Similar with step (10).  
+(13): Similar with step (7). For the case that by_ID parameter is provided, abundance visualization is performed for each element of by_ID parameter, 
+i.e. each plant individual in this example.  
+
+
+
 
 ```{r, echo = TRUE, eval = TRUE}
 # study the abundance change of phyla by comparing the mean abundances without the consideration of plants

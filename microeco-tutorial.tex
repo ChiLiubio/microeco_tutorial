@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v1.0.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-09-10}
+\date{2023-09-15}
 
 \begin{document}
 \maketitle
@@ -3403,7 +3403,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Sep 10 16:55:28 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Sep 15 16:02:58 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3433,9 +3433,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6541 & 0.3879 & 0.3642 & 9.133 \\
-CW & 435 & 0.5627 & 0.295 & 0.2863 & 14.41 \\
-TW & 435 & 0.6242 & 0.4163 & 0.3996 & 9.813 \\
+IW & 435 & 0.6538 & 0.3866 & 0.3639 & 9.13 \\
+CW & 435 & 0.5628 & 0.2961 & 0.2863 & 14.41 \\
+TW & 435 & 0.6245 & 0.4161 & 0.4 & 9.901 \\
 \bottomrule()
 \end{longtable}
 
@@ -4345,6 +4345,15 @@ Please check out the dependence part \url{https://chiliubio.github.io/microeco_t
 \CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation description}
 \CommentTok{\# and provide the file path of SILVA123}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: 程辑包'Matrix'是用R版本4.3.1 来建造的
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# return two files: t1$tax4fun\_KO: KO file; t1$tax4fun\_path: pathway file.}
 \CommentTok{\# t1$tax4fun\_KO$Tax4FunProfile[1:5, 1:2]}
 \end{Highlighting}
@@ -5579,10 +5588,10 @@ Generally speaking, it can be used in any case associated with a gradient.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# mecoturn v0.2.0}
+\CommentTok{\# mecoturn v0.3.0}
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"mecoturn"}\NormalTok{)}
 \CommentTok{\# check and install dependent packages}
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"agricolae"}\NormalTok{, }\StringTok{"lmerTest"}\NormalTok{, }\StringTok{"betareg"}\NormalTok{, }\StringTok{"glmmTMB"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"agricolae"}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{))\{}
         \FunctionTok{install.packages}\NormalTok{(x)}
@@ -5602,6 +5611,80 @@ In \texttt{wheat\_16S\$sample\_table}, the \texttt{Type} column represents the n
 The \texttt{Plant\_ID} column denotes each unique plant individual that the samples belong to.
 The \texttt{Region} column means the sampling region of those plants.
 Each region has five plant individuals.
+
+\begin{center}\includegraphics[width=1000px]{Images/mecoturn_betaturn} \end{center}
+
+Schematic diagrams of the framework in betaturn class.
+In the flow chart,
+Roman numeral represents the data for the input or output of associated step.
+Arabic numeral within brackets denotes the step for the corresponding operation.
+The workflow of betaturn class consists of the dissimilarity matrix generation, matrix conversion, differential test and visualization.
+The core of the workflow is the matrix conversion, which can be classified into two cases (step 5 and 8) in the Figure.\\
+Ⅰ: Feature abundance table: microtable\$otu\_table object.
+The microtable object can be created by the microtable class (R6 class) in microeco package.
+The feature abundance table denotes the amplicon sequence variants (ASV) table or operational taxonomic units (OTU) abundance table in a study and should be data.frame format.\\
+Ⅱ: Phylogenetic tree: microtable\$phylo\_tree object.
+It represents reconstructed phylogenetic tree based on the representative sequences and should be ``phylo'' format coming from read.tree function in ape package.
+It is designed for calculating phylogenetic distance matrix of beta diversity,
+such as mean nearest taxon distance (betaMNTD) and UniFrac metrics.\\
+Ⅲ: Sample information table: microtable\$sample\_table object. It is the sample metadata and must be data.frame format.
+The `Type' column represents plant compartments (including bulk soil) or other ordered groups used for the following comparison.
+S: bulk soil; RS: rhizosphere soil; R: root endophyte.
+The `Plant\_ID' column denotes each plant, by which the ordered distance transformation can be accomplished.\\
+Ⅳ: Dissimilarity matrix: symmetric distance matrix in betaturn\$dataset\$beta\_diversity list.
+The names of both the rows and columns of this symmetrical matrix are the sample names and they are correspondingly aligned as well.\\
+Ⅴ: Converted table: betaturn\$res\_group\_distance object.
+It is the output of function cal\_group\_distance of betaturn class with the parameter ``within\_group = FALSE''.
+The table conversion is performed between any two samples of `Type' column in Ⅲ,
+but the combination of any two samples is constrained by the by\_group parameter,
+i.e.~the conversion is only completed within the same plant according to `Plant\_ID' column of Ⅲ in the example,
+which is one of the key features of the mecoturn package.
+The converted distance table has a new `Type' column as the combination of the elements in `Type' column of original sample information table.
+The ordered\_group is designed optionally to sort the group order in the result.\\
+Ⅵ: Statistical analysis: betaturn\$res\_group\_distance\_diff object.
+The approaches that used to compare means or medians across groups (i.e.~groups in `Type' column of Ⅲ)
+are adapted from the cal\_diff function of trans\_alpha class in microeco package.
+By accessing the data in betaturn\$res\_group\_distance object,
+correlation and regression analysis can be easily conducted with the trans\_env class of microeco package.\\
+Ⅶ: Visualization: the ggplot2 object for the mode-``within\_group = FALSE''.\\
+Ⅷ: Sample information table similar with Ⅲ.
+In this example, ``Region'' column represents that the plants are collected from different regions.
+It is used to show the mode-``within\_group = TRUE''.\\
+Ⅸ: Converted table: similar with Ⅴ, but it is generated with the parameter ``within\_group = TRUE'' in cal\_group\_distance function of betaturn class.
+The table conversion is accomplished within each element of the ``Region'' column in Ⅷ for this study.
+It can also be other column, such as ``Plant\_ID''.
+Any two samples within an element of ``Region'' column will be combined.
+Under such a circumstance,
+by\_group parameter is designed to generate the additional combinations related to the `Type' and `Plant\_ID' columns in this study used for the following filtering.
+So, in the mode-``within\_group = TRUE'', the aim of by\_group parameter is to create the combinations of groups as the table shows,
+not to play a role of restriction of the by\_group in the mode-``within\_group = FALSE''.\\
+Ⅹ: Filtered table: similar with Ⅸ.
+Here, the filtered table is an example to show the flexible manipulation on the converted table.
+In this example, needless rows (combined by different plants) are deleted by customized operation in order to generate a final table for the following statistics and visualization.\\
+Ⅺ: Visualization: ggplot2 object for the mode-``within\_group = TRUE''.\\
+(1): betaturn\$new function with the parameter measure = ``bray'' (Bray-Curtis dissimilarity) or measure = ``jaccard'' (Jaccard dissimilarity).
+Several beta diversity metrics are provided to obtain the distance matrix by creating betaturn object.\\
+(2): betaturn\$new function with the parameter measure = ``wei\_unifrac'', ``unwei\_unifrac'', ``betaMPD'' or ``betaMNTD''.
+Several distance metrics of phylogenetic beta diversity require both the file Ⅰ and Ⅱ.\\
+(3): betaturn\$new function with the parameter measure = ``RCbray''. RCbray: Raup--Crick based Bray-Curtis dissimilarity.\\
+(4): betaturn\$new function with the parameter measure = ``betaNRI'', ``betaNTI'' or ``ses\_UniFrac''.\\
+Phylogenetic beta diversity, plus null model, can be used to obtain the standardized effect size of observed phylogenetic beta diversity.
+betaNTI: beta nearest taxon index; betaNRI: beta net relatedness index; ses\_UniFrac: standardized effect size of UniFrac distance.\\
+(5): betaturn\$cal\_group\_distance(within\_group = FALSE, \ldots).
+The distance matrix can be converted to a long format table according to the group classifications in Ⅲ.
+The `Plant\_ID' (or other name) is used for guiding the file conversion in the mode-``within\_group = FALSE'' of Ⅴ.
+The new `Type' in Ⅴ is generated by combining paired plant compartments.\\
+(6): betaturn\$cal\_group\_distance\_diff function.
+The differential test can be performed with several available approaches shown in the Ⅵ.\\
+(7): betaturn\$plot\_group\_distance function.
+The visualization is implemented based on R ggplo2 and ggpubr packages.
+The differential test results in step (6) can be mapped to the plot automatically.\\
+(8): betaturn\$cal\_group\_distance(within\_group = TRUE, \ldots).
+This step is similar with step (5), but it is performed by the function cal\_group\_distance with the parameter ``within\_group = TRUE''.\\
+(9): customized manipulation on betaturn\$res\_group\_distance file.
+This step is to manipulate the file res\_group\_distance in the betaturn object and delete useless rows in the file according to the customized requirement.\\
+(10): Similar with step (6).\\
+(11): Similar with step (7).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5743,16 +5826,74 @@ In this scenario, by\_group parameter is designed to generate the additional com
 The taxaturn class refers to microbial abundance change along a gradient.
 Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.
 
+\begin{center}\includegraphics[width=1000px]{Images/mecoturn_taxaturn} \end{center}
+
+The core of this workflow is the abundance change summary and statistical analysis,
+which can be classified into two cases: by\_ID = NULL and by\_ID = ``Plant\_ID'' in the example (step 1 or 4, and step 8 in the Figure).\\
+Ⅰ: Taxonomic abundance table: the table (data.frame format) in microtable\$taxa\_abund list.
+It denotes taxonomic abundance table with the data.frame format at a specific taxonomic level.\\
+Ⅱ: Sample information table: the sample metadata, i.e.~sample\_table in microtable object.
+The `Type' column represents the plant compartments or other ordered groups used for the following comparisons.
+The `Plant\_ID' column denotes each plant, which can guide the comparison of abundances for each plant when by\_ID = ``Plant\_ID''.
+``Region'' column is used for the cases with by\_group = ``Region''.\\
+Ⅲ: Summarized abundance: taxaturn\$res\_abund object.
+This summarized abundance table is converted under the condition of by\_ID = NULL and by\_group = NULL.
+Under this condition, the abundance is summarized by the groups of ``Type'' column of Ⅱ in order to generate `Mean' and `SD' in the result (mean and standard deviation of each group).
+`N' is the sample number in each group.\\
+Ⅳ: Abundance change table: res\_change\_pair (the upper one) and res\_change (the table below) in the taxaturn object.
+The change pattern along the ordered groups is generated according to the mean abundance in Ⅲ for each taxon.
+The res\_change\_pair table has all paired abundance difference values between two neighboring niches for each taxon (the abundance of the latter minus that of the former).
+The res\_change is the following summary information of difference values along ordered paired groups in res\_change\_pair table.
+In res\_change table, there are three types of changes: `Increase', `Decrease' and others (fluctuation with the combination of `+', `-' or `0',
+or nothing when no consistent result is obtained across plants).\\
+Ⅴ: Statistical analysis.
+The approaches include beta regression model and differential abundance test between two groups.
+The differential abundance test is designed for the comparison of two groups,
+such as differential test between S and RS or between RS and R.
+There are two implemented approaches: t-Test and Wilcoxon Rank Sum Test.\\
+Ⅵ: Summarized abundance. Similar with Ⅲ, but the Mean and SD are performed by both the group (`Type') and by\_group (`Region'). So N is less than that in Ⅲ.\\
+Ⅶ: Abundance change table. Similar with Ⅳ, but the `change' trend is summarized for different regions, respectively.\\
+Ⅷ: Summarized abundance. As by\_ID is provided (``Plant\_ID''), the N is 1. The Mean is the abundance of each sample of each plant. SD is not available (NA).\\
+Ⅸ: Abundance change table: res\_change\_pair (the upper one) and res\_change (the table below) in the taxaturn object.
+The res\_change\_pair is a little different from that in Ⅳ, because it is calculated for each individual plant.
+So the table has a column named by\_ID (``Plant\_ID'').
+This table is particularly useful for the association between abundance difference values and environmental factors.
+The res\_change table is the summary result of res\_change\_pair table.
+For the case `by\_group = NULL', the data in res\_change is the consistent abundance comparison along ordered groups and across all the plants.\\
+Ⅹ: Abundance change table.
+Different from the res\_change table of Ⅸ, the res\_change table in Ⅹ is generated according to the by\_group (`Region').
+So the result is the consistent abundance comparisons along ordered groups within each region.
+Note that the res\_change\_pair table is not shown here as it is same with res\_change\_pair in Ⅸ,
+because the parameter by\_group = ``Region'' only affects the change summary result.\\
+Ⅺ: Statistical analysis. Different from Ⅴ, some approaches for this case (by\_ID is provided) necessitates consideration of the paired data,
+such as paired t-Test and paired Wilcoxon Rank Sum Test. The input data will be first sorted by the elements in ``Plant\_ID'' column of Ⅱ.
+The linear mixed-effects model can be used to test the random effects of plant individuals similar with the Ⅵ.
+To better fit the relative abundance (bounded by 0 and 1),
+the family function of generalized linear mixed model (GLMM) in taxaturn class is fixed with the beta distribution function, and the link function is ``logit'' function.
+The correlation and regression analysis can be performed by means of the trans\_env class of microeco package.\\
+(1) and (2): taxaturn\$new function. The parameter by\_ID = NULL and by\_group = NULL is applied in this example.
+Creating taxaturn object can generate Ⅲ (i.e.~res\_abund) in the object.
+If the taxonomic abundance (i.e.~taxa\_abund list) in the input microtable object is NULL,
+the function can automatically invoke the cal\_abund function in microtable object to calculate it.\\
+Creating taxaturn object can also create Ⅳ (i.e.~res\_change\_pair and res\_change) in the object.\\
+(3): taxaturn\$cal\_diff function. The cal\_diff function in taxaturn class is designed to perform the differential test.\\
+(4) and (5): taxaturn\$new function. Similar with step (1). The parameter by\_ID = NULL and by\_group = ``Region'' is used in this example.\\
+(6): Similar with step (3).\\
+(7): taxaturn\$plot function. The plot function in taxaturn class is used to plot the abundance along ordered groups and generate a ggplot2 object.\\
+(8) and (9): taxaturn\$new function with the parameter by\_ID = ``Plant\_ID'' and by\_group = NULL.\\
+(10): taxaturn\$cal\_diff function. For the case that by\_ID parameter is provided,
+the differential abundance test between two groups are designed for the paired data.\\
+(8) and (11): taxaturn\$new function with the parameter by\_ID = ``Plant\_ID'' and by\_group = ``Region''.\\
+(12): Similar with step (10).\\
+(13): Similar with step (7). For the case that by\_ID parameter is provided, abundance visualization is performed for each element of by\_ID parameter,
+i.e.~each plant individual in this example.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# study the abundance change of phyla by comparing the mean abundances without the consideration of plants}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{by\_group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## No taxa_abund found. First calculate it with cal_abund function ...
-\end{verbatim}
 
 \begin{verbatim}
 ## Taxa abundance data is stored in object$res_abund ...
@@ -5773,13 +5914,13 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{Shaded}
 
 \begin{verbatim}
-##                 Taxa    Direction   Change
-## 1   p__Acidobacteria S -> RS -> R Decrease
-## 2  p__Actinobacteria S -> RS -> R Increase
-## 3 p__Armatimonadetes S -> RS -> R Decrease
-## 4   p__Bacteroidetes S -> RS -> R      +|-
-## 5     p__Chloroflexi S -> RS -> R Decrease
-## 6   p__Cyanobacteria S -> RS -> R Decrease
+##                             Taxa    Direction   Change
+## 1   k__Archaea|p__Thaumarchaeota S -> RS -> R Decrease
+## 2   k__Bacteria|p__Acidobacteria S -> RS -> R Decrease
+## 3  k__Bacteria|p__Actinobacteria S -> RS -> R Increase
+## 4 k__Bacteria|p__Armatimonadetes S -> RS -> R Decrease
+## 5   k__Bacteria|p__Bacteroidetes S -> RS -> R      +|-
+## 6     k__Bacteria|p__Chloroflexi S -> RS -> R Decrease
 \end{verbatim}
 
 \begin{Shaded}
@@ -5803,20 +5944,20 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{Shaded}
 
 \begin{verbatim}
-##                 Taxa    Direction   Change S -> RS | Significance
-## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
-## 2  p__Actinobacteria S -> RS -> R Increase                     ns
-## 3 p__Armatimonadetes S -> RS -> R Decrease                      *
-## 4   p__Bacteroidetes S -> RS -> R      +|-                     ns
-## 5     p__Chloroflexi S -> RS -> R Decrease                     **
-## 6   p__Cyanobacteria S -> RS -> R Decrease                     ns
+##                             Taxa    Direction   Change S -> RS | Significance
+## 1   k__Archaea|p__Thaumarchaeota S -> RS -> R Decrease                    ***
+## 2   k__Bacteria|p__Acidobacteria S -> RS -> R Decrease                    ***
+## 3  k__Bacteria|p__Actinobacteria S -> RS -> R Increase                     ns
+## 4 k__Bacteria|p__Armatimonadetes S -> RS -> R Decrease                      *
+## 5   k__Bacteria|p__Bacteroidetes S -> RS -> R      +|-                     ns
+## 6     k__Bacteria|p__Chloroflexi S -> RS -> R Decrease                     **
 ##   RS -> R | Significance
 ## 1                    ***
-## 2                     **
+## 2                    ***
 ## 3                     **
-## 4                     ns
-## 5                    ***
-## 6                     **
+## 4                     **
+## 5                     ns
+## 6                    ***
 \end{verbatim}
 
 \begin{Shaded}
@@ -5825,10 +5966,6 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ taxaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{ordered\_group =} \FunctionTok{c}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{"RS"}\NormalTok{, }\StringTok{"R"}\NormalTok{), }\AttributeTok{by\_ID =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{by\_group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## No taxa_abund found. First calculate it with cal_abund function ...
-\end{verbatim}
 
 \begin{verbatim}
 ## Taxa abundance data is stored in object$res_abund ...
@@ -5849,13 +5986,13 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{Shaded}
 
 \begin{verbatim}
-##                 Taxa    Direction   Change
-## 1   p__Acidobacteria S -> RS -> R Decrease
-## 2  p__Actinobacteria S -> RS -> R         
-## 3 p__Armatimonadetes S -> RS -> R         
-## 4   p__Bacteroidetes S -> RS -> R         
-## 5     p__Chloroflexi S -> RS -> R         
-## 6   p__Cyanobacteria S -> RS -> R
+##                             Taxa    Direction   Change
+## 1   k__Archaea|p__Thaumarchaeota S -> RS -> R         
+## 2   k__Bacteria|p__Acidobacteria S -> RS -> R Decrease
+## 3  k__Bacteria|p__Actinobacteria S -> RS -> R         
+## 4 k__Bacteria|p__Armatimonadetes S -> RS -> R         
+## 5   k__Bacteria|p__Bacteroidetes S -> RS -> R         
+## 6     k__Bacteria|p__Chloroflexi S -> RS -> R
 \end{verbatim}
 
 \begin{Shaded}
@@ -5880,19 +6017,19 @@ Its workflow includes the taxonomic abundance calculation, abundance transformat
 \end{Shaded}
 
 \begin{verbatim}
-##                 Taxa    Direction   Change S -> RS | Significance
-## 1   p__Acidobacteria S -> RS -> R Decrease                    ***
-## 2  p__Actinobacteria S -> RS -> R                              ns
-## 3 p__Armatimonadetes S -> RS -> R                              **
-## 4   p__Bacteroidetes S -> RS -> R                               *
-## 5     p__Chloroflexi S -> RS -> R                             ***
-## 6   p__Cyanobacteria S -> RS -> R                              ns
+##                             Taxa    Direction   Change S -> RS | Significance
+## 1   k__Archaea|p__Thaumarchaeota S -> RS -> R                             ***
+## 2   k__Bacteria|p__Acidobacteria S -> RS -> R Decrease                    ***
+## 3  k__Bacteria|p__Actinobacteria S -> RS -> R                              ns
+## 4 k__Bacteria|p__Armatimonadetes S -> RS -> R                              **
+## 5   k__Bacteria|p__Bacteroidetes S -> RS -> R                               *
+## 6     k__Bacteria|p__Chloroflexi S -> RS -> R                             ***
 ##   RS -> R | Significance
 ## 1                    ***
-## 2                     **
-## 3                    ***
-## 4                     ns
-## 5                    ***
+## 2                    ***
+## 3                     **
+## 4                    ***
+## 5                     ns
 ## 6                    ***
 \end{verbatim}
 

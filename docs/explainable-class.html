@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-09-10" />
+<meta name="date" content="2023-09-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -856,9 +856,10 @@ Please check out the dependence part <a href="https://chiliubio.github.io/microe
 <div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="explainable-class.html#cb267-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
 <span id="cb267-2"><a href="explainable-class.html#cb267-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation description</span></span>
 <span id="cb267-3"><a href="explainable-class.html#cb267-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and provide the file path of SILVA123</span></span>
-<span id="cb267-4"><a href="explainable-class.html#cb267-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun</span>(<span class="at">folderReferenceData =</span> <span class="st">&quot;./SILVA123&quot;</span>)</span>
-<span id="cb267-5"><a href="explainable-class.html#cb267-5" aria-hidden="true" tabindex="-1"></a><span class="co"># return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.</span></span>
-<span id="cb267-6"><a href="explainable-class.html#cb267-6" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]</span></span></code></pre></div>
+<span id="cb267-4"><a href="explainable-class.html#cb267-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun</span>(<span class="at">folderReferenceData =</span> <span class="st">&quot;./SILVA123&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: 程辑包&#39;Matrix&#39;是用R版本4.3.1 来建造的</code></pre>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="explainable-class.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="co"># return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.</span></span>
+<span id="cb269-2"><a href="explainable-class.html#cb269-2" aria-hidden="true" tabindex="-1"></a><span class="co"># t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]</span></span></code></pre></div>
 <table>
 <colgroup>
 <col width="12%" />
@@ -903,38 +904,38 @@ Please check out the dependence part <a href="https://chiliubio.github.io/microe
 </tbody>
 </table>
 <p>We further analyze the abundance of predicted metabolic pathways.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="explainable-class.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="co"># must transpose to taxa row, sample column</span></span>
-<span id="cb268-2"><a href="explainable-class.html#cb268-2" aria-hidden="true" tabindex="-1"></a>pathway_file <span class="ot">&lt;-</span> t1<span class="sc">$</span>tax4fun_path<span class="sc">$</span>Tax4FunProfile <span class="sc">%&gt;%</span> t <span class="sc">%&gt;%</span> as.data.frame</span>
-<span id="cb268-3"><a href="explainable-class.html#cb268-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter rownames, only keep ko+number</span></span>
-<span id="cb268-4"><a href="explainable-class.html#cb268-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pathway_file) <span class="sc">%&lt;&gt;%</span> <span class="fu">gsub</span>(<span class="st">&quot;(^.*);</span><span class="sc">\\</span><span class="st">s.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, .)</span>
-<span id="cb268-5"><a href="explainable-class.html#cb268-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the pathway hierarchical metadata</span></span>
-<span id="cb268-6"><a href="explainable-class.html#cb268-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Tax4Fun2_KEGG)</span>
-<span id="cb268-7"><a href="explainable-class.html#cb268-7" aria-hidden="true" tabindex="-1"></a><span class="co"># further create a microtable object, familiar?</span></span>
-<span id="cb268-8"><a href="explainable-class.html#cb268-8" aria-hidden="true" tabindex="-1"></a>func1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> pathway_file, <span class="at">tax_table =</span> Tax4Fun2_KEGG<span class="sc">$</span>ptw_desc, <span class="at">sample_table =</span> t1<span class="sc">$</span>sample_table)</span>
-<span id="cb268-9"><a href="explainable-class.html#cb268-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="explainable-class.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="co"># must transpose to taxa row, sample column</span></span>
+<span id="cb270-2"><a href="explainable-class.html#cb270-2" aria-hidden="true" tabindex="-1"></a>pathway_file <span class="ot">&lt;-</span> t1<span class="sc">$</span>tax4fun_path<span class="sc">$</span>Tax4FunProfile <span class="sc">%&gt;%</span> t <span class="sc">%&gt;%</span> as.data.frame</span>
+<span id="cb270-3"><a href="explainable-class.html#cb270-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter rownames, only keep ko+number</span></span>
+<span id="cb270-4"><a href="explainable-class.html#cb270-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pathway_file) <span class="sc">%&lt;&gt;%</span> <span class="fu">gsub</span>(<span class="st">&quot;(^.*);</span><span class="sc">\\</span><span class="st">s.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, .)</span>
+<span id="cb270-5"><a href="explainable-class.html#cb270-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the pathway hierarchical metadata</span></span>
+<span id="cb270-6"><a href="explainable-class.html#cb270-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Tax4Fun2_KEGG)</span>
+<span id="cb270-7"><a href="explainable-class.html#cb270-7" aria-hidden="true" tabindex="-1"></a><span class="co"># further create a microtable object, familiar?</span></span>
+<span id="cb270-8"><a href="explainable-class.html#cb270-8" aria-hidden="true" tabindex="-1"></a>func1 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> pathway_file, <span class="at">tax_table =</span> Tax4Fun2_KEGG<span class="sc">$</span>ptw_desc, <span class="at">sample_table =</span> t1<span class="sc">$</span>sample_table)</span>
+<span id="cb270-9"><a href="explainable-class.html#cb270-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 284 rows and 90 columns
 ## tax_table have 444 rows and 3 columns</code></pre>
 <p>Now, we need to trim data and calculate abundance.</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="explainable-class.html#cb270-1" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb270-2"><a href="explainable-class.html#cb270-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance automatically at three levels: Level.1, Level.2, Level.3</span></span>
-<span id="cb270-3"><a href="explainable-class.html#cb270-3" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="explainable-class.html#cb272-1" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb272-2"><a href="explainable-class.html#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate abundance automatically at three levels: Level.1, Level.2, Level.3</span></span>
+<span id="cb272-3"><a href="explainable-class.html#cb272-3" aria-hidden="true" tabindex="-1"></a>func1<span class="sc">$</span><span class="fu">cal_abund</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$taxa_abund ...</code></pre>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="explainable-class.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="explainable-class.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(func1)</span></code></pre></div>
 <pre><code>## microtable-class object:
 ## sample_table have 90 rows and 4 columns
 ## otu_table have 282 rows and 90 columns
 ## tax_table have 282 rows and 3 columns
 ## Taxa abundance: calculated for Level.1,Level.2,Level.3</code></pre>
 <p>Then, we can plot the abundance.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="explainable-class.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bar plot at Level.1</span></span>
-<span id="cb274-2"><a href="explainable-class.html#cb274-2" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(func1, <span class="at">taxrank =</span> <span class="st">&quot;Level.1&quot;</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb274-3"><a href="explainable-class.html#cb274-3" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="explainable-class.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bar plot at Level.1</span></span>
+<span id="cb276-2"><a href="explainable-class.html#cb276-2" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(func1, <span class="at">taxrank =</span> <span class="st">&quot;Level.1&quot;</span>, <span class="at">groupmean =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb276-3"><a href="explainable-class.html#cb276-3" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">legend_text_italic =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="Images/plot_bar_tax4fun1.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>We can also do something else. For example, we can use lefse to test the differences of the abundances and find the important enriched pathways across groups.</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="explainable-class.html#cb275-1" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> func1, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lefse_subgroup =</span> <span class="cn">NULL</span>)</span>
-<span id="cb275-2"><a href="explainable-class.html#cb275-2" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="explainable-class.html#cb277-1" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> func1, <span class="at">method =</span> <span class="st">&quot;lefse&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lefse_subgroup =</span> <span class="cn">NULL</span>)</span>
+<span id="cb277-2"><a href="explainable-class.html#cb277-2" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">threshold =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.8</span>)</span></code></pre></div>
 <p><img src="Images/plot_lefse_bar_tax4fun.png" width="600px" style="display: block; margin: auto;" /></p>
 <p>Tax4Fun2 <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span> is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
@@ -943,30 +944,30 @@ Please check out <a href="https://chiliubio.github.io/microeco_tutorial/intro.ht
 how to read fasta file with <code>read.fasta</code> of seqinr package or <code>readDNAStringSet</code> of Biostrings package.
 Please also see <a href="https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2</a> for downloading ncbi-blast and Ref99NR/Ref100NR.
 For windows system, ncbi-blast-2.5.0+ is recommended since other versions can not operate well.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="explainable-class.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first delete the dataset created before</span></span>
-<span id="cb276-2"><a href="explainable-class.html#cb276-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(dataset)</span>
-<span id="cb276-3"><a href="explainable-class.html#cb276-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example dataset from microeco package as there is the rep_fasta object in it</span></span>
-<span id="cb276-4"><a href="explainable-class.html#cb276-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb276-5"><a href="explainable-class.html#cb276-5" aria-hidden="true" tabindex="-1"></a>dataset</span>
-<span id="cb276-6"><a href="explainable-class.html#cb276-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb276-7"><a href="explainable-class.html#cb276-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
-<span id="cb276-8"><a href="explainable-class.html#cb276-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
-<span id="cb276-9"><a href="explainable-class.html#cb276-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
-<span id="cb276-10"><a href="explainable-class.html#cb276-10" aria-hidden="true" tabindex="-1"></a><span class="co"># https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation</span></span>
-<span id="cb276-11"><a href="explainable-class.html#cb276-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ignore blast_tool_path parameter if blast tools have been in path</span></span>
-<span id="cb276-12"><a href="explainable-class.html#cb276-12" aria-hidden="true" tabindex="-1"></a><span class="co"># the function can search whether blast tool directory is in the path, if not, automatically use provided blast_tool_path parameter</span></span>
-<span id="cb276-13"><a href="explainable-class.html#cb276-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;Tax4Fun2_ReferenceData_v2&quot;</span>,</span>
-<span id="cb276-14"><a href="explainable-class.html#cb276-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>, <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>)</span>
-<span id="cb276-15"><a href="explainable-class.html#cb276-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb276-16"><a href="explainable-class.html#cb276-16" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare feature table and metadata</span></span>
-<span id="cb276-17"><a href="explainable-class.html#cb276-17" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Tax4Fun2_KEGG)</span>
-<span id="cb276-18"><a href="explainable-class.html#cb276-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object for pathways</span></span>
-<span id="cb276-19"><a href="explainable-class.html#cb276-19" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> t1<span class="sc">$</span>res_tax4fun2_pathway, <span class="at">tax_table =</span> Tax4Fun2_KEGG<span class="sc">$</span>ptw_desc, <span class="at">sample_table =</span> dataset<span class="sc">$</span>sample_table)</span>
-<span id="cb276-20"><a href="explainable-class.html#cb276-20" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb276-21"><a href="explainable-class.html#cb276-21" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
-<span id="cb276-22"><a href="explainable-class.html#cb276-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb276-23"><a href="explainable-class.html#cb276-23" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate functional redundancies</span></span>
-<span id="cb276-24"><a href="explainable-class.html#cb276-24" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="explainable-class.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first delete the dataset created before</span></span>
+<span id="cb278-2"><a href="explainable-class.html#cb278-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(dataset)</span>
+<span id="cb278-3"><a href="explainable-class.html#cb278-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the example dataset from microeco package as there is the rep_fasta object in it</span></span>
+<span id="cb278-4"><a href="explainable-class.html#cb278-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb278-5"><a href="explainable-class.html#cb278-5" aria-hidden="true" tabindex="-1"></a>dataset</span>
+<span id="cb278-6"><a href="explainable-class.html#cb278-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb278-7"><a href="explainable-class.html#cb278-7" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_func<span class="sc">$</span><span class="fu">new</span>(dataset)</span>
+<span id="cb278-8"><a href="explainable-class.html#cb278-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for result and log files</span></span>
+<span id="cb278-9"><a href="explainable-class.html#cb278-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;test_prediction&quot;</span>)</span>
+<span id="cb278-10"><a href="explainable-class.html#cb278-10" aria-hidden="true" tabindex="-1"></a><span class="co"># https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 for installation</span></span>
+<span id="cb278-11"><a href="explainable-class.html#cb278-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ignore blast_tool_path parameter if blast tools have been in path</span></span>
+<span id="cb278-12"><a href="explainable-class.html#cb278-12" aria-hidden="true" tabindex="-1"></a><span class="co"># the function can search whether blast tool directory is in the path, if not, automatically use provided blast_tool_path parameter</span></span>
+<span id="cb278-13"><a href="explainable-class.html#cb278-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2</span>(<span class="at">blast_tool_path =</span> <span class="st">&quot;ncbi-blast-2.5.0+/bin&quot;</span>, <span class="at">path_to_reference_data =</span> <span class="st">&quot;Tax4Fun2_ReferenceData_v2&quot;</span>,</span>
+<span id="cb278-14"><a href="explainable-class.html#cb278-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">database_mode =</span> <span class="st">&quot;Ref99NR&quot;</span>, <span class="at">path_to_temp_folder =</span> <span class="st">&quot;test_prediction&quot;</span>)</span>
+<span id="cb278-15"><a href="explainable-class.html#cb278-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb278-16"><a href="explainable-class.html#cb278-16" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare feature table and metadata</span></span>
+<span id="cb278-17"><a href="explainable-class.html#cb278-17" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Tax4Fun2_KEGG)</span>
+<span id="cb278-18"><a href="explainable-class.html#cb278-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create a microtable object for pathways</span></span>
+<span id="cb278-19"><a href="explainable-class.html#cb278-19" aria-hidden="true" tabindex="-1"></a>func2 <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> t1<span class="sc">$</span>res_tax4fun2_pathway, <span class="at">tax_table =</span> Tax4Fun2_KEGG<span class="sc">$</span>ptw_desc, <span class="at">sample_table =</span> dataset<span class="sc">$</span>sample_table)</span>
+<span id="cb278-20"><a href="explainable-class.html#cb278-20" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb278-21"><a href="explainable-class.html#cb278-21" aria-hidden="true" tabindex="-1"></a>func2<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
+<span id="cb278-22"><a href="explainable-class.html#cb278-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb278-23"><a href="explainable-class.html#cb278-23" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate functional redundancies</span></span>
+<span id="cb278-24"><a href="explainable-class.html#cb278-24" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_tax4fun2_FRI</span>()</span></code></pre></div>
 </div>
 <div id="key-points-10" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Key points<a href="explainable-class.html#key-points-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
