@@ -223,6 +223,38 @@ g1 <- tmp1$plot_cor()
 ggsave("soil_amp_subnet_property.pdf", g1, width = 11, height = 5)
 ```
 
+## Robustness of network
+
+From v0.4.0, the robustness analysis is implemented in the `robustness` class based on 
+several edge and node removal strategies and robustness measures [@Bellingeri_comprem_2020; @LiuJing_comprobust_2017].
+For the details of each method, please see the help document with the command `?robustness`.
+
+```{r, echo = TRUE, eval = FALSE}
+tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_degree_high"), 
+	remove_ratio = seq(0, 0.99, 0.1), measure = c("Eff", "Eigen", "Pcr"), run = 10)
+View(tmp$res_table)
+tmp$plot(linewidth = 1)
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/meconetcomp_robustness.png")
+```
+
+
+## Vulnerability of nodes
+
+From v0.4.0, the vulnerability of nodes can be calculated with the `vulnerability` function.
+The vulnerability of one node is defined as the efficiency of network after removing this targeted node [@Yuan_Climatewarm_2021].
+For the details, please see the help document.
+
+
+```{r, echo = TRUE, eval = FALSE}
+vul_table <- vulnerability(soil_amp_network)
+View(vul_table)
+```
+
+
+
 
 
 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.0.0)</title>
+  <title>Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.1.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.0.0)" />
+  <meta property="og:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.1.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.0.0)" />
+  <meta name="twitter:title" content="Chapter 12 meconetcomp package | Tutorial for R microeco package (v1.1.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-09-15" />
+<meta name="date" content="2023-10-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -307,6 +311,8 @@ div.csl-indent {
 <li class="chapter" data-level="12.7" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges"><i class="fa fa-check"></i><b>12.7</b> Compare phylogenetic distances of paired nodes in edges</a></li>
 <li class="chapter" data-level="12.8" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks"><i class="fa fa-check"></i><b>12.8</b> Compare node sources of edges across networks</a></li>
 <li class="chapter" data-level="12.9" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks"><i class="fa fa-check"></i><b>12.9</b> Compare topological properties of sub-networks</a></li>
+<li class="chapter" data-level="12.10" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#robustness-of-network"><i class="fa fa-check"></i><b>12.10</b> Robustness of network</a></li>
+<li class="chapter" data-level="12.11" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#vulnerability-of-nodes"><i class="fa fa-check"></i><b>12.11</b> Vulnerability of nodes</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="mecoturn-package.html"><a href="mecoturn-package.html"><i class="fa fa-check"></i><b>13</b> mecoturn package</a>
 <ul>
@@ -338,7 +344,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.0.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.1.0)</a>
           </h1>
         </div>
 
@@ -351,7 +357,7 @@ div.csl-indent {
 <p>To facilitate microbial co-occurrence network comparison,
 R package meconetcomp (<a href="https://github.com/ChiLiubio/meconetcomp" class="uri">https://github.com/ChiLiubio/meconetcomp</a>) was developed.
 The basic strategy is to use R list to put into all the trans_network objects and perform the following analysis.
-The flow chart and following contents are adapted from the published article <span class="citation">(<a href="#ref-Liu_meconetcomp_2023" role="doc-biblioref">Liu et al. 2023</a>)</span>.
+The flow chart and following contents are adapted from the published article <span class="citation">(<a href="#ref-Liu_meconetcomp_2023" role="doc-biblioref">C. Liu et al. 2023</a>)</span>.
 For more details, please see the online paper (<a href="https://doi.org/10.1002/imt2.71" class="uri">https://doi.org/10.1002/imt2.71</a>).</p>
 <p><img src="Images/meconetcomp.png" width="650px" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="meconetcomp-package.html#cb318-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required packages</span></span>
@@ -524,13 +530,41 @@ All the operations were encapsulated into the subnet_property function of mecone
 <span id="cb329-12"><a href="meconetcomp-package.html#cb329-12" aria-hidden="true" tabindex="-1"></a><span class="co"># generate correlation heatmap</span></span>
 <span id="cb329-13"><a href="meconetcomp-package.html#cb329-13" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> tmp1<span class="sc">$</span><span class="fu">plot_cor</span>()</span>
 <span id="cb329-14"><a href="meconetcomp-package.html#cb329-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;soil_amp_subnet_property.pdf&quot;</span>, g1, <span class="at">width =</span> <span class="dv">11</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
+</div>
+<div id="robustness-of-network" class="section level2 hasAnchor" number="12.10">
+<h2><span class="header-section-number">12.10</span> Robustness of network<a href="meconetcomp-package.html#robustness-of-network" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>From v0.4.0, the robustness analysis is implemented in the <code>robustness</code> class based on
+several edge and node removal strategies and robustness measures <span class="citation">(<a href="#ref-Bellingeri_comprem_2020" role="doc-biblioref">Bellingeri et al. 2020</a>; <a href="#ref-LiuJing_comprobust_2017" role="doc-biblioref">J. Liu et al. 2017</a>)</span>.
+For the details of each method, please see the help document with the command <code>?robustness</code>.</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="meconetcomp-package.html#cb330-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> robustness<span class="sc">$</span><span class="fu">new</span>(soil_amp_network, <span class="at">remove_strategy =</span> <span class="fu">c</span>(<span class="st">&quot;edge_rand&quot;</span>, <span class="st">&quot;edge_strong&quot;</span>, <span class="st">&quot;node_degree_high&quot;</span>), </span>
+<span id="cb330-2"><a href="meconetcomp-package.html#cb330-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_ratio =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.99</span>, <span class="fl">0.1</span>), <span class="at">measure =</span> <span class="fu">c</span>(<span class="st">&quot;Eff&quot;</span>, <span class="st">&quot;Eigen&quot;</span>, <span class="st">&quot;Pcr&quot;</span>), <span class="at">run =</span> <span class="dv">10</span>)</span>
+<span id="cb330-3"><a href="meconetcomp-package.html#cb330-3" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(tmp<span class="sc">$</span>res_table)</span>
+<span id="cb330-4"><a href="meconetcomp-package.html#cb330-4" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">plot</span>(<span class="at">linewidth =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Images/meconetcomp_robustness.png" width="700px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="vulnerability-of-nodes" class="section level2 hasAnchor" number="12.11">
+<h2><span class="header-section-number">12.11</span> Vulnerability of nodes<a href="meconetcomp-package.html#vulnerability-of-nodes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>From v0.4.0, the vulnerability of nodes can be calculated with the <code>vulnerability</code> function.
+The vulnerability of one node is defined as the efficiency of network after removing this targeted node <span class="citation">(<a href="#ref-Yuan_Climatewarm_2021" role="doc-biblioref">Yuan et al. 2021</a>)</span>.
+For the details, please see the help document.</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="meconetcomp-package.html#cb331-1" aria-hidden="true" tabindex="-1"></a>vul_table <span class="ot">&lt;-</span> <span class="fu">vulnerability</span>(soil_amp_network)</span>
+<span id="cb331-2"><a href="meconetcomp-package.html#cb331-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(vul_table)</span></code></pre></div>
 
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Bellingeri_comprem_2020" class="csl-entry">
+Bellingeri, M., D. Bevacqua, F. Scotognella, R. Alfieri, and D. Cassi. 2020. <span>“A Comparative Analysis of Link Removal Strategies in Real Complex Weighted Networks.”</span> Journal Article. <em>Scientific Reports</em> 10 (1): 3911. <a href="https://doi.org/10.1038/s41598-020-60298-7">https://doi.org/10.1038/s41598-020-60298-7</a>.
+</div>
 <div id="ref-Liu_meconetcomp_2023" class="csl-entry">
 Liu, Chi, Chaonan Li, Yanqiong Jiang, Raymond J. Zeng, Minjie Yao, and Xiangzhen Li. 2023. <span>“A Guide for Comparing Microbial Co-Occurrence Networks.”</span> Journal Article. <em>iMeta</em>, e71. <a href="https://doi.org/10.1002/imt2.71">https://doi.org/10.1002/imt2.71</a>.
+</div>
+<div id="ref-LiuJing_comprobust_2017" class="csl-entry">
+Liu, Jing, Mingxing Zhou, Shuai Wang, and Penghui Liu. 2017. <span>“A Comparative Study of Network Robustness Measures.”</span> Journal Article. <em>Frontiers of Computer Science</em> 11 (4): 568–84. <a href="https://doi.org/10.1007/s11704-016-6108-z">https://doi.org/10.1007/s11704-016-6108-z</a>.
+</div>
+<div id="ref-Yuan_Climatewarm_2021" class="csl-entry">
+Yuan, Mengting Maggie, Xue Guo, Linwei Wu, Ya Zhang, Naijia Xiao, Daliang Ning, Zhou Shi, et al. 2021. <span>“Climate Warming Enhances Microbial Network Complexity and Stability.”</span> Journal Article. <em>Nature Climate Change</em> 11 (4): 343–48. <a href="https://doi.org/10.1038/s41558-021-00989-9">https://doi.org/10.1038/s41558-021-00989-9</a>.
 </div>
 </div>
             </section>

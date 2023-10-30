@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.0.0)},
+  pdftitle={Tutorial for R microeco package (v1.1.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.0.0)}
+\title{Tutorial for R microeco package (v1.1.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-09-15}
+\date{2023-10-30}
 
 \begin{document}
 \maketitle
@@ -286,7 +286,7 @@ If you want to install all of these packages or some of them, please run this:
 \CommentTok{\# If a package is not installed, it will be installed from CRAN}
 \CommentTok{\# First select the packages of interest}
 \NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{)}
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{, }\StringTok{"SRS"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ tmp)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -1934,11 +1934,19 @@ From v1.0.0, the \texttt{alpha} parameter can be used to adjust the significance
 \end{Shaded}
 
 \begin{verbatim}
+## 载入需要的程辑包：agricolae
+\end{verbatim}
+
+\begin{verbatim}
 ## Registered S3 methods overwritten by 'klaR':
 ##   method      from 
 ##   predict.rda vegan
 ##   print.rda   vegan
 ##   plot.rda    vegan
+\end{verbatim}
+
+\begin{verbatim}
+## Perform post hoc test with the method: duncan.test ...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3403,7 +3411,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Sep 15 16:02:58 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Mon Oct 30 15:16:42 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3433,9 +3441,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3866 & 0.3639 & 9.13 \\
-CW & 435 & 0.5628 & 0.2961 & 0.2863 & 14.41 \\
-TW & 435 & 0.6245 & 0.4161 & 0.4 & 9.901 \\
+IW & 435 & 0.6538 & 0.3875 & 0.3639 & 9.072 \\
+CW & 435 & 0.5628 & 0.296 & 0.2864 & 14.31 \\
+TW & 435 & 0.6245 & 0.4159 & 0.4 & 9.817 \\
 \bottomrule()
 \end{longtable}
 
@@ -4345,15 +4353,6 @@ Please check out the dependence part \url{https://chiliubio.github.io/microeco_t
 \CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation description}
 \CommentTok{\# and provide the file path of SILVA123}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: 程辑包'Matrix'是用R版本4.3.1 来建造的
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{\# return two files: t1$tax4fun\_KO: KO file; t1$tax4fun\_path: pathway file.}
 \CommentTok{\# t1$tax4fun\_KO$Tax4FunProfile[1:5, 1:2]}
 \end{Highlighting}
@@ -5577,6 +5576,38 @@ All the operations were encapsulated into the subnet\_property function of mecon
 \CommentTok{\# generate correlation heatmap}
 \NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \FunctionTok{ggsave}\NormalTok{(}\StringTok{"soil\_amp\_subnet\_property.pdf"}\NormalTok{, g1, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{robustness-of-network}{%
+\section{Robustness of network}\label{robustness-of-network}}
+
+From v0.4.0, the robustness analysis is implemented in the \texttt{robustness} class based on
+several edge and node removal strategies and robustness measures \citep{Bellingeri_comprem_2020, LiuJing_comprobust_2017}.
+For the details of each method, please see the help document with the command \texttt{?robustness}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ robustness}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network, }\AttributeTok{remove\_strategy =} \FunctionTok{c}\NormalTok{(}\StringTok{"edge\_rand"}\NormalTok{, }\StringTok{"edge\_strong"}\NormalTok{, }\StringTok{"node\_degree\_high"}\NormalTok{), }
+    \AttributeTok{remove\_ratio =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\AttributeTok{measure =} \FunctionTok{c}\NormalTok{(}\StringTok{"Eff"}\NormalTok{, }\StringTok{"Eigen"}\NormalTok{, }\StringTok{"Pcr"}\NormalTok{), }\AttributeTok{run =} \DecValTok{10}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{res\_table)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/meconetcomp_robustness} \end{center}
+
+\hypertarget{vulnerability-of-nodes}{%
+\section{Vulnerability of nodes}\label{vulnerability-of-nodes}}
+
+From v0.4.0, the vulnerability of nodes can be calculated with the \texttt{vulnerability} function.
+The vulnerability of one node is defined as the efficiency of network after removing this targeted node \citep{Yuan_Climatewarm_2021}.
+For the details, please see the help document.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vul\_table }\OtherTok{\textless{}{-}} \FunctionTok{vulnerability}\NormalTok{(soil\_amp\_network)}
+\FunctionTok{View}\NormalTok{(vul\_table)}
 \end{Highlighting}
 \end{Shaded}
 

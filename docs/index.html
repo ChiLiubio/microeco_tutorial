@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Tutorial for R microeco package (v1.0.0)</title>
+  <title>Tutorial for R microeco package (v1.1.0)</title>
   <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Tutorial for R microeco package (v1.0.0)" />
+  <meta property="og:title" content="Tutorial for R microeco package (v1.1.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Tutorial for R microeco package (v1.0.0)" />
+  <meta name="twitter:title" content="Tutorial for R microeco package (v1.1.0)" />
   
   <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-09-15" />
+<meta name="date" content="2023-10-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -307,6 +311,8 @@ div.csl-indent {
 <li class="chapter" data-level="12.7" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges"><i class="fa fa-check"></i><b>12.7</b> Compare phylogenetic distances of paired nodes in edges</a></li>
 <li class="chapter" data-level="12.8" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks"><i class="fa fa-check"></i><b>12.8</b> Compare node sources of edges across networks</a></li>
 <li class="chapter" data-level="12.9" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks"><i class="fa fa-check"></i><b>12.9</b> Compare topological properties of sub-networks</a></li>
+<li class="chapter" data-level="12.10" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#robustness-of-network"><i class="fa fa-check"></i><b>12.10</b> Robustness of network</a></li>
+<li class="chapter" data-level="12.11" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#vulnerability-of-nodes"><i class="fa fa-check"></i><b>12.11</b> Vulnerability of nodes</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="mecoturn-package.html"><a href="mecoturn-package.html"><i class="fa fa-check"></i><b>13</b> mecoturn package</a>
 <ul>
@@ -338,7 +344,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.0.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.1.0)</a>
           </h1>
         </div>
 
@@ -347,9 +353,9 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Tutorial for R microeco package (v1.0.0)</h1>
+<h1 class="title">Tutorial for R microeco package (v1.1.0)</h1>
 <p class="author"><em>Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li</em></p>
-<p class="date"><em>2023-09-15</em></p>
+<p class="date"><em>2023-10-30</em></p>
 </div>
 <div id="background" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Background<a href="index.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -371,7 +377,7 @@ In addition, some web tools associated with R language are also useful for micro
 such as Shiny-phyloseq <span class="citation">(<a href="#ref-McMurdie_Shiny_2015" role="doc-biblioref">McMurdie and Holmes 2015</a>)</span>, MicrobiomeExplorer <span class="citation">(<a href="#ref-Reeder_MicrobiomeExplorer_2021" role="doc-biblioref">Reeder et al. 2021</a>)</span>,
 animalcules <span class="citation">(<a href="#ref-Zhao_animalcules_2021" role="doc-biblioref">Zhao et al. 2021</a>)</span> and Namco <span class="citation">(<a href="#ref-Dietrich_Namco_2022" role="doc-biblioref">Dietrich et al. 2022</a>)</span>.
 Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-Based on this background, we created the R microeco package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">Liu et al. 2021</a>)</span> (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
+Based on this background, we created the R microeco package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">C. Liu et al. 2021</a>)</span> (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
 Besides, we also developed the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) for the data input from some famous tools easily.</p>
 
 </div>
