@@ -82,7 +82,7 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
-test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T, use_percentage = FALSE)
+test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, use_percentage = FALSE)
 test1$plot_bar(facet = "Group", bar_type = "notfull", xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
 ```
 

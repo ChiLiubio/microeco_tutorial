@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v1.1.0)"
+title: "Tutorial for R microeco package (v1.2.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages"
+description: "The tutorial for R microeco (v1.2.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages"
 ---
 
 
@@ -149,7 +149,7 @@ If you want to install all of these packages or some of them, please run this:
 options(timeout = 1000)
 # If a package is not installed, it will be installed from CRAN
 # First select the packages of interest
-tmp <- c("microeco", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
+tmp <- c("microeco", "mecoturn", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
     "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "ggraph", "networkD3", "poweRlaw", "ggtern", "SRS")
 # Now check or install
 for(x in tmp){
@@ -1211,6 +1211,7 @@ t1$cal_diff(method = "t.test")
 Then, let's try to use anova. 
 From v1.0.0, the `alpha` parameter can be used to adjust the significance threshold (default: 0.05) of multiple comparisons when method is 'anova' or 'KW_dunn'.
 
+
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 # return t1$res_diff
@@ -1218,6 +1219,7 @@ head(t1$res_diff)
 ```
 
 ```{r, echo = FALSE}
+suppressMessages(library(agricolae))
 t1$cal_diff(method = "anova")
 pander::pander(head(t1$res_diff))
 ```
@@ -1271,7 +1273,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
-From the v0.12.0, the trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
+The trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
@@ -1310,11 +1312,38 @@ View(t1$res_diff)
 t1$cal_diff(method = "lme", formula = "Group + (1|Type)", return_model = TRUE)
 ```
 
+Note that from v1.2.0, the parameter `use_boxplot = FALSE` in `plot_alpha` will invoke the data_stat instead of data_alpha for the Mean±SE (or SD) plot.
+The line is optional to be added between points (Mean) for the case with a gradient.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "KW_dunn", measure = "PD", KW_dunn_letter = TRUE)
+t1$plot_alpha(measure = "PD")
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD")
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2)
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "PD", y_increase = 0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+# by_group example
+# use example data in mecoturn package
+library(microeco)
+library(mecoturn)
+library(magrittr)
+data(wheat_16S)
+wheat_16S$sample_table$Type %<>% factor(., levels = unique(.))
+t1 <- trans_alpha$new(dataset = wheat_16S, group = "Region", by_group = "Type")
+t1$cal_diff(method = "KW_dunn", measure = "Shannon", KW_dunn_letter = TRUE)
+View(t1$res_diff)
+t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon")
+t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
+t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
+```
+
 
 ### Key points
 
   + trans_alpha$new: creating `trans_alpha` object can invoke `alpha_diversity` in microtable for transformation
-  + cal_diff: `formula` parameter applies to multi-factor analysis of variance
+  + cal_diff: `formula` parameter applies to multi-factor analysis of variance.
+  + cal_diff: From v1.2.0, `anova_post_test` can be used to change default post test method of anova.
   + plot_alpha: the significance label comes from the results in `object$res_diff`
 
 
@@ -1741,7 +1770,7 @@ t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type
 View(t1$res_diff)
 ```
 
-The generalized linear mixed model is implemented based on the glmmTMB package.
+The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function, 
 because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
 
@@ -1755,7 +1784,20 @@ t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formu
 View(t1$res_diff)
 ```
 
+From v1.2.0, the heatmap can be used in the `plot_diff_bar` function instead of bar plot for the case with multiple factors or formula.
 
+```{r, echo = TRUE, eval = FALSE}
+# heatmap for the previous GLMM result
+# default no significance label in the res_diff for this method
+t1$res_diff$Significance <- cut(t1$res_diff$P.unadj, breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), label = c("***", "**", "*", ""))
+t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
+# two-way anova for more usages of heatmap
+t1 <- trans_diff$new(dataset = dataset, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
+t1$plot_diff_bar()
+t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
+t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "right", cluster_ggplot = "row")
+```
 
 ### Key points
 
@@ -2000,8 +2042,11 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_sum_links(taxa_level = "Phylum")
-# require chorddiag package; see https://github.com/mattflor/chorddiag
+# interactive visualization; require chorddiag package; see https://github.com/mattflor/chorddiag
 t1$plot_sum_links(plot_pos = TRUE, plot_num = 10, color_values = RColorBrewer::brewer.pal(10, "Paired"))
+# From v1.2.0, method = "circlize" is available for conveniently saving the static plot
+if(!require("circlize")) install.packages("circlize")
+t1$plot_sum_links(method = "circlize", transparency = 0.2, annotationTrackHeight = circlize::mm_h(c(5, 5)))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -3078,7 +3123,7 @@ Note that the `sample_table` parameter in each function of file2meco package sup
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# install file2meco package if not found
+# install file2meco package (>= 0.7.0)
 if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if(!require("file2meco")) install.packages("file2meco", repos = BiocManager::repositories())
 ```
@@ -3183,7 +3228,7 @@ test1$ylabname <- "Abundance (RPK)"
 test1$plot_bar(facet = "Group", bar_type = "notfull")
 # select both function and taxa
 test$cal_abund(select_cols = c("Superclass1", "Phylum", "Genus"), rel = TRUE)
-test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T)
+test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_taxonomy_lineage = T)
 test1$plot_bar(facet = "Group")
 # functional biomarker
 test$cal_abund(select_cols = 1:3, rel = TRUE)
@@ -3437,7 +3482,7 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
-test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, delete_part_prefix = T, use_percentage = FALSE)
+test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, use_percentage = FALSE)
 test1$plot_bar(facet = "Group", bar_type = "notfull", xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
 ```
 

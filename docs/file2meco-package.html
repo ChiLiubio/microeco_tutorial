@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 file2meco package | Tutorial for R microeco package (v1.1.0)</title>
-  <meta name="description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  <title>Chapter 8 file2meco package | Tutorial for R microeco package (v1.2.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.2.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v1.1.0)" />
+  <meta property="og:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v1.2.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.2.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v1.1.0)" />
+  <meta name="twitter:title" content="Chapter 8 file2meco package | Tutorial for R microeco package (v1.2.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.2.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   
 
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-10-30" />
+<meta name="date" content="2023-11-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -344,7 +344,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.1.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.2.0)</a>
           </h1>
         </div>
 
@@ -362,7 +362,7 @@ Note that the <code>sample_table</code> parameter in each function of file2meco 
 1) comma seperated file with the suffix .csv or tab seperated file with the suffix .tsv or .txt;<br />
 2) Excel file with the suffix .xlsx or .xls;<br />
 3) data.frame object in R session.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="file2meco-package.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install file2meco package if not found</span></span>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="file2meco-package.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install file2meco package (&gt;= 0.7.0)</span></span>
 <span id="cb279-2"><a href="file2meco-package.html#cb279-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
 <span id="cb279-3"><a href="file2meco-package.html#cb279-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;file2meco&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;file2meco&quot;</span>, <span class="at">repos =</span> BiocManager<span class="sc">::</span><span class="fu">repositories</span>())</span></code></pre></div>
 <p>▲ Trouble shooting:<br />
@@ -451,7 +451,7 @@ Currently, it supports both the MetaCyc (<a href="https://metacyc.org/" class="u
 <span id="cb282-25"><a href="file2meco-package.html#cb282-25" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>)</span>
 <span id="cb282-26"><a href="file2meco-package.html#cb282-26" aria-hidden="true" tabindex="-1"></a><span class="co"># select both function and taxa</span></span>
 <span id="cb282-27"><a href="file2meco-package.html#cb282-27" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="fu">c</span>(<span class="st">&quot;Superclass1&quot;</span>, <span class="st">&quot;Phylum&quot;</span>, <span class="st">&quot;Genus&quot;</span>), <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb282-28"><a href="file2meco-package.html#cb282-28" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">delete_part_prefix =</span> T)</span>
+<span id="cb282-28"><a href="file2meco-package.html#cb282-28" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">delete_taxonomy_lineage =</span> T)</span>
 <span id="cb282-29"><a href="file2meco-package.html#cb282-29" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb282-30"><a href="file2meco-package.html#cb282-30" aria-hidden="true" tabindex="-1"></a><span class="co"># functional biomarker</span></span>
 <span id="cb282-31"><a href="file2meco-package.html#cb282-31" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">TRUE</span>)</span>

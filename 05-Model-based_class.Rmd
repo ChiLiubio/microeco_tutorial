@@ -250,7 +250,7 @@ t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type
 View(t1$res_diff)
 ```
 
-The generalized linear mixed model is implemented based on the glmmTMB package.
+The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function, 
 because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
 
@@ -264,7 +264,20 @@ t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formu
 View(t1$res_diff)
 ```
 
+From v1.2.0, the heatmap can be used in the `plot_diff_bar` function instead of bar plot for the case with multiple factors or formula.
 
+```{r, echo = TRUE, eval = FALSE}
+# heatmap for the previous GLMM result
+# default no significance label in the res_diff for this method
+t1$res_diff$Significance <- cut(t1$res_diff$P.unadj, breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), label = c("***", "**", "*", ""))
+t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
+# two-way anova for more usages of heatmap
+t1 <- trans_diff$new(dataset = dataset, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
+t1$plot_diff_bar()
+t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
+t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "right", cluster_ggplot = "row")
+```
 
 ### Key points
 
@@ -509,8 +522,11 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_sum_links(taxa_level = "Phylum")
-# require chorddiag package; see https://github.com/mattflor/chorddiag
+# interactive visualization; require chorddiag package; see https://github.com/mattflor/chorddiag
 t1$plot_sum_links(plot_pos = TRUE, plot_num = 10, color_values = RColorBrewer::brewer.pal(10, "Paired"))
+# From v1.2.0, method = "circlize" is available for conveniently saving the static plot
+if(!require("circlize")) install.packages("circlize")
+t1$plot_sum_links(method = "circlize", transparency = 0.2, annotationTrackHeight = circlize::mm_h(c(5, 5)))
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}

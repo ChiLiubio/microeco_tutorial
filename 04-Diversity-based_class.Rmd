@@ -64,6 +64,7 @@ t1$cal_diff(method = "t.test")
 Then, let's try to use anova. 
 From v1.0.0, the `alpha` parameter can be used to adjust the significance threshold (default: 0.05) of multiple comparisons when method is 'anova' or 'KW_dunn'.
 
+
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
 # return t1$res_diff
@@ -71,6 +72,7 @@ head(t1$res_diff)
 ```
 
 ```{r, echo = FALSE}
+suppressMessages(library(agricolae))
 t1$cal_diff(method = "anova")
 pander::pander(head(t1$res_diff))
 ```
@@ -124,7 +126,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
-From the v0.12.0, the trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
+The trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
@@ -163,11 +165,38 @@ View(t1$res_diff)
 t1$cal_diff(method = "lme", formula = "Group + (1|Type)", return_model = TRUE)
 ```
 
+Note that from v1.2.0, the parameter `use_boxplot = FALSE` in `plot_alpha` will invoke the data_stat instead of data_alpha for the Mean±SE (or SD) plot.
+The line is optional to be added between points (Mean) for the case with a gradient.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "KW_dunn", measure = "PD", KW_dunn_letter = TRUE)
+t1$plot_alpha(measure = "PD")
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD")
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2)
+t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "PD", y_increase = 0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+# by_group example
+# use example data in mecoturn package
+library(microeco)
+library(mecoturn)
+library(magrittr)
+data(wheat_16S)
+wheat_16S$sample_table$Type %<>% factor(., levels = unique(.))
+t1 <- trans_alpha$new(dataset = wheat_16S, group = "Region", by_group = "Type")
+t1$cal_diff(method = "KW_dunn", measure = "Shannon", KW_dunn_letter = TRUE)
+View(t1$res_diff)
+t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon")
+t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
+t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
+```
+
 
 ### Key points
 
   + trans_alpha$new: creating `trans_alpha` object can invoke `alpha_diversity` in microtable for transformation
-  + cal_diff: `formula` parameter applies to multi-factor analysis of variance
+  + cal_diff: `formula` parameter applies to multi-factor analysis of variance.
+  + cal_diff: From v1.2.0, `anova_post_test` can be used to change default post test method of anova.
   + plot_alpha: the significance label comes from the results in `object$res_diff`
 
 
