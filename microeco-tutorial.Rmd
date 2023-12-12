@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v1.2.0)"
+title: "Tutorial for R microeco package (v1.3.0)"
 author: "Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -617,7 +617,7 @@ dataset$save_alphadiv(dirpath = "alpha_diversity")
 ```
 
 Let's go on to beta diversity with function `cal_betadiv()`.
-If method parameter is not provided, the function automatically calculates Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac matrixes.
+If method parameter is not provided, the function automatically calculates Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac matrixes [@Lozupone_UniFrac_2005].
 
 
 ```{r, echo = FALSE, eval = TRUE, message = FALSE}
@@ -2659,7 +2659,11 @@ Then let's show the RDA analysis (db-RDA and RDA).
 ```{r, echo = TRUE, eval = FALSE}
 # use bray-curtis distance for dbRDA
 t1$cal_ordination(method = "dbRDA", use_measure = "bray")
-# t1$res_rda is the result list stored in the object
+# show the orginal results
+t1$trans_ordination()
+t1$plot_ordination(plot_color = "Group")
+# the main results of RDA are related with the projection and angles between arrows
+# adjust the length of the arrows to show them better
 t1$trans_ordination(adjust_arrow_length = TRUE, max_perc_env = 1.5)
 # t1$res_rda_trans is the transformed result for plotting
 t1$plot_ordination(plot_color = "Group")
@@ -2682,8 +2686,7 @@ Then, let's try to do RDA at the Genus level.
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus
 t1$cal_ordination(method = "RDA", taxa_level = "Genus")
-# As the main results of RDA are related with the projection and angles between different arrows,
-# we adjust the length of the arrow to show them clearly using several parameters.
+# select 10 features and adjust the arrow length
 t1$trans_ordination(show_taxa = 10, adjust_arrow_length = TRUE, max_perc_env = 1.5, max_perc_tax = 1.5, min_perc_env = 0.2, min_perc_tax = 0.2)
 # t1$res_rda_trans is the transformed result for plot
 t1$plot_ordination(plot_color = "Group")
@@ -2957,6 +2960,15 @@ t2$cal_spe_func_perc(abundance_weighted = FALSE)
 
 ```{r, echo = FALSE}
 pander::pander(t2$res_spe_func_perc[1:5, 1:2])
+```
+
+From v1.3.0, the `trans_spe_func_perc` function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping. 
+The return `res_spe_func_perc_trans` in the object is the table for the following visualization.
+Note that this step is not necessary as `plot_spe_func_perc` function can automatically invoke this function if `res_spe_func_perc_trans` is not found.
+
+```{r, echo = TRUE, eval = FALSE}
+t2$trans_spe_func_perc()
+t2$plot_spe_func_perc()
 ```
 
 For the differential test of the abundance percentages across groups, 

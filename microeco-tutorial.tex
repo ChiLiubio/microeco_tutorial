@@ -117,14 +117,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.2.0)},
+  pdftitle={Tutorial for R microeco package (v1.3.0)},
   pdfauthor={Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.2.0)}
+\title{Tutorial for R microeco package (v1.3.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-11-10}
+\date{2023-12-12}
 
 \begin{document}
 \maketitle
@@ -1078,7 +1078,7 @@ The result is also stored in the object microtable automatically.
 \end{Shaded}
 
 Let's go on to beta diversity with function \texttt{cal\_betadiv()}.
-If method parameter is not provided, the function automatically calculates Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac matrixes.
+If method parameter is not provided, the function automatically calculates Bray-curtis, Jaccard, weighted Unifrac and unweighted unifrac matrixes \citep{Lozupone_UniFrac_2005}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3449,7 +3449,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Nov 10 14:02:55 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Dec 12 11:58:10 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3479,9 +3479,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3859 & 0.3639 & 9.114 \\
-CW & 435 & 0.5627 & 0.2961 & 0.2863 & 14.36 \\
-TW & 435 & 0.6244 & 0.4164 & 0.3999 & 9.829 \\
+IW & 435 & 0.6541 & 0.3881 & 0.3641 & 9.053 \\
+CW & 435 & 0.563 & 0.2961 & 0.2866 & 14.25 \\
+TW & 435 & 0.6242 & 0.4152 & 0.3997 & 9.876 \\
 \bottomrule()
 \end{longtable}
 
@@ -3905,7 +3905,11 @@ Then let's show the RDA analysis (db-RDA and RDA).
 \begin{Highlighting}[]
 \CommentTok{\# use bray{-}curtis distance for dbRDA}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"dbRDA"}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}
-\CommentTok{\# t1$res\_rda is the result list stored in the object}
+\CommentTok{\# show the orginal results}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# the main results of RDA are related with the projection and angles between arrows}
+\CommentTok{\# adjust the length of the arrows to show them better}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \FloatTok{1.5}\NormalTok{)}
 \CommentTok{\# t1$res\_rda\_trans is the transformed result for plotting}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
@@ -3930,8 +3934,7 @@ Then, let's try to do RDA at the Genus level.
 \begin{Highlighting}[]
 \CommentTok{\# use Genus}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"RDA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
-\CommentTok{\# As the main results of RDA are related with the projection and angles between different arrows,}
-\CommentTok{\# we adjust the length of the arrow to show them clearly using several parameters.}
+\CommentTok{\# select 10 features and adjust the arrow length}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{show\_taxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{max\_perc\_tax =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{min\_perc\_env =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{min\_perc\_tax =} \FloatTok{0.2}\NormalTok{)}
 \CommentTok{\# t1$res\_rda\_trans is the transformed result for plot}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
@@ -4338,6 +4341,17 @@ acetoclastic\_methanogenesis
 \textbf{S5} & 0.56 & 0 \\
 \bottomrule()
 \end{longtable}
+
+From v1.3.0, the \texttt{trans\_spe\_func\_perc} function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping.
+The return \texttt{res\_spe\_func\_perc\_trans} in the object is the table for the following visualization.
+Note that this step is not necessary as \texttt{plot\_spe\_func\_perc} function can automatically invoke this function if \texttt{res\_spe\_func\_perc\_trans} is not found.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{trans\_spe\_func\_perc}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
 
 For the differential test of the abundance percentages across groups,
 please move to another part (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#faprotax-differential-test}).
@@ -5766,6 +5780,13 @@ This step is to manipulate the file res\_group\_distance in the betaturn object 
 \NormalTok{b1 }\OtherTok{\textless{}{-}}\NormalTok{ betaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Warning in checkMatrixPackageVersion(getOption("TMB.check.Matrix", TRUE)): Package version inconsistency detected.
+## TMB was built with Matrix version 1.6.4
+## Current Matrix version is 1.6.1.1
+## Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+\end{verbatim}
 
 \begin{verbatim}
 ## The distance matrix is stored in object$beta_diversity list ...
