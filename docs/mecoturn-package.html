@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-12-12" />
+<meta name="date" content="2023-12-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -271,7 +271,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
 <li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
 <li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2braken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Braken</a></li>
-<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdbpcycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB/PCycDB</a></li>
 <li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
 <li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
 <li class="chapter" data-level="8.9" data-path="file2meco-package.html"><a href="file2meco-package.html#viromescan"><i class="fa fa-check"></i><b>8.9</b> ViromeScan</a></li>
@@ -454,10 +454,10 @@ This step is to manipulate the file res_group_distance in the betaturn object an
 <span id="cb334-5"><a href="mecoturn-package.html#cb334-5" aria-hidden="true" tabindex="-1"></a>?betaturn</span>
 <span id="cb334-6"><a href="mecoturn-package.html#cb334-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use &#39;bray&#39;, i.e. Bray-Curtis dissimilarity, as the example</span></span>
 <span id="cb334-7"><a href="mecoturn-package.html#cb334-7" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> betaturn<span class="sc">$</span><span class="fu">new</span>(wheat_16S, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in checkMatrixPackageVersion(getOption(&quot;TMB.check.Matrix&quot;, TRUE)): Package version inconsistency detected.
-## TMB was built with Matrix version 1.6.4
-## Current Matrix version is 1.6.1.1
-## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
+<pre><code>## Warning in checkDepPackageVersion(dep_pkg = &quot;TMB&quot;): Package version inconsistency detected.
+## glmmTMB was built with TMB version 1.9.9
+## Current TMB version is 1.9.10
+## Please re-install glmmTMB from source or restore original &#39;TMB&#39; package (see &#39;?reinstalling&#39; for more information)</code></pre>
 <pre><code>## The distance matrix is stored in object$beta_diversity list ...</code></pre>
 <p>The matrix conversion is the core step in the betaturn class.
 It has two cases: <code>within_group = TRUE</code> and <code>within_group = FALSE</code>.

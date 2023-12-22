@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v1.3.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-12-12}
+\date{2023-12-22}
 
 \begin{document}
 \maketitle
@@ -3449,7 +3449,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Dec 12 11:58:10 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Dec 22 15:22:59 2023. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3479,9 +3479,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6541 & 0.3881 & 0.3641 & 9.053 \\
-CW & 435 & 0.563 & 0.2961 & 0.2866 & 14.25 \\
-TW & 435 & 0.6242 & 0.4152 & 0.3997 & 9.876 \\
+IW & 435 & 0.6537 & 0.3869 & 0.3638 & 9.105 \\
+CW & 435 & 0.5633 & 0.297 & 0.2867 & 14.24 \\
+TW & 435 & 0.6247 & 0.4163 & 0.4001 & 9.836 \\
 \bottomrule()
 \end{longtable}
 
@@ -4736,11 +4736,13 @@ The merged Kraken2/Braken results can be obtained by merge\_metaphlan\_tables.py
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ncycdb}{%
-\section{NCycDB}\label{ncycdb}}
+\hypertarget{ncycdbpcycdb}{%
+\section{NCycDB/PCycDB}\label{ncycdbpcycdb}}
 
 NCycDB database \citep{Tu_NCycDB_2018} is a curated integrative database for fast and accurate metagenomic profiling of nitrogen cycling genes.
-The ncyc2meco() function is designed for construct the microtable object using gene abundance files from NCycDB (\url{https://github.com/qichao1984/NCyc}).
+The \texttt{ncyc2meco} function is designed for construct the microtable object using gene abundance files from NCycDB.
+This function can also be used to parse the output of PCycDB \citep{Zeng_PCycDB_2022} database benefiting from implemented mapping database from v0.7.0.
+The \texttt{ncyc2meco} function can identify the database and invoke the internal mapping data automatically according to the gene names of input features.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5782,10 +5784,10 @@ This step is to manipulate the file res\_group\_distance in the betaturn object 
 \end{Shaded}
 
 \begin{verbatim}
-## Warning in checkMatrixPackageVersion(getOption("TMB.check.Matrix", TRUE)): Package version inconsistency detected.
-## TMB was built with Matrix version 1.6.4
-## Current Matrix version is 1.6.1.1
-## Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+## Warning in checkDepPackageVersion(dep_pkg = "TMB"): Package version inconsistency detected.
+## glmmTMB was built with TMB version 1.9.9
+## Current TMB version is 1.9.10
+## Please re-install glmmTMB from source or restore original 'TMB' package (see '?reinstalling' for more information)
 \end{verbatim}
 
 \begin{verbatim}

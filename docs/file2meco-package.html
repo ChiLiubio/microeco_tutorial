@@ -23,7 +23,7 @@
 <meta name="author" content="Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li" />
 
 
-<meta name="date" content="2023-12-12" />
+<meta name="date" content="2023-12-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -271,7 +271,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
 <li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
 <li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2braken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Braken</a></li>
-<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB</a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdbpcycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB/PCycDB</a></li>
 <li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
 <li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
 <li class="chapter" data-level="8.9" data-path="file2meco-package.html"><a href="file2meco-package.html#viromescan"><i class="fa fa-check"></i><b>8.9</b> ViromeScan</a></li>
@@ -494,10 +494,12 @@ The merged Kraken2/Braken results can be obtained by merge_metaphlan_tables.py f
 <span id="cb285-7"><a href="file2meco-package.html#cb285-7" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">mpa2meco</span>(abund_file_path, <span class="at">sample_table =</span> sample_file_path, <span class="at">match_table =</span> match_file_path)</span>
 <span id="cb285-8"><a href="file2meco-package.html#cb285-8" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span></code></pre></div>
 </div>
-<div id="ncycdb" class="section level2 hasAnchor" number="8.6">
-<h2><span class="header-section-number">8.6</span> NCycDB<a href="file2meco-package.html#ncycdb" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ncycdbpcycdb" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> NCycDB/PCycDB<a href="file2meco-package.html#ncycdbpcycdb" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>NCycDB database <span class="citation">(<a href="#ref-Tu_NCycDB_2018" role="doc-biblioref">Tu et al. 2018</a>)</span> is a curated integrative database for fast and accurate metagenomic profiling of nitrogen cycling genes.
-The ncyc2meco() function is designed for construct the microtable object using gene abundance files from NCycDB (<a href="https://github.com/qichao1984/NCyc" class="uri">https://github.com/qichao1984/NCyc</a>).</p>
+The <code>ncyc2meco</code> function is designed for construct the microtable object using gene abundance files from NCycDB.
+This function can also be used to parse the output of PCycDB <span class="citation">(<a href="#ref-Zeng_PCycDB_2022" role="doc-biblioref">Zeng et al. 2022</a>)</span> database benefiting from implemented mapping database from v0.7.0.
+The <code>ncyc2meco</code> function can identify the database and invoke the internal mapping data automatically according to the gene names of input features.</p>
 <div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="file2meco-package.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(file2meco)</span>
 <span id="cb286-2"><a href="file2meco-package.html#cb286-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
 <span id="cb286-3"><a href="file2meco-package.html#cb286-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
@@ -615,6 +617,9 @@ Tu, Qichao, Lu Lin, Lei Cheng, Ye Deng, and Zhili He. 2018. <span>“NCycDB: A C
 </div>
 <div id="ref-Wood_Improved_2019" class="csl-entry">
 Wood, D. E., J. Lu, and B. Langmead. 2019. <span>“Improved Metagenomic Analysis with Kraken 2.”</span> Journal Article. <em>Genome Biol</em> 20 (1): 257. <a href="https://doi.org/10.1186/s13059-019-1891-0">https://doi.org/10.1186/s13059-019-1891-0</a>.
+</div>
+<div id="ref-Zeng_PCycDB_2022" class="csl-entry">
+Zeng, Jiaxiong, Qichao Tu, Xiaoli Yu, Lu Qian, Cheng Wang, Longfei Shu, Fei Liu, et al. 2022. <span>“<span class="nocase">PCycDB: a comprehensive and accurate database for fast analysis of phosphorus cycling genes</span>.”</span> Journal Article. <em>Microbiome</em> 10 (1): 101. <a href="https://doi.org/10.1186/s40168-022-01292-1">https://doi.org/10.1186/s40168-022-01292-1</a>.
 </div>
 </div>
             </section>
