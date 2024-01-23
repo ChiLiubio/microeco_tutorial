@@ -191,6 +191,17 @@ t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon", add_line = TRUE, line_ty
 t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
 ```
 
+From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", formula = "Group+Type+Group:Type")
+t1$plot_alpha(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
+t1$plot_alpha(color_palette = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left", cluster_ggplot = "row")
+```
 
 ### Key points
 
@@ -221,7 +232,7 @@ t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# PCoA, PCA and NMDS are available
+# PCoA, PCA, DCA and NMDS are available
 t1$cal_ordination(ordination = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)

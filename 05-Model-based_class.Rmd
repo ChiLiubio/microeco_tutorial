@@ -257,10 +257,8 @@ because beta distribution is especially appropriate to fit the proportional data
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("glmmTMB")) install.packages("glmmTMB")
 d1 <- clone(dataset)
-# eliminate the boundary 0 and 1
-d1$taxa_abund$Phylum %<>% {. + 1e-10} %>% {./(1 + 2e-10)}
-t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formula = "Group + (1|Type)", 
-	family = glmmTMB::beta_family(link = "logit"), filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm_beta", 
+	formula = "Group + (1|Type)", filter_thres = 0.001)
 View(t1$res_diff)
 ```
 

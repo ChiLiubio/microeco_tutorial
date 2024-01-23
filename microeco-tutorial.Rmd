@@ -1338,6 +1338,17 @@ t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon", add_line = TRUE, line_ty
 t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
 ```
 
+From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1$cal_diff(method = "anova", formula = "Group+Type+Group:Type")
+t1$plot_alpha(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
+t1$plot_alpha(color_palette = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
+t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left", cluster_ggplot = "row")
+```
 
 ### Key points
 
@@ -1368,7 +1379,7 @@ t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# PCoA, PCA and NMDS are available
+# PCoA, PCA, DCA and NMDS are available
 t1$cal_ordination(ordination = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)
@@ -1777,10 +1788,8 @@ because beta distribution is especially appropriate to fit the proportional data
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("glmmTMB")) install.packages("glmmTMB")
 d1 <- clone(dataset)
-# eliminate the boundary 0 and 1
-d1$taxa_abund$Phylum %<>% {. + 1e-10} %>% {./(1 + 2e-10)}
-t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm", formula = "Group + (1|Type)", 
-	family = glmmTMB::beta_family(link = "logit"), filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm_beta", 
+	formula = "Group + (1|Type)", filter_thres = 0.001)
 View(t1$res_diff)
 ```
 
@@ -4605,7 +4614,7 @@ set_scale()
 
 g1 <- quickcor(t1$data_env, type = "upper", cor.test = TRUE, show.diag = FALSE) +
     geom_square() +
-	geom_mark(sig.thres = 0.05, markonly = TRUE, color = "white") +
+	geom_mark(sig.thres = 0.05, markonly = TRUE, color = "black", size = 6) +
     anno_link(aes(colour = pd, size = rd), data = plot_table) +
     scale_size_manual(values = c(0.5, 1.5, 3)) +
     scale_colour_manual(values = c("#D95F02", "#1B9E77", "#A2A2A288")) +

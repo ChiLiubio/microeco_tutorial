@@ -124,7 +124,7 @@
 
 \title{Tutorial for R microeco package (v1.3.0)}
 \author{Chi Liu, Felipe R. P. Mansoldo, Umer Zeeshan Ijaz, Chenhao Li, Yang Cao, Jarrod J. Scott, Yaoming Cui, Alane B. Vermelho, Raymond Jianxiong Zeng, Minjie Yao, Xiangzhen Li}
-\date{2023-12-22}
+\date{2024-01-23}
 
 \begin{document}
 \maketitle
@@ -1157,7 +1157,7 @@ For example, if you want to extract samples of `CW' group, please do like this:
 ## tax_table have 9727 rows and 7 columns
 ## phylo_tree have 9727 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Pielou,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -1183,7 +1183,7 @@ Similar with above operation, \textbf{subset of features can be achieved by mani
 ## tax_table have 3052 rows and 7 columns
 ## phylo_tree have 3052 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Pielou,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -1851,12 +1851,12 @@ Significance
 \end{minipage} \\
 \midrule()
 \endhead
-IW - CW - TW & Observed & IW & 0.155 & 0.2481 & ns \\
-IW - CW - TW & Chao1 & IW & 0.01696 & 0.04523 & * \\
-IW - CW - TW & ACE & IW & 0.01333 & 0.04523 & * \\
-IW - CW - TW & Shannon & IW & 0.5319 & 0.7092 & ns \\
-IW - CW - TW & Simpson & CW & 0.8083 & 0.8083 & ns \\
-IW - CW - TW & InvSimpson & CW & 0.8083 & 0.8083 & ns \\
+IW - CW - TW & Observed & IW & 0.155 & 0.2791 & ns \\
+IW - CW - TW & Chao1 & IW & 0.01696 & 0.05088 & ns \\
+IW - CW - TW & ACE & IW & 0.01333 & 0.05088 & ns \\
+IW - CW - TW & Shannon & IW & 0.5319 & 0.7978 & ns \\
+IW - CW - TW & Simpson & CW & 0.8083 & 0.9094 & ns \\
+IW - CW - TW & InvSimpson & CW & 0.8083 & 0.9094 & ns \\
 \bottomrule()
 \end{longtable}
 
@@ -2086,6 +2086,20 @@ The line is optional to be added between points (Mean) for the case with a gradi
 \end{Highlighting}
 \end{Shaded}
 
+From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type+Group:Type"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{rev}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{11}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdYlBu"}\NormalTok{)), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{text\_y\_position =} \StringTok{"left"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{text\_y\_position =} \StringTok{"left"}\NormalTok{, }\AttributeTok{cluster\_ggplot =} \StringTok{"row"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{key-points-3}{%
 \subsection{Key points}\label{key-points-3}}
 
@@ -2126,7 +2140,7 @@ We first show the ordination using PCoA (principal coordinates analysis).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# PCoA, PCA and NMDS are available}
+\CommentTok{\# PCoA, PCA, DCA and NMDS are available}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# t1$res\_ordination is the ordination result list}
 \FunctionTok{class}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination)}
@@ -2733,10 +2747,8 @@ because beta distribution is especially appropriate to fit the proportional data
 \begin{Highlighting}[]
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"glmmTMB"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"glmmTMB"}\NormalTok{)}
 \NormalTok{d1 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
-\CommentTok{\# eliminate the boundary 0 and 1}
-\NormalTok{d1}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ \{. }\SpecialCharTok{+} \FloatTok{1e{-}10}\NormalTok{\} }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ \{.}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FloatTok{2e{-}10}\NormalTok{)\}}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{method =} \StringTok{"glmm"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{, }
-    \AttributeTok{family =}\NormalTok{ glmmTMB}\SpecialCharTok{::}\FunctionTok{beta\_family}\NormalTok{(}\AttributeTok{link =} \StringTok{"logit"}\NormalTok{), }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{method =} \StringTok{"glmm\_beta"}\NormalTok{, }
+    \AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
@@ -3449,7 +3461,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Dec 22 15:22:59 2023. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Jan 23 13:40:02 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3479,9 +3491,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3869 & 0.3638 & 9.105 \\
-CW & 435 & 0.5633 & 0.297 & 0.2867 & 14.24 \\
-TW & 435 & 0.6247 & 0.4163 & 0.4001 & 9.836 \\
+IW & 435 & 0.654 & 0.3857 & 0.364 & 9.064 \\
+CW & 435 & 0.5631 & 0.2962 & 0.2866 & 14.34 \\
+TW & 435 & 0.6248 & 0.4155 & 0.4002 & 9.833 \\
 \bottomrule()
 \end{longtable}
 
@@ -3789,7 +3801,7 @@ To show this operation, we first merge additional table into sample\_table to ge
 ## tax_table have 12766 rows and 7 columns
 ## phylo_tree have 12766 tips
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Coverage 
+## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Pielou,Coverage 
 ## Beta diversity: calculated for bray,jaccard
 \end{verbatim}
 
@@ -6290,7 +6302,7 @@ Please install \texttt{ggcor} package according to the document (\url{https://ch
 
 \NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{quickcor}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env, }\AttributeTok{type =} \StringTok{"upper"}\NormalTok{, }\AttributeTok{cor.test =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{show.diag =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
     \FunctionTok{geom\_square}\NormalTok{() }\SpecialCharTok{+}
-    \FunctionTok{geom\_mark}\NormalTok{(}\AttributeTok{sig.thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{markonly =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_mark}\NormalTok{(}\AttributeTok{sig.thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{markonly =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{) }\SpecialCharTok{+}
     \FunctionTok{anno\_link}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{colour =}\NormalTok{ pd, }\AttributeTok{size =}\NormalTok{ rd), }\AttributeTok{data =}\NormalTok{ plot\_table) }\SpecialCharTok{+}
     \FunctionTok{scale\_size\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{+}
     \FunctionTok{scale\_colour\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#D95F02"}\NormalTok{, }\StringTok{"\#1B9E77"}\NormalTok{, }\StringTok{"\#A2A2A288"}\NormalTok{)) }\SpecialCharTok{+}
