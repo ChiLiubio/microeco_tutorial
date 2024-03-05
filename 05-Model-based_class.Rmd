@@ -9,15 +9,16 @@ All the classes with complex models are grouped into this section.
 It can find the significant taxa in determining community differences across groups.
 Different approaches may produce inconsistent results since the underlying models/hypothesis are different [@Nearing_Microbiome_2022].
 Currently, trans_diff class has multiple famous differential test approaches or wrapped methods to better capture the important biomarkers: 
-metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], RF (random forest + differential test), metagenomeSeq[@Paulson_Differential_2013],
-Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each paired group) and 
+Kruskal-Wallis Rank Sum Test (for groups > 2), Wilcoxon Rank Sum Tests (for each paired group),  
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups > 2),
-t.test, ANOVA, Scheirer Ray Hare test,
-ANCOMBC [@Lin_Analysis_2020], ALDEx2 [@Fernandes_Unifying_2014],
-DESeq2 [@Michael_Moderated_2014], LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010],
+t-test, ANOVA, Scheirer Ray Hare test, linear regression,
+metastat[@White_Statistical_2009], LEfSe[@Segata_Metagenomic_2011], RF (random forest + differential test), metagenomeSeq[@Paulson_Differential_2013],
+DESeq2 [@Michael_Moderated_2014], ALDEx2 [@Fernandes_Unifying_2014],
+ANCOM-BC2 [@Lin_Analysis_2020], 
+LinDA [@LinDA_Zhou_2022], beta regression [@Betaregression_2010],
 linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available, 
-it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
+it is feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
 
 ### Example
@@ -48,7 +49,7 @@ res_lefse <- read.csv("Files/res_lefse.csv")
 pander::pander(res_lefse[1:5, c(1, 3, 4, 6)])
 ```
 
-Then, we plot the abundance of biomarkers detected by LEfSe.
+Then, the abundance of biomarkers detected by LEfSe can be visualized easily.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$plot_diff_abund(use_number = 1:30, group_order = c("CW", "IW", "TW"))
@@ -96,7 +97,7 @@ knitr::include_graphics("Images/trans_diff_lefse_cladogram_1.png")
 ```
 
 The 'rf' method depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
-The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
+The current method implements random forest by bootstrapping like the operation in LEfSe and employs the significant features as input.
 MeanDecreaseGini is selected as the indicator value in the analysis.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -148,12 +149,11 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 # metastat analysis at Genus level
 t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
 # t1$res_diff is the differential test result
-# t1$res_abund is the group abundance
 ```
 
 Because the example 'Group' in sample_table has three groups, 
 the metastat can run the comparisons for each paired group. So there are three pairs in t1\$res_diff\$Comparison.
-For the abundance plotting, the user should use select_group to select the required pair.
+For the abundance plotting, the user should use select_group parameter to select the specific pair.
 
 ```{r, echo = TRUE, eval = FALSE}
 # select_group should be one of groups in t1$res_diff$Comparison
@@ -164,8 +164,7 @@ t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", coord_flip = F)
 knitr::include_graphics("Images/trans_diff_metastat_1.png")
 ```
 
-
-The following are the examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.test' and 'anova'.
+The following are some examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.test' and 'anova'.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
@@ -208,7 +207,7 @@ t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", add_sig = TRUE)
 t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
 # ALDEx2_kw
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_kw", group = "Group", taxa_level = "Phylum")
+t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
@@ -216,32 +215,39 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# ANCOMBC method
-# If ANCOMBC package is not installed, please first run: BiocManager::install("ANCOMBC")
-t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Family")
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
-t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
-t1$plot_diff_bar(use_number = 1:20)
+# ANCOMBC2 method
+# when fix_formula is not provided (necessary in the ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
+t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
+t1$plot_diff_bar(keep_full_name = TRUE, heatmap_cell = "P.adj", heatmap_sig = "Significance", heatmap_x = "Factors", heatmap_y = "Taxa")
+# add a continuous variable
+dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
+t2 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = NULL, fix_formula = "pH+Group", taxa_level = "OTU", filter_thres = 0.005)
+# original results t2$res_diff_raw
+# converted result t2$res_diff
+View(t2$res_diff)
 ```
 
 The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
-# LinDA method
-# If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
+# LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
 t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", taxa_level = "Genus")
 View(t1$res_diff)
+t1$plot_diff_bar(keep_full_name = TRUE)
+# Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.
+dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU")
+t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.005)
+t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
 ```
 
 ### More options
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
 The method `DESeq2` from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
-The linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lme'` for each feature by
-invoking this method in the trans_alpha class.
-For more details and parameter passing, please see the trans_alpha part.
+The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lm'` and `method = 'lme'`, respectively.
 
 ```{r, echo = TRUE, eval = FALSE}
 # AST: arc sine square root transformation
@@ -788,6 +794,7 @@ The fraction of all pairwise comparisons with |βNTI| < 2 and |RCbray| < 0.95 es
 
 ```{r, echo = TRUE}
 # use betaNTI and rcbray to evaluate processes
+t1$cal_process(use_betamntd = TRUE, group = "Group")
 t1$cal_process(use_betamntd = TRUE)
 # return t1$res_process
 ```

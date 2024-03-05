@@ -262,6 +262,21 @@ t1$plot_ordination(plot_color = "Saline", point_size = 5, point_alpha = .2, plot
 t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) + geom_vline(xintercept = 0, linetype = 2) + geom_hline(yintercept = 0, linetype = 2)
 ```
 
+One example for PCA or DCA with Genus data and loading arrow.
+
+```
+d1 <- dataset$merge_taxa(taxa = "Genus")
+d1$tax_table %<>% .[.$Genus != "g__", ]
+d1$tidy_dataset()
+rownames(d1$otu_table) <- d1$tax_table[rownames(d1$otu_table), "Genus"]
+rownames(d1$tax_table) <- d1$tax_table[, "Genus"]
+t1 <- trans_beta$new(dataset = d1)
+t1$cal_ordination(ordination = "PCA")
+t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
+t1$cal_ordination(ordination = "DCA")
+t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
+```
+
 Then we plot and compare the group distances.
 
 ```{r, echo = TRUE, eval = FALSE}

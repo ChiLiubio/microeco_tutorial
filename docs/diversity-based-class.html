@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.4.0)</title>
-  <meta name="description" content="The tutorial for R microeco (v1.4.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
+  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.5.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.5.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.4.0)" />
+  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.5.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco (v1.4.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.5.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.4.0)" />
+  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.5.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco (v1.4.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.5.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-01-24" />
+<meta name="date" content="2024-03-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -343,7 +343,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.4.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.5.0)</a>
           </h1>
         </div>
 
@@ -776,34 +776,45 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <span id="cb137-11"><a href="diversity-based-class.html#cb137-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;centroid&quot;</span>), <span class="at">plot_color =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">centroid_segment_linetype =</span> <span class="dv">1</span>)</span>
 <span id="cb137-12"><a href="diversity-based-class.html#cb137-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>, <span class="at">ellipse_chull_alpha =</span> <span class="fl">0.1</span>)</span>
 <span id="cb137-13"><a href="diversity-based-class.html#cb137-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>One example for PCA or DCA with Genus data and loading arrow.</p>
+<pre><code>d1 &lt;- dataset$merge_taxa(taxa = &quot;Genus&quot;)
+d1$tax_table %&lt;&gt;% .[.$Genus != &quot;g__&quot;, ]
+d1$tidy_dataset()
+rownames(d1$otu_table) &lt;- d1$tax_table[rownames(d1$otu_table), &quot;Genus&quot;]
+rownames(d1$tax_table) &lt;- d1$tax_table[, &quot;Genus&quot;]
+t1 &lt;- trans_beta$new(dataset = d1)
+t1$cal_ordination(ordination = &quot;PCA&quot;)
+t1$plot_ordination(plot_color = &quot;Group&quot;, loading_arrow = TRUE, loading_text_italic = TRUE)
+t1$cal_ordination(ordination = &quot;DCA&quot;)
+t1$plot_ordination(plot_color = &quot;Group&quot;, loading_arrow = TRUE, loading_text_italic = TRUE)</code></pre>
 <p>Then we plot and compare the group distances.</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="diversity-based-class.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
-<span id="cb138-2"><a href="diversity-based-class.html#cb138-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb138-3"><a href="diversity-based-class.html#cb138-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_group_distance</span></span>
-<span id="cb138-4"><a href="diversity-based-class.html#cb138-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform Wilcoxon Rank Sum and Signed Rank Tests</span></span>
-<span id="cb138-5"><a href="diversity-based-class.html#cb138-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb138-6"><a href="diversity-based-class.html#cb138-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_group_order parameter can be used to adjust orders in x axis</span></span>
-<span id="cb138-7"><a href="diversity-based-class.html#cb138-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="diversity-based-class.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
+<span id="cb139-2"><a href="diversity-based-class.html#cb139-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb139-3"><a href="diversity-based-class.html#cb139-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$res_group_distance</span></span>
+<span id="cb139-4"><a href="diversity-based-class.html#cb139-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform Wilcoxon Rank Sum and Signed Rank Tests</span></span>
+<span id="cb139-5"><a href="diversity-based-class.html#cb139-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb139-6"><a href="diversity-based-class.html#cb139-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_group_order parameter can be used to adjust orders in x axis</span></span>
+<span id="cb139-7"><a href="diversity-based-class.html#cb139-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_beta_group_distance_within.png" width="500px" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="diversity-based-class.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances between groups</span></span>
-<span id="cb139-2"><a href="diversity-based-class.html#cb139-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb139-3"><a href="diversity-based-class.html#cb139-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb139-4"><a href="diversity-based-class.html#cb139-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="diversity-based-class.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances between groups</span></span>
+<span id="cb140-2"><a href="diversity-based-class.html#cb140-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb140-3"><a href="diversity-based-class.html#cb140-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb140-4"><a href="diversity-based-class.html#cb140-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_group_distance</span>(<span class="at">boxplot_add =</span> <span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_beta_group_distance_between.png" width="500px" style="display: block; margin: auto;" /></p>
 <p>Clustering plot is also a frequently used method.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="diversity-based-class.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a part of data</span></span>
-<span id="cb140-2"><a href="diversity-based-class.html#cb140-2" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
-<span id="cb140-3"><a href="diversity-based-class.html#cb140-3" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span>
-<span id="cb140-4"><a href="diversity-based-class.html#cb140-4" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
-<span id="cb140-5"><a href="diversity-based-class.html#cb140-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb140-6"><a href="diversity-based-class.html#cb140-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use replace_name to set the label name, group parameter used to set the color</span></span>
-<span id="cb140-7"><a href="diversity-based-class.html#cb140-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_clustering</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">replace_name =</span> <span class="fu">c</span>(<span class="st">&quot;Type&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="diversity-based-class.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract a part of data</span></span>
+<span id="cb141-2"><a href="diversity-based-class.html#cb141-2" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
+<span id="cb141-3"><a href="diversity-based-class.html#cb141-3" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> <span class="fu">subset</span>(Group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CW&quot;</span>, <span class="st">&quot;TW&quot;</span>))</span>
+<span id="cb141-4"><a href="diversity-based-class.html#cb141-4" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb141-5"><a href="diversity-based-class.html#cb141-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb141-6"><a href="diversity-based-class.html#cb141-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use replace_name to set the label name, group parameter used to set the color</span></span>
+<span id="cb141-7"><a href="diversity-based-class.html#cb141-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_clustering</span>(<span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">replace_name =</span> <span class="fu">c</span>(<span class="st">&quot;Type&quot;</span>))</span></code></pre></div>
 <p><img src="Images/trans_beta_clustering.png" width="550px" style="display: block; margin: auto;" /></p>
 <p>PerMANOVA<span class="citation">(<a href="#ref-Anderson_Austral_2001" role="doc-biblioref">Anderson 2001</a>)</span> can be applied to the differential test of distances among groups via the <code>cal_manova</code> function developed
 based on the <code>adonis2</code> function of vegan package.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="diversity-based-class.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups when manova_all = TRUE</span></span>
-<span id="cb141-2"><a href="diversity-based-class.html#cb141-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb141-3"><a href="diversity-based-class.html#cb141-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="diversity-based-class.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for all groups when manova_all = TRUE</span></span>
+<span id="cb142-2"><a href="diversity-based-class.html#cb142-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb142-3"><a href="diversity-based-class.html#cb142-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table style="width:79%;">
 <caption>Permutation test for adonis under reduced model</caption>
@@ -853,9 +864,9 @@ based on the <code>adonis2</code> function of vegan package.</p>
 </tbody>
 </table>
 <p>The parameter <code>manova_all = FALSE</code> can make the test switch to paired group comparison.</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="diversity-based-class.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for each paired groups</span></span>
-<span id="cb143-2"><a href="diversity-based-class.html#cb143-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb143-3"><a href="diversity-based-class.html#cb143-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="diversity-based-class.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for each paired groups</span></span>
+<span id="cb144-2"><a href="diversity-based-class.html#cb144-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb144-3"><a href="diversity-based-class.html#cb144-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table>
 <colgroup>
@@ -909,9 +920,9 @@ based on the <code>adonis2</code> function of vegan package.</p>
 </tbody>
 </table>
 <p>The parameter <code>manova_set</code> has higher priority than <code>manova_all</code>. If <code>manova_set</code> is provided, manova_all parameter will be disabled.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="diversity-based-class.html#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: such as &quot;Group + Type&quot;</span></span>
-<span id="cb145-2"><a href="diversity-based-class.html#cb145-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
-<span id="cb145-3"><a href="diversity-based-class.html#cb145-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="diversity-based-class.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manova for specified group set: such as &quot;Group + Type&quot;</span></span>
+<span id="cb146-2"><a href="diversity-based-class.html#cb146-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_manova</span>(<span class="at">manova_set =</span> <span class="st">&quot;Group + Type&quot;</span>)</span>
+<span id="cb146-3"><a href="diversity-based-class.html#cb146-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_manova</span></code></pre></div>
 <pre><code>## The result is stored in object$res_manova ...</code></pre>
 <table style="width:79%;">
 <caption>Permutation test for adonis under reduced model</caption>
@@ -969,16 +980,16 @@ based on the <code>adonis2</code> function of vegan package.</p>
 </tbody>
 </table>
 <p>From v1.0.0, ANOSIM method is also available.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="diversity-based-class.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the group parameter is not necessary when it is provided in creating the object</span></span>
-<span id="cb147-2"><a href="diversity-based-class.html#cb147-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_anosim</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb147-3"><a href="diversity-based-class.html#cb147-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_anosim</span>
-<span id="cb147-4"><a href="diversity-based-class.html#cb147-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_anosim</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb147-5"><a href="diversity-based-class.html#cb147-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_anosim</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="diversity-based-class.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the group parameter is not necessary when it is provided in creating the object</span></span>
+<span id="cb148-2"><a href="diversity-based-class.html#cb148-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_anosim</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb148-3"><a href="diversity-based-class.html#cb148-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_anosim</span>
+<span id="cb148-4"><a href="diversity-based-class.html#cb148-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_anosim</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb148-5"><a href="diversity-based-class.html#cb148-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_anosim</span></code></pre></div>
 <p>PERMDISP<span class="citation">(<a href="#ref-Anderson_Navigating_2011" role="doc-biblioref">Anderson et al. 2011</a>)</span> is implemented to test multivariate homogeneity of groups dispersions (variances) based on the <code>betadisper</code> function of vegan package.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="diversity-based-class.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for the whole comparison and for each paired groups</span></span>
-<span id="cb148-2"><a href="diversity-based-class.html#cb148-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_betadisper</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="diversity-based-class.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for the whole comparison and for each paired groups</span></span>
+<span id="cb149-2"><a href="diversity-based-class.html#cb149-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_betadisper</span>()</span></code></pre></div>
 <pre><code>## The result is stored in object$res_betadisper ...</code></pre>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="diversity-based-class.html#cb150-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_betadisper</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="diversity-based-class.html#cb151-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_betadisper</span></code></pre></div>
 <pre><code>## 
 ## Permutation test for homogeneity of multivariate dispersions
 ## Permutation: free

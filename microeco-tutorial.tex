@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.4.0)},
+  pdftitle={Tutorial for R microeco package (v1.5.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.4.0)}
+\title{Tutorial for R microeco package (v1.5.0)}
 \author{}
-\date{\vspace{-2.5em}2024-01-24}
+\date{\vspace{-2.5em}2024-03-05}
 
 \begin{document}
 \maketitle
@@ -2170,6 +2170,21 @@ More examples on different options.
 \end{Highlighting}
 \end{Shaded}
 
+One example for PCA or DCA with Genus data and loading arrow.
+
+\begin{verbatim}
+d1 <- dataset$merge_taxa(taxa = "Genus")
+d1$tax_table %<>% .[.$Genus != "g__", ]
+d1$tidy_dataset()
+rownames(d1$otu_table) <- d1$tax_table[rownames(d1$otu_table), "Genus"]
+rownames(d1$tax_table) <- d1$tax_table[, "Genus"]
+t1 <- trans_beta$new(dataset = d1)
+t1$cal_ordination(ordination = "PCA")
+t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
+t1$cal_ordination(ordination = "DCA")
+t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
+\end{verbatim}
+
 Then we plot and compare the group distances.
 
 \begin{Shaded}
@@ -2462,15 +2477,16 @@ All the classes with complex models are grouped into this section.
 It can find the significant taxa in determining community differences across groups.
 Different approaches may produce inconsistent results since the underlying models/hypothesis are different \citep{Nearing_Microbiome_2022}.
 Currently, trans\_diff class has multiple famous differential test approaches or wrapped methods to better capture the important biomarkers:
-metastat\citep{White_Statistical_2009}, LEfSe\citep{Segata_Metagenomic_2011}, RF (random forest + differential test), metagenomeSeq\citep{Paulson_Differential_2013},
-Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Tests (for each paired group) and
+Kruskal-Wallis Rank Sum Test (for groups \textgreater{} 2), Wilcoxon Rank Sum Tests (for each paired group),\\
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired group in cases groups \textgreater{} 2),
-t.test, ANOVA, Scheirer Ray Hare test,
-ANCOMBC \citep{Lin_Analysis_2020}, ALDEx2 \citep{Fernandes_Unifying_2014},
-DESeq2 \citep{Michael_Moderated_2014}, LinDA \citep{LinDA_Zhou_2022}, beta regression \citep{Betaregression_2010},
+t-test, ANOVA, Scheirer Ray Hare test, linear regression,
+metastat\citep{White_Statistical_2009}, LEfSe\citep{Segata_Metagenomic_2011}, RF (random forest + differential test), metagenomeSeq\citep{Paulson_Differential_2013},
+DESeq2 \citep{Michael_Moderated_2014}, ALDEx2 \citep{Fernandes_Unifying_2014},
+ANCOM-BC2 \citep{Lin_Analysis_2020},
+LinDA \citep{LinDA_Zhou_2022}, beta regression \citep{Betaregression_2010},
 linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available,
-it is easy and feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
+it is feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
 \hypertarget{example-4}{%
 \subsection{Example}\label{example-4}}
@@ -2523,7 +2539,7 @@ k\_\_Bacteria\textbar p\_\_Proteobacteria\textbar c\_\_Gammaproteobacteria & CW 
 \bottomrule()
 \end{longtable}
 
-Then, we plot the abundance of biomarkers detected by LEfSe.
+Then, the abundance of biomarkers detected by LEfSe can be visualized easily.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2571,7 +2587,7 @@ At this time, taxa can be manually choosed to show like the following operation.
 \begin{center}\includegraphics[width=1000px]{Images/trans_diff_lefse_cladogram_1} \end{center}
 
 The `rf' method depends on the random forest\citep{Beck_Machine_2014, Yatsunenko_Human_2012} and the non-parametric test.
-The current method can calculate random forest by bootstrapping like the method in LEfSe and only use the significant features.
+The current method implements random forest by bootstrapping like the operation in LEfSe and employs the significant features as input.
 MeanDecreaseGini is selected as the indicator value in the analysis.
 
 \begin{Shaded}
@@ -2624,13 +2640,12 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 \CommentTok{\# metastat analysis at Genus level}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"metastat"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \CommentTok{\# t1$res\_diff is the differential test result}
-\CommentTok{\# t1$res\_abund is the group abundance}
 \end{Highlighting}
 \end{Shaded}
 
 Because the example `Group' in sample\_table has three groups,
 the metastat can run the comparisons for each paired group. So there are three pairs in t1\$res\_diff\$Comparison.
-For the abundance plotting, the user should use select\_group to select the required pair.
+For the abundance plotting, the user should use select\_group parameter to select the specific pair.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2641,7 +2656,7 @@ For the abundance plotting, the user should use select\_group to select the requ
 
 \begin{center}\includegraphics[width=650px]{Images/trans_diff_metastat_1} \end{center}
 
-The following are the examples for the methods `KW', `KW\_dunn', `wilcox', `t.test' and `anova'.
+The following are some examples for the methods `KW', `KW\_dunn', `wilcox', `t.test' and `anova'.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2689,7 +2704,7 @@ These three packages are all deposited on the Bioconductor.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
 \CommentTok{\# ALDEx2\_kw}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_kw"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ALDEx2\_kw"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
@@ -2698,12 +2713,16 @@ These three packages are all deposited on the Bioconductor.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# ANCOMBC method}
-\CommentTok{\# If ANCOMBC package is not installed, please first run: BiocManager::install("ANCOMBC")}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Family"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{select\_group =} \StringTok{"CW {-} TW"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\CommentTok{\# ANCOMBC2 method}
+\CommentTok{\# when fix\_formula is not provided (necessary in the ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.01}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{heatmap\_cell =} \StringTok{"P.adj"}\NormalTok{, }\AttributeTok{heatmap\_sig =} \StringTok{"Significance"}\NormalTok{, }\AttributeTok{heatmap\_x =} \StringTok{"Factors"}\NormalTok{, }\AttributeTok{heatmap\_y =} \StringTok{"Taxa"}\NormalTok{)}
+\CommentTok{\# add a continuous variable}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{fix\_formula =} \StringTok{"pH+Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.005}\NormalTok{)}
+\CommentTok{\# original results t2$res\_diff\_raw}
+\CommentTok{\# converted result t2$res\_diff}
+\FunctionTok{View}\NormalTok{(t2}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2711,12 +2730,17 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# LinDA method}
-\CommentTok{\# If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")}
+\CommentTok{\# LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{), }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group+Type"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"pH + Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"\textasciitilde{}pH + Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.005}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{text\_y\_position =} \StringTok{"left"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2725,9 +2749,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
 The method \texttt{DESeq2} from DESeq2 package is also supported in the trans\_diff class and no longer demonstrated here.
-The linear mixed-effects models from lmerTest package can be fitted with the option \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}} for each feature by
-invoking this method in the trans\_alpha class.
-For more details and parameter passing, please see the trans\_alpha part.
+The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option \texttt{method\ =\ \textquotesingle{}lm\textquotesingle{}} and \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}}, respectively.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3401,6 +3423,16 @@ The fraction of all pairwise comparisons with \textbar βNTI\textbar{} \textless
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use betaNTI and rcbray to evaluate processes}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_process}\NormalTok{(}\AttributeTok{use\_betamntd =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The result is stored in object$res_process ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_process}\NormalTok{(}\AttributeTok{use\_betamntd =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3460,7 +3492,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Jan 24 11:04:57 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Mar  5 17:37:27 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3490,9 +3522,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3881 & 0.364 & 9.108 \\
-CW & 435 & 0.5625 & 0.2958 & 0.2862 & 14.37 \\
-TW & 435 & 0.6245 & 0.4163 & 0.3999 & 9.874 \\
+IW & 435 & 0.6534 & 0.3856 & 0.3635 & 9.102 \\
+CW & 435 & 0.5629 & 0.2961 & 0.2865 & 14.33 \\
+TW & 435 & 0.6243 & 0.4162 & 0.3998 & 9.855 \\
 \bottomrule()
 \end{longtable}
 
