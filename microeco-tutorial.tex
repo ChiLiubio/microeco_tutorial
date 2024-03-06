@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.5.0)}
 \author{}
-\date{\vspace{-2.5em}2024-03-05}
+\date{\vspace{-2.5em}2024-03-06}
 
 \begin{document}
 \maketitle
@@ -285,7 +285,7 @@ If you want to install all of these packages or some of them, please run this:
 \CommentTok{\# If a package is not installed, it will be installed from CRAN}
 \CommentTok{\# First select the packages of interest}
 \NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"microeco"}\NormalTok{, }\StringTok{"mecoturn"}\NormalTok{, }\StringTok{"MASS"}\NormalTok{, }\StringTok{"GUniFrac"}\NormalTok{, }\StringTok{"ggpubr"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"ggdendro"}\NormalTok{, }\StringTok{"ggrepel"}\NormalTok{, }\StringTok{"agricolae"}\NormalTok{, }\StringTok{"igraph"}\NormalTok{, }\StringTok{"picante"}\NormalTok{, }\StringTok{"pheatmap"}\NormalTok{, }\StringTok{"rgexf"}\NormalTok{, }
-    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{, }\StringTok{"SRS"}\NormalTok{)}
+    \StringTok{"ggalluvial"}\NormalTok{, }\StringTok{"ggh4x"}\NormalTok{, }\StringTok{"rcompanion"}\NormalTok{, }\StringTok{"FSA"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"aplot"}\NormalTok{, }\StringTok{"NST"}\NormalTok{, }\StringTok{"GGally"}\NormalTok{, }\StringTok{"ggraph"}\NormalTok{, }\StringTok{"networkD3"}\NormalTok{, }\StringTok{"poweRlaw"}\NormalTok{, }\StringTok{"ggtern"}\NormalTok{, }\StringTok{"SRS"}\NormalTok{, }\StringTok{"performance"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ tmp)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -329,11 +329,12 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# downloading link of the compressed archive}
+\CommentTok{\# download link of the compressed packages archive}
+\CommentTok{\# Alternative from Gitee "https://gitee.com/chiliubio/microeco\_dependence/releases/download/v0.20.0/microeco\_dependence.zip"}
 \NormalTok{url }\OtherTok{\textless{}{-}} \StringTok{"https://github.com/ChiLiubio/microeco\_dependence/releases/download/v0.20.0/microeco\_dependence.zip"}
 \CommentTok{\# allow more time to download the zip file in R}
 \FunctionTok{options}\NormalTok{(}\AttributeTok{timeout =} \DecValTok{2000}\NormalTok{)}
-\CommentTok{\# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory}
+\CommentTok{\# Another way is to open the upper url in browser to download the zip file and move it to the current R working directory}
 \FunctionTok{download.file}\NormalTok{(}\AttributeTok{url =}\NormalTok{ url, }\AttributeTok{destfile =} \StringTok{"microeco\_dependence.zip"}\NormalTok{)}
 \CommentTok{\# uncompress the file in R}
 \NormalTok{tmp }\OtherTok{\textless{}{-}} \StringTok{"microeco\_dependence"}
@@ -3105,7 +3106,7 @@ in which roughly 200 edges connect both OTUs in Proteobacteria and roughly 150 e
 \CommentTok{\# interactive visualization; require chorddiag package; see https://github.com/mattflor/chorddiag}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{plot\_pos =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot\_num =} \DecValTok{10}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{10}\NormalTok{, }\StringTok{"Paired"}\NormalTok{))}
 \CommentTok{\# From v1.2.0, method = "circlize" is available for conveniently saving the static plot}
-\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"circlize"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"circlize"}\NormalTok{)}
+\CommentTok{\# If circlize package is not installed, first run: install.packages("circlize")}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{method =} \StringTok{"circlize"}\NormalTok{, }\AttributeTok{transparency =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{annotationTrackHeight =}\NormalTok{ circlize}\SpecialCharTok{::}\FunctionTok{mm\_h}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
@@ -3492,7 +3493,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Mar  5 17:37:27 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Wed Mar  6 21:01:44 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3522,9 +3523,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6534 & 0.3856 & 0.3635 & 9.102 \\
-CW & 435 & 0.5629 & 0.2961 & 0.2865 & 14.33 \\
-TW & 435 & 0.6243 & 0.4162 & 0.3998 & 9.855 \\
+IW & 435 & 0.6541 & 0.3865 & 0.3641 & 9.067 \\
+CW & 435 & 0.563 & 0.2963 & 0.2865 & 14.33 \\
+TW & 435 & 0.6247 & 0.4163 & 0.4001 & 9.9 \\
 \bottomrule()
 \end{longtable}
 
@@ -5825,13 +5826,6 @@ This step is to manipulate the file res\_group\_distance in the betaturn object 
 \NormalTok{b1 }\OtherTok{\textless{}{-}}\NormalTok{ betaturn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(wheat\_16S, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning in checkDepPackageVersion(dep_pkg = "TMB"): Package version inconsistency detected.
-## glmmTMB was built with TMB version 1.9.9
-## Current TMB version is 1.9.10
-## Please re-install glmmTMB from source or restore original 'TMB' package (see '?reinstalling' for more information)
-\end{verbatim}
 
 \begin{verbatim}
 ## The distance matrix is stored in object$beta_diversity list ...

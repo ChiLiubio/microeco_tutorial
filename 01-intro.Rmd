@@ -110,7 +110,7 @@ options(timeout = 1000)
 # If a package is not installed, it will be installed from CRAN
 # First select the packages of interest
 tmp <- c("microeco", "mecoturn", "MASS", "GUniFrac", "ggpubr", "randomForest", "ggdendro", "ggrepel", "agricolae", "igraph", "picante", "pheatmap", "rgexf", 
-    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "ggraph", "networkD3", "poweRlaw", "ggtern", "SRS")
+    "ggalluvial", "ggh4x", "rcompanion", "FSA", "gridExtra", "aplot", "NST", "GGally", "ggraph", "networkD3", "poweRlaw", "ggtern", "SRS", "performance")
 # Now check or install
 for(x in tmp){
 	if(!require(x, character.only = TRUE)) {
@@ -150,11 +150,12 @@ Please run the following commands to install them.
 For the Windows system, first make sure RTools has been installed (https://chiliubio.github.io/microeco_tutorial/intro.html#rtools).
 
 ```{r, echo = TRUE, eval = FALSE}
-# downloading link of the compressed archive
+# download link of the compressed packages archive
+# Alternative from Gitee "https://gitee.com/chiliubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
 url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
 # allow more time to download the zip file in R
 options(timeout = 2000)
-# If failed or too slow, please open the upper url in browser or other tool to download the zip file and move it to the current R working directory
+# Another way is to open the upper url in browser to download the zip file and move it to the current R working directory
 download.file(url = url, destfile = "microeco_dependence.zip")
 # uncompress the file in R
 tmp <- "microeco_dependence"
