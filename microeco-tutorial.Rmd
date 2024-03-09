@@ -1413,7 +1413,7 @@ t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) +
 
 One example for PCA or DCA with Genus data and loading arrow.
 
-```
+```{r, echo = TRUE, eval = FALSE}
 d1 <- dataset$merge_taxa(taxa = "Genus")
 d1$tax_table %<>% .[.$Genus != "g__", ]
 d1$tidy_dataset()
@@ -3168,7 +3168,7 @@ Note that the `sample_table` parameter in each function of file2meco package sup
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# install file2meco package (>= 0.7.0)
+# install file2meco package (>= 0.7.1)
 if(!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if(!require("file2meco")) install.packages("file2meco", repos = BiocManager::repositories())
 ```
@@ -3315,14 +3315,24 @@ Braken [@Lu_Bracken_2017] can be applied to estimate species abundance following
 The merged Kraken2/Braken results can be obtained by merge_metaphlan_tables.py from MetaPhlAn or combine_mpa.py from KrakenTools (https://ccb.jhu.edu/software/krakentools/).
 
 ```{r, echo = TRUE, eval = FALSE}
-# the example is metagenomic classification result
-# use the raw data files stored inside the package
+# use the raw data files inside the package
 abund_file_path <- system.file("extdata", "example_kraken2_merge.txt", package="file2meco")
 sample_file_path <- system.file("extdata", "example_metagenome_sample_info.tsv", package="file2meco")
 match_file_path <- system.file("extdata", "example_metagenome_match_table.tsv", package="file2meco")
 mpa2meco(abund_file_path)
-test <- mpa2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path)
-test$tidy_dataset()
+# 'rel = FALSE' means raw abundance in taxa_abund
+test1 <- mpa2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path, rel = FALSE, use_level = "s__")
+test1$taxa_abund$Kingdom[, 1:3]
+# 'rel = TRUE' means relative abundance in taxa_abund
+test2 <- mpa2meco(abund_file_path, sample_table = sample_file_path, match_table = match_file_path, rel = TRUE)
+test2$taxa_abund$Kingdom[, 1:3]
+# The relative abundance in test2 is different with that in test3
+# The taxonomic abundances in taxa_abund of test3 is calculated based on the otu_table (species abundance) and tax_table
+# So when the user need to use raw or relative taxonomic abundance coming from original file, please donot run cal_abund function.
+library(microeco)
+test3 <- clone(test2)
+test3$cal_abund()
+test3$taxa_abund$Kingdom[, 1:3]
 ```
 
 

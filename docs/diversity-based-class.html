@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-03-07" />
+<meta name="date" content="2024-03-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -777,16 +777,16 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 <span id="cb137-12"><a href="diversity-based-class.html#cb137-12" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">point_size =</span> <span class="dv">5</span>, <span class="at">point_alpha =</span> .<span class="dv">2</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;chull&quot;</span>), <span class="at">ellipse_chull_fill =</span> <span class="cn">FALSE</span>, <span class="at">ellipse_chull_alpha =</span> <span class="fl">0.1</span>)</span>
 <span id="cb137-13"><a href="diversity-based-class.html#cb137-13" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>One example for PCA or DCA with Genus data and loading arrow.</p>
-<pre><code>d1 &lt;- dataset$merge_taxa(taxa = &quot;Genus&quot;)
-d1$tax_table %&lt;&gt;% .[.$Genus != &quot;g__&quot;, ]
-d1$tidy_dataset()
-rownames(d1$otu_table) &lt;- d1$tax_table[rownames(d1$otu_table), &quot;Genus&quot;]
-rownames(d1$tax_table) &lt;- d1$tax_table[, &quot;Genus&quot;]
-t1 &lt;- trans_beta$new(dataset = d1)
-t1$cal_ordination(ordination = &quot;PCA&quot;)
-t1$plot_ordination(plot_color = &quot;Group&quot;, loading_arrow = TRUE, loading_text_italic = TRUE)
-t1$cal_ordination(ordination = &quot;DCA&quot;)
-t1$plot_ordination(plot_color = &quot;Group&quot;, loading_arrow = TRUE, loading_text_italic = TRUE)</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="diversity-based-class.html#cb138-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">merge_taxa</span>(<span class="at">taxa =</span> <span class="st">&quot;Genus&quot;</span>)</span>
+<span id="cb138-2"><a href="diversity-based-class.html#cb138-2" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span>tax_table <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Genus <span class="sc">!=</span> <span class="st">&quot;g__&quot;</span>, ]</span>
+<span id="cb138-3"><a href="diversity-based-class.html#cb138-3" aria-hidden="true" tabindex="-1"></a>d1<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb138-4"><a href="diversity-based-class.html#cb138-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d1<span class="sc">$</span>otu_table) <span class="ot">&lt;-</span> d1<span class="sc">$</span>tax_table[<span class="fu">rownames</span>(d1<span class="sc">$</span>otu_table), <span class="st">&quot;Genus&quot;</span>]</span>
+<span id="cb138-5"><a href="diversity-based-class.html#cb138-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(d1<span class="sc">$</span>tax_table) <span class="ot">&lt;-</span> d1<span class="sc">$</span>tax_table[, <span class="st">&quot;Genus&quot;</span>]</span>
+<span id="cb138-6"><a href="diversity-based-class.html#cb138-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1)</span>
+<span id="cb138-7"><a href="diversity-based-class.html#cb138-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;PCA&quot;</span>)</span>
+<span id="cb138-8"><a href="diversity-based-class.html#cb138-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">loading_arrow =</span> <span class="cn">TRUE</span>, <span class="at">loading_text_italic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb138-9"><a href="diversity-based-class.html#cb138-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">ordination =</span> <span class="st">&quot;DCA&quot;</span>)</span>
+<span id="cb138-10"><a href="diversity-based-class.html#cb138-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">loading_arrow =</span> <span class="cn">TRUE</span>, <span class="at">loading_text_italic =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Then we plot and compare the group distances.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="diversity-based-class.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and plot sample distances within groups</span></span>
 <span id="cb139-2"><a href="diversity-based-class.html#cb139-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)</span>

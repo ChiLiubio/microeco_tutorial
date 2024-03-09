@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.5.0)}
 \author{}
-\date{\vspace{-2.5em}2024-03-07}
+\date{\vspace{-2.5em}2024-03-09}
 
 \begin{document}
 \maketitle
@@ -2175,18 +2175,20 @@ More examples on different options.
 
 One example for PCA or DCA with Genus data and loading arrow.
 
-\begin{verbatim}
-d1 <- dataset$merge_taxa(taxa = "Genus")
-d1$tax_table %<>% .[.$Genus != "g__", ]
-d1$tidy_dataset()
-rownames(d1$otu_table) <- d1$tax_table[rownames(d1$otu_table), "Genus"]
-rownames(d1$tax_table) <- d1$tax_table[, "Genus"]
-t1 <- trans_beta$new(dataset = d1)
-t1$cal_ordination(ordination = "PCA")
-t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
-t1$cal_ordination(ordination = "DCA")
-t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{d1}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{Genus }\SpecialCharTok{!=} \StringTok{"g\_\_"}\NormalTok{, ]}
+\NormalTok{d1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{otu\_table) }\OtherTok{\textless{}{-}}\NormalTok{ d1}\SpecialCharTok{$}\NormalTok{tax\_table[}\FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{otu\_table), }\StringTok{"Genus"}\NormalTok{]}
+\FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{tax\_table) }\OtherTok{\textless{}{-}}\NormalTok{ d1}\SpecialCharTok{$}\NormalTok{tax\_table[, }\StringTok{"Genus"}\NormalTok{]}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{loading\_arrow =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{loading\_text\_italic =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"DCA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{loading\_arrow =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{loading\_text\_italic =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 Then we plot and compare the group distances.
 
@@ -3495,7 +3497,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Mar  7 10:36:31 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Sat Mar  9 17:17:36 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3525,9 +3527,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6534 & 0.3874 & 0.3635 & 9.175 \\
-CW & 435 & 0.5626 & 0.296 & 0.2863 & 14.28 \\
-TW & 435 & 0.6248 & 0.4169 & 0.4002 & 9.811 \\
+IW & 435 & 0.6536 & 0.387 & 0.3637 & 9.087 \\
+CW & 435 & 0.5629 & 0.296 & 0.2865 & 14.35 \\
+TW & 435 & 0.6246 & 0.4158 & 0.4 & 9.872 \\
 \bottomrule()
 \end{longtable}
 
@@ -4616,7 +4618,7 @@ Note that the \texttt{sample\_table} parameter in each function of file2meco pac
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# install file2meco package (\textgreater{}= 0.7.0)}
+\CommentTok{\# install file2meco package (\textgreater{}= 0.7.1)}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \end{Highlighting}
@@ -4771,14 +4773,24 @@ The merged Kraken2/Braken results can be obtained by merge\_metaphlan\_tables.py
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# the example is metagenomic classification result}
-\CommentTok{\# use the raw data files stored inside the package}
+\CommentTok{\# use the raw data files inside the package}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_kraken2\_merge.txt"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_sample\_info.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{match\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"example\_metagenome\_match\_table.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path)}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path)}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# \textquotesingle{}rel = FALSE\textquotesingle{} means raw abundance in taxa\_abund}
+\NormalTok{test1 }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{use\_level =} \StringTok{"s\_\_"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Kingdom[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]}
+\CommentTok{\# \textquotesingle{}rel = TRUE\textquotesingle{} means relative abundance in taxa\_abund}
+\NormalTok{test2 }\OtherTok{\textless{}{-}} \FunctionTok{mpa2meco}\NormalTok{(abund\_file\_path, }\AttributeTok{sample\_table =}\NormalTok{ sample\_file\_path, }\AttributeTok{match\_table =}\NormalTok{ match\_file\_path, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{test2}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Kingdom[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]}
+\CommentTok{\# The relative abundance in test2 is different with that in test3}
+\CommentTok{\# The taxonomic abundances in taxa\_abund of test3 is calculated based on the otu\_table (species abundance) and tax\_table}
+\CommentTok{\# So when the user need to use raw or relative taxonomic abundance coming from original file, please donot run cal\_abund function.}
+\FunctionTok{library}\NormalTok{(microeco)}
+\NormalTok{test3 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(test2)}
+\NormalTok{test3}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\NormalTok{test3}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Kingdom[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
