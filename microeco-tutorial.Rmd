@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v1.5.0)"
+title: "Tutorial for R microeco package (v1.6.0)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -8,7 +8,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "The tutorial for R microeco (v1.5.0), file2meco (v0.7.0), meconetcomp (v0.4.0) and mecoturn packages"
+description: "The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages"
 ---
 
 
@@ -1486,6 +1486,7 @@ pander::pander(t1$res_manova)
 
 The parameter `manova_all = FALSE` can make the test switch to paired group comparison.
 
+
 ```{r, echo = TRUE, eval = FALSE}
 # manova for each paired groups
 t1$cal_manova(manova_all = FALSE)
@@ -1496,6 +1497,19 @@ t1$res_manova
 t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
+
+When there are too many comparison pairs or when comparisons are valuable only within certain categories, the `by_group` parameter can be used.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_manova(manova_all = FALSE, group = "Type", by_group = "Group")
+t1$res_manova
+```
+
+```{r, echo = FALSE}
+t1$cal_manova(manova_all = FALSE, group = "Type", by_group = "Group")
+pander::pander(t1$res_manova)
+```
+
 
 The parameter `manova_set` has higher priority than `manova_all`. If `manova_set` is provided, manova_all parameter will be disabled.
 
@@ -2248,44 +2262,6 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/trans_nullmodel_betaNRI_one_dataset.png")
-```
-
-Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
-you should calculate the results for each group, respectively.
-The results show that, when we perform betaNRI for each group respectively, 
-mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW, 
-revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
-
-```{r, echo = TRUE, eval=FALSE}
-# we create a list to store the trans_nullmodel results.
-sesbeta_each <- list()
-group_col <- "Group"
-all_groups <- unique(dataset$sample_table[, group_col])
-# calculate for each group, respectively
-for(i in all_groups){
-	# like the above operation, but need provide 'group' and 'select_group'
-	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, filter_thres = 0.0005)
-	test$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
-	sesbeta_each[[i]] <- test$res_ses_betampd
-}
-# merge and reshape to generate one symmetrical matrix
-test <- lapply(sesbeta_each, reshape2::melt) %>% 
-	do.call(rbind, .) %>%
-	reshape2::dcast(., Var1~Var2, value.var = "value")
-rownames(test) <- test[, 1]
-test <- test[, -1, drop = FALSE]
-# like the above operation
-dataset$beta_diversity[["betaNRI"]] <- test
-t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
-t2$cal_group_distance()
-# statistical analysis
-t2$cal_group_distance_diff(method = "wilcox")
-g1 <- t2$plot_group_distance(boxplot_add = "mean")
-g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
-```
-
-```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
 ```
 
 
@@ -3685,17 +3661,6 @@ and paste the compressed zip format data.
 as \# can cause format chaos without code tag.
 
 
-
-## change object
-All the classes are set public, meaning that you can **change, add or remove the objects stored in them as you want**.
-
-```{r, echo = TRUE}
-# add a matrix you think useful
-dataset$my_matrix <- matrix(1, nrow = 4, ncol = 4)
-# change the information
-dataset$sample_table %<>% .[, -2]
-```
-
 ## group order
 If the user want to reorder the groups, **assigning factors may be the simplest way.**
 
@@ -3778,6 +3743,19 @@ t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 20, groupme
 t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_20"))
 ```
 
+
+## change object
+
+All the classes are set public, meaning that you can **change, add or remove the objects stored in them as you want**.
+
+```{r, echo = TRUE}
+# add a matrix you think useful
+dataset$my_matrix <- matrix(1, nrow = 4, ncol = 4)
+# change the information
+dataset$sample_table %<>% .[, -2]
+```
+
+
 ## customized data input
 
 From v0.7.0, trans_alpha, trans_env and trans_venn classes can accept NULL dataset input for some customized usage of some functions in those classes.
@@ -3792,155 +3770,6 @@ t1 <- trans_alpha$new(dataset = NULL, group = NULL)
 
 
 <!--chapter:end:09-Notes.Rmd-->
-
-# mecodev package
-The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed for more extended analysis approaches based on the microeco package.
-
-## trans_rarefy
-The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether 
-the sequencing depth is enough to cover all the so-called species in the microbial community.
-
-```{r, echo = TRUE, eval = FALSE}
-library(microeco)
-library(mecodev)
-data(sample_info_16S)
-data(otu_table_16S)
-# set.seed is used to fix the random number generation to make the results repeatable
-set.seed(123)
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
-dataset$tidy_dataset()
-# trans_rarefy class
-t1 <- trans_rarefy$new(dataset, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
-t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = FALSE)
-t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
-```
-
-```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_trans_rarefy.png")
-```
-
-
-## trans_norm
-The class trans_norm provide several data normalization or transformation approaches for the microtable object or data.frame object.
-The format of output will be same with the input.
-
-```{r, echo = TRUE, eval = FALSE}
-library(microeco)
-library(mecodev)
-data(dataset)
-test1 <- trans_norm$new(dataset = dataset)
-# Centered log-ratio normalization
-test2 <- test1$norm(method = "CLR")
-# test2 is another microtable object
-# Cumulative sum scaling normalization
-test2 <- test1$norm(method = "CCS")
-# Total sum scaling, dividing counts by the sequencing depth
-test2 <- test1$norm(method = "TSS")
-# log transformation
-test2 <- test1$norm(method = "log")
-# Arc sine square root transformation
-test1 <- trans_norm$new(dataset$taxa_abund$Genus)
-test3 <- test1$norm(method = "AST")
-# test3 is data.frame format
-```
-
-
-## trans_ts
-
-The class trans_ts is designed for the time series data analysis.
-A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
-gLV models are based on ordinary differential equations that model the logistic growth of species; 
-naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
-More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
-against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species), 
-and analyzing community stability (see [@Li_expectation_2019] and the references therein).
-Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package [@Li_expectation_2019].
-The example data 'gut_microb_ts' comes from the article [@Gibbons_twodynamic_2017].
-
-```{r, echo = TRUE, eval = FALSE}
-# install the necessary packages
-# For windows system:
-install.packages("doMC", repos = "http://R-Forge.R-project.org")
-# For linux or mac
-install.packages("doMC")
-# Then install the following packages
-install.packages("lokern")
-install.packages("monomvn")
-install.packages("pspline")
-devtools::install_github('csb5/beem')
-```
-
-```{r, echo = TRUE, eval = FALSE}
-library(mecodev)
-# load the example data in mecodev package; the input must be a microtable object
-# There are several strict requirements on the sample_table; see the document of the class.
-data("gut_microb_ts")
-# generally, using filter_thres to filter the taxa with low abundance is crutial
-# there are only 22 taxa in the example data, we use 0
-t1 <- trans_ts$new(dataset = gut_microb_ts, filter_thres = 0.005)
-# use minimal 30 times for iteration
-t1$cal_biomass(min_iter = 30)
-# return t1$res_biomass and t1$res_param
-# t2 is a trans_network object
-t2 <- t1$cal_network()
-# use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network
-t2$cal_module(method = "cluster_optimal")
-```
-
-
-## trans_gamma
-
-The class trans_gamma is developed to explore the relationship between gamma diversity and beta diversity 
-based on the methods from biogeographic studies[@Zhang_Local_2020].
-Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
-If the observed gamma diversity and beta diversity are significantly correlated,
-species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
-Thus, species pool should be first considered to explain beta diversity patterns.
-This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
-other than random sampling based on the species log-normal distribution.
-We use the wetland data to show the observed beta-gamma diversity relationship.
-
-
-```{r, echo = TRUE, eval = FALSE}
-library(microeco)
-library(mecodev)
-# load the example data
-data(sample_info_16S)
-data(otu_table_16S)
-test <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
-test$tidy_dataset()
-test$rarefy_samples(sample.size = 10000)
-# then create trans_gamma object
-test1 <- trans_gamma$new(dataset = test, group = "Type", method = "bray")
-test1$cal_observed(sample_size = NULL)
-test1$res_observed
-# use Spearman correlation
-test1$plot_observed(cor_method = "spearman")
-```
-
-```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_gamma_obs.png")
-```
-
-Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
-other than random sampling based on the species log-normal distribution.
-
-```{r, echo = TRUE, eval = FALSE}
-# if you only run the simulation, dataset parameter is not necessary
-test1 <- trans_gamma$new(method = "bray")
-# use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.
-test1$cal_simulation(ncom = 20, ind_vect = c(200, 1000, 2000))
-test1$plot_simulation(add_fitting = FALSE)
-```
-
-```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_gamma_simu.png")
-```
-
-
-
-
-<!--chapter:end:10-mecodev.Rmd-->
 
 # meconetcomp package
 
@@ -4169,9 +3998,30 @@ ggsave("soil_amp_subnet_property.pdf", g1, width = 11, height = 5)
 
 ## Robustness of network
 
-From v0.4.0, the robustness analysis is implemented in the `robustness` class based on 
+The robustness analysis is implemented in the robustness class based on 
 several edge and node removal strategies and robustness measures [@Bellingeri_comprem_2020; @LiuJing_comprobust_2017].
-For the details of each method, please see the help document with the command `?robustness`.
+For the details of each method, please refer to the help document with the command `?robustness`.
+Available options of `remove_strategy` parameter include "edge_rand" (edges are randomly removed),
+"edge_strong" (edges are removed in decreasing order of weight), "node_rand" (nodes are removed randomly),
+"node_hub" (node hubs are randomly removed, including network hubs and module hubs),
+"node_degree_high" (nodes are removed in decreasing order of degree), etc.
+Available options of `measure` include "Eff", "Eigen" and "Pcr".
+"Eff" denotes the network efficiency [@LiuJing_comprobust_2017]. 
+The average efficiency of the network is defined:
+$$ Eff = \frac{1}{N(N - 1)} \sum_{i \neq j \in G}\frac{1}{d(i, j)} $$
+where N is the total number of nodes and $d(i,j)$ is the shortest path between node $i$ and node $j$. 
+When the weight is found in the edge attributes, $d(i,j)$ denotes the weighted shortest path between node $i$ and node $j$.
+"Eigen" represents the natural connectivity.
+The natural connectivity can be regarded as an average eigenvalue that changes strictly monotonically with the addition or deletion of edges. 
+It is defined:
+$$ \bar{\lambda} = \ln(\frac{1}{N} \sum_{i=1}^{N} e^{\lambda~i~}) $$
+where $\lambda~i~$ is the $i$th eigenvalue of the graph adjacency matrix. The larger the value of $\bar{\lambda}$ is, the more robust the network is.
+"Pcr" means the critical removal fraction of vertices (edges) for the disintegration of networks.
+This is a robustness measure based on random graph theory.
+The critical fraction against random attacks is labeled as $P_{c}^r$. It is defined:
+$$ P_{c}^r = 1 - \frac{1}{\frac{\langle k^2 \rangle}{\langle k \rangle} - 1} $$
+where $\langle k \rangle$ is the average nodal degree of the original network, and $\langle k^2 \rangle$ is the average of square of nodal degree. 
+
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_degree_high"), 
@@ -4189,12 +4039,34 @@ knitr::include_graphics("Images/meconetcomp_robustness.png")
 
 From v0.4.0, the vulnerability of nodes can be calculated with the `vulnerability` function.
 The vulnerability of one node is defined as the efficiency of network after removing this targeted node [@Yuan_Climatewarm_2021].
-For the details, please see the help document.
+For the details, please swith to the help document.
 
 
 ```{r, echo = TRUE, eval = FALSE}
 vul_table <- vulnerability(soil_amp_network)
 View(vul_table)
+```
+
+
+## Cohesion
+
+The cohesion is a method for quantifying the connectivity of microbial communities [@Herren_Cohesion_2017].
+From v0.5.0, the cohesion is implemented in cohesionclass.
+It is defined:
+$$   C_{j}^{pos} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r>0}   $$
+$$   C_{j}^{neg} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r<0}   $$
+where $C_{j}^{pos}$ is the positive cohesion, and $C_{j}^{neg}$ is the negative cohesion.
+$a_{i}$ is the relative abundance of species $i$ in sample $j$.
+$\bar{r_{i}}_{|r>0}$ denotes the mean weight (correlation coefficient, interaction strength) of all the edges (related with species $i$) with positive association.
+
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- cohesionclass$new(soil_amp_network)
+View(t1$res_list$sample)
+View(t1$res_list$feature)
+t1$cal_diff(method = "anova")
+t1$plot(measure = "r_pos")
+t1$plot(measure = "r_pos", boxplot_add = "none")
 ```
 
 
@@ -4204,10 +4076,132 @@ View(vul_table)
 
 
 
+<!--chapter:end:10-meconetcomp.Rmd-->
+
+# mecodev package
+The mecodev package (https://github.com/ChiLiubio/mecodev/) is designed for more extended analysis approaches based on the microeco package.
+
+## trans_rarefy
+The class trans_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether 
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(mecodev)
+data(sample_info_16S)
+data(otu_table_16S)
+# set.seed is used to fix the random number generation to make the results repeatable
+set.seed(123)
+dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
+dataset$tidy_dataset()
+# trans_rarefy class
+t1 <- trans_rarefy$new(dataset, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = FALSE)
+t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_trans_rarefy.png")
+```
 
 
 
-<!--chapter:end:11-meconetcomp.Rmd-->
+## trans_ts
+
+The class trans_ts is designed for the time series data analysis.
+A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
+gLV models are based on ordinary differential equations that model the logistic growth of species; 
+naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
+More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
+against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species), 
+and analyzing community stability (see [@Li_expectation_2019] and the references therein).
+Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package [@Li_expectation_2019].
+The example data 'gut_microb_ts' comes from the article [@Gibbons_twodynamic_2017].
+
+```{r, echo = TRUE, eval = FALSE}
+# install the necessary packages
+# For windows system:
+install.packages("doMC", repos = "http://R-Forge.R-project.org")
+# For linux or mac
+install.packages("doMC")
+# Then install the following packages
+install.packages("lokern")
+install.packages("monomvn")
+install.packages("pspline")
+devtools::install_github('csb5/beem')
+```
+
+```{r, echo = TRUE, eval = FALSE}
+library(mecodev)
+# load the example data in mecodev package; the input must be a microtable object
+# There are several strict requirements on the sample_table; see the document of the class.
+data("gut_microb_ts")
+# generally, using filter_thres to filter the taxa with low abundance is crutial
+# there are only 22 taxa in the example data, we use 0
+t1 <- trans_ts$new(dataset = gut_microb_ts, filter_thres = 0.005)
+# use minimal 30 times for iteration
+t1$cal_biomass(min_iter = 30)
+# return t1$res_biomass and t1$res_param
+# t2 is a trans_network object
+t2 <- t1$cal_network()
+# use cluster_optimal; as the default cluster_fast_greedy can not be used for the directed network
+t2$cal_module(method = "cluster_optimal")
+```
+
+
+## trans_gamma
+
+The class trans_gamma is developed to explore the relationship between gamma diversity and beta diversity 
+based on the methods from biogeographic studies[@Zhang_Local_2020].
+Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
+If the observed gamma diversity and beta diversity are significantly correlated,
+species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
+Thus, species pool should be first considered to explain beta diversity patterns.
+This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+We use the wetland data to show the observed beta-gamma diversity relationship.
+
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(mecodev)
+# load the example data
+data(sample_info_16S)
+data(otu_table_16S)
+test <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
+test$tidy_dataset()
+test$rarefy_samples(sample.size = 10000)
+# then create trans_gamma object
+test1 <- trans_gamma$new(dataset = test, group = "Type", method = "bray")
+test1$cal_observed(sample_size = NULL)
+test1$res_observed
+# use Spearman correlation
+test1$plot_observed(cor_method = "spearman")
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_gamma_obs.png")
+```
+
+Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+
+```{r, echo = TRUE, eval = FALSE}
+# if you only run the simulation, dataset parameter is not necessary
+test1 <- trans_gamma$new(method = "bray")
+# use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.
+test1$cal_simulation(ncom = 20, ind_vect = c(200, 1000, 2000))
+test1$plot_simulation(add_fitting = FALSE)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_gamma_simu.png")
+```
+
+
+
+
+<!--chapter:end:11-mecodev.Rmd-->
 
 # mecoturn package
 
@@ -4601,6 +4595,37 @@ and (https://github.com/ChiLiubio/microeco/issues/15).
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (https://github.com/ChiLiubio/microeco/issues/33).
 
+
+
+## trans_norm
+
+The class trans_norm in microeco package (>= 1.6.0) provides several data normalization or transformation approaches for the microtable object or data.frame object.
+The format of output is same with the input.
+For the details and references of the approaches, please refer to the help document of the class with the command `?trans_norm`.
+
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+data(dataset)
+t1 <- trans_norm$new(dataset = dataset)
+# Geometric mean of pairwise ratios
+d1 <- t1$norm(method = "GMPR")
+# Centered log-ratio normalization
+d2 <- t1$norm(method = "clr")
+# Robust centered log-ratio normalization
+d2 <- t1$norm(method = "rclr")
+# d2 is another microtable object
+# Cumulative sum scaling normalization
+d2 <- t1$norm(method = "CCS")
+# Total sum scaling, dividing counts by the sequencing depth
+d2 <- t1$norm(method = "TSS")
+
+# log transformation
+d3 <- t1$norm(method = "log")
+```
+
+
+
 ## Mantel test + Correlation heatmap
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
@@ -4804,13 +4829,44 @@ write.table(t1$res_ordination_trans$df_arrows_spe, "RDA_axis_taxa.txt", sep = "\
 
 
 
+## betaNRI/betaNTI for each group
 
+Sometimes, if you want to perform betaNRI/betaNTI for each group individually (one group is considered one species pool),
+you should calculate the index for each group, respectively.
 
+```{r, echo = TRUE, eval=FALSE}
+library(ggplot2)
+library(microeco)
+# we create a list to store the trans_nullmodel results.
+sesbeta_each <- list()
+group_col <- "Group"
+all_groups <- unique(dataset$sample_table[, group_col])
+# calculate for each group, respectively
+for(i in all_groups){
+	# like the above operation, but need provide 'group' and 'select_group'
+	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, filter_thres = 0.0005)
+	test$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
+	sesbeta_each[[i]] <- test$res_ses_betampd
+}
+# merge and reshape to generate one symmetrical matrix
+test <- lapply(sesbeta_each, reshape2::melt) %>% 
+	do.call(rbind, .) %>%
+	reshape2::dcast(., Var1~Var2, value.var = "value")
+rownames(test) <- test[, 1]
+test <- test[, -1, drop = FALSE]
+# like the above operation
+dataset$beta_diversity[["betaNRI"]] <- test
+t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
+t2$cal_group_distance()
+# statistical analysis
+t2$cal_group_distance_diff(method = "wilcox")
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
+g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
+```
 
-
-
-
-
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
+```
 
 
 

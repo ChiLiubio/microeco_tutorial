@@ -337,6 +337,7 @@ pander::pander(t1$res_manova)
 
 The parameter `manova_all = FALSE` can make the test switch to paired group comparison.
 
+
 ```{r, echo = TRUE, eval = FALSE}
 # manova for each paired groups
 t1$cal_manova(manova_all = FALSE)
@@ -347,6 +348,19 @@ t1$res_manova
 t1$cal_manova(manova_all = FALSE)
 pander::pander(t1$res_manova)
 ```
+
+When there are too many comparison pairs or when comparisons are valuable only within certain categories, the `by_group` parameter can be used.
+
+```{r, echo = TRUE, eval = FALSE}
+t1$cal_manova(manova_all = FALSE, group = "Type", by_group = "Group")
+t1$res_manova
+```
+
+```{r, echo = FALSE}
+t1$cal_manova(manova_all = FALSE, group = "Type", by_group = "Group")
+pander::pander(t1$res_manova)
+```
+
 
 The parameter `manova_set` has higher priority than `manova_all`. If `manova_set` is provided, manova_all parameter will be disabled.
 

@@ -41,6 +41,37 @@ and (https://github.com/ChiLiubio/microeco/issues/15).
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (https://github.com/ChiLiubio/microeco/issues/33).
 
+
+
+## trans_norm
+
+The class trans_norm in microeco package (>= 1.6.0) provides several data normalization or transformation approaches for the microtable object or data.frame object.
+The format of output is same with the input.
+For the details and references of the approaches, please refer to the help document of the class with the command `?trans_norm`.
+
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+data(dataset)
+t1 <- trans_norm$new(dataset = dataset)
+# Geometric mean of pairwise ratios
+d1 <- t1$norm(method = "GMPR")
+# Centered log-ratio normalization
+d2 <- t1$norm(method = "clr")
+# Robust centered log-ratio normalization
+d2 <- t1$norm(method = "rclr")
+# d2 is another microtable object
+# Cumulative sum scaling normalization
+d2 <- t1$norm(method = "CCS")
+# Total sum scaling, dividing counts by the sequencing depth
+d2 <- t1$norm(method = "TSS")
+
+# log transformation
+d3 <- t1$norm(method = "log")
+```
+
+
+
 ## Mantel test + Correlation heatmap
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
@@ -244,13 +275,44 @@ write.table(t1$res_ordination_trans$df_arrows_spe, "RDA_axis_taxa.txt", sep = "\
 
 
 
+## betaNRI/betaNTI for each group
 
+Sometimes, if you want to perform betaNRI/betaNTI for each group individually (one group is considered one species pool),
+you should calculate the index for each group, respectively.
 
+```{r, echo = TRUE, eval=FALSE}
+library(ggplot2)
+library(microeco)
+# we create a list to store the trans_nullmodel results.
+sesbeta_each <- list()
+group_col <- "Group"
+all_groups <- unique(dataset$sample_table[, group_col])
+# calculate for each group, respectively
+for(i in all_groups){
+	# like the above operation, but need provide 'group' and 'select_group'
+	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, filter_thres = 0.0005)
+	test$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
+	sesbeta_each[[i]] <- test$res_ses_betampd
+}
+# merge and reshape to generate one symmetrical matrix
+test <- lapply(sesbeta_each, reshape2::melt) %>% 
+	do.call(rbind, .) %>%
+	reshape2::dcast(., Var1~Var2, value.var = "value")
+rownames(test) <- test[, 1]
+test <- test[, -1, drop = FALSE]
+# like the above operation
+dataset$beta_diversity[["betaNRI"]] <- test
+t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
+t2$cal_group_distance()
+# statistical analysis
+t2$cal_group_distance_diff(method = "wilcox")
+g1 <- t2$plot_group_distance(boxplot_add = "mean")
+g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
+```
 
-
-
-
-
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
+```
 
 
 

@@ -67,17 +67,6 @@ and paste the compressed zip format data.
 as \# can cause format chaos without code tag.
 
 
-
-## change object
-All the classes are set public, meaning that you can **change, add or remove the objects stored in them as you want**.
-
-```{r, echo = TRUE}
-# add a matrix you think useful
-dataset$my_matrix <- matrix(1, nrow = 4, ncol = 4)
-# change the information
-dataset$sample_table %<>% .[, -2]
-```
-
 ## group order
 If the user want to reorder the groups, **assigning factors may be the simplest way.**
 
@@ -159,6 +148,19 @@ t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_10_Medium"))
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 20, groupmean = "Group")
 t1$plot_bar(color_values = paletteer_d("ggthemes::Classic_20"))
 ```
+
+
+## change object
+
+All the classes are set public, meaning that you can **change, add or remove the objects stored in them as you want**.
+
+```{r, echo = TRUE}
+# add a matrix you think useful
+dataset$my_matrix <- matrix(1, nrow = 4, ncol = 4)
+# change the information
+dataset$sample_table %<>% .[, -2]
+```
+
 
 ## customized data input
 

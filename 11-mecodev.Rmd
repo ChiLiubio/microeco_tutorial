@@ -25,30 +25,6 @@ knitr::include_graphics("Images/plot_trans_rarefy.png")
 ```
 
 
-## trans_norm
-The class trans_norm provide several data normalization or transformation approaches for the microtable object or data.frame object.
-The format of output will be same with the input.
-
-```{r, echo = TRUE, eval = FALSE}
-library(microeco)
-library(mecodev)
-data(dataset)
-test1 <- trans_norm$new(dataset = dataset)
-# Centered log-ratio normalization
-test2 <- test1$norm(method = "CLR")
-# test2 is another microtable object
-# Cumulative sum scaling normalization
-test2 <- test1$norm(method = "CCS")
-# Total sum scaling, dividing counts by the sequencing depth
-test2 <- test1$norm(method = "TSS")
-# log transformation
-test2 <- test1$norm(method = "log")
-# Arc sine square root transformation
-test1 <- trans_norm$new(dataset$taxa_abund$Genus)
-test3 <- test1$norm(method = "AST")
-# test3 is data.frame format
-```
-
 
 ## trans_ts
 

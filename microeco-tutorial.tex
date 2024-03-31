@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.5.0)},
+  pdftitle={Tutorial for R microeco package (v1.6.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.5.0)}
+\title{Tutorial for R microeco package (v1.6.0)}
 \author{}
-\date{\vspace{-2.5em}2024-03-09}
+\date{\vspace{-2.5em}2024-03-31}
 
 \begin{document}
 \maketitle
@@ -2340,6 +2340,102 @@ CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
 \bottomrule()
 \end{longtable}
 
+When there are too many comparison pairs or when comparisons are valuable only within certain categories, the \texttt{by\_group} parameter can be used.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_all =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## For by_group: IW ...
+\end{verbatim}
+
+\begin{verbatim}
+## For by_group: CW ...
+\end{verbatim}
+
+\begin{verbatim}
+## For by_group: TW ...
+\end{verbatim}
+
+\begin{verbatim}
+## Skip by_group: TW, because groups number < 2 ...
+\end{verbatim}
+
+\begin{verbatim}
+## The result is stored in object$res_manova ...
+\end{verbatim}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1507}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1644}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1370}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1096}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1233}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1370}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1781}}@{}}
+\caption{Table continues below}\tabularnewline
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
+by\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Groups
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+measure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+F
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+R2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.adjusted
+\end{minipage} \\
+\midrule()
+\endfirsthead
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
+by\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Groups
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+measure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+F
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+R2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+p.adjusted
+\end{minipage} \\
+\midrule()
+\endhead
+IW & NE vs NW & bray & 4.462 & 0.1375 & 0.001 & 0.001 \\
+CW & NC vs YML & bray & 4.077 & 0.2896 & 0.004 & 0.004 \\
+CW & NC vs SC & bray & 7.095 & 0.2211 & 0.001 & 0.003 \\
+CW & YML vs SC & bray & 4.492 & 0.1912 & 0.003 & 0.004 \\
+\bottomrule()
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.2083}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\centering
+Significance
+\end{minipage} \\
+\midrule()
+\endhead
+*** \\
+** \\
+** \\
+** \\
+\bottomrule()
+\end{longtable}
+
 The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}. If \texttt{manova\_set} is provided, manova\_all parameter will be disabled.
 
 \begin{Shaded}
@@ -2440,7 +2536,7 @@ PERMDISP\citep{Anderson_Navigating_2011} is implemented to test multivariate hom
 ## 
 ## Response: Distances
 ##           Df  Sum Sq   Mean Sq      F N.Perm Pr(>F)  
-## Groups     2 0.04131 0.0206545 4.1682    999  0.021 *
+## Groups     2 0.04131 0.0206545 4.1682    999  0.022 *
 ## Residuals 87 0.43110 0.0049552                       
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -2448,8 +2544,8 @@ PERMDISP\citep{Anderson_Navigating_2011} is implemented to test multivariate hom
 ## Pairwise comparisons:
 ## (Observed p-value below diagonal, permuted p-value above diagonal)
 ##           CW        IW    TW
-## CW           0.4690000 0.063
-## IW 0.4621193           0.005
+## CW           0.4970000 0.071
+## IW 0.4621193           0.006
 ## TW 0.0566190 0.0050319
 \end{verbatim}
 
@@ -3315,44 +3411,6 @@ revealing that the basal phylogenetic turnover in TW is high.
 
 \begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_one_dataset} \end{center}
 
-Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
-you should calculate the results for each group, respectively.
-The results show that, when we perform betaNRI for each group respectively,
-mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW,
-revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# we create a list to store the trans\_nullmodel results.}
-\NormalTok{sesbeta\_each }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
-\NormalTok{group\_col }\OtherTok{\textless{}{-}} \StringTok{"Group"}
-\NormalTok{all\_groups }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table[, group\_col])}
-\CommentTok{\# calculate for each group, respectively}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ all\_groups)\{}
-    \CommentTok{\# like the above operation, but need provide \textquotesingle{}group\textquotesingle{} and \textquotesingle{}select\_group\textquotesingle{}}
-\NormalTok{    test }\OtherTok{\textless{}{-}}\NormalTok{ trans\_nullmodel}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{group =}\NormalTok{ group\_col, }\AttributeTok{select\_group =}\NormalTok{ i, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
-\NormalTok{    test}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betampd}\NormalTok{(}\AttributeTok{runs =} \DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{    sesbeta\_each[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{res\_ses\_betampd}
-\NormalTok{\}}
-\CommentTok{\# merge and reshape to generate one symmetrical matrix}
-\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(sesbeta\_each, reshape2}\SpecialCharTok{::}\NormalTok{melt) }\SpecialCharTok{\%\textgreater{}\%} 
-    \FunctionTok{do.call}\NormalTok{(rbind, .) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    reshape2}\SpecialCharTok{::}\FunctionTok{dcast}\NormalTok{(., Var1}\SpecialCharTok{\textasciitilde{}}\NormalTok{Var2, }\AttributeTok{value.var =} \StringTok{"value"}\NormalTok{)}
-\FunctionTok{rownames}\NormalTok{(test) }\OtherTok{\textless{}{-}}\NormalTok{ test[, }\DecValTok{1}\NormalTok{]}
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ test[, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
-\CommentTok{\# like the above operation}
-\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity[[}\StringTok{"betaNRI"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ test}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"betaNRI"}\NormalTok{)}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
-\CommentTok{\# statistical analysis}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
-\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
-\NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_each_dataset} \end{center}
-
 BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover \citep{Stegen_Quantifying_2013}.
 
 \begin{Shaded}
@@ -3497,7 +3555,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Mar  9 17:17:36 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Mar 31 14:11:10 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3527,9 +3585,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.387 & 0.3637 & 9.087 \\
-CW & 435 & 0.5629 & 0.296 & 0.2865 & 14.35 \\
-TW & 435 & 0.6246 & 0.4158 & 0.4 & 9.872 \\
+IW & 435 & 0.6537 & 0.3871 & 0.3638 & 9.107 \\
+CW & 435 & 0.5629 & 0.2959 & 0.2864 & 14.35 \\
+TW & 435 & 0.6244 & 0.4163 & 0.3999 & 9.85 \\
 \bottomrule()
 \end{longtable}
 
@@ -4042,12 +4100,12 @@ Significance
 \endhead
 Temperature & 0.452 & 0.001 & 0.002 & ** \\
 Precipitation & 0.2791 & 0.001 & 0.002 & ** \\
-TOC & 0.13 & 0.003 & 0.004 & ** \\
-NH4 & -0.05539 & 0.926 & 0.926 & \\
-NO3 & 0.06758 & 0.05 & 0.05714 & \\
+TOC & 0.13 & 0.004 & 0.005333 & ** \\
+NH4 & -0.05539 & 0.923 & 0.923 & \\
+NO3 & 0.06758 & 0.049 & 0.056 & \\
 pH & 0.4085 & 0.001 & 0.002 & ** \\
 Conductivity & 0.2643 & 0.001 & 0.002 & ** \\
-TN & 0.1321 & 0.002 & 0.0032 & ** \\
+TN & 0.1321 & 0.003 & 0.0048 & ** \\
 \bottomrule()
 \end{longtable}
 
@@ -5170,20 +5228,6 @@ Several points are recommended.
   as \# can cause format chaos without code tag.
 \end{itemize}
 
-\hypertarget{change-object}{%
-\section{change object}\label{change-object}}
-
-All the classes are set public, meaning that you can \textbf{change, add or remove the objects stored in them as you want}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# add a matrix you think useful}
-\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{my\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow =} \DecValTok{4}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{)}
-\CommentTok{\# change the information}
-\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[, }\SpecialCharTok{{-}}\DecValTok{2}\NormalTok{]}
-\end{Highlighting}
-\end{Shaded}
-
 \hypertarget{group-order}{%
 \section{group order}\label{group-order}}
 
@@ -5273,6 +5317,20 @@ users who require additional variations or seek to switch to a different color p
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{change-object}{%
+\section{change object}\label{change-object}}
+
+All the classes are set public, meaning that you can \textbf{change, add or remove the objects stored in them as you want}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# add a matrix you think useful}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{my\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow =} \DecValTok{4}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{)}
+\CommentTok{\# change the information}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[, }\SpecialCharTok{{-}}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{customized-data-input}{%
 \section{customized data input}\label{customized-data-input}}
 
@@ -5284,160 +5342,6 @@ From v0.7.0, trans\_alpha, trans\_env and trans\_venn classes can accept NULL da
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{group =} \ConstantTok{NULL}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\hypertarget{mecodev-package}{%
-\chapter{mecodev package}\label{mecodev-package}}
-
-The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed for more extended analysis approaches based on the microeco package.
-
-\hypertarget{trans_rarefy}{%
-\section{trans\_rarefy}\label{trans_rarefy}}
-
-The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
-the sequencing depth is enough to cover all the so-called species in the microbial community.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(microeco)}
-\FunctionTok{library}\NormalTok{(mecodev)}
-\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
-\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
-\CommentTok{\# set.seed is used to fix the random number generation to make the results repeatable}
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
-\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\CommentTok{\# trans\_rarefy class}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{4000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{8000}\NormalTok{))}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=550px]{Images/plot_trans_rarefy} \end{center}
-
-\hypertarget{trans_norm}{%
-\section{trans\_norm}\label{trans_norm}}
-
-The class trans\_norm provide several data normalization or transformation approaches for the microtable object or data.frame object.
-The format of output will be same with the input.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(microeco)}
-\FunctionTok{library}\NormalTok{(mecodev)}
-\FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
-\CommentTok{\# Centered log{-}ratio normalization}
-\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CLR"}\NormalTok{)}
-\CommentTok{\# test2 is another microtable object}
-\CommentTok{\# Cumulative sum scaling normalization}
-\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CCS"}\NormalTok{)}
-\CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
-\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
-\CommentTok{\# log transformation}
-\NormalTok{test2 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
-\CommentTok{\# Arc sine square root transformation}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Genus)}
-\NormalTok{test3 }\OtherTok{\textless{}{-}}\NormalTok{ test1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"AST"}\NormalTok{)}
-\CommentTok{\# test3 is data.frame format}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{trans_ts}{%
-\section{trans\_ts}\label{trans_ts}}
-
-The class trans\_ts is designed for the time series data analysis.
-A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
-gLV models are based on ordinary differential equations that model the logistic growth of species;
-naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
-More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
-against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species),
-and analyzing community stability (see \citep{Li_expectation_2019} and the references therein).
-Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package \citep{Li_expectation_2019}.
-The example data `gut\_microb\_ts' comes from the article \citep{Gibbons_twodynamic_2017}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# install the necessary packages}
-\CommentTok{\# For windows system:}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{, }\AttributeTok{repos =} \StringTok{"http://R{-}Forge.R{-}project.org"}\NormalTok{)}
-\CommentTok{\# For linux or mac}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{)}
-\CommentTok{\# Then install the following packages}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lokern"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"monomvn"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"pspline"}\NormalTok{)}
-\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}csb5/beem\textquotesingle{}}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(mecodev)}
-\CommentTok{\# load the example data in mecodev package; the input must be a microtable object}
-\CommentTok{\# There are several strict requirements on the sample\_table; see the document of the class.}
-\FunctionTok{data}\NormalTok{(}\StringTok{"gut\_microb\_ts"}\NormalTok{)}
-\CommentTok{\# generally, using filter\_thres to filter the taxa with low abundance is crutial}
-\CommentTok{\# there are only 22 taxa in the example data, we use 0}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_ts}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ gut\_microb\_ts, }\AttributeTok{filter\_thres =} \FloatTok{0.005}\NormalTok{)}
-\CommentTok{\# use minimal 30 times for iteration}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_biomass}\NormalTok{(}\AttributeTok{min\_iter =} \DecValTok{30}\NormalTok{)}
-\CommentTok{\# return t1$res\_biomass and t1$res\_param}
-\CommentTok{\# t2 is a trans\_network object}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{()}
-\CommentTok{\# use cluster\_optimal; as the default cluster\_fast\_greedy can not be used for the directed network}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{trans_gamma}{%
-\section{trans\_gamma}\label{trans_gamma}}
-
-The class trans\_gamma is developed to explore the relationship between gamma diversity and beta diversity
-based on the methods from biogeographic studies\citep{Zhang_Local_2020}.
-Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
-If the observed gamma diversity and beta diversity are significantly correlated,
-species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
-Thus, species pool should be first considered to explain beta diversity patterns.
-This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
-other than random sampling based on the species log-normal distribution.
-We use the wetland data to show the observed beta-gamma diversity relationship.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(microeco)}
-\FunctionTok{library}\NormalTok{(mecodev)}
-\CommentTok{\# load the example data}
-\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
-\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\NormalTok{test}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
-\CommentTok{\# then create trans\_gamma object}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ test, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_observed}\NormalTok{(}\AttributeTok{sample\_size =} \ConstantTok{NULL}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\NormalTok{res\_observed}
-\CommentTok{\# use Spearman correlation}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_observed}\NormalTok{(}\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=550px]{Images/plot_gamma_obs} \end{center}
-
-Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
-other than random sampling based on the species log-normal distribution.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# if you only run the simulation, dataset parameter is not necessary}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
-\CommentTok{\# use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_simulation}\NormalTok{(}\AttributeTok{ncom =} \DecValTok{20}\NormalTok{, }\AttributeTok{ind\_vect =} \FunctionTok{c}\NormalTok{(}\DecValTok{200}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{2000}\NormalTok{))}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_simulation}\NormalTok{(}\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=600px]{Images/plot_gamma_simu} \end{center}
 
 \hypertarget{meconetcomp-package}{%
 \chapter{meconetcomp package}\label{meconetcomp-package}}
@@ -5694,9 +5598,29 @@ All the operations were encapsulated into the subnet\_property function of mecon
 \hypertarget{robustness-of-network}{%
 \section{Robustness of network}\label{robustness-of-network}}
 
-From v0.4.0, the robustness analysis is implemented in the \texttt{robustness} class based on
+The robustness analysis is implemented in the robustness class based on
 several edge and node removal strategies and robustness measures \citep{Bellingeri_comprem_2020, LiuJing_comprobust_2017}.
-For the details of each method, please see the help document with the command \texttt{?robustness}.
+For the details of each method, please refer to the help document with the command \texttt{?robustness}.
+Available options of \texttt{remove\_strategy} parameter include ``edge\_rand'' (edges are randomly removed),
+``edge\_strong'' (edges are removed in decreasing order of weight), ``node\_rand'' (nodes are removed randomly),
+``node\_hub'' (node hubs are randomly removed, including network hubs and module hubs),
+``node\_degree\_high'' (nodes are removed in decreasing order of degree), etc.
+Available options of \texttt{measure} include ``Eff'', ``Eigen'' and ``Pcr''.
+``Eff'' denotes the network efficiency \citep{LiuJing_comprobust_2017}.
+The average efficiency of the network is defined:
+\[ Eff = \frac{1}{N(N - 1)} \sum_{i \neq j \in G}\frac{1}{d(i, j)} \]
+where N is the total number of nodes and \(d(i,j)\) is the shortest path between node \(i\) and node \(j\).
+When the weight is found in the edge attributes, \(d(i,j)\) denotes the weighted shortest path between node \(i\) and node \(j\).
+``Eigen'' represents the natural connectivity.
+The natural connectivity can be regarded as an average eigenvalue that changes strictly monotonically with the addition or deletion of edges.
+It is defined:
+\[ \bar{\lambda} = \ln(\frac{1}{N} \sum_{i=1}^{N} e^{\lambda~i~}) \]
+where \(\lambda~i~\) is the \(i\)th eigenvalue of the graph adjacency matrix. The larger the value of \(\bar{\lambda}\) is, the more robust the network is.
+``Pcr'' means the critical removal fraction of vertices (edges) for the disintegration of networks.
+This is a robustness measure based on random graph theory.
+The critical fraction against random attacks is labeled as \(P_{c}^r\). It is defined:
+\[ P_{c}^r = 1 - \frac{1}{\frac{\langle k^2 \rangle}{\langle k \rangle} - 1} \]
+where \(\langle k \rangle\) is the average nodal degree of the original network, and \(\langle k^2 \rangle\) is the average of square of nodal degree.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5714,7 +5638,7 @@ For the details of each method, please see the help document with the command \t
 
 From v0.4.0, the vulnerability of nodes can be calculated with the \texttt{vulnerability} function.
 The vulnerability of one node is defined as the efficiency of network after removing this targeted node \citep{Yuan_Climatewarm_2021}.
-For the details, please see the help document.
+For the details, please swith to the help document.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5722,6 +5646,155 @@ For the details, please see the help document.
 \FunctionTok{View}\NormalTok{(vul\_table)}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{cohesion}{%
+\section{Cohesion}\label{cohesion}}
+
+The cohesion is a method for quantifying the connectivity of microbial communities \citep{Herren_Cohesion_2017}.
+From v0.5.0, the cohesion is implemented in cohesionclass.
+It is defined:
+\[   C_{j}^{pos} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r>0}   \]
+\[   C_{j}^{neg} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r<0}   \]
+where \(C_{j}^{pos}\) is the positive cohesion, and \(C_{j}^{neg}\) is the negative cohesion.
+\(a_{i}\) is the relative abundance of species \(i\) in sample \(j\).
+\(\bar{r_{i}}_{|r>0}\) denotes the mean weight (correlation coefficient, interaction strength) of all the edges (related with species \(i\)) with positive association.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ cohesionclass}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_list}\SpecialCharTok{$}\NormalTok{sample)}
+\FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_list}\SpecialCharTok{$}\NormalTok{feature)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{measure =} \StringTok{"r\_pos"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{measure =} \StringTok{"r\_pos"}\NormalTok{, }\AttributeTok{boxplot\_add =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{mecodev-package}{%
+\chapter{mecodev package}\label{mecodev-package}}
+
+The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed for more extended analysis approaches based on the microeco package.
+
+\hypertarget{trans_rarefy}{%
+\section{trans\_rarefy}\label{trans_rarefy}}
+
+The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mecodev)}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\CommentTok{\# set.seed is used to fix the random number generation to make the results repeatable}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{dataset }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
+\NormalTok{dataset}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# trans\_rarefy class}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{4000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{8000}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/plot_trans_rarefy} \end{center}
+
+\hypertarget{trans_ts}{%
+\section{trans\_ts}\label{trans_ts}}
+
+The class trans\_ts is designed for the time series data analysis.
+A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
+gLV models are based on ordinary differential equations that model the logistic growth of species;
+naturally capture predator-prey, amensalistic, and competitive interactions; and have been applied to study dynamics of microbial ecosystems.
+More importantly, from a practical perspective, gLV models have been used for a range of applications including identifying potential probiotics
+against pathogens, forecasting changes in microbial density, characterizing important community members (e.g., keystone species),
+and analyzing community stability (see \citep{Li_expectation_2019} and the references therein).
+Currently, the biomass estimation and biological interaction prediction approaches are implemented based on the beem package \citep{Li_expectation_2019}.
+The example data `gut\_microb\_ts' comes from the article \citep{Gibbons_twodynamic_2017}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install the necessary packages}
+\CommentTok{\# For windows system:}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{, }\AttributeTok{repos =} \StringTok{"http://R{-}Forge.R{-}project.org"}\NormalTok{)}
+\CommentTok{\# For linux or mac}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"doMC"}\NormalTok{)}
+\CommentTok{\# Then install the following packages}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lokern"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"monomvn"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"pspline"}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{\textquotesingle{}csb5/beem\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(mecodev)}
+\CommentTok{\# load the example data in mecodev package; the input must be a microtable object}
+\CommentTok{\# There are several strict requirements on the sample\_table; see the document of the class.}
+\FunctionTok{data}\NormalTok{(}\StringTok{"gut\_microb\_ts"}\NormalTok{)}
+\CommentTok{\# generally, using filter\_thres to filter the taxa with low abundance is crutial}
+\CommentTok{\# there are only 22 taxa in the example data, we use 0}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_ts}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ gut\_microb\_ts, }\AttributeTok{filter\_thres =} \FloatTok{0.005}\NormalTok{)}
+\CommentTok{\# use minimal 30 times for iteration}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_biomass}\NormalTok{(}\AttributeTok{min\_iter =} \DecValTok{30}\NormalTok{)}
+\CommentTok{\# return t1$res\_biomass and t1$res\_param}
+\CommentTok{\# t2 is a trans\_network object}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{()}
+\CommentTok{\# use cluster\_optimal; as the default cluster\_fast\_greedy can not be used for the directed network}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{(}\AttributeTok{method =} \StringTok{"cluster\_optimal"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{trans_gamma}{%
+\section{trans\_gamma}\label{trans_gamma}}
+
+The class trans\_gamma is developed to explore the relationship between gamma diversity and beta diversity
+based on the methods from biogeographic studies\citep{Zhang_Local_2020}.
+Currently, the contents include the observed beta-gamma diversity relationship, simulated beta-gamma diversity relationship and the following plotting.
+If the observed gamma diversity and beta diversity are significantly correlated,
+species pool at regional scale (or maybe your defined scale, e.g., different treatments in the lab) can have large effect on the beta diversity.
+Thus, species pool should be first considered to explain beta diversity patterns.
+This class also provide simulation function to explore the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+We use the wetland data to show the observed beta-gamma diversity relationship.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mecodev)}
+\CommentTok{\# load the example data}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
+\CommentTok{\# then create trans\_gamma object}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ test, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_observed}\NormalTok{(}\AttributeTok{sample\_size =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\NormalTok{res\_observed}
+\CommentTok{\# use Spearman correlation}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_observed}\NormalTok{(}\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/plot_gamma_obs} \end{center}
+
+Let's simulate the relation between gamma diversity and beta diversity in the absence of any process
+other than random sampling based on the species log-normal distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# if you only run the simulation, dataset parameter is not necessary}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_gamma}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{method =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# use individul numbers at 200, 1000 and 2000, and hypothesize each species pool have 20 samples.}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{cal\_simulation}\NormalTok{(}\AttributeTok{ncom =} \DecValTok{20}\NormalTok{, }\AttributeTok{ind\_vect =} \FunctionTok{c}\NormalTok{(}\DecValTok{200}\NormalTok{, }\DecValTok{1000}\NormalTok{, }\DecValTok{2000}\NormalTok{))}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_simulation}\NormalTok{(}\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_gamma_simu} \end{center}
 
 \hypertarget{mecoturn-package}{%
 \chapter{mecoturn package}\label{mecoturn-package}}
@@ -6292,6 +6365,35 @@ and (\url{https://github.com/ChiLiubio/microeco/issues/15}).
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (\url{https://github.com/ChiLiubio/microeco/issues/33}).
 
+\hypertarget{trans_norm}{%
+\section{trans\_norm}\label{trans_norm}}
+
+The class trans\_norm in microeco package (\textgreater= 1.6.0) provides several data normalization or transformation approaches for the microtable object or data.frame object.
+The format of output is same with the input.
+For the details and references of the approaches, please refer to the help document of the class with the command \texttt{?trans\_norm}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
+\CommentTok{\# Geometric mean of pairwise ratios}
+\NormalTok{d1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"GMPR"}\NormalTok{)}
+\CommentTok{\# Centered log{-}ratio normalization}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"clr"}\NormalTok{)}
+\CommentTok{\# Robust centered log{-}ratio normalization}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rclr"}\NormalTok{)}
+\CommentTok{\# d2 is another microtable object}
+\CommentTok{\# Cumulative sum scaling normalization}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CCS"}\NormalTok{)}
+\CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
+
+\CommentTok{\# log transformation}
+\NormalTok{d3 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{mantel-test-correlation-heatmap}{%
 \section{Mantel test + Correlation heatmap}\label{mantel-test-correlation-heatmap}}
 
@@ -6502,6 +6604,45 @@ For those outputs, we can utilize the \texttt{capture.output} function to redire
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{betanribetanti-for-each-group}{%
+\section{betaNRI/betaNTI for each group}\label{betanribetanti-for-each-group}}
+
+Sometimes, if you want to perform betaNRI/betaNTI for each group individually (one group is considered one species pool),
+you should calculate the index for each group, respectively.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\CommentTok{\# we create a list to store the trans\_nullmodel results.}
+\NormalTok{sesbeta\_each }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{group\_col }\OtherTok{\textless{}{-}} \StringTok{"Group"}
+\NormalTok{all\_groups }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table[, group\_col])}
+\CommentTok{\# calculate for each group, respectively}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ all\_groups)\{}
+    \CommentTok{\# like the above operation, but need provide \textquotesingle{}group\textquotesingle{} and \textquotesingle{}select\_group\textquotesingle{}}
+\NormalTok{    test }\OtherTok{\textless{}{-}}\NormalTok{ trans\_nullmodel}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset, }\AttributeTok{group =}\NormalTok{ group\_col, }\AttributeTok{select\_group =}\NormalTok{ i, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{    test}\SpecialCharTok{$}\FunctionTok{cal\_ses\_betampd}\NormalTok{(}\AttributeTok{runs =} \DecValTok{500}\NormalTok{, }\AttributeTok{abundance.weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    sesbeta\_each[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{res\_ses\_betampd}
+\NormalTok{\}}
+\CommentTok{\# merge and reshape to generate one symmetrical matrix}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(sesbeta\_each, reshape2}\SpecialCharTok{::}\NormalTok{melt) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{do.call}\NormalTok{(rbind, .) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{    reshape2}\SpecialCharTok{::}\FunctionTok{dcast}\NormalTok{(., Var1}\SpecialCharTok{\textasciitilde{}}\NormalTok{Var2, }\AttributeTok{value.var =} \StringTok{"value"}\NormalTok{)}
+\FunctionTok{rownames}\NormalTok{(test) }\OtherTok{\textless{}{-}}\NormalTok{ test[, }\DecValTok{1}\NormalTok{]}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ test[, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
+\CommentTok{\# like the above operation}
+\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{beta\_diversity[[}\StringTok{"betaNRI"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ test}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"betaNRI"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{()}
+\CommentTok{\# statistical analysis}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_group\_distance}\NormalTok{(}\AttributeTok{boxplot\_add =} \StringTok{"mean"}\NormalTok{)}
+\NormalTok{g1 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_each_dataset} \end{center}
 
   \bibliography{book.bib,packages.bib}
 

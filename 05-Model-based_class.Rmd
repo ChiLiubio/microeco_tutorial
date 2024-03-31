@@ -702,44 +702,6 @@ g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, line
 knitr::include_graphics("Images/trans_nullmodel_betaNRI_one_dataset.png")
 ```
 
-Sometimes, if you want to perform null model analysis for each group individually, such as one group as one species pool,
-you should calculate the results for each group, respectively.
-The results show that, when we perform betaNRI for each group respectively, 
-mean betaNRI between CW and TW are not significantly different, and they are both significantly higher than that in IW, 
-revealing that the strength of variable selection in CW and TW may be similar under the condition that each area is considered as a specific species pool.
-
-```{r, echo = TRUE, eval=FALSE}
-# we create a list to store the trans_nullmodel results.
-sesbeta_each <- list()
-group_col <- "Group"
-all_groups <- unique(dataset$sample_table[, group_col])
-# calculate for each group, respectively
-for(i in all_groups){
-	# like the above operation, but need provide 'group' and 'select_group'
-	test <- trans_nullmodel$new(dataset, group = group_col, select_group = i, filter_thres = 0.0005)
-	test$cal_ses_betampd(runs = 500, abundance.weighted = TRUE)
-	sesbeta_each[[i]] <- test$res_ses_betampd
-}
-# merge and reshape to generate one symmetrical matrix
-test <- lapply(sesbeta_each, reshape2::melt) %>% 
-	do.call(rbind, .) %>%
-	reshape2::dcast(., Var1~Var2, value.var = "value")
-rownames(test) <- test[, 1]
-test <- test[, -1, drop = FALSE]
-# like the above operation
-dataset$beta_diversity[["betaNRI"]] <- test
-t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
-t2$cal_group_distance()
-# statistical analysis
-t2$cal_group_distance_diff(method = "wilcox")
-g1 <- t2$plot_group_distance(boxplot_add = "mean")
-g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
-```
-
-```{r, out.width = "550px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
-```
-
 
 BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover [@Stegen_Quantifying_2013].
 

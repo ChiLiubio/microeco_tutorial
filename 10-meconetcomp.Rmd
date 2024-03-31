@@ -225,9 +225,30 @@ ggsave("soil_amp_subnet_property.pdf", g1, width = 11, height = 5)
 
 ## Robustness of network
 
-From v0.4.0, the robustness analysis is implemented in the `robustness` class based on 
+The robustness analysis is implemented in the robustness class based on 
 several edge and node removal strategies and robustness measures [@Bellingeri_comprem_2020; @LiuJing_comprobust_2017].
-For the details of each method, please see the help document with the command `?robustness`.
+For the details of each method, please refer to the help document with the command `?robustness`.
+Available options of `remove_strategy` parameter include "edge_rand" (edges are randomly removed),
+"edge_strong" (edges are removed in decreasing order of weight), "node_rand" (nodes are removed randomly),
+"node_hub" (node hubs are randomly removed, including network hubs and module hubs),
+"node_degree_high" (nodes are removed in decreasing order of degree), etc.
+Available options of `measure` include "Eff", "Eigen" and "Pcr".
+"Eff" denotes the network efficiency [@LiuJing_comprobust_2017]. 
+The average efficiency of the network is defined:
+$$ Eff = \frac{1}{N(N - 1)} \sum_{i \neq j \in G}\frac{1}{d(i, j)} $$
+where N is the total number of nodes and $d(i,j)$ is the shortest path between node $i$ and node $j$. 
+When the weight is found in the edge attributes, $d(i,j)$ denotes the weighted shortest path between node $i$ and node $j$.
+"Eigen" represents the natural connectivity.
+The natural connectivity can be regarded as an average eigenvalue that changes strictly monotonically with the addition or deletion of edges. 
+It is defined:
+$$ \bar{\lambda} = \ln(\frac{1}{N} \sum_{i=1}^{N} e^{\lambda~i~}) $$
+where $\lambda~i~$ is the $i$th eigenvalue of the graph adjacency matrix. The larger the value of $\bar{\lambda}$ is, the more robust the network is.
+"Pcr" means the critical removal fraction of vertices (edges) for the disintegration of networks.
+This is a robustness measure based on random graph theory.
+The critical fraction against random attacks is labeled as $P_{c}^r$. It is defined:
+$$ P_{c}^r = 1 - \frac{1}{\frac{\langle k^2 \rangle}{\langle k \rangle} - 1} $$
+where $\langle k \rangle$ is the average nodal degree of the original network, and $\langle k^2 \rangle$ is the average of square of nodal degree. 
+
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_degree_high"), 
@@ -245,7 +266,7 @@ knitr::include_graphics("Images/meconetcomp_robustness.png")
 
 From v0.4.0, the vulnerability of nodes can be calculated with the `vulnerability` function.
 The vulnerability of one node is defined as the efficiency of network after removing this targeted node [@Yuan_Climatewarm_2021].
-For the details, please see the help document.
+For the details, please swith to the help document.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -254,7 +275,26 @@ View(vul_table)
 ```
 
 
+## Cohesion
 
+The cohesion is a method for quantifying the connectivity of microbial communities [@Herren_Cohesion_2017].
+From v0.5.0, the cohesion is implemented in cohesionclass.
+It is defined:
+$$   C_{j}^{pos} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r>0}   $$
+$$   C_{j}^{neg} = \sum_{i=1}^{n} a_{i} \cdot \bar{r_{i}}_{|r<0}   $$
+where $C_{j}^{pos}$ is the positive cohesion, and $C_{j}^{neg}$ is the negative cohesion.
+$a_{i}$ is the relative abundance of species $i$ in sample $j$.
+$\bar{r_{i}}_{|r>0}$ denotes the mean weight (correlation coefficient, interaction strength) of all the edges (related with species $i$) with positive association.
+
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- cohesionclass$new(soil_amp_network)
+View(t1$res_list$sample)
+View(t1$res_list$feature)
+t1$cal_diff(method = "anova")
+t1$plot(measure = "r_pos")
+t1$plot(measure = "r_pos", boxplot_add = "none")
+```
 
 
 
