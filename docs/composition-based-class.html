@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-03-31" />
+<meta name="date" content="2024-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -403,7 +403,9 @@ Note that, from v0.16.0, the parameter <code>group_morestats = TRUE</code> can b
 <p>Then we show the heatmap with the high abundant genera.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="composition-based-class.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show 40 taxa at Genus level</span></span>
 <span id="cb93-2"><a href="composition-based-class.html#cb93-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">40</span>)</span>
-<span id="cb93-3"><a href="composition-based-class.html#cb93-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_heatmap</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">xtext_keep =</span> <span class="cn">FALSE</span>, <span class="at">withmargin =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<span id="cb93-3"><a href="composition-based-class.html#cb93-3" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_heatmap</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">xtext_keep =</span> <span class="cn">FALSE</span>, <span class="at">withmargin =</span> <span class="cn">FALSE</span>, <span class="at">plot_breaks =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>))</span>
+<span id="cb93-4"><a href="composition-based-class.html#cb93-4" aria-hidden="true" tabindex="-1"></a>g1</span>
+<span id="cb93-5"><a href="composition-based-class.html#cb93-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&#39;italic&#39;</span>))</span></code></pre></div>
 <p><img src="Images/trans_abund_heatmap.png" width="750px" style="display: block; margin: auto;" /></p>
 <p>Line chart is very useful to show the abundance change of taxa along time, space or other gradients.</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="composition-based-class.html#cb94-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">5</span>)</span>

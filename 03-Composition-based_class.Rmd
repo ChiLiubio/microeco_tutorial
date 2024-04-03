@@ -91,7 +91,9 @@ Then we show the heatmap with the high abundant genera.
 ```{r, echo = TRUE, eval = FALSE}
 # show 40 taxa at Genus level
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 40)
-t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE)
+g1 <- t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE, plot_breaks = c(0.01, 0.1, 1, 10))
+g1
+g1 + theme(axis.text.y = element_text(face = 'italic'))
 ```
 
 ```{r, out.width = "750px", fig.align="center", echo = FALSE}
