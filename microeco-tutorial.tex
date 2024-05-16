@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.6.0)},
+  pdftitle={Tutorial for R microeco package (v1.7.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.6.0)}
+\title{Tutorial for R microeco package (v1.7.0)}
 \author{}
-\date{\vspace{-2.5em}2024-04-03}
+\date{\vspace{-2.5em}2024-05-15}
 
 \begin{document}
 \maketitle
@@ -1413,8 +1413,8 @@ The alluvial plot is also implemented in the plot\_bar function with use\_alluvi
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
 \CommentTok{\# require ggalluvial package}
 \CommentTok{\# use\_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering}
-\CommentTok{\# bar\_type = "notfull" can discard \textquotesingle{}others\textquotesingle{}; select another color palette}
-\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
+\CommentTok{\# bar\_type = FALSE can remove \textquotesingle{}others\textquotesingle{}}
+\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{use\_alluvium =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{clustering =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{xtext\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1690,7 +1690,7 @@ We use bar plot to show the composition at the Genus level.
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 \CommentTok{\# transform and plot}
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ t2, }\AttributeTok{taxrank =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{8}\NormalTok{)}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"part"}\NormalTok{, }\AttributeTok{legend\_text\_italic =}\NormalTok{ T, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{),}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{legend\_text\_italic =}\NormalTok{ T, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{color\_values =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Set2"}\NormalTok{),}
     \AttributeTok{order\_x =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"IW\&CW"}\NormalTok{, }\StringTok{"IW\&TW"}\NormalTok{, }\StringTok{"CW\&TW"}\NormalTok{, }\StringTok{"IW\&CW\&TW"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Frequency (\%)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1760,14 +1760,14 @@ It refers to alpha diversity, beta diversity and gamma diversity.
 \hypertarget{trans_alpha-class}{%
 \section{trans\_alpha class}\label{trans_alpha-class}}
 
-　Alpha diversity can be transformed and visualized using trans\_alpha class.
-Creating the object of trans\_alpha class can invoke the alpha\_diversity data stored in the microtable object.
+　Alpha diversity can be transformed and visualized using the \texttt{trans\_alpha} class.
+Creating an object of \texttt{trans\_alpha} class can invoke the alpha\_diversity data stored in the microtable object.
 
 \hypertarget{example-2}{%
 \subsection{Example}\label{example-2}}
 
-Creating \texttt{trans\_alpha} object can return two data.frame with prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
-The data\_alpha is used for the following differential test and visualization.
+Creating a \texttt{trans\_alpha} object can return two data.frame with the prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
+\texttt{data\_alpha} is used for subsequent differential test and visualization.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1778,11 +1778,11 @@ The data\_alpha is used for the following differential test and visualization.
 \end{Shaded}
 
 \begin{verbatim}
-## The transformed diversity data is stored in object$data_alpha ...
+## The group statistics are stored in object$data_stat ...
 \end{verbatim}
 
 \begin{verbatim}
-## The group statistics are stored in object$data_stat ...
+## The transformed diversity data is stored in object$data_alpha ...
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1982,8 +1982,8 @@ The multi-factor analysis of variance is also supported with the \texttt{formula
 \end{Highlighting}
 \end{Shaded}
 
-The plot\_alpha function add the significance label by searching the results in \textbf{object\$res\_diff} instead of calculating the significance again.
-Now, let's plot the alpha diversity for each group, and add the anova result.
+The plot\_alpha function add the significance label by searching the results in \textbf{object\$res\_diff} instead of recalculating the significance.
+Now, let's plot the alpha diversity for each group and include the anova result.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2021,7 +2021,7 @@ Let's try to remove the `ns' in the label by manipulating the object\$res\_diff.
 
 \begin{center}\includegraphics[width=600px]{Images/trans_alpha_wilcox_nons} \end{center}
 
-The trans\_alpha class supports the differential test of groups within each group by using the by\_group parameter.
+The trans\_alpha class supports the differential test of groups within each group using the by\_group parameter.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2853,6 +2853,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
 The method \texttt{DESeq2} from DESeq2 package is also supported in the trans\_diff class and no longer demonstrated here.
 The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option \texttt{method\ =\ \textquotesingle{}lm\textquotesingle{}} and \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}}, respectively.
+The heatmap can be used in the \texttt{plot\_diff\_bar} function instead of bar plot for the case with multiple factors or formula.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2860,6 +2861,7 @@ The linear regression from lm function and linear mixed-effects models from lmer
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+(1|Type)"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{transformation =} \StringTok{"AST"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{heatmap\_cell =} \StringTok{"Estimate"}\NormalTok{, }\AttributeTok{heatmap\_sig =} \StringTok{"Significance"}\NormalTok{, }\AttributeTok{heatmap\_lab\_fill =} \StringTok{"Coefficient"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2874,18 +2876,14 @@ because beta distribution is especially appropriate to fit the proportional data
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{method =} \StringTok{"glmm\_beta"}\NormalTok{, }
     \AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{heatmap\_cell =} \StringTok{"Estimate"}\NormalTok{, }\AttributeTok{heatmap\_sig =} \StringTok{"Significance"}\NormalTok{, }\AttributeTok{heatmap\_lab\_fill =} \StringTok{"Coefficient"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-From v1.2.0, the heatmap can be used in the \texttt{plot\_diff\_bar} function instead of bar plot for the case with multiple factors or formula.
+Let's run two-way anova for more usages of heatmap.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# heatmap for the previous GLMM result}
-\CommentTok{\# default no significance label in the res\_diff for this method}
-\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_diff}\SpecialCharTok{$}\NormalTok{Significance }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff}\SpecialCharTok{$}\NormalTok{P.unadj, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\ConstantTok{Inf}\NormalTok{, }\FloatTok{0.001}\NormalTok{, }\FloatTok{0.01}\NormalTok{, }\FloatTok{0.05}\NormalTok{, }\ConstantTok{Inf}\NormalTok{), }\AttributeTok{label =} \FunctionTok{c}\NormalTok{(}\StringTok{"***"}\NormalTok{, }\StringTok{"**"}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{""}\NormalTok{))}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{heatmap\_cell =} \StringTok{"Estimate"}\NormalTok{, }\AttributeTok{heatmap\_sig =} \StringTok{"Significance"}\NormalTok{, }\AttributeTok{heatmap\_lab\_fill =} \StringTok{"Coefficient"}\NormalTok{)}
-\CommentTok{\# two{-}way anova for more usages of heatmap}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + Type"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{, }\AttributeTok{transformation =} \StringTok{"AST"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{()}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{rev}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{11}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdYlBu"}\NormalTok{)), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
@@ -3557,7 +3555,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Apr  3 16:47:37 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Wed May 15 14:56:56 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3587,9 +3585,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6538 & 0.3866 & 0.3638 & 9.098 \\
-CW & 435 & 0.5628 & 0.2952 & 0.2864 & 14.39 \\
-TW & 435 & 0.6245 & 0.4162 & 0.3999 & 9.857 \\
+IW & 435 & 0.6537 & 0.3872 & 0.3637 & 9.093 \\
+CW & 435 & 0.563 & 0.2961 & 0.2866 & 14.4 \\
+TW & 435 & 0.6246 & 0.4158 & 0.4 & 9.815 \\
 \bottomrule()
 \end{longtable}
 
@@ -4363,7 +4361,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \end{Shaded}
 
 \begin{verbatim}
-## FAPROTAX v1.2.6. Please also cite the original FAPROTAX paper: Louca et al. (2016).
+## FAPROTAX v1.2.7. Please also cite the original FAPROTAX paper: Louca et al. (2016).
 \end{verbatim}
 
 \begin{verbatim}
@@ -5055,7 +5053,7 @@ Here, we show some detailed examples using KEGG pathway results.
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# use\_percentage = FALSE disable percentage for relative abundance}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Level.2"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5070,7 +5068,7 @@ Then, we select both function and taxa to see which taxa those high abundant pat
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Level}\FloatTok{.1} \SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Abundance (RPK)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

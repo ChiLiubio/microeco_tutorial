@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v1.6.0)</title>
-  <meta name="description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v1.7.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.7.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.7.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-04-03" />
+<meta name="date" content="2024-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -345,7 +345,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.6.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.7.0)</a>
           </h1>
         </div>
 
@@ -561,11 +561,13 @@ These three packages are all deposited on the Bioconductor.</p>
 <h3><span class="header-section-number">6.1.2</span> More options<a href="model-based-class.html#more-options" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The dependence packages in the following examples are not mentioned in the previous package dependence part (<a href="https://chiliubio.github.io/microeco_tutorial/intro.html#dependence" class="uri">https://chiliubio.github.io/microeco_tutorial/intro.html#dependence</a>).
 The method <code>DESeq2</code> from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
-The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option <code>method = 'lm'</code> and <code>method = 'lme'</code>, respectively.</p>
+The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option <code>method = 'lm'</code> and <code>method = 'lme'</code>, respectively.
+The heatmap can be used in the <code>plot_diff_bar</code> function instead of bar plot for the case with multiple factors or formula.</p>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="model-based-class.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AST: arc sine square root transformation</span></span>
 <span id="cb174-2"><a href="model-based-class.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;lmerTest&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;lmerTest&quot;</span>)</span>
 <span id="cb174-3"><a href="model-based-class.html#cb174-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;lme&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group+(1|Type)&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">transformation =</span> <span class="st">&quot;AST&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb174-4"><a href="model-based-class.html#cb174-4" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span></code></pre></div>
+<span id="cb174-4"><a href="model-based-class.html#cb174-4" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span>
+<span id="cb174-5"><a href="model-based-class.html#cb174-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">heatmap_cell =</span> <span class="st">&quot;Estimate&quot;</span>, <span class="at">heatmap_sig =</span> <span class="st">&quot;Significance&quot;</span>, <span class="at">heatmap_lab_fill =</span> <span class="st">&quot;Coefficient&quot;</span>)</span></code></pre></div>
 <p>The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function,
 because beta distribution is especially appropriate to fit the proportional data (relative abundance here).</p>
@@ -573,18 +575,14 @@ because beta distribution is especially appropriate to fit the proportional data
 <span id="cb175-2"><a href="model-based-class.html#cb175-2" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">clone</span>(dataset)</span>
 <span id="cb175-3"><a href="model-based-class.html#cb175-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">method =</span> <span class="st">&quot;glmm_beta&quot;</span>, </span>
 <span id="cb175-4"><a href="model-based-class.html#cb175-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> <span class="st">&quot;Group + (1|Type)&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb175-5"><a href="model-based-class.html#cb175-5" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span></code></pre></div>
-<p>From v1.2.0, the heatmap can be used in the <code>plot_diff_bar</code> function instead of bar plot for the case with multiple factors or formula.</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="model-based-class.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="co"># heatmap for the previous GLMM result</span></span>
-<span id="cb176-2"><a href="model-based-class.html#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="co"># default no significance label in the res_diff for this method</span></span>
-<span id="cb176-3"><a href="model-based-class.html#cb176-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff<span class="sc">$</span>Significance <span class="ot">&lt;-</span> <span class="fu">cut</span>(t1<span class="sc">$</span>res_diff<span class="sc">$</span>P.unadj, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="cn">Inf</span>), <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;***&quot;</span>, <span class="st">&quot;**&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;&quot;</span>))</span>
-<span id="cb176-4"><a href="model-based-class.html#cb176-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">heatmap_cell =</span> <span class="st">&quot;Estimate&quot;</span>, <span class="at">heatmap_sig =</span> <span class="st">&quot;Significance&quot;</span>, <span class="at">heatmap_lab_fill =</span> <span class="st">&quot;Coefficient&quot;</span>)</span>
-<span id="cb176-5"><a href="model-based-class.html#cb176-5" aria-hidden="true" tabindex="-1"></a><span class="co"># two-way anova for more usages of heatmap</span></span>
-<span id="cb176-6"><a href="model-based-class.html#cb176-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group + Type&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>, <span class="at">transformation =</span> <span class="st">&quot;AST&quot;</span>)</span>
-<span id="cb176-7"><a href="model-based-class.html#cb176-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>()</span>
-<span id="cb176-8"><a href="model-based-class.html#cb176-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_palette =</span> <span class="fu">rev</span>(RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">11</span>, <span class="at">name =</span> <span class="st">&quot;RdYlBu&quot;</span>)), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>)</span>
-<span id="cb176-9"><a href="model-based-class.html#cb176-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_values =</span> <span class="fu">c</span>(<span class="st">&quot;#053061&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;#A50026&quot;</span>), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>)</span>
-<span id="cb176-10"><a href="model-based-class.html#cb176-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_values =</span> <span class="fu">c</span>(<span class="st">&quot;#053061&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;#A50026&quot;</span>), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>, <span class="at">filter_feature =</span> <span class="st">&quot;&quot;</span>, <span class="at">text_y_position =</span> <span class="st">&quot;right&quot;</span>, <span class="at">cluster_ggplot =</span> <span class="st">&quot;row&quot;</span>)</span></code></pre></div>
+<span id="cb175-5"><a href="model-based-class.html#cb175-5" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span>
+<span id="cb175-6"><a href="model-based-class.html#cb175-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">heatmap_cell =</span> <span class="st">&quot;Estimate&quot;</span>, <span class="at">heatmap_sig =</span> <span class="st">&quot;Significance&quot;</span>, <span class="at">heatmap_lab_fill =</span> <span class="st">&quot;Coefficient&quot;</span>)</span></code></pre></div>
+<p>Let’s run two-way anova for more usages of heatmap.</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="model-based-class.html#cb176-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group + Type&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>, <span class="at">transformation =</span> <span class="st">&quot;AST&quot;</span>)</span>
+<span id="cb176-2"><a href="model-based-class.html#cb176-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>()</span>
+<span id="cb176-3"><a href="model-based-class.html#cb176-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_palette =</span> <span class="fu">rev</span>(RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">11</span>, <span class="at">name =</span> <span class="st">&quot;RdYlBu&quot;</span>)), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>)</span>
+<span id="cb176-4"><a href="model-based-class.html#cb176-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_values =</span> <span class="fu">c</span>(<span class="st">&quot;#053061&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;#A50026&quot;</span>), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>)</span>
+<span id="cb176-5"><a href="model-based-class.html#cb176-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">color_values =</span> <span class="fu">c</span>(<span class="st">&quot;#053061&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;#A50026&quot;</span>), <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>, <span class="at">filter_feature =</span> <span class="st">&quot;&quot;</span>, <span class="at">text_y_position =</span> <span class="st">&quot;right&quot;</span>, <span class="at">cluster_ggplot =</span> <span class="st">&quot;row&quot;</span>)</span></code></pre></div>
 </div>
 <div id="key-points-5" class="section level3 hasAnchor" number="6.1.3">
 <h3><span class="header-section-number">6.1.3</span> Key points<a href="model-based-class.html#key-points-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1116,7 +1114,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb211-3"><a href="model-based-class.html#cb211-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Wed Apr  3 16:44:55 2024. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Wed May 15 14:54:05 2024. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1141,26 +1139,26 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.6536</td>
-<td align="center">0.3869</td>
-<td align="center">0.3637</td>
-<td align="center">9.174</td>
+<td align="center">0.6541</td>
+<td align="center">0.3875</td>
+<td align="center">0.3641</td>
+<td align="center">9.077</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5631</td>
-<td align="center">0.2966</td>
-<td align="center">0.2866</td>
-<td align="center">14.31</td>
+<td align="center">0.5634</td>
+<td align="center">0.2965</td>
+<td align="center">0.2869</td>
+<td align="center">14.25</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6245</td>
-<td align="center">0.4159</td>
-<td align="center">0.3999</td>
-<td align="center">9.876</td>
+<td align="center">0.6246</td>
+<td align="center">0.4157</td>
+<td align="center">0.4001</td>
+<td align="center">9.871</td>
 </tr>
 </tbody>
 </table>

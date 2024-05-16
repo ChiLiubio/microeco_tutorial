@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Other dataset | Tutorial for R microeco package (v1.6.0)</title>
-  <meta name="description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <title>Chapter 9 Other dataset | Tutorial for R microeco package (v1.7.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Other dataset | Tutorial for R microeco package (v1.6.0)" />
+  <meta property="og:title" content="Chapter 9 Other dataset | Tutorial for R microeco package (v1.7.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Other dataset | Tutorial for R microeco package (v1.6.0)" />
+  <meta name="twitter:title" content="Chapter 9 Other dataset | Tutorial for R microeco package (v1.7.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-04-03" />
+<meta name="date" content="2024-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -345,7 +345,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.6.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.7.0)</a>
           </h1>
         </div>
 
@@ -414,7 +414,7 @@ Here, we show some detailed examples using KEGG pathway results.</p>
 <span id="cb304-15"><a href="other-dataset.html#cb304-15" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_abund</span>(<span class="at">select_cols =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">rel =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb304-16"><a href="other-dataset.html#cb304-16" aria-hidden="true" tabindex="-1"></a><span class="co"># use_percentage = FALSE disable percentage for relative abundance</span></span>
 <span id="cb304-17"><a href="other-dataset.html#cb304-17" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Level.2&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb304-18"><a href="other-dataset.html#cb304-18" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">&quot;Abundance (RPK)&quot;</span>)</span></code></pre></div>
+<span id="cb304-18"><a href="other-dataset.html#cb304-18" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">bar_full =</span> <span class="cn">FALSE</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">&quot;Abundance (RPK)&quot;</span>)</span></code></pre></div>
 <p><img src="Images/file2meco_HUMANN_KEGG_bar.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Then, we select both function and taxa to see which taxa those high abundant pathways come from.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="other-dataset.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This operation is more flexible</span></span>
@@ -422,7 +422,7 @@ Here, we show some detailed examples using KEGG pathway results.</p>
 <span id="cb305-3"><a href="other-dataset.html#cb305-3" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Level<span class="fl">.1</span> <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
 <span id="cb305-4"><a href="other-dataset.html#cb305-4" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>taxa_abund<span class="sc">$</span>Phylum <span class="sc">%&lt;&gt;%</span> .[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;unclass&quot;</span>, <span class="fu">rownames</span>(.)), ]</span>
 <span id="cb305-5"><a href="other-dataset.html#cb305-5" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(test, <span class="at">taxrank =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">10</span>, <span class="at">use_percentage =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb305-6"><a href="other-dataset.html#cb305-6" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">&quot;Abundance (RPK)&quot;</span>)</span></code></pre></div>
+<span id="cb305-6"><a href="other-dataset.html#cb305-6" aria-hidden="true" tabindex="-1"></a>test1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">facet =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">bar_full =</span> <span class="cn">FALSE</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">&quot;Abundance (RPK)&quot;</span>)</span></code></pre></div>
 <p><img src="Images/file2meco_HUMANN_KEGG_bar_taxafunc.png" width="800px" style="display: block; margin: auto;" /></p>
 <p>Let’s run LEfSe to find some functional biomarkers to differentiate two groups.</p>
 <div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="other-dataset.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="co"># functional biomarker</span></span>

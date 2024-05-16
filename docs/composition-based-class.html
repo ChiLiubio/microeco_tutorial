@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v1.6.0)</title>
-  <meta name="description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <title>Chapter 4 Composition-based class | Tutorial for R microeco package (v1.7.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta property="og:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v1.7.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta name="twitter:title" content="Chapter 4 Composition-based class | Tutorial for R microeco package (v1.7.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-04-03" />
+<meta name="date" content="2024-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -345,7 +345,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.6.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.7.0)</a>
           </h1>
         </div>
 
@@ -385,8 +385,8 @@ The alluvial plot is also implemented in the plot_bar function with use_alluvium
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="composition-based-class.html#cb90-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
 <span id="cb90-2"><a href="composition-based-class.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="co"># require ggalluvial package</span></span>
 <span id="cb90-3"><a href="composition-based-class.html#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering</span></span>
-<span id="cb90-4"><a href="composition-based-class.html#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bar_type = &quot;notfull&quot; can discard &#39;others&#39;; select another color palette</span></span>
-<span id="cb90-5"><a href="composition-based-class.html#cb90-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;notfull&quot;</span>, <span class="at">use_alluvium =</span> <span class="cn">TRUE</span>, <span class="at">clustering =</span> <span class="cn">TRUE</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>, <span class="at">xtext_size =</span> <span class="dv">3</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>))</span></code></pre></div>
+<span id="cb90-4"><a href="composition-based-class.html#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bar_type = FALSE can remove &#39;others&#39;</span></span>
+<span id="cb90-5"><a href="composition-based-class.html#cb90-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_full =</span> <span class="cn">FALSE</span>, <span class="at">use_alluvium =</span> <span class="cn">TRUE</span>, <span class="at">clustering =</span> <span class="cn">TRUE</span>, <span class="at">xtext_angle =</span> <span class="dv">30</span>, <span class="at">xtext_size =</span> <span class="dv">3</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>))</span></code></pre></div>
 <p><img src="Images/trans_abund_bar_allu.png" width="720" style="display: block; margin: auto;" /></p>
 <p>The bar plot can also be performed with group mean values.
 Note that, from v0.16.0, the parameter <code>group_morestats = TRUE</code> can be used to add more summary statistics in the return <code>data_abund</code> when <code>groupmean</code> parameter is provided.</p>
@@ -532,7 +532,7 @@ For this goal, we first transform the results of venn plot to the traditional fe
 <span id="cb110-2"><a href="composition-based-class.html#cb110-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_abund</span>()</span>
 <span id="cb110-3"><a href="composition-based-class.html#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="co"># transform and plot</span></span>
 <span id="cb110-4"><a href="composition-based-class.html#cb110-4" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_abund<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> t2, <span class="at">taxrank =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">ntaxa =</span> <span class="dv">8</span>)</span>
-<span id="cb110-5"><a href="composition-based-class.html#cb110-5" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_type =</span> <span class="st">&quot;part&quot;</span>, <span class="at">legend_text_italic =</span> T, <span class="at">xtext_angle =</span> <span class="dv">30</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>),</span>
+<span id="cb110-5"><a href="composition-based-class.html#cb110-5" aria-hidden="true" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">plot_bar</span>(<span class="at">bar_full =</span> <span class="cn">FALSE</span>, <span class="at">legend_text_italic =</span> T, <span class="at">xtext_angle =</span> <span class="dv">30</span>, <span class="at">color_values =</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">&quot;Set2&quot;</span>),</span>
 <span id="cb110-6"><a href="composition-based-class.html#cb110-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_x =</span> <span class="fu">c</span>(<span class="st">&quot;IW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;TW&quot;</span>, <span class="st">&quot;IW&amp;CW&quot;</span>, <span class="st">&quot;IW&amp;TW&quot;</span>, <span class="st">&quot;CW&amp;TW&quot;</span>, <span class="st">&quot;IW&amp;CW&amp;TW&quot;</span>)) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Frequency (%)&quot;</span>)</span></code></pre></div>
 <p><img src="Images/trans_venn_bar.png" width="650px" style="display: block; margin: auto;" /></p>
 <p>We also try to use pie chart to show the compositions at the Phylum level.</p>

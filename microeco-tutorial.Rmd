@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v1.6.0)"
+title: "Tutorial for R microeco package (v1.7.0)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -8,7 +8,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages"
+description: "The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages"
 ---
 
 
@@ -830,8 +830,8 @@ The alluvial plot is also implemented in the plot_bar function with use_alluvium
 t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
-# bar_type = "notfull" can discard 'others'; select another color palette
-p <- t1$plot_bar(bar_type = "notfull", use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+# bar_type = FALSE can remove 'others'
+p <- t1$plot_bar(bar_full = FALSE, use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
@@ -1083,7 +1083,7 @@ We use bar plot to show the composition at the Genus level.
 t2$cal_abund()
 # transform and plot
 t3 <- trans_abund$new(dataset = t2, taxrank = "Genus", ntaxa = 8)
-t3$plot_bar(bar_type = "part", legend_text_italic = T, xtext_angle = 30, color_values = RColorBrewer::brewer.pal(8, "Set2"),
+t3$plot_bar(bar_full = FALSE, legend_text_italic = T, xtext_angle = 30, color_values = RColorBrewer::brewer.pal(8, "Set2"),
 	order_x = c("IW", "CW", "TW", "IW&CW", "IW&TW", "CW&TW", "IW&CW&TW")) + ylab("Frequency (%)")
 ```
 
@@ -1157,14 +1157,14 @@ It refers to alpha diversity, beta diversity and gamma diversity.
 
 ## trans_alpha class
 
-　Alpha diversity can be transformed and visualized using trans_alpha class.
-Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.
+　Alpha diversity can be transformed and visualized using the `trans_alpha` class.
+Creating an object of `trans_alpha` class can invoke the alpha_diversity data stored in the microtable object.
 
 
 ### Example
 
-Creating `trans_alpha` object can return two data.frame with prefix 'data_': `data_alpha` and `data_stat`.
-The data_alpha is used for the following differential test and visualization.
+Creating a `trans_alpha` object can return two data.frame with the prefix 'data_': `data_alpha` and `data_stat`.
+`data_alpha` is used for subsequent differential test and visualization.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1238,8 +1238,8 @@ head(t1$res_diff)
 ```
 
 
-The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
-Now, let's plot the alpha diversity for each group, and add the anova result.
+The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of recalculating the significance.
+Now, let's plot the alpha diversity for each group and include the anova result.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
@@ -1277,7 +1277,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
-The trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
+The trans_alpha class supports the differential test of groups within each group using the by_group parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
@@ -1660,6 +1660,7 @@ t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_lab
 knitr::include_graphics("Images/trans_diff_lefse_cladogram_1.png")
 ```
 
+
 The 'rf' method depends on the random forest[@Beck_Machine_2014; @Yatsunenko_Human_2012] and the non-parametric test.
 The current method implements random forest by bootstrapping like the operation in LEfSe and employs the significant features as input.
 MeanDecreaseGini is selected as the indicator value in the analysis.
@@ -1812,12 +1813,15 @@ t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#
 The dependence packages in the following examples are not mentioned in the previous package dependence part (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
 The method `DESeq2` from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
 The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lm'` and `method = 'lme'`, respectively.
+The heatmap can be used in the `plot_diff_bar` function instead of bar plot for the case with multiple factors or formula.
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # AST: arc sine square root transformation
 if(!require("lmerTest")) install.packages("lmerTest")
 t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
 View(t1$res_diff)
+t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
 ```
 
 The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
@@ -1830,16 +1834,12 @@ d1 <- clone(dataset)
 t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm_beta", 
 	formula = "Group + (1|Type)", filter_thres = 0.001)
 View(t1$res_diff)
+t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
 ```
 
-From v1.2.0, the heatmap can be used in the `plot_diff_bar` function instead of bar plot for the case with multiple factors or formula.
+Let's run two-way anova for more usages of heatmap.
 
 ```{r, echo = TRUE, eval = FALSE}
-# heatmap for the previous GLMM result
-# default no significance label in the res_diff for this method
-t1$res_diff$Significance <- cut(t1$res_diff$P.unadj, breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), label = c("***", "**", "*", ""))
-t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
-# two-way anova for more usages of heatmap
 t1 <- trans_diff$new(dataset = dataset, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
 t1$plot_diff_bar()
 t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
@@ -3502,7 +3502,7 @@ test$tidy_dataset()
 test$cal_abund(select_cols = 1:3, rel = FALSE)
 # use_percentage = FALSE disable percentage for relative abundance
 test1 <- trans_abund$new(test, taxrank = "Level.2", ntaxa = 10, use_percentage = FALSE)
-test1$plot_bar(facet = "Group", bar_type = "notfull", xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
+test1$plot_bar(facet = "Group", bar_full = FALSE, xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -3517,7 +3517,7 @@ test$cal_abund(select_cols = c("Level.1", "Phylum", "Genus"), rel = FALSE)
 test$taxa_abund$Level.1 %<>% .[!grepl("unclass", rownames(.)), ]
 test$taxa_abund$Phylum %<>% .[!grepl("unclass", rownames(.)), ]
 test1 <- trans_abund$new(test, taxrank = "Phylum", ntaxa = 10, use_percentage = FALSE)
-test1$plot_bar(facet = "Group", bar_type = "notfull", xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
+test1$plot_bar(facet = "Group", bar_full = FALSE, xtext_angle = 30) + ggplot2::ylab("Abundance (RPK)")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}

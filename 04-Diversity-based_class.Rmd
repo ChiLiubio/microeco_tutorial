@@ -6,14 +6,14 @@ It refers to alpha diversity, beta diversity and gamma diversity.
 
 ## trans_alpha class
 
-　Alpha diversity can be transformed and visualized using trans_alpha class.
-Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.
+　Alpha diversity can be transformed and visualized using the `trans_alpha` class.
+Creating an object of `trans_alpha` class can invoke the alpha_diversity data stored in the microtable object.
 
 
 ### Example
 
-Creating `trans_alpha` object can return two data.frame with prefix 'data_': `data_alpha` and `data_stat`.
-The data_alpha is used for the following differential test and visualization.
+Creating a `trans_alpha` object can return two data.frame with the prefix 'data_': `data_alpha` and `data_stat`.
+`data_alpha` is used for subsequent differential test and visualization.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -87,8 +87,8 @@ head(t1$res_diff)
 ```
 
 
-The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of calculating the significance again.
-Now, let's plot the alpha diversity for each group, and add the anova result.
+The plot_alpha function add the significance label by searching the results in **object$res_diff** instead of recalculating the significance.
+Now, let's plot the alpha diversity for each group and include the anova result.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$cal_diff(method = "anova")
@@ -126,7 +126,7 @@ t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
 knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
-The trans_alpha class supports the differential test of groups within each group by using the by_group parameter.
+The trans_alpha class supports the differential test of groups within each group using the by_group parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")

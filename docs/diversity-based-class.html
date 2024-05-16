@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.6.0)</title>
-  <meta name="description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.7.0)</title>
+  <meta name="description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.7.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta property="og:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.6.0)" />
+  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.7.0)" />
   
-  <meta name="twitter:description" content="The tutorial for R microeco (v1.6.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
+  <meta name="twitter:description" content="The tutorial for R microeco (v1.7.0), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-04-03" />
+<meta name="date" content="2024-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -345,7 +345,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.6.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.7.0)</a>
           </h1>
         </div>
 
@@ -359,17 +359,17 @@ div.csl-indent {
 It refers to alpha diversity, beta diversity and gamma diversity.</p>
 <div id="trans_alpha-class" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> trans_alpha class<a href="diversity-based-class.html#trans_alpha-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>　Alpha diversity can be transformed and visualized using trans_alpha class.
-Creating the object of trans_alpha class can invoke the alpha_diversity data stored in the microtable object.</p>
+<p>　Alpha diversity can be transformed and visualized using the <code>trans_alpha</code> class.
+Creating an object of <code>trans_alpha</code> class can invoke the alpha_diversity data stored in the microtable object.</p>
 <div id="example-2" class="section level3 hasAnchor" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> Example<a href="diversity-based-class.html#example-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Creating <code>trans_alpha</code> object can return two data.frame with prefix ‘data_’: <code>data_alpha</code> and <code>data_stat</code>.
-The data_alpha is used for the following differential test and visualization.</p>
+<p>Creating a <code>trans_alpha</code> object can return two data.frame with the prefix ‘data_’: <code>data_alpha</code> and <code>data_stat</code>.
+<code>data_alpha</code> is used for subsequent differential test and visualization.</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="diversity-based-class.html#cb114-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb114-2"><a href="diversity-based-class.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co"># return t1$data_stat</span></span>
 <span id="cb114-3"><a href="diversity-based-class.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>data_stat)</span></code></pre></div>
-<pre><code>## The transformed diversity data is stored in object$data_alpha ...</code></pre>
 <pre><code>## The group statistics are stored in object$data_stat ...</code></pre>
+<pre><code>## The transformed diversity data is stored in object$data_alpha ...</code></pre>
 <table style="width:78%;">
 <colgroup>
 <col width="11%" />
@@ -661,8 +661,8 @@ From v1.0.0, the <code>alpha</code> parameter can be used to adjust the signific
 <span id="cb126-2"><a href="diversity-based-class.html#cb126-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group+Type&quot;</span>)</span>
 <span id="cb126-3"><a href="diversity-based-class.html#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_diff)</span>
 <span id="cb126-4"><a href="diversity-based-class.html#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="co"># see the help document for the usage of formula</span></span></code></pre></div>
-<p>The plot_alpha function add the significance label by searching the results in <strong>object$res_diff</strong> instead of calculating the significance again.
-Now, let’s plot the alpha diversity for each group, and add the anova result.</p>
+<p>The plot_alpha function add the significance label by searching the results in <strong>object$res_diff</strong> instead of recalculating the significance.
+Now, let’s plot the alpha diversity for each group and include the anova result.</p>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="diversity-based-class.html#cb127-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>)</span>
 <span id="cb127-2"><a href="diversity-based-class.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="co"># y_increase can adjust the distance from the letters to the highest point</span></span>
 <span id="cb127-3"><a href="diversity-based-class.html#cb127-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">y_increase =</span> <span class="fl">0.3</span>)</span>
@@ -680,7 +680,7 @@ Now, let’s plot the alpha diversity for each group, and add the anova result.<
 <div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="diversity-based-class.html#cb129-1" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_diff <span class="sc">%&lt;&gt;%</span> base<span class="sc">::</span><span class="fu">subset</span>(Significance <span class="sc">!=</span> <span class="st">&quot;ns&quot;</span>)</span>
 <span id="cb129-2"><a href="diversity-based-class.html#cb129-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">boxplot_add =</span> <span class="st">&quot;dotplot&quot;</span>, <span class="at">xtext_size =</span> <span class="dv">15</span>)</span></code></pre></div>
 <p><img src="Images/trans_alpha_wilcox_nons.png" width="600px" style="display: block; margin: auto;" /></p>
-<p>The trans_alpha class supports the differential test of groups within each group by using the by_group parameter.</p>
+<p>The trans_alpha class supports the differential test of groups within each group using the by_group parameter.</p>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="diversity-based-class.html#cb130-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb130-2"><a href="diversity-based-class.html#cb130-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
 <span id="cb130-3"><a href="diversity-based-class.html#cb130-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span></code></pre></div>
