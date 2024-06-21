@@ -5,7 +5,27 @@ R package meconetcomp (https://github.com/ChiLiubio/meconetcomp) was developed.
 The basic strategy is to use R list to put into all the trans_network objects and perform the following analysis.
 The flow chart and following contents are adapted from the published article [@Liu_meconetcomp_2023].
 For more details, please see the online paper (https://doi.org/10.1002/imt2.71).
+To cite meconetcomp in publications use:
 
+  Chi Liu, Chaonan Li, Yanqiong Jiang, Raymond Jianxiong Zeng, Minjie Yao, and Xiangzhen Li. 2023. 
+  A guide for comparing microbial co-occurrence networks. iMeta. 2(1): e71.
+
+The BibTeX in LaTeX and markdown is:
+
+```
+  @Article{meconetcomp_2023,
+    title = {A guide for comparing microbial co-occurrence networks},
+    author = {Liu, Chi and Li, Chaonan and Jiang, Yanqiong and Zeng, Raymond J. and Yao, Minjie and Li, Xiangzhen},
+    year = {2023},
+    journal = {iMeta},
+    volume = {2},
+    issue = {1},
+    pages = {e71},
+    doi = {10.1002/imt2.71},
+    url = {https://doi.org/10.1002/imt2.71},
+  }
+```
+ 
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/meconetcomp.png")
@@ -251,7 +271,7 @@ where $\langle k \rangle$ is the average nodal degree of the original network, a
 
 
 ```{r, echo = TRUE, eval = FALSE}
-tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_degree_high"), 
+tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_rand", "node_degree_high"), 
 	remove_ratio = seq(0, 0.99, 0.1), measure = c("Eff", "Eigen", "Pcr"), run = 10)
 View(tmp$res_table)
 tmp$plot(linewidth = 1)
@@ -260,6 +280,10 @@ tmp$plot(linewidth = 1)
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/meconetcomp_robustness.png")
 ```
+
+The user can also extract the result for a specified metric and perform the visualization.
+
+
 
 
 ## Vulnerability of nodes

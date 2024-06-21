@@ -230,11 +230,14 @@ Then let's use sample_sums() to check the sequence numbers in each sample.
 dataset$sample_sums() %>% range
 ```
 
-Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements, 
-it is optional to perform the resampling to make the sequence number equal for each sample.
-The function `rarefy_samples` can invoke the function `tidy_dataset` automatically before and after the rarefying.
-In v0.19.0, `method = 'SRS'` is available to perfom normalization by scaling with ranked subsampling [@Beule_normalization_2020].
-The default method is `method = 'rarefying'`.
+Sometimes, to reduce the impact of sequencing depth on diversity measurements, 
+it is advisable to perform resampling to equalize the sequence numbers for each sample [@McKnight_Methodsnorm_2018].
+The function `rarefy_samples` can automatically invoke the function `tidy_dataset` before and after the rarefying process.
+Since version 0.19.0, `method = 'SRS'` is available for performing rarefaction by scaling with ranked subsampling [@Beule_normalization_2020].
+The default choice is `method = 'rarefying'`.
+Note that the rarefying method in microtable object is a shortcut call from the "rarefy" method in the `trans_norm` class.
+For other normalization methods, 
+please refer to the trans_norm class help documentation and the examples in the tutorial here (https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#trans_norm).
 
 
 ```{r, echo = TRUE}

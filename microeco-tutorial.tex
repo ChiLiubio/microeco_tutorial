@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.7.1)}
 \author{}
-\date{\vspace{-2.5em}2024-05-23}
+\date{\vspace{-2.5em}2024-06-21}
 
 \begin{document}
 \maketitle
@@ -361,40 +361,10 @@ Gephi is an excellent network visualization tool and used to open the saved netw
 i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/model-based-class.html\#trans_network-class}{tutorial}.
 You can download Gephi and learn how to use it from \url{https://gephi.org/users/download/}
 
-\hypertarget{tax4fun}{%
-\subsection{Tax4Fun}\label{tax4fun}}
-
-Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  install Tax4Fun package
-\end{enumerate}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"RJSONIO"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"biom\_0.3.12.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"qiimer\_0.9.4.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"Tax4Fun\_0.3.1.tar.gz"}\NormalTok{, }\AttributeTok{package=}\StringTok{"microeco"}\NormalTok{), }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  download SILVA123 reference data from \url{http://tax4fun.gobics.de/}\\
-  　unzip SILVA123.zip and provide this path to the folderReferenceData parameter of cal\_tax4fun function in trans\_func class.
-\end{enumerate}
-
 \hypertarget{tax4fun2}{%
 \subsection{Tax4Fun2}\label{tax4fun2}}
 
-Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities \citep{Wemheuer_Tax4Fun2_2020}.
+Tax4Fun2 is an R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities \citep{Wemheuer_Tax4Fun2_2020}.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
@@ -920,11 +890,14 @@ Then let's use sample\_sums() to check the sequence numbers in each sample.
 ## [1] 10316 37087
 \end{verbatim}
 
-Sometimes, in order to reduce the effects of sequencing depth on the diversity measurements,
-it is optional to perform the resampling to make the sequence number equal for each sample.
-The function \texttt{rarefy\_samples} can invoke the function \texttt{tidy\_dataset} automatically before and after the rarefying.
-In v0.19.0, \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available to perfom normalization by scaling with ranked subsampling \citep{Beule_normalization_2020}.
-The default method is \texttt{method\ =\ \textquotesingle{}rarefying\textquotesingle{}}.
+Sometimes, to reduce the impact of sequencing depth on diversity measurements,
+it is advisable to perform resampling to equalize the sequence numbers for each sample \citep{McKnight_Methodsnorm_2018}.
+The function \texttt{rarefy\_samples} can automatically invoke the function \texttt{tidy\_dataset} before and after the rarefying process.
+Since version 0.19.0, \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available for performing rarefaction by scaling with ranked subsampling \citep{Beule_normalization_2020}.
+The default choice is \texttt{method\ =\ \textquotesingle{}rarefying\textquotesingle{}}.
+Note that the rarefying method in microtable object is a shortcut call from the ``rarefy'' method in the \texttt{trans\_norm} class.
+For other normalization methods,
+please refer to the trans\_norm class help documentation and the examples in the tutorial here (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#trans_norm}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3556,7 +3529,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu May 23 22:49:13 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Fri Jun 21 17:01:52 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3586,9 +3559,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6536 & 0.3877 & 0.3638 & 9.054 \\
-CW & 435 & 0.5628 & 0.2958 & 0.2864 & 14.33 \\
-TW & 435 & 0.6246 & 0.4161 & 0.4 & 9.873 \\
+IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.11 \\
+CW & 435 & 0.5625 & 0.2954 & 0.2862 & 14.35 \\
+TW & 435 & 0.6244 & 0.4162 & 0.3999 & 9.851 \\
 \bottomrule()
 \end{longtable}
 
@@ -3735,6 +3708,10 @@ Using cal\_ROC and plot\_ROC can get the ROC (Receiver Operator Characteristic) 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ROC}\NormalTok{()}
+\CommentTok{\# select one group to plot ROC}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{plot\_group =} \StringTok{"susceptible"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{plot\_group =} \StringTok{"susceptible"}\NormalTok{, }\AttributeTok{color\_values =} \StringTok{"black"}\NormalTok{)}
+\CommentTok{\# default all groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{(}\AttributeTok{size =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -4502,120 +4479,7 @@ Then we try to correlate the percentage data in \texttt{res\_spe\_func\_perc} to
 
 \begin{center}\includegraphics[width=800px]{Images/plot_func_perc_corr} \end{center}
 
-Tax4Fun \citep{Aßhauer_Tax4Fun_2015} requires a strict input file format associated with the taxonomic information.
-To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
-Please check out the dependence part \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun} for installing Tax4Fun package and download SILVA123 ref data.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
-\CommentTok{\# https://chiliubio.github.io/microeco\_tutorial/intro.html\#tax4fun for the installation description}
-\CommentTok{\# and provide the file path of SILVA123}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun}\NormalTok{(}\AttributeTok{folderReferenceData =} \StringTok{"./SILVA123"}\NormalTok{)}
-\CommentTok{\# return two files: t1$tax4fun\_KO: KO file; t1$tax4fun\_path: pathway file.}
-\CommentTok{\# t1$tax4fun\_KO$Tax4FunProfile[1:5, 1:2]}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1233}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4384}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4384}}@{}}
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
-~
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-K00001; alcohol dehydrogenase
-{[}EC:1.1.1.1{]}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-K00002; alcohol dehydrogenase
-(NADP+) {[}EC:1.1.1.2{]}
-\end{minipage} \\
-\midrule()
-\endhead
-\textbf{S1} & 0.0004823 & 5.942e-06 \\
-\textbf{S2} & 0.0005266 & 4.017e-06 \\
-\textbf{S3} & 0.0005054 & 6.168e-06 \\
-\textbf{S4} & 0.0005109 & 5.888e-06 \\
-\textbf{S5} & 0.0005083 & 5.547e-06 \\
-\bottomrule()
-\end{longtable}
-
-We further analyze the abundance of predicted metabolic pathways.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# must transpose to taxa row, sample column}
-\NormalTok{pathway\_file }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{tax4fun\_path}\SpecialCharTok{$}\NormalTok{Tax4FunProfile }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ t }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ as.data.frame}
-\CommentTok{\# filter rownames, only keep ko+number}
-\FunctionTok{rownames}\NormalTok{(pathway\_file) }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{gsub}\NormalTok{(}\StringTok{"(\^{}.*);}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{s.*"}\NormalTok{, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{1"}\NormalTok{, .)}
-\CommentTok{\# load the pathway hierarchical metadata}
-\FunctionTok{data}\NormalTok{(Tax4Fun2\_KEGG)}
-\CommentTok{\# further create a microtable object, familiar?}
-\NormalTok{func1 }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ pathway\_file, }\AttributeTok{tax\_table =}\NormalTok{ Tax4Fun2\_KEGG}\SpecialCharTok{$}\NormalTok{ptw\_desc, }\AttributeTok{sample\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{sample\_table)}
-\FunctionTok{print}\NormalTok{(func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## microtable-class object:
-## sample_table have 90 rows and 4 columns
-## otu_table have 284 rows and 90 columns
-## tax_table have 444 rows and 3 columns
-\end{verbatim}
-
-Now, we need to trim data and calculate abundance.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{func1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\CommentTok{\# calculate abundance automatically at three levels: Level.1, Level.2, Level.3}
-\NormalTok{func1}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## The result is stored in object$taxa_abund ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## microtable-class object:
-## sample_table have 90 rows and 4 columns
-## otu_table have 282 rows and 90 columns
-## tax_table have 282 rows and 3 columns
-## Taxa abundance: calculated for Level.1,Level.2,Level.3
-\end{verbatim}
-
-Then, we can plot the abundance.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# bar plot at Level.1}
-\NormalTok{func2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(func1, }\AttributeTok{taxrank =} \StringTok{"Level.1"}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
-\NormalTok{func2}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=600px]{Images/plot_bar_tax4fun1} \end{center}
-
-We can also do something else. For example, we can use lefse to test the differences of the abundances and find the important enriched pathways across groups.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{func2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ func1, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{lefse\_subgroup =} \ConstantTok{NULL}\NormalTok{)}
-\NormalTok{func2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{threshold =} \DecValTok{3}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.8}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=600px]{Images/plot_lefse_bar_tax4fun} \end{center}
-
-Tax4Fun2 \citep{Wemheuer_Tax4Fun2_2020} is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
+Tax4Fun2 \citep{Wemheuer_Tax4Fun2_2020} is an R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
 If the user want to use Tax4Fun2 method, the representative fasta file is necessary to be added in the microtable object.
 Please check out \url{https://chiliubio.github.io/microeco_tutorial/intro.html\#tax4fun2} to see
@@ -4627,10 +4491,10 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 \begin{Highlighting}[]
 \CommentTok{\# first delete the dataset created before}
 \FunctionTok{rm}\NormalTok{(dataset)}
-\CommentTok{\# load the example dataset from microeco package as there is the rep\_fasta object in it}
+\CommentTok{\# load the example dataset from microeco package as there is a rep\_fasta object in it}
 \FunctionTok{data}\NormalTok{(dataset)}
 \NormalTok{dataset}
-
+\CommentTok{\# create a trans\_func object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
 \CommentTok{\# create a directory for result and log files}
 \FunctionTok{dir.create}\NormalTok{(}\StringTok{"test\_prediction"}\NormalTok{)}
@@ -4640,17 +4504,54 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2}\NormalTok{(}\AttributeTok{blast\_tool\_path =} \StringTok{"ncbi{-}blast{-}2.5.0+/bin"}\NormalTok{, }\AttributeTok{path\_to\_reference\_data =} \StringTok{"Tax4Fun2\_ReferenceData\_v2"}\NormalTok{,}
   \AttributeTok{database\_mode =} \StringTok{"Ref99NR"}\NormalTok{, }\AttributeTok{path\_to\_temp\_folder =} \StringTok{"test\_prediction"}\NormalTok{)}
 
+\CommentTok{\# calculate functional redundancies}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2\_FRI}\NormalTok{()}
+
 \CommentTok{\# prepare feature table and metadata}
 \FunctionTok{data}\NormalTok{(Tax4Fun2\_KEGG)}
 \CommentTok{\# create a microtable object for pathways}
-\NormalTok{func2 }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_tax4fun2\_pathway, }\AttributeTok{tax\_table =}\NormalTok{ Tax4Fun2\_KEGG}\SpecialCharTok{$}\NormalTok{ptw\_desc, }\AttributeTok{sample\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
-\NormalTok{func2}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
-\NormalTok{func2}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
-
-\CommentTok{\# calculate functional redundancies}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_tax4fun2\_FRI}\NormalTok{()}
+\NormalTok{func\_mt }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{otu\_table =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_tax4fun2\_pathway, }\AttributeTok{tax\_table =}\NormalTok{ Tax4Fun2\_KEGG}\SpecialCharTok{$}\NormalTok{ptw\_desc, }\AttributeTok{sample\_table =}\NormalTok{ dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
+\NormalTok{func\_mt}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
+
+We further analyze the abundance of predicted metabolic pathways.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# calculate relative abundances at three levels: Level.1, Level.2, Level.3}
+\NormalTok{func\_mt}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\FunctionTok{print}\NormalTok{(func\_mt)}
+\end{Highlighting}
+\end{Shaded}
+
+Then, let's use trans\_abund class to visualize the abundance.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# bar plot at Level.1}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(func\_mt, }\AttributeTok{taxrank =} \StringTok{"Level.1"}\NormalTok{, }\AttributeTok{groupmean =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{legend\_text\_italic =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_bar_tax4fun1} \end{center}
+
+Then let's perform the differential abundance test and find the important enriched pathways across groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ func\_mt, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{lefse\_subgroup =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{threshold =} \DecValTok{3}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/plot_lefse_bar_tax4fun} \end{center}
+
+The subsequent analysis steps for PICRUSt2 \citep{Douglas_PICRUSt2_2020} are similar to those of Tax4Fun2.
+The main difference on operations between these two methods lies in the file reading part.
+PICRUSt2 requires reading the preliminary analysis result files.
+We have placed PICRUSt2 examples in the file2meco package section (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html\#picrust2}).
 
 \hypertarget{key-points-10}{%
 \subsection{Key points}\label{key-points-10}}
@@ -4782,8 +4683,8 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Superclass1"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# reassign ylab title instead of default \textquotesingle{}Relative Abundance\textquotesingle{}}
 \NormalTok{test1}\SpecialCharTok{$}\NormalTok{ylabname }\OtherTok{\textless{}{-}} \StringTok{"Abundance (RPK)"}
-\CommentTok{\# bar\_type = "notfull" show original abundance instead of normalized 0{-}1}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
+\CommentTok{\# bar\_full = FALSE show original abundance instead of normalized 0{-}1}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# select both function and taxa}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Superclass1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_taxonomy\_lineage =}\NormalTok{ T)}
@@ -4885,12 +4786,12 @@ The \texttt{ncyc2meco} function can identify the database and invoke the interna
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_column =} \StringTok{"Pathway"}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Pathway }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Pathway"}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# for gene abundance, no splitting on the pathways}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{split\_group =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Gene }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Gene"}\NormalTok{)}
-\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_type =} \StringTok{"notfull"}\NormalTok{)}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5352,6 +5253,26 @@ R package meconetcomp (\url{https://github.com/ChiLiubio/meconetcomp}) was devel
 The basic strategy is to use R list to put into all the trans\_network objects and perform the following analysis.
 The flow chart and following contents are adapted from the published article \citep{Liu_meconetcomp_2023}.
 For more details, please see the online paper (\url{https://doi.org/10.1002/imt2.71}).
+To cite meconetcomp in publications use:
+
+Chi Liu, Chaonan Li, Yanqiong Jiang, Raymond Jianxiong Zeng, Minjie Yao, and Xiangzhen Li. 2023.
+A guide for comparing microbial co-occurrence networks. iMeta. 2(1): e71.
+
+The BibTeX in LaTeX and markdown is:
+
+\begin{verbatim}
+  @Article{meconetcomp_2023,
+    title = {A guide for comparing microbial co-occurrence networks},
+    author = {Liu, Chi and Li, Chaonan and Jiang, Yanqiong and Zeng, Raymond J. and Yao, Minjie and Li, Xiangzhen},
+    year = {2023},
+    journal = {iMeta},
+    volume = {2},
+    issue = {1},
+    pages = {e71},
+    doi = {10.1002/imt2.71},
+    url = {https://doi.org/10.1002/imt2.71},
+  }
+\end{verbatim}
 
 \begin{center}\includegraphics[width=650px]{Images/meconetcomp} \end{center}
 
@@ -5625,7 +5546,7 @@ where \(\langle k \rangle\) is the average nodal degree of the original network,
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ robustness}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network, }\AttributeTok{remove\_strategy =} \FunctionTok{c}\NormalTok{(}\StringTok{"edge\_rand"}\NormalTok{, }\StringTok{"edge\_strong"}\NormalTok{, }\StringTok{"node\_degree\_high"}\NormalTok{), }
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ robustness}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network, }\AttributeTok{remove\_strategy =} \FunctionTok{c}\NormalTok{(}\StringTok{"edge\_rand"}\NormalTok{, }\StringTok{"edge\_strong"}\NormalTok{, }\StringTok{"node\_rand"}\NormalTok{, }\StringTok{"node\_degree\_high"}\NormalTok{), }
     \AttributeTok{remove\_ratio =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\AttributeTok{measure =} \FunctionTok{c}\NormalTok{(}\StringTok{"Eff"}\NormalTok{, }\StringTok{"Eigen"}\NormalTok{, }\StringTok{"Pcr"}\NormalTok{), }\AttributeTok{run =} \DecValTok{10}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{res\_table)}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{)}
@@ -5633,6 +5554,8 @@ where \(\langle k \rangle\) is the average nodal degree of the original network,
 \end{Shaded}
 
 \begin{center}\includegraphics[width=700px]{Images/meconetcomp_robustness} \end{center}
+
+The user can also extract the result for a specified metric and perform the visualization.
 
 \hypertarget{vulnerability-of-nodes}{%
 \section{Vulnerability of nodes}\label{vulnerability-of-nodes}}

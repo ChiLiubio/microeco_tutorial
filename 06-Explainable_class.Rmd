@@ -451,71 +451,7 @@ knitr::include_graphics("Images/plot_func_perc_corr.png")
 ```
 
 
-Tax4Fun [@Aßhauer_Tax4Fun_2015] requires a strict input file format associated with the taxonomic information.
-To analyze the trimmed or changed OTU data in R with Tax4Fun, we provide a link to the Tax4Fun functional prediction.
-Please check out the dependence part https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for installing Tax4Fun package and download SILVA123 ref data.
-
-```{r, echo = TRUE, eval = TRUE, message=FALSE}
-t1 <- trans_func$new(dataset)
-# https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun for the installation description
-# and provide the file path of SILVA123
-t1$cal_tax4fun(folderReferenceData = "./SILVA123")
-# return two files: t1$tax4fun_KO: KO file; t1$tax4fun_path: pathway file.
-# t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2]
-```
-
-
-```{r, echo = FALSE}
-pander::pander(t1$tax4fun_KO$Tax4FunProfile[1:5, 1:2])
-```
-
-
-
-We further analyze the abundance of predicted metabolic pathways.
-
-```{r, echo = TRUE, eval = TRUE}
-# must transpose to taxa row, sample column
-pathway_file <- t1$tax4fun_path$Tax4FunProfile %>% t %>% as.data.frame
-# filter rownames, only keep ko+number
-rownames(pathway_file) %<>% gsub("(^.*);\\s.*", "\\1", .)
-# load the pathway hierarchical metadata
-data(Tax4Fun2_KEGG)
-# further create a microtable object, familiar?
-func1 <- microtable$new(otu_table = pathway_file, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = t1$sample_table)
-print(func1)
-```
-
-Now, we need to trim data and calculate abundance.
-```{r, echo = TRUE, eval = TRUE}
-func1$tidy_dataset()
-# calculate abundance automatically at three levels: Level.1, Level.2, Level.3
-func1$cal_abund()
-print(func1)
-```
-
-Then, we can plot the abundance.
-```{r, echo = TRUE, eval = FALSE}
-# bar plot at Level.1
-func2 <- trans_abund$new(func1, taxrank = "Level.1", groupmean = "Group")
-func2$plot_bar(legend_text_italic = FALSE)
-```
-
-```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_bar_tax4fun1.png")
-```
-
-We can also do something else. For example, we can use lefse to test the differences of the abundances and find the important enriched pathways across groups.
-
-```{r, echo = TRUE, eval = FALSE}
-func2 <- trans_diff$new(dataset = func1, method = "lefse", group = "Group", alpha = 0.05, lefse_subgroup = NULL)
-func2$plot_diff_bar(threshold = 3, width = 0.8)
-```
-
-```{r, out.width = "600px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
-```
-
-Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is another R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
+Tax4Fun2 [@Wemheuer_Tax4Fun2_2020] is an R package for the prediction of functional profiles of prokaryotic communities from 16S rRNA gene sequences.
 It also provides two indexes for the evaluation of functional gene redundancies.
 If the user want to use Tax4Fun2 method, the representative fasta file is necessary to be added in the microtable object.
 Please check out https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2 to see
@@ -527,10 +463,10 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 ```{r, echo = TRUE, eval = FALSE}
 # first delete the dataset created before
 rm(dataset)
-# load the example dataset from microeco package as there is the rep_fasta object in it
+# load the example dataset from microeco package as there is a rep_fasta object in it
 data(dataset)
 dataset
-
+# create a trans_func object
 t1 <- trans_func$new(dataset)
 # create a directory for result and log files
 dir.create("test_prediction")
@@ -540,16 +476,53 @@ dir.create("test_prediction")
 t1$cal_tax4fun2(blast_tool_path = "ncbi-blast-2.5.0+/bin", path_to_reference_data = "Tax4Fun2_ReferenceData_v2",
   database_mode = "Ref99NR", path_to_temp_folder = "test_prediction")
 
+# calculate functional redundancies
+t1$cal_tax4fun2_FRI()
+
 # prepare feature table and metadata
 data(Tax4Fun2_KEGG)
 # create a microtable object for pathways
-func2 <- microtable$new(otu_table = t1$res_tax4fun2_pathway, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = dataset$sample_table)
-func2$tidy_dataset()
-func2$cal_abund()
-
-# calculate functional redundancies
-t1$cal_tax4fun2_FRI()
+func_mt <- microtable$new(otu_table = t1$res_tax4fun2_pathway, tax_table = Tax4Fun2_KEGG$ptw_desc, sample_table = dataset$sample_table)
+func_mt$tidy_dataset()
 ```
+
+We further analyze the abundance of predicted metabolic pathways.
+
+```{r, echo = TRUE, eval = FALSE}
+# calculate relative abundances at three levels: Level.1, Level.2, Level.3
+func_mt$cal_abund()
+print(func_mt)
+```
+
+Then, let's use trans_abund class to visualize the abundance.
+```{r, echo = TRUE, eval = FALSE}
+# bar plot at Level.1
+tmp <- trans_abund$new(func_mt, taxrank = "Level.1", groupmean = "Group")
+tmp$plot_bar(legend_text_italic = FALSE)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_bar_tax4fun1.png")
+```
+
+Then let's perform the differential abundance test and find the important enriched pathways across groups.
+
+```{r, echo = TRUE, eval = FALSE}
+tmp <- trans_diff$new(dataset = func_mt, method = "lefse", group = "Group", alpha = 0.05, lefse_subgroup = NULL)
+tmp$plot_diff_bar(threshold = 3, width = 0.7)
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/plot_lefse_bar_tax4fun.png")
+```
+
+
+The subsequent analysis steps for PICRUSt2 [@Douglas_PICRUSt2_2020] are similar to those of Tax4Fun2. 
+The main difference on operations between these two methods lies in the file reading part.
+PICRUSt2 requires reading the preliminary analysis result files. 
+We have placed PICRUSt2 examples in the file2meco package section (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#picrust2).
+
+
 
 ### Key points
 

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Introduction | Tutorial for R microeco package (v1.7.1)</title>
   <meta name="description" content="The tutorial for R microeco (v1.7.1), file2meco (v0.7.1), meconetcomp (v0.5.0) and mecoturn packages" />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Introduction | Tutorial for R microeco package (v1.7.1)" />
   <meta property="og:type" content="book" />
@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2024-05-23" />
+<meta name="date" content="2024-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -175,8 +175,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.5.3" data-path="intro.html"><a href="intro.html#bioconductor-packages"><i class="fa fa-check"></i><b>2.5.3</b> Bioconductor packages</a></li>
 <li class="chapter" data-level="2.5.4" data-path="intro.html"><a href="intro.html#github-packages"><i class="fa fa-check"></i><b>2.5.4</b> Github packages</a></li>
 <li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.5.5</b> Gephi</a></li>
-<li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun</a></li>
-<li class="chapter" data-level="2.5.7" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.7</b> Tax4Fun2</a></li>
+<li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
 </ul></li>
 <li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
 <li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#rstudio"><i class="fa fa-check"></i><b>2.7</b> Rstudio</a></li>
@@ -500,24 +499,9 @@ For the Windows system, first make sure RTools has been installed (<a href="http
 i.e. network.gexf in the <a href="https://chiliubio.github.io/microeco_tutorial/model-based-class.html#trans_network-class">tutorial</a>.
 You can download Gephi and learn how to use it from <a href="https://gephi.org/users/download/" class="uri">https://gephi.org/users/download/</a></p>
 </div>
-<div id="tax4fun" class="section level3 hasAnchor" number="2.5.6">
-<h3><span class="header-section-number">2.5.6</span> Tax4Fun<a href="intro.html#tax4fun" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Tax4Fun is an R package used for predicting the functional potential of prokaryotic communities.</p>
-<ol style="list-style-type: decimal">
-<li>install Tax4Fun package</li>
-</ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;RJSONIO&quot;</span>)</span>
-<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;biom_0.3.12.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
-<span id="cb8-3"><a href="intro.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;qiimer_0.9.4.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
-<span id="cb8-4"><a href="intro.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;Tax4Fun_0.3.1.tar.gz&quot;</span>, <span class="at">package=</span><span class="st">&quot;microeco&quot;</span>), <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>download SILVA123 reference data from <a href="http://tax4fun.gobics.de/" class="uri">http://tax4fun.gobics.de/</a><br />
-　unzip SILVA123.zip and provide this path to the folderReferenceData parameter of cal_tax4fun function in trans_func class.</li>
-</ol>
-</div>
-<div id="tax4fun2" class="section level3 hasAnchor" number="2.5.7">
-<h3><span class="header-section-number">2.5.7</span> Tax4Fun2<a href="intro.html#tax4fun2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Tax4Fun2 is another R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span>.
+<div id="tax4fun2" class="section level3 hasAnchor" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> Tax4Fun2<a href="intro.html#tax4fun2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Tax4Fun2 is an R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities <span class="citation">(<a href="#ref-Wemheuer_Tax4Fun2_2020" role="doc-biblioref">Wemheuer et al. 2020</a>)</span>.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
 Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
@@ -544,21 +528,21 @@ Uncompress all the folders. The final folders should be like these structures:</
 　　　|—— Ref99NR.tre</p>
 <p>The path “Tax4Fun2_ReferenceData_v2” will be required in the trans_func$cal_tax4fun2() function.
 The blast tool path “ncbi-blast-2.5.0+/bin” is also required if it is not added to the system env path (environmental variable).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Either seqinr or Biostrings package should be installed for reading and writing fasta file</span></span>
-<span id="cb9-2"><a href="intro.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-3"><a href="intro.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html</span></span>
-<span id="cb9-4"><a href="intro.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
-<span id="cb9-5"><a href="intro.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco to install file2meco</span></span>
-<span id="cb9-6"><a href="intro.html#cb9-6" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
-<span id="cb9-7"><a href="intro.html#cb9-7" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
-<span id="cb9-8"><a href="intro.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or use Biostrings package</span></span>
-<span id="cb9-9"><a href="intro.html#cb9-9" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">readDNAStringSet</span>(rep_fasta_path)</span>
-<span id="cb9-10"><a href="intro.html#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># try to create a microtable object with rep_fasta</span></span>
-<span id="cb9-11"><a href="intro.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;otu_table_16S&quot;</span>)</span>
-<span id="cb9-12"><a href="intro.html#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># In microtable class, all the taxa names should be necessarily included in rep_fasta</span></span>
-<span id="cb9-13"><a href="intro.html#cb9-13" aria-hidden="true" tabindex="-1"></a>otu_table_16S <span class="ot">&lt;-</span> otu_table_16S[<span class="fu">rownames</span>(otu_table_16S) <span class="sc">%in%</span> <span class="fu">names</span>(rep_fasta), ]</span>
-<span id="cb9-14"><a href="intro.html#cb9-14" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> otu_table_16S, <span class="at">rep_fasta =</span> rep_fasta)</span>
-<span id="cb9-15"><a href="intro.html#cb9-15" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Either seqinr or Biostrings package should be installed for reading and writing fasta file</span></span>
+<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-3"><a href="intro.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or install Biostrings from bioconductor https://bioconductor.org/packages/release/bioc/html/Biostrings.html</span></span>
+<span id="cb8-4"><a href="intro.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we show how to read the fasta file</span></span>
+<span id="cb8-5"><a href="intro.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see https://github.com/ChiLiubio/file2meco to install file2meco</span></span>
+<span id="cb8-6"><a href="intro.html#cb8-6" aria-hidden="true" tabindex="-1"></a>rep_fasta_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;rep.fna&quot;</span>, <span class="at">package=</span><span class="st">&quot;file2meco&quot;</span>)</span>
+<span id="cb8-7"><a href="intro.html#cb8-7" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> seqinr<span class="sc">::</span><span class="fu">read.fasta</span>(rep_fasta_path)</span>
+<span id="cb8-8"><a href="intro.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># or use Biostrings package</span></span>
+<span id="cb8-9"><a href="intro.html#cb8-9" aria-hidden="true" tabindex="-1"></a>rep_fasta <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">readDNAStringSet</span>(rep_fasta_path)</span>
+<span id="cb8-10"><a href="intro.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># try to create a microtable object with rep_fasta</span></span>
+<span id="cb8-11"><a href="intro.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;otu_table_16S&quot;</span>)</span>
+<span id="cb8-12"><a href="intro.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># In microtable class, all the taxa names should be necessarily included in rep_fasta</span></span>
+<span id="cb8-13"><a href="intro.html#cb8-13" aria-hidden="true" tabindex="-1"></a>otu_table_16S <span class="ot">&lt;-</span> otu_table_16S[<span class="fu">rownames</span>(otu_table_16S) <span class="sc">%in%</span> <span class="fu">names</span>(rep_fasta), ]</span>
+<span id="cb8-14"><a href="intro.html#cb8-14" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span><span class="fu">new</span>(<span class="at">otu_table =</span> otu_table_16S, <span class="at">rep_fasta =</span> rep_fasta)</span>
+<span id="cb8-15"><a href="intro.html#cb8-15" aria-hidden="true" tabindex="-1"></a>test</span></code></pre></div>
 </div>
 </div>
 <div id="plot" class="section level2 hasAnchor" number="2.6">
