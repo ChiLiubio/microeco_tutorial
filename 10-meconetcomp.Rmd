@@ -274,6 +274,7 @@ where $\langle k \rangle$ is the average nodal degree of the original network, a
 tmp <- robustness$new(soil_amp_network, remove_strategy = c("edge_rand", "edge_strong", "node_rand", "node_degree_high"), 
 	remove_ratio = seq(0, 0.99, 0.1), measure = c("Eff", "Eigen", "Pcr"), run = 10)
 View(tmp$res_table)
+View(tmp$res_summary)
 tmp$plot(linewidth = 1)
 ```
 
@@ -281,7 +282,24 @@ tmp$plot(linewidth = 1)
 knitr::include_graphics("Images/meconetcomp_robustness.png")
 ```
 
-The user can also extract the result for a specified metric and perform the visualization.
+We can also extract the result for a specified metric and perform the visualization, such as the scatter plot.
+
+```{r, echo = TRUE, eval = FALSE}
+tmp1 <- tmp$res_table %>% .[.$remove_strategy == "node_rand" & .$measure == "Eigen", ]
+library(microeco)
+library(ggplot2)
+theme_set(theme_bw())
+
+t1 <- trans_env$new(dataset = NULL, add_data = tmp1)
+t1$dataset$sample_table <- t1$data_env
+t1$plot_scatterfit(x = "remove_ratio", y = "value", type = "cor", group = "Network") + 
+	xlab("Ratio of randomly removed nodes") + ylab("Network connectivity") + theme(axis.title = element_text(size = 15))
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/meconetcomp_robustness_single.png")
+```
+
 
 
 
