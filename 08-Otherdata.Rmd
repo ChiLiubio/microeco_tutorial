@@ -20,6 +20,33 @@ meco_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_tab
 meco_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
 # use tidy_dataset() to make OTUs and samples information consistent across files
 meco_fungi$tidy_dataset()
+```
+
+Then, let's perform the fungal trait prediction.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_func$new(meco_fungi)
+# Both FungalTraits and FUNGuild are available
+t1$cal_spe_func(fungi_database = "FungalTraits")
+t1$cal_spe_func_perc(abundance_weighted = TRUE)
+# return: t1$res_spe_func_perc
+```
+
+Then we show an example on the differential test of traits across groups.
+
+```{r, echo = TRUE, eval = FALSE}
+# clone meco_fungi for differential test
+tmp_mt <- clone(meco_fungi)
+# we need assign the table to taxa_abund manually
+tmp_mt$taxa_abund$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
+# use trans_diff class to perform differential test
+t2 <- trans_diff$new(dataset = tmp_mt, method = "anova", group = "sample_type", taxa_level = "func")
+t2$plot_diff_abund(add_sig = T, simplify_names = FALSE) + ggplot2::ylab("Relative abundance (%)")
+```
+
+Then we show the distribution of traits across modules in network.
+
+```{r, echo = TRUE, eval = FALSE}
 # create trans_network object
 t1 <- trans_network$new(dataset = meco_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
 # create correlation network 
@@ -39,9 +66,7 @@ t2$cal_spe_func_perc(abundance_weighted = FALSE)
 t2$plot_spe_func_perc(order_x = paste0("M", 1:10))
 ```
 
-```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/plot_func_perc_module_fungi.png")
-```
+
 
 ## Metagenomic data
 

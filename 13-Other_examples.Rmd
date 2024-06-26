@@ -230,14 +230,14 @@ data(dataset)
 t1 <- trans_func$new(dataset)
 t1$cal_spe_func(prok_database = "FAPROTAX")
 t1$cal_spe_func_perc(abundance_weighted = TRUE)
-# use list to prepare data
-tmp <- list()
+# it is better to clone a dataset
+tmp_mt <- clone(dataset)
 # transpose res_spe_func_perc to be a data.frame like taxonomic abundance
-tmp$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
-# assign the list as taxa_abund in your microtable object
-dataset$taxa_abund <- tmp
-# use trans_diff class to perform differential test
-t2 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "all")
+tmp <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
+# assign the table back to taxa_abund list for further analysis
+tmp_mt$taxa_abund$func <- tmp
+# select the "func" in taxa_abund list in trans_diff
+t2 <- trans_diff$new(dataset = tmp_mt, method = "anova", group = "Group", taxa_level = "func")
 t2$plot_diff_abund(add_sig = T) + ggplot2::ylab("Relative abundance (%)")
 ```
 
