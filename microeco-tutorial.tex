@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.7.1)},
+  pdftitle={Tutorial for R microeco package (v1.8.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.7.1)}
+\title{Tutorial for R microeco package (v1.8.0)}
 \author{}
-\date{\vspace{-2.5em}2024-06-21}
+\date{\vspace{-2.5em}2024-06-30}
 
 \begin{document}
 \maketitle
@@ -433,6 +433,19 @@ However, in Rtudio, there may be instances where the links fail to navigate prop
 In such cases, the issue can be resolved by reopening a document window, as illustrated in the figure below.
 
 \begin{center}\includegraphics[width=800px]{Images/Rstudio_link_redirection} \end{center}
+
+\hypertarget{citation}{%
+\section{Citation}\label{citation}}
+
+To get the citation in R, please run:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{citation}\NormalTok{(}\StringTok{"microeco"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Please download the EndNote or other citation format from the publication website (\url{https://doi.org/10.1093/femsec/fiaa255}).
 
 \hypertarget{basic-class}{%
 \chapter{Basic class}\label{basic-class}}
@@ -1863,7 +1876,7 @@ IW - CW - TW & InvSimpson & CW & 0.8083 & 0.9094 & ns \\
 \begin{minipage}[b]{\linewidth}\centering
 Measure
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Test\_method
+Method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -1920,14 +1933,14 @@ From v1.0.0, the \texttt{alpha} parameter can be used to adjust the significance
 
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1944}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
   >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 Measure
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Test\_method
+Method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2109,8 +2122,8 @@ We first show the ordination using PCoA (principal coordinates analysis).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# create an trans\_beta object}
-\CommentTok{\# measure parameter must be one of names(dataset$beta\_diversity)}
+\CommentTok{\# create trans\_beta object}
+\CommentTok{\# measure parameter should be either one of names(dataset$beta\_diversity) or a customized symmetric matrix}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2118,7 +2131,7 @@ We first show the ordination using PCoA (principal coordinates analysis).
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# PCoA, PCA, DCA and NMDS are available}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# t1$res\_ordination is the ordination result list}
 \FunctionTok{class}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_ordination)}
 \CommentTok{\# plot the PCoA result with confidence ellipse}
@@ -2158,9 +2171,9 @@ One example for PCA or DCA with Genus data and loading arrow.
 \FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{otu\_table) }\OtherTok{\textless{}{-}}\NormalTok{ d1}\SpecialCharTok{$}\NormalTok{tax\_table[}\FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{otu\_table), }\StringTok{"Genus"}\NormalTok{]}
 \FunctionTok{rownames}\NormalTok{(d1}\SpecialCharTok{$}\NormalTok{tax\_table) }\OtherTok{\textless{}{-}}\NormalTok{ d1}\SpecialCharTok{$}\NormalTok{tax\_table[, }\StringTok{"Genus"}\NormalTok{]}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCA"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{loading\_arrow =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{loading\_text\_italic =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"DCA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"DCA"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{loading\_arrow =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{loading\_text\_italic =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -2224,13 +2237,13 @@ based on the \texttt{adonis2} function of vegan package.
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}@{}}
-\caption{Permutation test for adonis under reduced model}\tabularnewline
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 ~
@@ -2244,28 +2257,14 @@ R2
 F
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Pr(\textgreater F)
-\end{minipage} \\
-\midrule()
-\endfirsthead
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
-~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Df
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-SumOfSqs
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-R2
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-F
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Pr(\textgreater F)
+Significance
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 \\
-\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA \\
-\textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 & *** \\
+\textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA & NA \\
+\textbf{Total} & 89 & 31.3 & 1 & NA & NA & NA \\
 \bottomrule()
 \end{longtable}
 
@@ -2426,13 +2425,13 @@ The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}@{}}
-\caption{Permutation test for adonis under reduced model}\tabularnewline
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 ~
@@ -2446,29 +2445,15 @@ R2
 F
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Pr(\textgreater F)
-\end{minipage} \\
-\midrule()
-\endfirsthead
-\toprule()
-\begin{minipage}[b]{\linewidth}\centering
-~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Df
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-SumOfSqs
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-R2
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-F
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Pr(\textgreater F)
+Significance
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{Group} & 2 & 6.121 & 0.1955 & 12.01 & 0.001 \\
-\textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 \\
-\textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA \\
-\textbf{Total} & 89 & 31.3 & 1 & NA & NA \\
+\textbf{Group} & 2 & 6.121 & 0.1955 & 12.01 & 0.001 & *** \\
+\textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 & *** \\
+\textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA & NA \\
+\textbf{Total} & 89 & 31.3 & 1 & NA & NA & NA \\
 \bottomrule()
 \end{longtable}
 
@@ -3529,7 +3514,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Fri Jun 21 17:01:52 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Jun 30 11:18:38 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3559,9 +3544,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3867 & 0.3638 & 9.11 \\
-CW & 435 & 0.5625 & 0.2954 & 0.2862 & 14.35 \\
-TW & 435 & 0.6244 & 0.4162 & 0.3999 & 9.851 \\
+IW & 435 & 0.6539 & 0.3872 & 0.364 & 9.111 \\
+CW & 435 & 0.5631 & 0.2963 & 0.2867 & 14.25 \\
+TW & 435 & 0.6247 & 0.4167 & 0.4002 & 9.847 \\
 \bottomrule()
 \end{longtable}
 
@@ -3631,7 +3616,7 @@ Before starting the examples, make sure those packages have been installed.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Boruta"}\NormalTok{, }\StringTok{"parallel"}\NormalTok{, }\StringTok{"rsample"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"caret"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"multiROC"}\NormalTok{)}
+\NormalTok{packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Boruta"}\NormalTok{, }\StringTok{"parallel"}\NormalTok{, }\StringTok{"rsample"}\NormalTok{, }\StringTok{"randomForest"}\NormalTok{, }\StringTok{"caret"}\NormalTok{, }\StringTok{"gridExtra"}\NormalTok{, }\StringTok{"multiROC"}\NormalTok{, }\StringTok{"rfPermute"}\NormalTok{)}
 \CommentTok{\# Now check or install}
 \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ packages)\{}
     \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(x, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)) \{}
@@ -3649,6 +3634,7 @@ data training and prediction with random forest algorithm.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{library}\NormalTok{(file2meco)}
 \NormalTok{abund\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"dada2\_table.qza"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
 \NormalTok{sample\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"extdata"}\NormalTok{, }\StringTok{"sample{-}metadata.tsv"}\NormalTok{, }\AttributeTok{package=}\StringTok{"file2meco"}\NormalTok{)}
@@ -3687,11 +3673,11 @@ Now let's start model training with rf method.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use default parameter method = "rf"}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{max.ntree =} \DecValTok{500}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{method =} \StringTok{"rf"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-We can use cal\_predict function to predict the testing data set.
+We can use \texttt{cal\_predict} function to predict the testing data set.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3740,7 +3726,7 @@ we also perfom all the analysis with feature selection to show the whole results
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{max.ntree =} \DecValTok{500}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_predict}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_confusionMatrix}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_ROC}\NormalTok{()}
@@ -3773,16 +3759,37 @@ To show the ROC curve or PR curve of the training result, please make input = ``
 
 \begin{center}\includegraphics[width=500px]{Images/plot_ROC_with_selection_training} \end{center}
 
-For other machine-learning models, please use method parameter in cal\_train function.
+To obtain the feature importance, please use \texttt{cal\_feature\_imp} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# default method in caret package without significance}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"red"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{)}
+\CommentTok{\# generate significance with rfPermute package}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{(}\AttributeTok{rf\_feature\_sig =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{num.rep =} \DecValTok{1000}\NormalTok{)}
+\CommentTok{\# add\_sig = TRUE: add significance label}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{coord\_flip =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"red"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# show\_sig\_group = TRUE: show different colors in groups with different significance labels}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# rf\_sig\_show = "MeanDecreaseGini": switch to MeanDecreaseGini}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{rf\_sig\_show =} \StringTok{"MeanDecreaseGini"}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# group\_aggre = FALSE: donot aggregate features for each group}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{rf\_sig\_show =} \StringTok{"MeanDecreaseGini"}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{group\_aggre =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+For other machine-learning models, please use method parameter in \texttt{cal\_train} function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use SVM method}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{al\_train}\NormalTok{(}\AttributeTok{method =} \StringTok{"svmRadial"}\NormalTok{, }\AttributeTok{tuneLength =} \DecValTok{15}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{method =} \StringTok{"svmRadial"}\NormalTok{, }\AttributeTok{tuneLength =} \DecValTok{15}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-The regression is supported from v0.15.0.
+The regression is also supported.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4247,7 +4254,34 @@ The function \texttt{plot\_scatterfit} in trans\_env class is designed for the s
 
 \begin{center}\includegraphics[width=550px]{Images/trans_env_scatterfit_lmgroup} \end{center}
 
-Other examples.
+Then let's use trans\_classifier class (\url{https://chiliubio.github.io/microeco_tutorial/model-based-class.html\#trans_classifier-class}) to
+perform machine learning to find important environmental variables in classifying groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{6}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{data\_env }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ t }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ as.data.frame}
+\CommentTok{\# caret package should be installed}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{x.predictors =}\NormalTok{ tmp, }\AttributeTok{y.response =} \StringTok{"Saline"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_preProcess}\NormalTok{(}\AttributeTok{method =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{, }\StringTok{"nzv"}\NormalTok{))}
+\CommentTok{\# All samples are used in training if cal\_split function is not performed}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{(}\AttributeTok{method =} \StringTok{"rf"}\NormalTok{)}
+\CommentTok{\# default method in caret package without significance}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"red"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{)}
+\CommentTok{\# generate significance with rfPermute package}
+\CommentTok{\# require rfPermute package to be installed}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{(}\AttributeTok{rf\_feature\_sig =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{num.rep =} \DecValTok{1000}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{coord\_flip =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"red"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{show\_sig\_group =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{rf\_sig\_show =} \StringTok{"MeanDecreaseGini"}\NormalTok{, }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/trans_env_classifier_rf_featureimp_sig} \end{center}
+
+Other examples:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4721,15 +4755,15 @@ The format of MetaPhlAn classification results is usually called `mpa' format.
 The mpa2meco function is developed for this format conversion to microtable object.
 See the following example of Kraken2 part.
 
-\hypertarget{kraken2braken}{%
-\section{Kraken2/Braken}\label{kraken2braken}}
+\hypertarget{kraken2bracken}{%
+\section{Kraken2/Bracken}\label{kraken2bracken}}
 
 Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
 Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
 That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 Kraken2 \citep{Wood_Improved_2019} is the newest version.
-Braken \citep{Lu_Bracken_2017} can be applied to estimate species abundance following the Kraken analysis.
-The merged Kraken2/Braken results can be obtained by merge\_metaphlan\_tables.py from MetaPhlAn or combine\_mpa.py from KrakenTools (\url{https://ccb.jhu.edu/software/krakentools/}).
+Bracken \citep{Lu_Bracken_2017} can be applied to estimate species abundance following the Kraken analysis.
+The merged Kraken2/Bracken results can be obtained by merge\_metaphlan\_tables.py from MetaPhlAn or combine\_mpa.py from KrakenTools (\url{https://ccb.jhu.edu/software/krakentools/}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4906,6 +4940,39 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \NormalTok{meco\_fungi}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ base}\SpecialCharTok{::}\FunctionTok{subset}\NormalTok{(Kingdom }\SpecialCharTok{==} \StringTok{"k\_\_Fungi"}\NormalTok{)}
 \CommentTok{\# use tidy\_dataset() to make OTUs and samples information consistent across files}
 \NormalTok{meco\_fungi}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Then, let's perform the fungal trait prediction.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(meco\_fungi)}
+\CommentTok{\# Both FungalTraits and FUNGuild are available}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FungalTraits"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# return: t1$res\_spe\_func\_perc}
+\end{Highlighting}
+\end{Shaded}
+
+Then we show an example on the differential test of traits across groups.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# clone meco\_fungi for differential test}
+\NormalTok{tmp\_mt }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(meco\_fungi)}
+\CommentTok{\# we need assign the table to taxa\_abund manually}
+\NormalTok{tmp\_mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# use trans\_diff class to perform differential test}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp\_mt, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"sample\_type"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"func"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{simplify\_names =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then we show the distribution of traits across modules in network.
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# create trans\_network object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ meco\_fungi, }\AttributeTok{cal\_cor =} \StringTok{"WGCNA"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.000001}\NormalTok{, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \CommentTok{\# create correlation network }
@@ -4925,8 +4992,6 @@ FungalTraits \citep{Polme_FungalTraits_2020} database is also available for iden
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{center}\includegraphics[width=700px]{Images/plot_func_perc_module_fungi} \end{center}
 
 \hypertarget{metagenomic-data}{%
 \section{Metagenomic data}\label{metagenomic-data}}
@@ -5139,7 +5204,7 @@ If the user want to reorder the groups, \textbf{assigning factors may be the sim
 \begin{Highlighting}[]
 \FunctionTok{data}\NormalTok{(dataset)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCoA"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5154,7 +5219,7 @@ We can find the changed group order in the legend and colors in the plot.
 \NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Group }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{factor}\NormalTok{(., }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{))}
 \FunctionTok{str}\NormalTok{(dataset}\SpecialCharTok{$}\NormalTok{sample\_table)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCoA"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5299,6 +5364,7 @@ The BibTeX in LaTeX and markdown is:
 \FunctionTok{library}\NormalTok{(magrittr)}
 \FunctionTok{library}\NormalTok{(igraph)}
 \FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
 \CommentTok{\# load soil amplicon sequencing dataset}
 \FunctionTok{data}\NormalTok{(soil\_amp)}
 \end{Highlighting}
@@ -5549,13 +5615,30 @@ where \(\langle k \rangle\) is the average nodal degree of the original network,
 \NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ robustness}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network, }\AttributeTok{remove\_strategy =} \FunctionTok{c}\NormalTok{(}\StringTok{"edge\_rand"}\NormalTok{, }\StringTok{"edge\_strong"}\NormalTok{, }\StringTok{"node\_rand"}\NormalTok{, }\StringTok{"node\_degree\_high"}\NormalTok{), }
     \AttributeTok{remove\_ratio =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\AttributeTok{measure =} \FunctionTok{c}\NormalTok{(}\StringTok{"Eff"}\NormalTok{, }\StringTok{"Eigen"}\NormalTok{, }\StringTok{"Pcr"}\NormalTok{), }\AttributeTok{run =} \DecValTok{10}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{res\_table)}
+\FunctionTok{View}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{res\_summary)}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics[width=700px]{Images/meconetcomp_robustness} \end{center}
 
-The user can also extract the result for a specified metric and perform the visualization.
+We can also extract the result for a specified metric and perform the visualization, such as the scatter plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp1 }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\NormalTok{res\_table }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{remove\_strategy }\SpecialCharTok{==} \StringTok{"node\_rand"} \SpecialCharTok{\&}\NormalTok{ .}\SpecialCharTok{$}\NormalTok{measure }\SpecialCharTok{==} \StringTok{"Eigen"}\NormalTok{, ]}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{add\_data =}\NormalTok{ tmp1)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{data\_env}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"remove\_ratio"}\NormalTok{, }\AttributeTok{y =} \StringTok{"value"}\NormalTok{, }\AttributeTok{type =} \StringTok{"cor"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Network"}\NormalTok{) }\SpecialCharTok{+} 
+    \FunctionTok{xlab}\NormalTok{(}\StringTok{"Ratio of randomly removed nodes"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Network connectivity"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{15}\NormalTok{))}
+
+\CommentTok{\# another way; for microeco version \textgreater{}= 1.8.0}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =}\NormalTok{ tmp1}\SpecialCharTok{$}\NormalTok{remove\_ratio, }\AttributeTok{y =}\NormalTok{ tmp1}\SpecialCharTok{$}\NormalTok{value, }\AttributeTok{type =} \StringTok{"cor"}\NormalTok{, }\AttributeTok{group =}\NormalTok{ tmp1}\SpecialCharTok{$}\NormalTok{Network)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=550px]{Images/meconetcomp_robustness_single} \end{center}
 
 \hypertarget{vulnerability-of-nodes}{%
 \section{Vulnerability of nodes}\label{vulnerability-of-nodes}}
@@ -6400,7 +6483,7 @@ Firstly, we use \texttt{trans\_beta} class to compute PCoA, then perform differe
 \FunctionTok{data}\NormalTok{(dataset)}
 \CommentTok{\# PCoA}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{ordination =} \StringTok{"PCoA"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCoA"}\NormalTok{)}
 \CommentTok{\# extract the axis scores}
 \NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_ordination}\SpecialCharTok{$}\NormalTok{scores}
 \CommentTok{\# differential test with trans\_env class}
@@ -6481,14 +6564,14 @@ Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the different
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# use list to prepare data}
-\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\CommentTok{\# it is better to clone a dataset}
+\NormalTok{tmp\_mt }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
 \CommentTok{\# transpose res\_spe\_func\_perc to be a data.frame like taxonomic abundance}
-\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
-\CommentTok{\# assign the list as taxa\_abund in your microtable object}
-\NormalTok{dataset}\SpecialCharTok{$}\NormalTok{taxa\_abund }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
-\CommentTok{\# use trans\_diff class to perform differential test}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"all"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# assign the table back to taxa\_abund list for further analysis}
+\NormalTok{tmp\_mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
+\CommentTok{\# select the "func" in taxa\_abund list in trans\_diff}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp\_mt, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"func"}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{add\_sig =}\NormalTok{ T) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}

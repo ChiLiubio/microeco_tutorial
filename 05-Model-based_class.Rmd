@@ -832,7 +832,7 @@ and soil categories [@Wilhelm_Predicting_2021].
 Before starting the examples, make sure those packages have been installed.
 
 ```{r, echo = TRUE, eval = FALSE}
-packages <- c("Boruta", "parallel", "rsample", "randomForest", "caret", "gridExtra", "multiROC")
+packages <- c("Boruta", "parallel", "rsample", "randomForest", "caret", "gridExtra", "multiROC", "rfPermute")
 # Now check or install
 for(x in packages){
 	if(!require(x, character.only = TRUE)) {
@@ -846,6 +846,7 @@ In this section, we use the example data in file2meco package (https://chiliubio
 data training and prediction with random forest algorithm.
 
 ```{r, echo = TRUE, eval=FALSE}
+library(microeco)
 library(file2meco)
 abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco")
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
@@ -878,10 +879,10 @@ Now let's start model training with rf method.
 
 ```{r, echo = TRUE, eval=FALSE}
 # use default parameter method = "rf"
-t1$cal_train(max.ntree = 500)
+t1$cal_train(method = "rf")
 ```
 
-We can use cal_predict function to predict the testing data set.
+We can use `cal_predict` function to predict the testing data set.
 
 ```{r, echo = TRUE, eval=FALSE}
 t1$cal_predict()
@@ -927,7 +928,7 @@ t2 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors =
 t2$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
 t2$cal_split(prop.train = 3/4)
 t2$set_trainControl()
-t2$cal_train(max.ntree = 500)
+t2$cal_train()
 t2$cal_predict()
 t2$plot_confusionMatrix()
 t2$cal_ROC()
@@ -960,13 +961,34 @@ t2$plot_ROC(plot_type = "ROC", size = 0.5, alpha = 0.7)
 knitr::include_graphics("Images/plot_ROC_with_selection_training.png")
 ```
 
-For other machine-learning models, please use method parameter in cal_train function.
+To obtain the feature importance, please use `cal_feature_imp` function.
+
 ```{r, echo = TRUE, eval=FALSE}
-# use SVM method
-t2$al_train(method = "svmRadial", tuneLength = 15)
+# default method in caret package without significance
+t2$cal_feature_imp()
+t2$plot_feature_imp(colour = "red", fill = "red", width = 0.6)
+# generate significance with rfPermute package
+t2$cal_feature_imp(rf_feature_sig = TRUE, num.rep = 1000)
+# add_sig = TRUE: add significance label
+t2$plot_feature_imp(coord_flip = FALSE, colour = "red", fill = "red", width = 0.6, add_sig = TRUE)
+# show_sig_group = TRUE: show different colors in groups with different significance labels
+t2$plot_feature_imp(show_sig_group = TRUE, coord_flip = FALSE, width = 0.6, add_sig = TRUE)
+t2$plot_feature_imp(show_sig_group = TRUE, coord_flip = TRUE, width = 0.6, add_sig = TRUE)
+# rf_sig_show = "MeanDecreaseGini": switch to MeanDecreaseGini
+t2$plot_feature_imp(show_sig_group = TRUE, rf_sig_show = "MeanDecreaseGini", coord_flip = TRUE, width = 0.6, add_sig = TRUE)
+# group_aggre = FALSE: donot aggregate features for each group
+t2$plot_feature_imp(show_sig_group = TRUE, rf_sig_show = "MeanDecreaseGini", coord_flip = TRUE, width = 0.6, add_sig = TRUE, group_aggre = FALSE)
 ```
 
-The regression is supported from v0.15.0.
+
+For other machine-learning models, please use method parameter in `cal_train` function.
+```{r, echo = TRUE, eval=FALSE}
+# use SVM method
+t2$cal_train(method = "svmRadial", tuneLength = 15)
+```
+
+
+The regression is also supported.
 
 ```{r, echo = TRUE, eval=FALSE}
 # prepare data

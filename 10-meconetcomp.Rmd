@@ -51,6 +51,7 @@ library(meconetcomp)
 library(magrittr)
 library(igraph)
 library(ggplot2)
+theme_set(theme_bw())
 # load soil amplicon sequencing dataset
 data(soil_amp)
 ```
@@ -286,14 +287,14 @@ We can also extract the result for a specified metric and perform the visualizat
 
 ```{r, echo = TRUE, eval = FALSE}
 tmp1 <- tmp$res_table %>% .[.$remove_strategy == "node_rand" & .$measure == "Eigen", ]
-library(microeco)
-library(ggplot2)
-theme_set(theme_bw())
 
 t1 <- trans_env$new(dataset = NULL, add_data = tmp1)
 t1$dataset$sample_table <- t1$data_env
 t1$plot_scatterfit(x = "remove_ratio", y = "value", type = "cor", group = "Network") + 
 	xlab("Ratio of randomly removed nodes") + ylab("Network connectivity") + theme(axis.title = element_text(size = 15))
+
+# another way; for microeco version >= 1.8.0
+t1$plot_scatterfit(x = tmp1$remove_ratio, y = tmp1$value, type = "cor", group = tmp1$Network)
 ```
 
 ```{r, out.width = "550px", fig.align="center", echo = FALSE}

@@ -233,11 +233,11 @@ dataset$sample_sums() %>% range
 Sometimes, to reduce the impact of sequencing depth on diversity measurements, 
 it is advisable to perform resampling to equalize the sequence numbers for each sample [@McKnight_Methodsnorm_2018].
 The function `rarefy_samples` can automatically invoke the function `tidy_dataset` before and after the rarefying process.
-Since version 0.19.0, `method = 'SRS'` is available for performing rarefaction by scaling with ranked subsampling [@Beule_normalization_2020].
-The default choice is `method = 'rarefying'`.
-Note that the rarefying method in microtable object is a shortcut call from the "rarefy" method in the `trans_norm` class.
+The `method = 'SRS'` is available for performing rarefaction by scaling with ranked subsampling [@Beule_normalization_2020].
+The default choice is `method = 'rarefy'`.
+Note that the "rarefy" method in microtable object is a shortcut call from the "rarefy" method in the `trans_norm` class.
 For other normalization methods, 
-please refer to the trans_norm class help documentation and the examples in the tutorial here (https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#trans_norm).
+please refer to the `trans_norm` class help documentation and the examples in the tutorial here (https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#trans_norm).
 
 
 ```{r, echo = TRUE}
@@ -246,7 +246,7 @@ dataset$rarefy_samples(sample.size = 10000)
 dataset$sample_sums() %>% range
 ```
 
-For v0.17.0, the function `save_table` can be performed to save all the basic data in microtable object to local files,
+The function `save_table` can be performed to save all the basic data in microtable object to local files,
 including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -254,8 +254,8 @@ dataset$save_table(dirpath = "basic_files", sep = ",")
 ```
 
 Then, let's calculate the taxa abundance at each taxonomic rank using `cal_abund()`.
-This function **generate a list called taxa_abund stored in the microtable object**. 
-This list contain several data frame of the abundance information at each taxonomic rank.
+This function **generate a list called `taxa_abund` stored in the microtable object**. 
+This list contains several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the `cal_abund()` function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
 Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic dataset.
@@ -283,7 +283,7 @@ The function `save_abund()` can be used to save the taxa abundance file to a loc
 dataset$save_abund(dirpath = "taxa_abund")
 ```
 
-All the abundance tables can also be merged into one to save from v0.15.0.
+All the abundance tables can also be merged into one to be saved.
 This type of file format can be opened directly by other software, such as STAMP.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -348,8 +348,8 @@ test
 ### subset of samples
 
 We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
-**We recommend manipulating the sample_table in microtable object directly.**
-For example, if you want to extract samples of 'CW' group, please do like this: 
+**We recommend manipulating the `sample_table` in microtable object directly.**
+For example, if the user want to extract samples, please do like this: 
 
 ```{r, echo = TRUE, eval = TRUE}
 # remember first clone the whole dataset

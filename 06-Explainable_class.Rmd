@@ -301,7 +301,37 @@ t1$plot_scatterfit(
 knitr::include_graphics("Images/trans_env_scatterfit_lmgroup.png")
 ```
 
-Other examples.
+Then let's use trans_classifier class (https://chiliubio.github.io/microeco_tutorial/model-based-class.html#trans_classifier-class) to 
+perform machine learning to find important environmental variables in classifying groups.
+
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 6:11])
+tmp <- t1$data_env %>% t %>% as.data.frame
+# caret package should be installed
+t2 <- trans_classifier$new(dataset = dataset, x.predictors = tmp, y.response = "Saline")
+t2$cal_preProcess(method = c("center", "scale", "nzv"))
+# All samples are used in training if cal_split function is not performed
+t2$cal_train(method = "rf")
+# default method in caret package without significance
+t2$cal_feature_imp()
+t2$plot_feature_imp(colour = "red", fill = "red", width = 0.6)
+# generate significance with rfPermute package
+# require rfPermute package to be installed
+t2$cal_feature_imp(rf_feature_sig = TRUE, num.rep = 1000)
+t2$plot_feature_imp(coord_flip = FALSE, colour = "red", fill = "red", width = 0.6, add_sig = TRUE)
+t2$plot_feature_imp(show_sig_group = TRUE, coord_flip = FALSE, width = 0.6, add_sig = TRUE)
+t2$plot_feature_imp(show_sig_group = TRUE, coord_flip = TRUE, width = 0.6, add_sig = TRUE)
+t2$plot_feature_imp(show_sig_group = TRUE, rf_sig_show = "MeanDecreaseGini", coord_flip = TRUE, width = 0.6, add_sig = TRUE)
+```
+
+```{r, out.width = "550px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_env_classifier_rf_featureimp_sig.png")
+```
+
+
+
+Other examples:
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)

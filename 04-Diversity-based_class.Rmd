@@ -226,14 +226,14 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 We first show the ordination using PCoA (principal coordinates analysis).
 
 ```{r, echo = TRUE, eval = TRUE}
-# create an trans_beta object
-# measure parameter must be one of names(dataset$beta_diversity)
+# create trans_beta object
+# measure parameter should be either one of names(dataset$beta_diversity) or a customized symmetric matrix
 t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # PCoA, PCA, DCA and NMDS are available
-t1$cal_ordination(ordination = "PCoA")
+t1$cal_ordination(method = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)
 # plot the PCoA result with confidence ellipse
@@ -271,9 +271,9 @@ d1$tidy_dataset()
 rownames(d1$otu_table) <- d1$tax_table[rownames(d1$otu_table), "Genus"]
 rownames(d1$tax_table) <- d1$tax_table[, "Genus"]
 t1 <- trans_beta$new(dataset = d1)
-t1$cal_ordination(ordination = "PCA")
+t1$cal_ordination(method = "PCA")
 t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
-t1$cal_ordination(ordination = "DCA")
+t1$cal_ordination(method = "DCA")
 t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
 ```
 
