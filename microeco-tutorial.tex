@@ -1088,7 +1088,7 @@ In the new microtable object, each feature in otu\_table represents one taxon at
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\StringTok{"Genus"}\NormalTok{)}
 \NormalTok{test}
 \end{Highlighting}
 \end{Shaded}
@@ -1104,7 +1104,7 @@ Similarly, merging samples according to a specific group of sample\_table can al
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
 \NormalTok{test}
 \end{Highlighting}
 \end{Shaded}
@@ -1578,7 +1578,7 @@ we first merge samples according to the ``Group'' column of sample\_table.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# merge samples as one community for each group}
-\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# dataset1 is a new microtable object}
 \CommentTok{\# create trans\_venn object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1, }\AttributeTok{ratio =} \ConstantTok{NULL}\NormalTok{)}
@@ -1606,7 +1606,7 @@ To assign different colors in petals, please provide multiple colors to \texttt{
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use "Type" column in sample\_table}
-\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_color =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_center\_size =} \DecValTok{50}\NormalTok{, }\AttributeTok{petal\_r =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{petal\_a =} \DecValTok{3}\NormalTok{, }\AttributeTok{petal\_move\_xy =} \FloatTok{3.8}\NormalTok{, }\AttributeTok{petal\_color\_center =} \StringTok{"\#BEBADA"}\NormalTok{)}
@@ -1620,7 +1620,7 @@ This way is generally called UpSet plot. Please see the help document for more p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{tmp}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp)}
 \CommentTok{\# only show some sets with large intersection numbers}
@@ -1643,7 +1643,7 @@ For this goal, we first transform the results of venn plot to the traditional fe
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\AttributeTok{use\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{dataset1 }\OtherTok{\textless{}{-}}\NormalTok{ dataset}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset1)}
 \end{Highlighting}
 \end{Shaded}
@@ -2183,6 +2183,7 @@ Then we plot and compare the group distances.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# calculate and plot sample distances within groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return t1$res\_group\_distance}
@@ -2227,6 +2228,7 @@ based on the \texttt{adonis2} function of vegan package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# manova for all groups when manova\_all = TRUE}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_all =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
@@ -3515,7 +3517,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Jul  2 13:44:12 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Jul  2 21:14:24 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3545,9 +3547,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.654 & 0.3871 & 0.364 & 9.111 \\
-CW & 435 & 0.5627 & 0.2955 & 0.2863 & 14.33 \\
-TW & 435 & 0.6248 & 0.4167 & 0.4003 & 9.884 \\
+IW & 435 & 0.6543 & 0.3886 & 0.3644 & 9.097 \\
+CW & 435 & 0.563 & 0.2957 & 0.2865 & 14.21 \\
+TW & 435 & 0.6244 & 0.4151 & 0.3999 & 9.887 \\
 \bottomrule()
 \end{longtable}
 

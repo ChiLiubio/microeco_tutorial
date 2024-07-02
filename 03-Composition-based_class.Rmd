@@ -226,7 +226,7 @@ we first merge samples according to the "Group" column of sample_table.
 
 ```{r, echo = TRUE, eval = FALSE}
 # merge samples as one community for each group
-dataset1 <- dataset$merge_samples(use_group = "Group")
+dataset1 <- dataset$merge_samples("Group")
 # dataset1 is a new microtable object
 # create trans_venn object
 t1 <- trans_venn$new(dataset1, ratio = NULL)
@@ -254,7 +254,7 @@ To assign different colors in petals, please provide multiple colors to `petal_c
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
-dataset1 <- dataset$merge_samples(use_group = "Type")
+dataset1 <- dataset$merge_samples("Type")
 t1 <- trans_venn$new(dataset1)
 t1$plot_venn(petal_plot = TRUE, petal_color = RColorBrewer::brewer.pal(8, "Dark2"))
 t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a = 3, petal_move_xy = 3.8, petal_color_center = "#BEBADA")
@@ -268,7 +268,7 @@ Another way to plot the results is to use `plot_bar` function, which is especial
 This way is generally called UpSet plot. Please see the help document for more parameters to adjust the plot.
 
 ```{r, echo = TRUE, eval = FALSE}
-tmp <- dataset$merge_samples(use_group = "Type")
+tmp <- dataset$merge_samples("Type")
 tmp
 t1 <- trans_venn$new(dataset = tmp)
 # only show some sets with large intersection numbers
@@ -291,7 +291,7 @@ So, it is interesting to further analyze the composition of unique and shared sp
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.
 
 ```{r, echo = TRUE, eval = TRUE}
-dataset1 <- dataset$merge_samples(use_group = "Group")
+dataset1 <- dataset$merge_samples("Group")
 t1 <- trans_venn$new(dataset1)
 # transform venn results to the sample-species table, here do not consider abundance, only use presence/absence.
 t2 <- t1$trans_comm(use_frequency = TRUE)

@@ -280,6 +280,7 @@ t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_ital
 Then we plot and compare the group distances.
 
 ```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 # calculate and plot sample distances within groups
 t1$cal_group_distance(within_group = TRUE)
 # return t1$res_group_distance
@@ -325,6 +326,7 @@ PerMANOVA[@Anderson_Austral_2001] can be applied to the differential test of dis
 based on the `adonis2` function of vegan package.
 
 ```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 # manova for all groups when manova_all = TRUE
 t1$cal_manova(manova_all = TRUE)
 t1$res_manova
