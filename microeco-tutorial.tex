@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.8.0)}
 \author{}
-\date{\vspace{-2.5em}2024-06-30}
+\date{\vspace{-2.5em}2024-07-02}
 
 \begin{document}
 \maketitle
@@ -160,14 +160,14 @@ Besides, we also developed the file2meco package (\url{https://github.com/ChiLiu
 \chapter{Introduction}\label{intro}}
 
 The microeco package has several advantages compared to other packages in R.
-The primary objective behind the development of this package is to assist users in rapidly analyzing microbiome data,
+The primary objective behind the development of this package is to assist users in rapidly analyzing microbiome data and
 utilizing a range of cutting-edge and commonly adopted methodologies.
-To facilitate data mining, every component of the microeco package has been modularized to ensure that users can easily recall, search, and employ classes.
+To facilitate data mining, every part of the microeco package has been modularized to ensure that users can easily recall, search, and employ classes.
 It is important to note that, in addition to being demonstrated in the tutorial,
 users can also save intermediate data within each object and utilize them with other tools according to formatting necessities.
-Main data stored in the object of each class are the frequently-used data.frame format,
-thereby making it effortless to save, modify, and employ intermediate and outcome files with other microbial ecology tools.
-Prior to exploring the specific utilization of each class, we shall first introduce a few critical points.
+Main data stored in the object of each class are the frequently-used \texttt{data.frame} format,
+thereby making it effortless to save, modify, and employ intermediate and outcome files with other tools.
+Prior to exploring the specific usage of each class, we first introduce a few critical points.
 
 \hypertarget{framework}{%
 \section{Framework}\label{framework}}
@@ -906,11 +906,11 @@ Then let's use sample\_sums() to check the sequence numbers in each sample.
 Sometimes, to reduce the impact of sequencing depth on diversity measurements,
 it is advisable to perform resampling to equalize the sequence numbers for each sample \citep{McKnight_Methodsnorm_2018}.
 The function \texttt{rarefy\_samples} can automatically invoke the function \texttt{tidy\_dataset} before and after the rarefying process.
-Since version 0.19.0, \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available for performing rarefaction by scaling with ranked subsampling \citep{Beule_normalization_2020}.
-The default choice is \texttt{method\ =\ \textquotesingle{}rarefying\textquotesingle{}}.
-Note that the rarefying method in microtable object is a shortcut call from the ``rarefy'' method in the \texttt{trans\_norm} class.
+The \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available for performing rarefaction by scaling with ranked subsampling \citep{Beule_normalization_2020}.
+The default choice is \texttt{method\ =\ \textquotesingle{}rarefy\textquotesingle{}}.
+Note that the ``rarefy'' method in microtable object is a shortcut call from the ``rarefy'' method in the \texttt{trans\_norm} class.
 For other normalization methods,
-please refer to the trans\_norm class help documentation and the examples in the tutorial here (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#trans_norm}).
+please refer to the \texttt{trans\_norm} class help documentation and the examples in the tutorial here (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#trans_norm}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -937,7 +937,7 @@ please refer to the trans\_norm class help documentation and the examples in the
 ## [1] 10000 10000
 \end{verbatim}
 
-For v0.17.0, the function \texttt{save\_table} can be performed to save all the basic data in microtable object to local files,
+The function \texttt{save\_table} can be performed to save all the basic data in microtable object to local files,
 including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
 
 \begin{Shaded}
@@ -947,8 +947,8 @@ including feature abundance, metadata, taxonomic table, phylogenetic tree and re
 \end{Shaded}
 
 Then, let's calculate the taxa abundance at each taxonomic rank using \texttt{cal\_abund()}.
-This function \textbf{generate a list called taxa\_abund stored in the microtable object}.
-This list contain several data frame of the abundance information at each taxonomic rank.
+This function \textbf{generate a list called \texttt{taxa\_abund} stored in the microtable object}.
+This list contains several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the \texttt{cal\_abund()} function can be used to \textbf{solve more complicated cases with special parameters},
 such as supporting both the relative and absolute abundance calculation and selecting the partial `taxonomic' columns.
 Those have been shown in file2meco package part (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html\#humann-metagenomic-results}) with complex metagenomic dataset.
@@ -1021,7 +1021,7 @@ The function \texttt{save\_abund()} can be used to save the taxa abundance file 
 \end{Highlighting}
 \end{Shaded}
 
-All the abundance tables can also be merged into one to save from v0.15.0.
+All the abundance tables can also be merged into one to be saved.
 This type of file format can be opened directly by other software, such as STAMP.
 
 \begin{Shaded}
@@ -1121,8 +1121,8 @@ Similarly, merging samples according to a specific group of sample\_table can al
 \subsection{subset of samples}\label{subset-of-samples}}
 
 We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
-\textbf{We recommend manipulating the sample\_table in microtable object directly.}
-For example, if you want to extract samples of `CW' group, please do like this:
+\textbf{We recommend manipulating the \texttt{sample\_table} in microtable object directly.}
+For example, if the user want to extract samples, please do like this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1376,7 +1376,7 @@ As the sample number is large, we do not show the sample names in x axis and add
 
 \begin{center}\includegraphics[width=750px]{Images/trans_abund_barplot1} \end{center}
 
-Two or more facets are supported with the facet parameter from v0.14.0 by providing a vector with multiple elements.
+Two or more facets are supported with the facet parameter by providing a vector with multiple elements.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1512,13 +1512,14 @@ When the hierarchical abundance data of two levels is needed to be shown in bar 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# require ggnested package; see https://chiliubio.github.io/microeco\_tutorial/intro.html\#dependence}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{delete\_taxonomy\_prefix =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{), }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{)}
-\CommentTok{\# fixed number in each phylum}
+\CommentTok{\# fixed subclass number in each phylum}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{30}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{4}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
+\NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{0}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{), }\AttributeTok{coord\_flip =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# sum others in each phylum}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{20}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{3}\NormalTok{, }\AttributeTok{prefix =} \StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{taxrank =} \StringTok{"Class"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{20}\NormalTok{, }\AttributeTok{show =} \DecValTok{0}\NormalTok{, }\AttributeTok{high\_level =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{high\_level\_fix\_nsub =} \DecValTok{3}\NormalTok{, }\AttributeTok{delete\_taxonomy\_prefix =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{ggnested =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{high\_level\_add\_other =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{, }\AttributeTok{facet =} \FunctionTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{, }\StringTok{"Type"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -3514,7 +3515,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Jun 30 11:18:38 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Jul  2 13:44:12 2024. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3544,9 +3545,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3872 & 0.364 & 9.111 \\
-CW & 435 & 0.5631 & 0.2963 & 0.2867 & 14.25 \\
-TW & 435 & 0.6247 & 0.4167 & 0.4002 & 9.847 \\
+IW & 435 & 0.654 & 0.3871 & 0.364 & 9.111 \\
+CW & 435 & 0.5627 & 0.2955 & 0.2863 & 14.33 \\
+TW & 435 & 0.6248 & 0.4167 & 0.4003 & 9.884 \\
 \bottomrule()
 \end{longtable}
 

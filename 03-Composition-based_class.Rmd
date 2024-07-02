@@ -168,13 +168,14 @@ When the hierarchical abundance data of two levels is needed to be shown in bar 
 
 ```{r, echo = TRUE, eval = FALSE}
 # require ggnested package; see https://chiliubio.github.io/microeco_tutorial/intro.html#dependence
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 10, high_level = "Phylum", prefix = "\\|")
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 10, high_level = "Phylum", delete_taxonomy_prefix = FALSE)
 test1$plot_bar(ggnested = TRUE, facet = c("Group", "Type"), xtext_angle = 30)
-# fixed number in each phylum
+# fixed subclass number in each phylum
 test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 4)
 test1$plot_bar(ggnested = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
+test1$plot_bar(ggnested = TRUE, xtext_angle = 0, facet = c("Group", "Type"), coord_flip = TRUE)
 # sum others in each phylum
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, prefix = "\\|")
+test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, delete_taxonomy_prefix = FALSE)
 test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
 ```
 
