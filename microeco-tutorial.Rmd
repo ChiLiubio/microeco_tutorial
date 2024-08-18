@@ -1,5 +1,5 @@
 --- 
-title: "Tutorial for R microeco package (v1.8.0)"
+title: "Tutorial for R microeco package (v1.9.0)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -8,7 +8,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "Examples for R microeco (v1.8.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages"
+description: "Examples for R microeco (v1.9.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages"
 ---
 
 
@@ -100,7 +100,8 @@ library(microeco)
 ```
 
 ## RTools
-For Windows system, RTools (https://cran.r-project.org/bin/windows/Rtools/) is necessary to install some R packages from source, such as R packages deposited in GitHub.
+For Windows system, 
+RTools (https://cran.r-project.org/bin/windows/Rtools/) is necessary to install some R packages from source (those that need compilation of C/C++ or Fortran code).
 
 
 ## Dependence
@@ -483,7 +484,7 @@ There are two ways:
 ▲ 1. __Use file2meco package__  
 R package file2meco (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html) is designed to directly read the output files of some famous tools into microtable object.
 Currently, it supports QIIME [@Caporaso_QIIME_2010], QIIME2[@Bolyen_Reproducible_2019], 
-HUMAnN [@Franzosa_Species_2018], MetaPhlAn [@Truong_MeTApHLaN2_2015], kraken2 [@Wood_Improved_2019], phyloseq [@Mcmurdie_phyloseq_2013], etc.
+HUMAnN [@Franzosa_Species_2018], MetaPhlAn [@Blanco_MetaPhlAn_2023], kraken2 [@Wood_Improved_2019], phyloseq [@Mcmurdie_phyloseq_2013], etc.
 Please read the tutorial of file2meco package for more detailed information (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html).
 
 ▲ 2. __Other cases__  
@@ -829,7 +830,7 @@ t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
 # bar_type = FALSE can remove 'others'
-p <- t1$plot_bar(bar_full = FALSE, use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+t1$plot_bar(bar_full = FALSE, use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
@@ -986,9 +987,11 @@ knitr::include_graphics("Images/trans_abund_barplot_groupmean_clustering_flip.pn
 
   + trans_abund$new: creating trans_abund object can invoke taxa_abund in microtable for transformation
   + color_values parameter: color_values parameter in each function is used for colors selection
-  + input_taxaname parameter: input_taxaname parameter in trans_abund$new can be used to select interested customized taxa instead of abundance-based selection
+  + input_taxaname parameter: input_taxaname parameter in trans_abund$new can be used to select interested customized taxa instead of abundance-based filtering
   + use_percentage parameter: use_percentage parameter in trans_abund$new - whether show the abundance percentage
+  + order_x parameter: order the sample (group) names in x axis in the bar plot
   
+   
 
 ## trans_venn class
 
@@ -1107,7 +1110,7 @@ Other examples:
 
 To reorder samples in the plots, please manipulate the sample_table in the object to adjust the orders.
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples(use_group = "Type")
+test <- dataset$merge_samples("Type")
 test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
 test$tidy_dataset()
 # The columns of otu_table can also be reordered according to the sample_table after running tidy_dataset function
@@ -1119,7 +1122,7 @@ The parameter `sort_samples = TRUE` in `plot_bar` function can be applied to sor
 The left bar plot can be removed when the parameter `left_plot = FALSE`.
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples(use_group = "Type")
+test <- dataset$merge_samples("Type")
 t1 <- trans_venn$new(test)
 # remove left bar in the UpSet plot
 t1$plot_bar(left_plot = FALSE)
@@ -1128,6 +1131,15 @@ t1$plot_bar(sort_samples = TRUE)
 # original orders in test$sample_table
 t1$plot_bar(sort_samples = FALSE)
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples("Type")
+t1 <- trans_venn$new(test)
+t1$plot_bar(left_bar_fill = RColorBrewer::brewer.pal(8, "Dark2"), left_bar_alpha = 0.2, bottom_background_fill = RColorBrewer::brewer.pal(8, "Dark2"), bottom_background_alpha = 0.2)
+t1$data_summary %<>% .[.$Counts > 1, ]
+t1$plot_bar(left_width = 0.15, left_bar_fill = "grey50", up_bar_fill = "grey50", up_bar_width = 0.5, left_bar_width = 0.5, bottom_height = 0.5, bottom_point_color = "black", bottom_point_size = 8)
+```
+
 
 ### Key points
 
@@ -1246,7 +1258,7 @@ t1$cal_diff(method = "anova")
 t1$plot_alpha(measure = "Chao1", y_increase = 0.3)
 t1$plot_alpha(measure = "Chao1", y_increase = 0.1)
 # add_sig_text_size: letter size adjustment
-t1$plot_alpha(measure = "Chao1", add_sig_text_size = 6, boxplot_add = "jitter", order_x_mean = TRUE)
+t1$plot_alpha(measure = "Chao1", add_sig_text_size = 6, add = "jitter", order_x_mean = TRUE)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
@@ -1258,25 +1270,25 @@ t1$cal_diff(method = "wilcox")
 t1$plot_alpha(measure = "Chao1", shape = "Group")
 # y_start: starting height for the first label
 # y_increase: increased height for each label
-t1$plot_alpha(measure = "Chao1", shape = "Group", y_start = 0.1, y_increase = 0.1)
+t1$plot_alpha(measure = "Chao1", shape = "Group", add = "jitter", y_start = 0.1, y_increase = 0.1)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/trans_alpha_group_wilcox.png")
 ```
 
-Let's try to remove the 'ns' in the label by manipulating the object$res_diff.
+Let's try to remove the 'ns' in the label by manipulating the `object$res_diff`.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1$res_diff %<>% base::subset(Significance != "ns")
-t1$plot_alpha(measure = "Chao1", boxplot_add = "dotplot", xtext_size = 15)
+t1$plot_alpha(measure = "Chao1", add = "dotplot", xtext_size = 15)
 ```
 
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 ```
 
-The trans_alpha class supports the differential test of groups within each group using the by_group parameter.
+The trans_alpha class supports the differential test of groups within each group using the `by_group` parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
@@ -1292,6 +1304,7 @@ knitr::include_graphics("Images/trans_alpha_wilcox_bygroup.png")
 Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
 
 ```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset)
 # require rcompanion package to be installed
 t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 ```
@@ -1315,17 +1328,41 @@ View(t1$res_diff)
 t1$cal_diff(method = "lme", formula = "Group + (1|Type)", return_model = TRUE)
 ```
 
-Note that from v1.2.0, the parameter `use_boxplot = FALSE` in `plot_alpha` will invoke the data_stat instead of data_alpha for the Mean±SE (or SD) plot.
+Note that from v1.9.0, the parameter `plot_type` control which type of plot is employed.
+All the options starting with "gg" (e.g., "ggboxplot", "ggdotplot", "ggviolin", "ggstripchart", "ggerrorplot") means they are the functions coming from the ggpubr package.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_alpha$new(dataset = dataset, group = "Type")
+t1$cal_diff(method = "KW_dunn", KW_dunn_letter = TRUE)
+t1$plot_alpha(plot_type = "ggboxplot", add = "none")
+
+t1$plot_alpha(plot_type = "ggdotplot")
+t1$plot_alpha(plot_type = "ggdotplot", fill = "Type", alpha = 0.3)
+t1$plot_alpha(plot_type = "ggdotplot", add = "mean_se")
+t1$plot_alpha(plot_type = "ggdotplot", add = c("mean_se", "violin"))
+t1$plot_alpha(plot_type = "ggdotplot", add = c("mean_se", "violin"), fill = "Type", alpha = 0.2)
+
+t1$plot_alpha(plot_type = "ggviolin")
+t1$plot_alpha(plot_type = "ggviolin", y_increase = 0.4, add = "mean_se")
+t1$plot_alpha(plot_type = "ggviolin", fill = "Type", alpha = 0.2, y_increase = 0.4, add = "mean_se", add_sig_text_size = 6)
+
+t1$plot_alpha(plot_type = "ggstripchart", add = "mean_se")
+
+t1$plot_alpha(plot_type = "ggerrorplot")
+```
+
+
+The option `plot_type = "errorbar"` in `plot_alpha` will invoke the `data_stat` instead of `data_alpha` for the Mean±SE (or SD) plot (based on the ggplot2).
 The line is optional to be added between points (Mean) for the case with a gradient.
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_alpha$new(dataset = dataset, group = "Group")
-t1$cal_diff(method = "KW_dunn", measure = "PD", KW_dunn_letter = TRUE)
-t1$plot_alpha(measure = "PD")
-t1$plot_alpha(use_boxplot = FALSE, measure = "PD")
-t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2)
-t1$plot_alpha(use_boxplot = FALSE, measure = "PD", y_increase = -0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
-t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "PD", y_increase = 0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+t1$cal_diff(method = "KW_dunn", measure = "Chao1", KW_dunn_letter = TRUE)
+t1$plot_alpha(measure = "Chao1")
+t1$plot_alpha(plot_type = "errorbar", measure = "Chao1")
+t1$plot_alpha(plot_type = "errorbar", measure = "Chao1", y_increase = -0.2)
+t1$plot_alpha(plot_type = "errorbar", measure = "Chao1", y_increase = -0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+t1$plot_alpha(plot_type = "errorbar", plot_SE = FALSE, measure = "Chao1", y_increase = 0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
 # by_group example
 # use example data in mecoturn package
 library(microeco)
@@ -1336,9 +1373,9 @@ wheat_16S$sample_table$Type %<>% factor(., levels = unique(.))
 t1 <- trans_alpha$new(dataset = wheat_16S, group = "Region", by_group = "Type")
 t1$cal_diff(method = "KW_dunn", measure = "Shannon", KW_dunn_letter = TRUE)
 View(t1$res_diff)
-t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon")
-t1$plot_alpha(use_boxplot = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
-t1$plot_alpha(use_boxplot = FALSE, plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
+t1$plot_alpha(plot_type = "errorbar", measure = "Shannon")
+t1$plot_alpha(plot_type = "errorbar", measure = "Shannon", add_line = TRUE, line_type = 2)
+t1$plot_alpha(plot_type = "errorbar", plot_SE = FALSE, measure = "Shannon", add_line = TRUE, line_type = 2)
 ```
 
 From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
@@ -1373,16 +1410,17 @@ The analysis referred to the beta diversity in this class mainly include ordinat
 
 ### Example
 
-We first show the ordination using PCoA (principal coordinates analysis).
+The available ordination methods include PCoA (principal coordinates analysis), NMDS (non-metric multidimensional scaling), 
+PCA (principal component analysis), DCA (detrended correspondence analysis) and PLS-DA (partial least squares discriminant analysis).
 
 ```{r, echo = TRUE, eval = TRUE}
 # create trans_beta object
+# For PCoA and NMDS, measure parameter must be provided.
 # measure parameter should be either one of names(dataset$beta_diversity) or a customized symmetric matrix
 t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# PCoA, PCA, DCA and NMDS are available
 t1$cal_ordination(method = "PCoA")
 # t1$res_ordination is the ordination result list
 class(t1$res_ordination)
@@ -1437,7 +1475,7 @@ t1$cal_group_distance(within_group = TRUE)
 # perform Wilcoxon Rank Sum and Signed Rank Tests
 t1$cal_group_distance_diff(method = "wilcox")
 # plot_group_order parameter can be used to adjust orders in x axis
-t1$plot_group_distance(boxplot_add = "mean")
+t1$plot_group_distance(add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
@@ -1448,7 +1486,9 @@ knitr::include_graphics("Images/trans_beta_group_distance_within.png")
 # calculate and plot sample distances between groups
 t1$cal_group_distance(within_group = FALSE)
 t1$cal_group_distance_diff(method = "wilcox")
-t1$plot_group_distance(boxplot_add = "mean")
+# parameters in plot_group_distance function will be passed to the plot_alpha function of trans_alpha class
+t1$plot_group_distance(plot_type = "ggviolin", add = "mean_se")
+t1$plot_group_distance(add = "mean")
 ```
 
 ```{r, out.width = "500px", fig.align="center", echo = FALSE}
@@ -1688,7 +1728,7 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 knitr::include_graphics("Images/trans_diff_rf_diff_abund.png")
 ```
 
-The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+The significance label can also be added in the abundance plot controlled by `add_sig` parameter and other related parameters.
 Now adding labels supports all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1799,15 +1839,14 @@ The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU")
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", taxa_level = "Genus")
 View(t1$res_diff)
 t1$plot_diff_bar(keep_full_name = TRUE)
 # Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.
 dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU")
-t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.005)
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
 t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
 ```
 
@@ -2261,7 +2300,7 @@ t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
 t2$cal_group_distance_diff(method = "wilcox")
 # plot the results
-g1 <- t2$plot_group_distance(boxplot_add = "mean")
+g1 <- t2$plot_group_distance(add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
@@ -2776,6 +2815,7 @@ please see another example (https://chiliubio.github.io/microeco_tutorial/other-
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using relative abundance data at Genus level with the `cal_cor` function.
+The parameter `partial` controls wheter conduct partial correlation.
 The parameter `p_adjust_type` can control the p value adjustment type. 
 
 ```{r, echo = TRUE}
@@ -2785,7 +2825,7 @@ t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
 ```
 
-Then, we can plot the correlation results using plot_cor function.
+Then, we can visualize the correlation results using `plot_cor` function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # default ggplot2 method with clustering
@@ -2793,7 +2833,7 @@ t1$plot_cor()
 ```
 
 There are too many genera.
-We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance < 0.001.
+We can use the `filter_feature` parameter in `plot_cor` to filter some taxa that do not have any significance < 0.001.
 
 ```{r, echo = TRUE, eval = FALSE}
 # filter genera that donot have at least one ***
@@ -2801,7 +2841,7 @@ t1$plot_cor(filter_feature = c("", "*", "**"))
 ```
 
 Sometimes, if the user wants to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
-please use **other_taxa** parameter in cal_cor function.
+please use **other_taxa** parameter in `cal_cor` function.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2847,7 +2887,7 @@ knitr::include_graphics("Images/trans_env_corr_ggplot_groups.png")
 ```
 
 
-If the user is concerned with the relationship between environmental factors and alpha diversity, 
+If the user is interested in the relationship between environmental factors and alpha diversity, 
 please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -2862,6 +2902,7 @@ t1$plot_cor(cluster_ggplot = "both")
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/trans_env_corr_alpha_diversity.png")
 ```
+
 
 The function `plot_scatterfit` in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
 
@@ -3309,7 +3350,7 @@ test$tidy_dataset()
 
 
 ## MetaPhlAn
-MetaPhlAn is an software used for metagenomic taxonomic profiling [@Truong_MeTApHLaN2_2015].
+MetaPhlAn is an software used for metagenomic taxonomic profiling [@Blanco_MetaPhlAn_2023].
 The format of MetaPhlAn classification results is usually called 'mpa' format.
 The mpa2meco function is developed for this format conversion to microtable object.
 See the following example of Kraken2 part.
@@ -3678,8 +3719,8 @@ identical(t2, t1)
 
 As an R6 object is an encapsulated environment, there is also another useful advantage, i.e. the data repeatability.
 By applying R6 classes, the analyzed data in 'R Environment' can have fewest intermediate files.
-It is also very convenient to save the analyzed data (i.e. object) to local computer with `save` function for back-up and communication with others.
-This is the recommended way to send data for the test in 'Github Issues'.
+It is convenient to save the analyzed data (i.e. object) to local computer with `save` function for back-up and communication with others.
+This is also the recommended way to attach data for the test in 'Github Issues'.
 
 ```{r, echo = TRUE, eval = FALSE}
 # save 'dataset' to local computer
@@ -4025,14 +4066,14 @@ phylogenetic_distance_soil <- as.matrix(cophenetic(filter_soil_amp$phylo_tree))
 tmp <- edge_node_distance$new(network_list = soil_amp_network, dis_matrix = phylogenetic_distance_soil, label = c("+", "-"))
 tmp$cal_diff(method = "anova")
 # visualization
-g1 <- tmp$plot(boxplot_add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
+g1 <- tmp$plot(add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
 ggsave("soil_amp_phylo_distance.pdf", g1, width = 7, height = 6)
 
 # show different modules with at least 10 nodes and positive edges
 tmp <- edge_node_distance$new(network_list = soil_amp_network, dis_matrix = phylogenetic_distance_soil, 
 	label = "+", with_module = TRUE, module_thres = 10)
 tmp$cal_diff(method = "anova")
-g1 <- tmp$plot(boxplot_add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
+g1 <- tmp$plot(add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
 ggsave("soil_amp_phylo_distance_modules.pdf", g1, width = 8, height = 6)
 ```
 
@@ -4168,7 +4209,6 @@ View(t1$res_list$sample)
 View(t1$res_list$feature)
 t1$cal_diff(method = "anova")
 t1$plot(measure = "r_pos")
-t1$plot(measure = "r_pos", boxplot_add = "none")
 ```
 
 

@@ -53,7 +53,7 @@ t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
 # bar_type = FALSE can remove 'others'
-p <- t1$plot_bar(bar_full = FALSE, use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
+t1$plot_bar(bar_full = FALSE, use_alluvium = TRUE, clustering = TRUE, xtext_angle = 30, xtext_size = 3, color_values = RColorBrewer::brewer.pal(8, "Set2"))
 ```
 
 ```{r, fig.align="center", echo = FALSE}
@@ -210,9 +210,11 @@ knitr::include_graphics("Images/trans_abund_barplot_groupmean_clustering_flip.pn
 
   + trans_abund$new: creating trans_abund object can invoke taxa_abund in microtable for transformation
   + color_values parameter: color_values parameter in each function is used for colors selection
-  + input_taxaname parameter: input_taxaname parameter in trans_abund$new can be used to select interested customized taxa instead of abundance-based selection
+  + input_taxaname parameter: input_taxaname parameter in trans_abund$new can be used to select interested customized taxa instead of abundance-based filtering
   + use_percentage parameter: use_percentage parameter in trans_abund$new - whether show the abundance percentage
+  + order_x parameter: order the sample (group) names in x axis in the bar plot
   
+   
 
 ## trans_venn class
 
@@ -331,7 +333,7 @@ Other examples:
 
 To reorder samples in the plots, please manipulate the sample_table in the object to adjust the orders.
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples(use_group = "Type")
+test <- dataset$merge_samples("Type")
 test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
 test$tidy_dataset()
 # The columns of otu_table can also be reordered according to the sample_table after running tidy_dataset function
@@ -343,7 +345,7 @@ The parameter `sort_samples = TRUE` in `plot_bar` function can be applied to sor
 The left bar plot can be removed when the parameter `left_plot = FALSE`.
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples(use_group = "Type")
+test <- dataset$merge_samples("Type")
 t1 <- trans_venn$new(test)
 # remove left bar in the UpSet plot
 t1$plot_bar(left_plot = FALSE)
@@ -352,6 +354,15 @@ t1$plot_bar(sort_samples = TRUE)
 # original orders in test$sample_table
 t1$plot_bar(sort_samples = FALSE)
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+test <- dataset$merge_samples("Type")
+t1 <- trans_venn$new(test)
+t1$plot_bar(left_bar_fill = RColorBrewer::brewer.pal(8, "Dark2"), left_bar_alpha = 0.2, bottom_background_fill = RColorBrewer::brewer.pal(8, "Dark2"), bottom_background_alpha = 0.2)
+t1$data_summary %<>% .[.$Counts > 1, ]
+t1$plot_bar(left_width = 0.15, left_bar_fill = "grey50", up_bar_fill = "grey50", up_bar_width = 0.5, left_bar_width = 0.5, bottom_height = 0.5, bottom_point_color = "black", bottom_point_size = 8)
+```
+
 
 ### Key points
 

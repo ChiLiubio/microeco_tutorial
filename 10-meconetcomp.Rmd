@@ -193,14 +193,14 @@ phylogenetic_distance_soil <- as.matrix(cophenetic(filter_soil_amp$phylo_tree))
 tmp <- edge_node_distance$new(network_list = soil_amp_network, dis_matrix = phylogenetic_distance_soil, label = c("+", "-"))
 tmp$cal_diff(method = "anova")
 # visualization
-g1 <- tmp$plot(boxplot_add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
+g1 <- tmp$plot(add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
 ggsave("soil_amp_phylo_distance.pdf", g1, width = 7, height = 6)
 
 # show different modules with at least 10 nodes and positive edges
 tmp <- edge_node_distance$new(network_list = soil_amp_network, dis_matrix = phylogenetic_distance_soil, 
 	label = "+", with_module = TRUE, module_thres = 10)
 tmp$cal_diff(method = "anova")
-g1 <- tmp$plot(boxplot_add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
+g1 <- tmp$plot(add = "none", add_sig = TRUE, add_sig_text_size = 5) + ylab("Phylogenetic distance")
 ggsave("soil_amp_phylo_distance_modules.pdf", g1, width = 8, height = 6)
 ```
 
@@ -336,7 +336,6 @@ View(t1$res_list$sample)
 View(t1$res_list$feature)
 t1$cal_diff(method = "anova")
 t1$plot(measure = "r_pos")
-t1$plot(measure = "r_pos", boxplot_add = "none")
 ```
 
 

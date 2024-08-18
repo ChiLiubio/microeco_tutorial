@@ -176,6 +176,7 @@ please see another example (https://chiliubio.github.io/microeco_tutorial/other-
 
 The correlations between environmental variables and taxa are important in analyzing and inferring the factors affecting community structure.
 Let's first perform a correlation heatmap using relative abundance data at Genus level with the `cal_cor` function.
+The parameter `partial` controls wheter conduct partial correlation.
 The parameter `p_adjust_type` can control the p value adjustment type. 
 
 ```{r, echo = TRUE}
@@ -185,7 +186,7 @@ t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
 ```
 
-Then, we can plot the correlation results using plot_cor function.
+Then, we can visualize the correlation results using `plot_cor` function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # default ggplot2 method with clustering
@@ -193,7 +194,7 @@ t1$plot_cor()
 ```
 
 There are too many genera.
-We can use the filter_feature parameter in plot_cor to filter some taxa that do not have any significance < 0.001.
+We can use the `filter_feature` parameter in `plot_cor` to filter some taxa that do not have any significance < 0.001.
 
 ```{r, echo = TRUE, eval = FALSE}
 # filter genera that donot have at least one ***
@@ -201,7 +202,7 @@ t1$plot_cor(filter_feature = c("", "*", "**"))
 ```
 
 Sometimes, if the user wants to do the correlation analysis between the environmental factors and some important taxa detected in the biomarker analysis,
-please use **other_taxa** parameter in cal_cor function.
+please use **other_taxa** parameter in `cal_cor` function.
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -247,7 +248,7 @@ knitr::include_graphics("Images/trans_env_corr_ggplot_groups.png")
 ```
 
 
-If the user is concerned with the relationship between environmental factors and alpha diversity, 
+If the user is interested in the relationship between environmental factors and alpha diversity, 
 please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -262,6 +263,7 @@ t1$plot_cor(cluster_ggplot = "both")
 ```{r, out.width = "600px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/trans_env_corr_alpha_diversity.png")
 ```
+
 
 The function `plot_scatterfit` in trans_env class is designed for the scatter plot, adding the fitted line and statistics of correlation or regression.
 

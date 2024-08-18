@@ -123,7 +123,7 @@ gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
 knitr::include_graphics("Images/trans_diff_rf_diff_abund.png")
 ```
 
-The significance label can also be added in the abundance plot controlled by add_sig parameter and other related parameters.
+The significance label can also be added in the abundance plot controlled by `add_sig` parameter and other related parameters.
 Now adding labels supports all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -234,15 +234,14 @@ The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU")
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group+Type", taxa_level = "Genus")
 View(t1$res_diff)
 t1$plot_diff_bar(keep_full_name = TRUE)
 # Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.
 dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU")
-t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.005)
+t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
 t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
 ```
 
@@ -696,7 +695,7 @@ t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
 t2$cal_group_distance_diff(method = "wilcox")
 # plot the results
-g1 <- t2$plot_group_distance(boxplot_add = "mean")
+g1 <- t2$plot_group_distance(add = "mean")
 g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
 ```
 
