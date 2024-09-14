@@ -56,7 +56,7 @@ It is also recommended to put all the environmental data into sample information
 
 ```{r, echo = TRUE}
 library(microeco)
-# load the example data; 16S rRNA gene amplicon sequencing dataset
+# load the example data; 16S rRNA gene amplicon sequencing data
 # metadata table; data.frame
 data(sample_info_16S)
 # feature table; data.frame
@@ -157,15 +157,24 @@ Otherwise, the following check can filter all the samples of otu_table because o
 ```{r, echo = TRUE}
 # In R6 class, '$new' is the original method used to create a new object of class
 # If you only provide abundance table, the class can help you create a sample info table
-dataset <- microtable$new(otu_table = otu_table_16S)
-class(dataset)
+mt <- microtable$new(otu_table = otu_table_16S)
+class(mt)
 # generally add the metadata
-dataset <- microtable$new(otu_table = otu_table_16S, sample_table = sample_info_16S)
-dataset
+mt <- microtable$new(otu_table = otu_table_16S, sample_table = sample_info_16S)
+mt
 # Let's create a microtable object with more information
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
-dataset
+mt <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
+mt
 ```
+
+To fully back up this original dataset (R6 class), the `clone` function should be used instead of direct assignment (https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function).
+To further save the dataset to a local computer file, the `save` function should be used (https://chiliubio.github.io/microeco_tutorial/notes.html#save-function).
+
+```{r, echo = TRUE}
+mt_raw <- clone(mt)
+```
+
+
 
 ### How to read your files to microtable object?
 
@@ -202,10 +211,10 @@ Please also see the help document of the microtable class for detailed descripti
 Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria". 
 ```{r, echo = TRUE}
 # use R subset function to filter taxa in tax_table
-dataset$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
+mt$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
 # another way with grepl function
-dataset$tax_table %<>% .[grepl("Bacteria|Archaea", .$Kingdom), ]
-dataset
+mt$tax_table %<>% .[grepl("Bacteria|Archaea", .$Kingdom), ]
+mt
 ```
 
 We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplast".
@@ -213,21 +222,21 @@ We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplas
 ```{r, echo = TRUE}
 # This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax_table.
 # So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation to filter tax_table.
-dataset$filter_pollution(taxa = c("mitochondria", "chloroplast"))
-dataset
+mt$filter_pollution(taxa = c("mitochondria", "chloroplast"))
+mt
 ```
 
-To make the OTU and sample information consistent across all files in the dataset object, we use function `tidy_dataset` to trim the dataset.
+To make the OTU and sample information consistent across all files in the object, we use function `tidy_dataset` to trim the data.
 
 ```{r, echo = TRUE}
-dataset$tidy_dataset()
-print(dataset)
+mt$tidy_dataset()
+mt
 ```
 
 Then let's use sample_sums() to check the sequence numbers in each sample.
 
 ```{r, echo = TRUE}
-dataset$sample_sums() %>% range
+mt$sample_sums() %>% range
 ```
 
 Sometimes, to reduce the impact of sequencing depth on diversity measurements, 
@@ -242,15 +251,15 @@ please refer to the `trans_norm` class help documentation and the examples in th
 
 ```{r, echo = TRUE}
 # As an example, use 10000 sequences in each sample
-dataset$rarefy_samples(sample.size = 10000)
-dataset$sample_sums() %>% range
+mt$rarefy_samples(sample.size = 10000)
+mt$sample_sums() %>% range
 ```
 
 The function `save_table` can be performed to save all the basic data in microtable object to local files,
 including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
 
 ```{r, echo = TRUE, eval = FALSE}
-dataset$save_table(dirpath = "basic_files", sep = ",")
+mt$save_table(dirpath = "basic_files", sep = ",")
 ```
 
 Then, let's calculate the taxa abundance at each taxonomic rank using `cal_abund()`.
@@ -258,29 +267,29 @@ This function **generate a list called `taxa_abund` stored in the microtable obj
 This list contains several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the `cal_abund()` function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
-Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic dataset.
+Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic data.
 
 ```{r, echo = TRUE}
 # use default parameters
-dataset$cal_abund()
-# return dataset$taxa_abund
-class(dataset$taxa_abund)
+mt$cal_abund()
+# return taxa_abund list in the object
+class(mt$taxa_abund)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # show part of the relative abundance at Phylum level
-dataset$taxa_abund$Phylum[1:5, 1:5]
+mt$taxa_abund$Phylum[1:5, 1:5]
 ```
 
 ```{r, echo = FALSE}
-pander::pander(dataset$taxa_abund$Phylum[1:5, 1:5])
+pander::pander(mt$taxa_abund$Phylum[1:5, 1:5])
 ```
 
 
 The function `save_abund()` can be used to save the taxa abundance file to a local place easily.
 
 ```{r, echo = TRUE, eval = FALSE}
-dataset$save_abund(dirpath = "taxa_abund")
+mt$save_abund(dirpath = "taxa_abund")
 ```
 
 All the abundance tables can also be merged into one to be saved.
@@ -288,9 +297,9 @@ This type of file format can be opened directly by other software, such as STAMP
 
 ```{r, echo = TRUE, eval = FALSE}
 # tab-delimited, i.e. mpa format
-dataset$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
+mt$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
 # remove those unclassified
-dataset$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
+mt$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
 ```
 
 Then, let's calculate the alpha diversity.
@@ -299,14 +308,14 @@ The result is also stored in the object microtable automatically.
 
 ```{r, echo = TRUE}
 # If you want to add Faith's phylogenetic diversity, use PD = TRUE, this will be a little slow
-dataset$cal_alphadiv(PD = FALSE)
-# return dataset$alpha_diversity
-class(dataset$alpha_diversity)
+mt$cal_alphadiv(PD = FALSE)
+# return alpha_diversity in the object
+class(mt$alpha_diversity)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# save dataset$alpha_diversity to a directory
-dataset$save_alphadiv(dirpath = "alpha_diversity")
+# save alpha_diversity to a directory
+mt$save_alphadiv(dirpath = "alpha_diversity")
 ```
 
 Let's go on to beta diversity with function `cal_betadiv()`.
@@ -314,17 +323,17 @@ If method parameter is not provided, the function automatically calculates Bray-
 
 
 ```{r, echo = FALSE, eval = TRUE, message = FALSE}
-invisible(dataset$cal_betadiv(unifrac = FALSE))
+invisible(mt$cal_betadiv(unifrac = FALSE))
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # unifrac = FALSE means do not calculate unifrac metric
 # require GUniFrac package installed
-dataset$cal_betadiv(unifrac = TRUE)
-# return dataset$beta_diversity
-class(dataset$beta_diversity)
-# save dataset$beta_diversity to a directory
-dataset$save_betadiv(dirpath = "beta_diversity")
+mt$cal_betadiv(unifrac = TRUE)
+# return beta_diversity list in the object
+class(mt$beta_diversity)
+# save beta_diversity to a directory
+mt$save_betadiv(dirpath = "beta_diversity")
 ```
 
 ### merge taxa or samples
@@ -333,14 +342,14 @@ Merging taxa according to a specific taxonomic rank level of tax_table can gener
 In the new microtable object, each feature in otu_table represents one taxon at the output level.
 
 ```{r, echo = TRUE}
-test <- dataset$merge_taxa("Genus")
+test <- mt$merge_taxa("Genus")
 test
 ```
 
 Similarly, merging samples according to a specific group of sample_table can also generate a new microtable object.
 
 ```{r, echo = TRUE}
-test <- dataset$merge_samples("Group")
+test <- mt$merge_samples("Group")
 test
 ```
 
@@ -354,11 +363,11 @@ For example, if the user want to extract samples, please do like this:
 ```{r, echo = TRUE, eval = TRUE}
 # remember first clone the whole dataset
 # see https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function
-group_CW <- clone(dataset)
+group_CW <- clone(mt)
 # select 'CW'
 group_CW$sample_table <- subset(group_CW$sample_table, Group == "CW")
 # or: group_CW$sample_table <- subset(group_CW$sample_table, grepl("CW", Group))
-# use tidy_dataset to trim all the basic files
+# trim all the data
 group_CW$tidy_dataset()
 group_CW
 ```
@@ -369,7 +378,7 @@ group_CW
 Similar with above operation, **subset of features can be achieved by manipulating the tax_table in microtable object directly.**
 
 ```{r, echo = TRUE, eval = TRUE}
-proteo <- clone(dataset)
+proteo <- clone(mt)
 proteo$tax_table <- subset(proteo$tax_table, Phylum == "p__Proteobacteria")
 # or: proteo$tax_table <- subset(proteo$tax_table, grepl("Proteobacteria", Phylum))
 proteo$tidy_dataset()
@@ -386,7 +395,7 @@ The function `add_rownames2taxonomy` can add the rownames of tax_table as the la
 This operation is very useful in some analysis, e.g. biomarker finding at OTU/ASV level with the relative abundance.
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- clone(dataset)
+test <- clone(mt)
 ncol(test$tax_table)
 test$add_rownames2taxonomy(use_name = "OTU")
 ncol(test$tax_table)
@@ -397,12 +406,12 @@ For other operations on the features, please directly manipulate the otu_table o
 
 ```{r, echo = TRUE, eval = FALSE}
 # It is better to have a backup before filtering features
-dataset_filter <- clone(dataset)
-dataset_filter
-# In this example, mean relative abundance threshold 0.0001
-# occurrence frequency 0.1; 10% samples have the target features
-dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
-dataset_filter
+test <- clone(mt)
+test
+# In this example, the relative abundance threshold is 0.0001
+# occurrence frequency 0.1; 10% samples should have the target features
+test$filter_taxa(rel_abund = 0.0001, freq = 0.1)
+test
 ```
 
 In microtable$new, if auto_tidy = TRUE, the function can automatically use `tidy_dataset` to make all files uniform.
@@ -431,8 +440,8 @@ tree <- ape::read.tree(phylo_file_path)
 Other functions and examples are listed here.
 
 ```{r, echo = TRUE, eval = FALSE}
-# clone a complete dataset named test
-test <- clone(dataset)
+# clone a complete dataset
+test <- clone(mt)
 
 # rename features in all the files of microtable object
 test$rename_taxa(newname_prefix = "new_name_")

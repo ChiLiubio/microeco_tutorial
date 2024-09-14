@@ -62,7 +62,7 @@ d2 <- t1$norm(method = "clr")
 d2 <- t1$norm(method = "rclr")
 # d2 is another microtable object
 # Cumulative sum scaling normalization
-d2 <- t1$norm(method = "CCS")
+d2 <- t1$norm(method = "CSS")
 # Total sum scaling, dividing counts by the sequencing depth
 d2 <- t1$norm(method = "TSS")
 
@@ -283,6 +283,7 @@ you should calculate the index for each group, respectively.
 ```{r, echo = TRUE, eval=FALSE}
 library(ggplot2)
 library(microeco)
+data(dataset)
 # we create a list to store the trans_nullmodel results.
 sesbeta_each <- list()
 group_col <- "Group"

@@ -15,24 +15,23 @@ The following is using additional environmental data which is not in the microta
 
 ```{r, echo = TRUE}
 # add_data is used to add the environmental data
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 ```
 
 Maybe a more general way is to directly use the data from sample_table of your microtable object.
 To show this operation, we first merge additional table into sample_table to generate a new microtable object.
 
 ```{r, echo = TRUE}
-new_test <- clone(dataset)
-new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
-# now new_test$sample_table has the whole data
-new_test
+mt$sample_table <- data.frame(mt$sample_table, env_data_16S[rownames(mt$sample_table), ])
+# now mt$sample_table has the whole data
+mt
 ```
 
 Now let's use env_cols to select the required columns from sample_table in the microtable object.
 From v1.0.0, the parameter `standardize = TRUE` is available to standardize each variable.
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 ```
 
 Generally, it is beneficial to analyze environmental variables in order to better use more methods.
@@ -180,7 +179,7 @@ The parameter `partial` controls wheter conduct partial correlation.
 The parameter `p_adjust_type` can control the p value adjustment type. 
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 # 'p_adjust_type = "Env"' means p adjustment is performed for each environmental variable separately.
 t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
@@ -207,9 +206,9 @@ please use **other_taxa** parameter in `cal_cor` function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
-t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
+t2 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = "Genus")
 # then create trans_env object
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
 t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 t1$plot_cor()
@@ -252,9 +251,9 @@ If the user is interested in the relationship between environmental factors and 
 please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
-t1$cal_cor(add_abund_table = dataset$alpha_diversity)
+t1$cal_cor(add_abund_table = mt$alpha_diversity)
 # try to use ggplot2 with clustering plot
 # require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)
 t1$plot_cor(cluster_ggplot = "both")
@@ -273,7 +272,7 @@ The function `plot_scatterfit` in trans_env class is designed for the scatter pl
 # add correlation statistics
 t1$plot_scatterfit(
 	x = "pH", 
-	y = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
+	y = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
 	type = "cor",
 	point_size = 3, point_alpha = 0.1, 
 	label.x.npc = "center", label.y.npc = "bottom", 
@@ -289,7 +288,7 @@ knitr::include_graphics("Images/trans_env_scatterfit_cor.png")
 ```{r, echo = TRUE, eval = FALSE}
 # regression with type = "lm", use group parameter for different groups
 t1$plot_scatterfit(
-    x = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
+    x = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
 	y = "pH",
 	type = "lm", 
 	group = "Group", 
@@ -308,10 +307,10 @@ perform machine learning to find important environmental variables in classifyin
 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 6:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 6:11])
 tmp <- t1$data_env %>% t %>% as.data.frame
 # caret package should be installed
-t2 <- trans_classifier$new(dataset = dataset, x.predictors = tmp, y.response = "Saline")
+t2 <- trans_classifier$new(dataset = mt, x.predictors = tmp, y.response = "Saline")
 t2$cal_preProcess(method = c("center", "scale", "nzv"))
 # All samples are used in training if cal_split function is not performed
 t2$cal_train(method = "rf")
@@ -336,7 +335,7 @@ knitr::include_graphics("Images/trans_env_classifier_rf_featureimp_sig.png")
 Other examples:
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 # with forward selection in RDA
 t1$cal_ordination(method = "dbRDA", feature_sel = TRUE)
 # CCA, canonical correspondence analysis
@@ -366,7 +365,7 @@ t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim
 t1$plot_scatterfit(x = "pH", y = "TOC", type = "lm", group = "Group", line_se = FALSE, label.x.npc = "center",
 	shape_values = 1:3, x_axis_title = "pH", y_axis_title = "TOC")
 # correlation between relative abundance of Genus-Arthrobacter and pH
-tmp <- unlist(dataset$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
+tmp <- unlist(mt$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
 t1$plot_scatterfit(x = "pH", y = tmp, point_size = 3, point_alpha = 0.3, 
 	y_axis_title = "Arthrobacter", x_axis_title = "pH")
 ```
@@ -404,7 +403,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 
 ```{r, echo = TRUE}
 # create object of trans_func
-t2 <- trans_func$new(dataset)
+t2 <- trans_func$new(mt)
 # mapping the taxonomy to the database
 # this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
 # for fungi example, see https://chiliubio.github.io/microeco_tutorial/other-dataset.html#fungi-data
@@ -449,7 +448,7 @@ Then we take another example to show the percentages of the OTUs for each trait 
 
 ```{r, echo = TRUE, eval = FALSE}
 # construct a network for the example
-network <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
+network <- trans_network$new(dataset = mt, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
 network$cal_network(p_thres = 0.01, COR_cut = 0.7)
 network$cal_module()
 # convert module info to microtable object
@@ -473,7 +472,7 @@ t2$show_prok_func("methanotrophy")
 Then we try to correlate the percentage data in `res_spe_func_perc` to environmental variables.
 
 ```{r, echo = TRUE, eval = FALSE}
-t3 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t3 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
 t3$plot_cor(pheatmap = TRUE)
 ```
@@ -493,8 +492,6 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# first delete the dataset created before
-rm(dataset)
 # load the example dataset from microeco package as there is a rep_fasta object in it
 data(dataset)
 dataset

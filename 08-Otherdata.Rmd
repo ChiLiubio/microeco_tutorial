@@ -15,17 +15,17 @@ data(sample_info_ITS)
 data(otu_table_ITS)
 data(taxonomy_table_ITS)
 # create microtable object
-meco_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
+mt_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
 # remove the taxa not assigned in the Kingdom "k__Fungi"
-meco_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
+mt_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
 # use tidy_dataset() to make OTUs and samples information consistent across files
-meco_fungi$tidy_dataset()
+mt_fungi$tidy_dataset()
 ```
 
 Then, let's perform the fungal trait prediction.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_func$new(meco_fungi)
+t1 <- trans_func$new(mt_fungi)
 # Both FungalTraits and FUNGuild are available
 t1$cal_spe_func(fungi_database = "FungalTraits")
 t1$cal_spe_func_perc(abundance_weighted = TRUE)
@@ -35,8 +35,8 @@ t1$cal_spe_func_perc(abundance_weighted = TRUE)
 Then we show an example on the differential test of traits across groups.
 
 ```{r, echo = TRUE, eval = FALSE}
-# clone meco_fungi for differential test
-tmp_mt <- clone(meco_fungi)
+# clone mt_fungi for differential test
+tmp_mt <- clone(mt_fungi)
 # we need assign the table to taxa_abund manually
 tmp_mt$taxa_abund$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
 # use trans_diff class to perform differential test
@@ -48,7 +48,7 @@ Then we show the distribution of traits across modules in network.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create trans_network object
-t1 <- trans_network$new(dataset = meco_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
+t1 <- trans_network$new(dataset = mt_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
 # create correlation network 
 t1$cal_network(COR_p_thres = 0.05, COR_cut = 0.6)
 # add modules
@@ -143,24 +143,24 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-data1 <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
-data1$tidy_dataset()
+tmp <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
+tmp$tidy_dataset()
 # revise the species names in tax_table as the information in the example file is not standard
-select_rows <- data1$tax_table$Species != "s__"
-data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
+select_rows <- tmp$tax_table$Species != "s__"
+tmp$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", tmp$tax_table$Genus[select_rows]), " ", gsub("s__", "", tmp$tax_table$Species[select_rows]))
 # taxonomic abundance
-data1$cal_abund()
+tmp$cal_abund()
 
 # create object of trans_func
-data2 <- trans_func$new(data1)
+data2 <- trans_func$new(tmp)
 # Select NJC19 database
 data2$cal_spe_func(prok_database = "NJC19")
 # get the trait percentage data
 data2$cal_spe_func_perc(abundance_weighted = FALSE)
 # inset the trait percentage result into taxa_abund of microtable object
-data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
+tmp$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
 # use trans_abund to plot
-t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
+t1 <- trans_abund$new(dataset = tmp, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
 t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
 ```
 
@@ -172,7 +172,7 @@ knitr::include_graphics("Images/plot_mouse_NJC19.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 # differential abundance test of the traits percentage and use random forest to find biomarkers
-t1 <- trans_diff$new(dataset = data1, method = "rf", group = "donor_status", taxa_level = "Trait")
+t1 <- trans_diff$new(dataset = tmp, method = "rf", group = "donor_status", taxa_level = "Trait")
 t1$plot_diff_bar(use_number = 1:30)
 ```
 

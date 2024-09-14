@@ -27,7 +27,7 @@ All the differential test result is stored in the `object$res_diff`.
 LEfSe combines the non-parametric test and linear discriminant analysis [@Segata_Metagenomic_2011].
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "lefse", group = "Group", alpha = 0.01, lefse_subgroup = NULL)
+t1 <- trans_diff$new(dataset = mt, method = "lefse", group = "Group", alpha = 0.01, lefse_subgroup = NULL)
 # see t1$res_diff for the result
 # From v0.8.0, threshold is used for the LDA score selection.
 t1$plot_diff_bar(threshold = 4)
@@ -85,12 +85,12 @@ At this time, taxa can be manually choosed to show like the following operation.
 
 ```{r, echo = TRUE, eval = FALSE}
 # choose some taxa according to the positions in the previous picture; those taxa labels have minimum overlap
-use_labels <- c("c__Deltaproteobacteria", "c__Actinobacteria", "o__Rhizobiales", "p__Proteobacteria", "p__Bacteroidetes", 
+tmp <- c("c__Deltaproteobacteria", "c__Actinobacteria", "o__Rhizobiales", "p__Proteobacteria", "p__Bacteroidetes", 
 	"o__Micrococcales", "p__Acidobacteria", "p__Verrucomicrobia", "p__Firmicutes", 
 	"p__Chloroflexi", "c__Acidobacteria", "c__Gammaproteobacteria", "c__Betaproteobacteria", "c__KD4-96",
 	"c__Bacilli", "o__Gemmatimonadales", "f__Gemmatimonadaceae", "o__Bacillales", "o__Rhodobacterales")
 # then use parameter select_show_labels to show
-t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = use_labels)
+t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = tmp)
 # Now we can see that more taxa names appear in the tree
 ```
 
@@ -106,7 +106,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus level for parameter taxa_level, if you want to use all taxa, change to "all"
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
-t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = "Genus")
 # plot the MeanDecreaseGini bar
 # group_order is designed to sort the groups
 g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
@@ -127,7 +127,7 @@ The significance label can also be added in the abundance plot controlled by `ad
 Now adding labels supports all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 # filter something not needed to show
 t1$res_diff %<>% subset(Significance %in% "***")
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, add_sig_label = "Significance")
@@ -138,7 +138,7 @@ knitr::include_graphics("Images/trans_diff_siglabel_wilcox.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 ```
 
@@ -150,7 +150,7 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 
 ```{r, echo = TRUE, eval = FALSE}
 # metastat analysis at Genus level
-t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "metastat", group = "Group", taxa_level = "Genus")
 # t1$res_diff is the differential test result
 ```
 
@@ -171,19 +171,19 @@ The following are some examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.te
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
-t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:20)
 # Dunn's Kruskal-Wallis Multiple Comparisons when group number > 2; require FSA package
-t1 <- trans_diff$new(dataset = dataset, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
+t1 <- trans_diff$new(dataset = mt, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 # Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
-t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", group_order = c("TW", "CW"))
 # t.test
-t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
 # anova
-t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
 head(t1$res_diff)
 ```
 
@@ -194,8 +194,8 @@ These three packages are all deposited on the Bioconductor.
 ```{r, echo = TRUE, eval = FALSE}
 # zero-inflated log-normal model-based differential test method from metagenomeSeq package
 # If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")
-t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
-t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
+t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 ```
@@ -204,13 +204,13 @@ t1$plot_diff_bar(use_number = 1:20)
 # 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see detailed description of the methods
 # If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", add_sig = TRUE)
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
 # ALDEx2_kw
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
@@ -219,12 +219,14 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 
 ```{r, echo = TRUE, eval = FALSE}
 # ANCOMBC2 method
-# when fix_formula is not provided (necessary in the ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
-t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
+# when fix_formula is not provided (necessary in ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
+# Restart R if there is an error that "Error in model.matrix.formula(): data must be a data.frame"
+t1 <- trans_diff$new(dataset = mt, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
 t1$plot_diff_bar(keep_full_name = TRUE, heatmap_cell = "P.adj", heatmap_sig = "Significance", heatmap_x = "Factors", heatmap_y = "Taxa")
 # add a continuous variable
-dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t2 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = NULL, fix_formula = "pH+Group", taxa_level = "OTU", filter_thres = 0.005)
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
+t2 <- trans_diff$new(dataset = tmp, method = "ancombc2", group = NULL, fix_formula = "pH+Group", taxa_level = "OTU", filter_thres = 0.005)
 # original results t2$res_diff_raw
 # converted result t2$res_diff
 View(t2$res_diff)
@@ -234,14 +236,15 @@ The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 View(t1$res_diff)
 t1$plot_diff_bar(keep_full_name = TRUE)
 # Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.
-dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
-t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
+t1 <- trans_diff$new(dataset = tmp, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+t2 <- trans_diff$new(dataset = tmp, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
 t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
 ```
 
@@ -256,7 +259,7 @@ The heatmap can be used in the `plot_diff_bar` function instead of bar plot for 
 ```{r, echo = TRUE, eval = FALSE}
 # AST: arc sine square root transformation
 if(!require("lmerTest")) install.packages("lmerTest")
-t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
 View(t1$res_diff)
 t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
 ```
@@ -267,8 +270,8 @@ because beta distribution is especially appropriate to fit the proportional data
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("glmmTMB")) install.packages("glmmTMB")
-d1 <- clone(dataset)
-t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm_beta", 
+tmp <- clone(mt)
+t1 <- trans_diff$new(dataset = tmp, taxa_level = "Phylum", method = "glmm_beta", 
 	formula = "Group + (1|Type)", filter_thres = 0.001)
 View(t1$res_diff)
 t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
@@ -277,7 +280,7 @@ t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatma
 Let's run two-way anova for more usages of heatmap.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
+t1 <- trans_diff$new(dataset = mt, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
 t1$plot_diff_bar()
 t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
 t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10")
@@ -325,7 +328,7 @@ Please check the final part for other network construction methods.
 ```{r, echo = TRUE, eval=FALSE}
 # The parameter cor_method in trans_network is used to select correlation calculation method.
 # default pearson or spearman correlation invoke R base cor.test, a little slow
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", filter_thres = 0.001)
 # return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table
 ```
 
@@ -334,7 +337,7 @@ Spearman correlation based on WGCNA package is applied to show all the following
 ```{r, echo = TRUE, eval=FALSE}
 # require WGCNA package
 if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
 ```
 
 The parameter `COR_cut` can be used to select the correlation threshold. 
@@ -450,7 +453,7 @@ Then we perform correlation heatmap to show the associations between eigengenes 
 
 ```{r, echo = TRUE, eval = FALSE}
 # create trans_env object
-t2 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t2 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # calculate correlations
 t2$cal_cor(add_abund_table = t1$res_eigen)
 # plot the correlation heatmap
@@ -476,7 +479,7 @@ Then let's show how to extract sub-network for samples [@Ma_Geographic_2016].
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
-sub1 <- t1$subset_network(node = dataset$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
+sub1 <- t1$subset_network(node = mt$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
 # see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
 t2 <- clone(t1)
 t2$res_network <- sub1
@@ -544,27 +547,27 @@ Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_N
 
 ```{r, echo = TRUE, eval=FALSE}
 # use Bray–Curtis index (1-dissimilarity)
-t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "bray", filter_thres = 0.001)
 # Pearson correlation
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", filter_thres = 0.001)
 # Pearson correlation using WGCNA package
 # install WGCNA package
 if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
 # Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
 # Spearman correlation using WGCNA package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
 # Spearman correlation using NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
 # SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.003)
+t1 <- trans_network$new(dataset = mt, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.003)
 # SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
 # CCLasso method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "cclasso", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "cclasso", filter_thres = 0.001)
 # CCREPE method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "ccrepe", filter_thres = 0.001)
 ```
 
 
@@ -575,7 +578,7 @@ See https://github.com/zdk123/SpiecEasi for the package installation.
 It is very slow for SpiecEasi_method = 'glasso' when there is a large number (such as hundreds to thousands) according to our test experience.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require SpiecEasi package installed https://github.com/zdk123/SpiecEasi
 # also see SpiecEasi::spiec.easi for available model parameters
 t1$cal_network(network_method = "SpiecEasi", SpiecEasi_method = "mb")
@@ -592,7 +595,7 @@ To repeat the following code, please first install julia language in your comput
 3. Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in https://github.com/meringlab/FlashWeave.jl  
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0)
 # require Julia in the computer path, and the package FlashWeave
 # different with the direct parameter passing of 'SpiecEasi' network_method, FlashWeave_other_para is used to pass parameters to Julia FlashWeave
 # assign FlashWeave_tempdir parameter can change the temporary working directory
@@ -607,7 +610,7 @@ So the network from this approach is a directed network.
 Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require beemStatic package installed
 t1$cal_network(network_method = "beemStatic")
 # use cluster_walktrap method for the directed network
@@ -650,7 +653,7 @@ We first check the phylogenetic signal.
 ```{r, echo = TRUE}
 # generate trans_nullmodel object
 # as an example, we only use high abundance OTU with mean relative abundance > 0.0005
-t1 <- trans_nullmodel$new(dataset, filter_thres = 0.0005, add_data = env_data_16S)
+t1 <- trans_nullmodel$new(mt, filter_thres = 0.0005, add_data = env_data_16S)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -687,9 +690,9 @@ revealing that the basal phylogenetic turnover in TW is high.
 
 ```{r, echo = TRUE, eval=FALSE}
 # add betaNRI matrix to beta_diversity list
-dataset$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
+mt$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
 # create trans_beta class, use measure "betaNRI"
-t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
+t2 <- trans_beta$new(dataset = mt, group = "Group", measure = "betaNRI")
 # transform the distance for each group
 t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
@@ -992,10 +995,10 @@ The regression is also supported.
 ```{r, echo = TRUE, eval=FALSE}
 # prepare data
 data(env_data_16S)
-new_test <- clone(dataset)
-new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
 # pH response variable
-t1 <- trans_classifier$new(dataset = new_test, y.response = "pH", x.predictors = "Genus")
+t1 <- trans_classifier$new(dataset = tmp, y.response = "pH", x.predictors = "Genus")
 t1$cal_split(prop.train = 3/4)
 t1$set_trainControl()
 t1$cal_train()

@@ -364,7 +364,7 @@ It is also recommended to put all the environmental data into sample information
 
 ```{r, echo = TRUE}
 library(microeco)
-# load the example data; 16S rRNA gene amplicon sequencing dataset
+# load the example data; 16S rRNA gene amplicon sequencing data
 # metadata table; data.frame
 data(sample_info_16S)
 # feature table; data.frame
@@ -465,15 +465,24 @@ Otherwise, the following check can filter all the samples of otu_table because o
 ```{r, echo = TRUE}
 # In R6 class, '$new' is the original method used to create a new object of class
 # If you only provide abundance table, the class can help you create a sample info table
-dataset <- microtable$new(otu_table = otu_table_16S)
-class(dataset)
+mt <- microtable$new(otu_table = otu_table_16S)
+class(mt)
 # generally add the metadata
-dataset <- microtable$new(otu_table = otu_table_16S, sample_table = sample_info_16S)
-dataset
+mt <- microtable$new(otu_table = otu_table_16S, sample_table = sample_info_16S)
+mt
 # Let's create a microtable object with more information
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
-dataset
+mt <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)
+mt
 ```
+
+To fully back up this original dataset (R6 class), the `clone` function should be used instead of direct assignment (https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function).
+To further save the dataset to a local computer file, the `save` function should be used (https://chiliubio.github.io/microeco_tutorial/notes.html#save-function).
+
+```{r, echo = TRUE}
+mt_raw <- clone(mt)
+```
+
+
 
 ### How to read your files to microtable object?
 
@@ -510,10 +519,10 @@ Please also see the help document of the microtable class for detailed descripti
 Then, we remove OTUs which are not assigned in the Kingdom "k__Archaea" or "k__Bacteria". 
 ```{r, echo = TRUE}
 # use R subset function to filter taxa in tax_table
-dataset$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
+mt$tax_table %<>% base::subset(Kingdom == "k__Archaea" | Kingdom == "k__Bacteria")
 # another way with grepl function
-dataset$tax_table %<>% .[grepl("Bacteria|Archaea", .$Kingdom), ]
-dataset
+mt$tax_table %<>% .[grepl("Bacteria|Archaea", .$Kingdom), ]
+mt
 ```
 
 We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplast".
@@ -521,21 +530,21 @@ We also remove OTUs with the taxonomic assignments "mitochondria" or "chloroplas
 ```{r, echo = TRUE}
 # This will remove the lines containing the taxa word regardless of taxonomic ranks and ignoring word case in the tax_table.
 # So if you want to filter some taxa not considerd pollutions, please use subset like the previous operation to filter tax_table.
-dataset$filter_pollution(taxa = c("mitochondria", "chloroplast"))
-dataset
+mt$filter_pollution(taxa = c("mitochondria", "chloroplast"))
+mt
 ```
 
-To make the OTU and sample information consistent across all files in the dataset object, we use function `tidy_dataset` to trim the dataset.
+To make the OTU and sample information consistent across all files in the object, we use function `tidy_dataset` to trim the data.
 
 ```{r, echo = TRUE}
-dataset$tidy_dataset()
-print(dataset)
+mt$tidy_dataset()
+mt
 ```
 
 Then let's use sample_sums() to check the sequence numbers in each sample.
 
 ```{r, echo = TRUE}
-dataset$sample_sums() %>% range
+mt$sample_sums() %>% range
 ```
 
 Sometimes, to reduce the impact of sequencing depth on diversity measurements, 
@@ -550,15 +559,15 @@ please refer to the `trans_norm` class help documentation and the examples in th
 
 ```{r, echo = TRUE}
 # As an example, use 10000 sequences in each sample
-dataset$rarefy_samples(sample.size = 10000)
-dataset$sample_sums() %>% range
+mt$rarefy_samples(sample.size = 10000)
+mt$sample_sums() %>% range
 ```
 
 The function `save_table` can be performed to save all the basic data in microtable object to local files,
 including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
 
 ```{r, echo = TRUE, eval = FALSE}
-dataset$save_table(dirpath = "basic_files", sep = ",")
+mt$save_table(dirpath = "basic_files", sep = ",")
 ```
 
 Then, let's calculate the taxa abundance at each taxonomic rank using `cal_abund()`.
@@ -566,29 +575,29 @@ This function **generate a list called `taxa_abund` stored in the microtable obj
 This list contains several data frame of the abundance information at each taxonomic rank.
 It's worth noting that the `cal_abund()` function can be used to **solve more complicated cases with special parameters**,
 such as supporting both the relative and absolute abundance calculation and selecting the partial 'taxonomic' columns.
-Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic dataset.
+Those have been shown in file2meco package part (https://chiliubio.github.io/microeco_tutorial/file2meco-package.html#humann-metagenomic-results) with complex metagenomic data.
 
 ```{r, echo = TRUE}
 # use default parameters
-dataset$cal_abund()
-# return dataset$taxa_abund
-class(dataset$taxa_abund)
+mt$cal_abund()
+# return taxa_abund list in the object
+class(mt$taxa_abund)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # show part of the relative abundance at Phylum level
-dataset$taxa_abund$Phylum[1:5, 1:5]
+mt$taxa_abund$Phylum[1:5, 1:5]
 ```
 
 ```{r, echo = FALSE}
-pander::pander(dataset$taxa_abund$Phylum[1:5, 1:5])
+pander::pander(mt$taxa_abund$Phylum[1:5, 1:5])
 ```
 
 
 The function `save_abund()` can be used to save the taxa abundance file to a local place easily.
 
 ```{r, echo = TRUE, eval = FALSE}
-dataset$save_abund(dirpath = "taxa_abund")
+mt$save_abund(dirpath = "taxa_abund")
 ```
 
 All the abundance tables can also be merged into one to be saved.
@@ -596,9 +605,9 @@ This type of file format can be opened directly by other software, such as STAMP
 
 ```{r, echo = TRUE, eval = FALSE}
 # tab-delimited, i.e. mpa format
-dataset$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
+mt$save_abund(merge_all = TRUE, sep = "\t", quote = FALSE)
 # remove those unclassified
-dataset$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
+mt$save_abund(merge_all = TRUE, sep = "\t", rm_un = TRUE, rm_pattern = "__$|Sedis$", quote = FALSE)
 ```
 
 Then, let's calculate the alpha diversity.
@@ -607,14 +616,14 @@ The result is also stored in the object microtable automatically.
 
 ```{r, echo = TRUE}
 # If you want to add Faith's phylogenetic diversity, use PD = TRUE, this will be a little slow
-dataset$cal_alphadiv(PD = FALSE)
-# return dataset$alpha_diversity
-class(dataset$alpha_diversity)
+mt$cal_alphadiv(PD = FALSE)
+# return alpha_diversity in the object
+class(mt$alpha_diversity)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-# save dataset$alpha_diversity to a directory
-dataset$save_alphadiv(dirpath = "alpha_diversity")
+# save alpha_diversity to a directory
+mt$save_alphadiv(dirpath = "alpha_diversity")
 ```
 
 Let's go on to beta diversity with function `cal_betadiv()`.
@@ -622,17 +631,17 @@ If method parameter is not provided, the function automatically calculates Bray-
 
 
 ```{r, echo = FALSE, eval = TRUE, message = FALSE}
-invisible(dataset$cal_betadiv(unifrac = FALSE))
+invisible(mt$cal_betadiv(unifrac = FALSE))
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
 # unifrac = FALSE means do not calculate unifrac metric
 # require GUniFrac package installed
-dataset$cal_betadiv(unifrac = TRUE)
-# return dataset$beta_diversity
-class(dataset$beta_diversity)
-# save dataset$beta_diversity to a directory
-dataset$save_betadiv(dirpath = "beta_diversity")
+mt$cal_betadiv(unifrac = TRUE)
+# return beta_diversity list in the object
+class(mt$beta_diversity)
+# save beta_diversity to a directory
+mt$save_betadiv(dirpath = "beta_diversity")
 ```
 
 ### merge taxa or samples
@@ -641,14 +650,14 @@ Merging taxa according to a specific taxonomic rank level of tax_table can gener
 In the new microtable object, each feature in otu_table represents one taxon at the output level.
 
 ```{r, echo = TRUE}
-test <- dataset$merge_taxa("Genus")
+test <- mt$merge_taxa("Genus")
 test
 ```
 
 Similarly, merging samples according to a specific group of sample_table can also generate a new microtable object.
 
 ```{r, echo = TRUE}
-test <- dataset$merge_samples("Group")
+test <- mt$merge_samples("Group")
 test
 ```
 
@@ -662,11 +671,11 @@ For example, if the user want to extract samples, please do like this:
 ```{r, echo = TRUE, eval = TRUE}
 # remember first clone the whole dataset
 # see https://chiliubio.github.io/microeco_tutorial/notes.html#clone-function
-group_CW <- clone(dataset)
+group_CW <- clone(mt)
 # select 'CW'
 group_CW$sample_table <- subset(group_CW$sample_table, Group == "CW")
 # or: group_CW$sample_table <- subset(group_CW$sample_table, grepl("CW", Group))
-# use tidy_dataset to trim all the basic files
+# trim all the data
 group_CW$tidy_dataset()
 group_CW
 ```
@@ -677,7 +686,7 @@ group_CW
 Similar with above operation, **subset of features can be achieved by manipulating the tax_table in microtable object directly.**
 
 ```{r, echo = TRUE, eval = TRUE}
-proteo <- clone(dataset)
+proteo <- clone(mt)
 proteo$tax_table <- subset(proteo$tax_table, Phylum == "p__Proteobacteria")
 # or: proteo$tax_table <- subset(proteo$tax_table, grepl("Proteobacteria", Phylum))
 proteo$tidy_dataset()
@@ -694,7 +703,7 @@ The function `add_rownames2taxonomy` can add the rownames of tax_table as the la
 This operation is very useful in some analysis, e.g. biomarker finding at OTU/ASV level with the relative abundance.
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- clone(dataset)
+test <- clone(mt)
 ncol(test$tax_table)
 test$add_rownames2taxonomy(use_name = "OTU")
 ncol(test$tax_table)
@@ -705,12 +714,12 @@ For other operations on the features, please directly manipulate the otu_table o
 
 ```{r, echo = TRUE, eval = FALSE}
 # It is better to have a backup before filtering features
-dataset_filter <- clone(dataset)
-dataset_filter
-# In this example, mean relative abundance threshold 0.0001
-# occurrence frequency 0.1; 10% samples have the target features
-dataset_filter$filter_taxa(rel_abund = 0.0001, freq = 0.1)
-dataset_filter
+test <- clone(mt)
+test
+# In this example, the relative abundance threshold is 0.0001
+# occurrence frequency 0.1; 10% samples should have the target features
+test$filter_taxa(rel_abund = 0.0001, freq = 0.1)
+test
 ```
 
 In microtable$new, if auto_tidy = TRUE, the function can automatically use `tidy_dataset` to make all files uniform.
@@ -739,8 +748,8 @@ tree <- ape::read.tree(phylo_file_path)
 Other functions and examples are listed here.
 
 ```{r, echo = TRUE, eval = FALSE}
-# clone a complete dataset named test
-test <- clone(dataset)
+# clone a complete dataset
+test <- clone(mt)
 
 # rename features in all the files of microtable object
 test$rename_taxa(newname_prefix = "new_name_")
@@ -792,7 +801,7 @@ We first show the bar plot example.
 ```{r, echo = TRUE}
 # create trans_abund object
 # select top 8 abundant Phyla.
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8)
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 8)
 # t1 object now include the transformed abundance data t1$abund_data and other elements for the following plotting
 ```
 
@@ -826,7 +835,7 @@ At this time, please see this topic (https://github.com/ChiLiubio/microeco/issue
 The alluvial plot is also implemented in the plot_bar function with use_alluvium parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 8)
+t1 <- trans_abund$new(dataset = mt, taxrank = "Genus", ntaxa = 8)
 # require ggalluvial package
 # use_alluvium = TRUE make the alluvial plot, clustering =TRUE can be used to reorder the samples by clustering
 # bar_type = FALSE can remove 'others'
@@ -842,7 +851,7 @@ Note that, from v0.16.0, the parameter `group_morestats = TRUE` can be used to a
 
 ```{r, echo = TRUE, eval = FALSE}
 # The groupmean parameter can be used to obtain the group-mean barplot.
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
 g1 <- t1$plot_bar(others_color = "grey70", legend_text_italic = FALSE)
 g1 + theme_classic() + theme(axis.title.y = element_text(size = 18))
 ```
@@ -855,7 +864,7 @@ The box plot is an excellent way to intuitionally show abundance distribution ac
 
 ```{r, echo = TRUE, eval = FALSE}
 # show 15 taxa at Class level
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 15)
+t1 <- trans_abund$new(dataset = mt, taxrank = "Class", ntaxa = 15)
 t1$plot_box(group = "Group", xtext_angle = 30)
 ```
 
@@ -867,7 +876,7 @@ Then we show the heatmap with the high abundant genera.
 
 ```{r, echo = TRUE, eval = FALSE}
 # show 40 taxa at Genus level
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 40)
+t1 <- trans_abund$new(dataset = mt, taxrank = "Genus", ntaxa = 40)
 g1 <- t1$plot_heatmap(facet = "Group", xtext_keep = FALSE, withmargin = FALSE, plot_breaks = c(0.01, 0.1, 1, 10))
 g1
 g1 + theme(axis.text.y = element_text(face = 'italic'))
@@ -880,9 +889,9 @@ knitr::include_graphics("Images/trans_abund_heatmap.png")
 Line chart is very useful to show the abundance change of taxa along time, space or other gradients.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 5)
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 5)
 t1$plot_line()
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Genus", ntaxa = 5, groupmean = "Type")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Genus", ntaxa = 5, groupmean = "Type")
 t1$plot_line(position = position_dodge(0.3), xtext_angle = 0)
 ```
 
@@ -893,7 +902,7 @@ knitr::include_graphics("Images/trans_abund_line.png")
 Then, we show the pie chart with the group mean values.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 6, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 6, groupmean = "Group")
 # all pie chart in one row
 t1$plot_pie(facet_nrow = 1)
 t1$plot_pie(facet_nrow = 1, add_label = TRUE)
@@ -907,7 +916,7 @@ The donut and radar charts are implemented from v0.17.0.
 Please install the dependent packages according to the steps (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
 t1$plot_donut(label = FALSE)
 t1$plot_donut(label = TRUE)
 ```
@@ -917,9 +926,9 @@ knitr::include_graphics("Images/trans_abund_donut.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
 t1$plot_radar(values.radar = c("0%", "25%", "50%"), grid.min = 0, grid.mid = 0.25, grid.max = 0.5)
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Type")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 8, groupmean = "Type")
 t1$plot_radar(values.radar = c("0%", "25%", "50%"), grid.min = 0, grid.mid = 0.25, grid.max = 0.5)
 ```
 
@@ -930,7 +939,7 @@ knitr::include_graphics("Images/trans_abund_radar.png")
 The ternary plot can be used for the case with three samples/groups.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 8, groupmean = "Group")
 t1$plot_tern()
 ```
 
@@ -945,14 +954,14 @@ When the hierarchical abundance data of two levels is needed to be shown in bar 
 
 ```{r, echo = TRUE, eval = FALSE}
 # require ggnested package; see https://chiliubio.github.io/microeco_tutorial/intro.html#dependence
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 10, high_level = "Phylum", delete_taxonomy_prefix = FALSE)
+test1 <- trans_abund$new(dataset = mt, taxrank = "Class", ntaxa = 10, high_level = "Phylum", delete_taxonomy_prefix = FALSE)
 test1$plot_bar(ggnested = TRUE, facet = c("Group", "Type"), xtext_angle = 30)
 # fixed subclass number in each phylum
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 4)
+test1 <- trans_abund$new(dataset = mt, taxrank = "Class", ntaxa = 30, show = 0, high_level = "Phylum", high_level_fix_nsub = 4)
 test1$plot_bar(ggnested = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
 test1$plot_bar(ggnested = TRUE, xtext_angle = 0, facet = c("Group", "Type"), coord_flip = TRUE)
 # sum others in each phylum
-test1 <- trans_abund$new(dataset = dataset, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, delete_taxonomy_prefix = FALSE)
+test1 <- trans_abund$new(dataset = mt, taxrank = "Class", ntaxa = 20, show = 0, high_level = "Phylum", high_level_fix_nsub = 3, delete_taxonomy_prefix = FALSE)
 test1$plot_bar(ggnested = TRUE, high_level_add_other = TRUE, xtext_angle = 30, facet = c("Group", "Type"))
 ```
 
@@ -965,7 +974,7 @@ The clustering plot can also be added in the bar plot.
 In this case, the coordinate axis will be flipped automatically for better visualization.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_abund$new(dataset = dataset, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
+t1 <- trans_abund$new(dataset = mt, taxrank = "Phylum", ntaxa = 10, groupmean = "Group")
 g1 <- t1$plot_bar(coord_flip = TRUE)
 g1 <- g1 + theme_classic() + theme(axis.title.x = element_text(size = 16), axis.ticks.y = element_blank(), axis.line.y = element_blank())
 g1
@@ -1005,10 +1014,10 @@ we first merge samples according to the "Group" column of sample_table.
 
 ```{r, echo = TRUE, eval = FALSE}
 # merge samples as one community for each group
-dataset1 <- dataset$merge_samples("Group")
-# dataset1 is a new microtable object
+tmp <- mt$merge_samples("Group")
+# tmp is a new microtable object
 # create trans_venn object
-t1 <- trans_venn$new(dataset1, ratio = NULL)
+t1 <- trans_venn$new(tmp, ratio = NULL)
 t1$plot_venn()
 ```
 
@@ -1018,7 +1027,7 @@ knitr::include_graphics("Images/trans_venn_0.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 # create venn plot with more information
-t1 <- trans_venn$new(dataset1, ratio = "seqratio")
+t1 <- trans_venn$new(tmp, ratio = "seqratio")
 t1$plot_venn()
 # The integer is OTU number
 # The percentage data is the sequence number/total sequence number
@@ -1033,8 +1042,8 @@ To assign different colors in petals, please provide multiple colors to `petal_c
 
 ```{r, echo = TRUE, eval = FALSE}
 # use "Type" column in sample_table
-dataset1 <- dataset$merge_samples("Type")
-t1 <- trans_venn$new(dataset1)
+tmp <- mt$merge_samples("Type")
+t1 <- trans_venn$new(tmp)
 t1$plot_venn(petal_plot = TRUE, petal_color = RColorBrewer::brewer.pal(8, "Dark2"))
 t1$plot_venn(petal_plot = TRUE, petal_center_size = 50, petal_r = 1.5, petal_a = 3, petal_move_xy = 3.8, petal_color_center = "#BEBADA")
 ```
@@ -1047,7 +1056,7 @@ Another way to plot the results is to use `plot_bar` function, which is especial
 This way is generally called UpSet plot. Please see the help document for more parameters to adjust the plot.
 
 ```{r, echo = TRUE, eval = FALSE}
-tmp <- dataset$merge_samples("Type")
+tmp <- mt$merge_samples("Type")
 tmp
 t1 <- trans_venn$new(dataset = tmp)
 # only show some sets with large intersection numbers
@@ -1070,8 +1079,8 @@ So, it is interesting to further analyze the composition of unique and shared sp
 For this goal, we first transform the results of venn plot to the traditional feature-sample table, that is, another object of microtable class.
 
 ```{r, echo = TRUE, eval = TRUE}
-dataset1 <- dataset$merge_samples("Group")
-t1 <- trans_venn$new(dataset1)
+tmp <- mt$merge_samples("Group")
+t1 <- trans_venn$new(tmp)
 # transform venn results to the sample-species table, here do not consider abundance, only use presence/absence.
 t2 <- t1$trans_comm(use_frequency = TRUE)
 # t2 is a new microtable class, each part is considered a sample
@@ -1110,7 +1119,7 @@ Other examples:
 
 To reorder samples in the plots, please manipulate the sample_table in the object to adjust the orders.
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples("Type")
+test <- mt$merge_samples("Type")
 test$sample_table %<>% .[c("YML", "NE", "NW", "NC", "QTP", "SC"), , drop = FALSE]
 test$tidy_dataset()
 # The columns of otu_table can also be reordered according to the sample_table after running tidy_dataset function
@@ -1122,7 +1131,7 @@ The parameter `sort_samples = TRUE` in `plot_bar` function can be applied to sor
 The left bar plot can be removed when the parameter `left_plot = FALSE`.
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples("Type")
+test <- mt$merge_samples("Type")
 t1 <- trans_venn$new(test)
 # remove left bar in the UpSet plot
 t1$plot_bar(left_plot = FALSE)
@@ -1133,7 +1142,7 @@ t1$plot_bar(sort_samples = FALSE)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-test <- dataset$merge_samples("Type")
+test <- mt$merge_samples("Type")
 t1 <- trans_venn$new(test)
 t1$plot_bar(left_bar_fill = RColorBrewer::brewer.pal(8, "Dark2"), left_bar_alpha = 0.2, bottom_background_fill = RColorBrewer::brewer.pal(8, "Dark2"), bottom_background_alpha = 0.2)
 t1$data_summary %<>% .[.$Counts > 1, ]
@@ -1179,13 +1188,13 @@ Creating a `trans_alpha` object can return two data.frame with the prefix 'data_
 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Group")
 # return t1$data_stat
 head(t1$data_stat)
 ```
 
 ```{r, echo = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Group")
 pander::pander(head(t1$data_stat))
 ```
 
@@ -1242,7 +1251,7 @@ pander::pander(head(t1$res_diff))
 The multi-factor analysis of variance is also supported with the `formula` parameter, such as two-way anova. 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Group")
 t1$cal_diff(method = "anova", formula = "Group+Type")
 head(t1$res_diff)
 # see the help document for the usage of formula
@@ -1291,7 +1300,7 @@ knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 The trans_alpha class supports the differential test of groups within each group using the `by_group` parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Type", by_group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Type", by_group = "Group")
 t1$cal_diff(method = "wilcox")
 t1$plot_alpha(measure = "Shannon")
 ```
@@ -1304,7 +1313,7 @@ knitr::include_graphics("Images/trans_alpha_wilcox_bygroup.png")
 Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset)
+t1 <- trans_alpha$new(dataset = mt)
 # require rcompanion package to be installed
 t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 ```
@@ -1320,7 +1329,7 @@ and marginal R2 is the variance explained by fixed effects.
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("lmerTest")) install.packages("lmerTest")
-t1 <- trans_alpha$new(dataset = dataset)
+t1 <- trans_alpha$new(dataset = mt)
 # just using (1|Type) as an example to show the random effect
 t1$cal_diff(method = "lme", formula = "Group + (1|Type)")
 View(t1$res_diff)
@@ -1332,7 +1341,7 @@ Note that from v1.9.0, the parameter `plot_type` control which type of plot is e
 All the options starting with "gg" (e.g., "ggboxplot", "ggdotplot", "ggviolin", "ggstripchart", "ggerrorplot") means they are the functions coming from the ggpubr package.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Type")
+t1 <- trans_alpha$new(dataset = mt, group = "Type")
 t1$cal_diff(method = "KW_dunn", KW_dunn_letter = TRUE)
 t1$plot_alpha(plot_type = "ggboxplot", add = "none")
 
@@ -1356,7 +1365,7 @@ The option `plot_type = "errorbar"` in `plot_alpha` will invoke the `data_stat` 
 The line is optional to be added between points (Mean) for the case with a gradient.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Group")
 t1$cal_diff(method = "KW_dunn", measure = "Chao1", KW_dunn_letter = TRUE)
 t1$plot_alpha(measure = "Chao1")
 t1$plot_alpha(plot_type = "errorbar", measure = "Chao1")
@@ -1381,7 +1390,7 @@ t1$plot_alpha(plot_type = "errorbar", plot_SE = FALSE, measure = "Shannon", add_
 From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = dataset, group = "Group")
+t1 <- trans_alpha$new(dataset = mt, group = "Group")
 t1$cal_diff(method = "anova", formula = "Group+Type+Group:Type")
 t1$plot_alpha(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
 t1$plot_alpha(color_palette = c("#053061", "white", "#A50026"), trans = "log10")
@@ -1416,8 +1425,8 @@ PCA (principal component analysis), DCA (detrended correspondence analysis) and 
 ```{r, echo = TRUE, eval = TRUE}
 # create trans_beta object
 # For PCoA and NMDS, measure parameter must be provided.
-# measure parameter should be either one of names(dataset$beta_diversity) or a customized symmetric matrix
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+# measure parameter should be either one of names(mt$beta_diversity) or a customized symmetric matrix
+t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -1453,12 +1462,12 @@ t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) +
 One example for PCA or DCA with Genus data and loading arrow.
 
 ```{r, echo = TRUE, eval = FALSE}
-d1 <- dataset$merge_taxa(taxa = "Genus")
-d1$tax_table %<>% .[.$Genus != "g__", ]
-d1$tidy_dataset()
-rownames(d1$otu_table) <- d1$tax_table[rownames(d1$otu_table), "Genus"]
-rownames(d1$tax_table) <- d1$tax_table[, "Genus"]
-t1 <- trans_beta$new(dataset = d1)
+tmp <- mt$merge_taxa(taxa = "Genus")
+tmp$tax_table %<>% .[.$Genus != "g__", ]
+tmp$tidy_dataset()
+rownames(tmp$otu_table) <- tmp$tax_table[rownames(tmp$otu_table), "Genus"]
+rownames(tmp$tax_table) <- tmp$tax_table[, "Genus"]
+t1 <- trans_beta$new(dataset = tmp)
 t1$cal_ordination(method = "PCA")
 t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_italic = TRUE)
 t1$cal_ordination(method = "DCA")
@@ -1468,7 +1477,7 @@ t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_ital
 Then we plot and compare the group distances.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
 # calculate and plot sample distances within groups
 t1$cal_group_distance(within_group = TRUE)
 # return t1$res_group_distance
@@ -1499,10 +1508,10 @@ Clustering plot is also a frequently used method.
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract a part of data
-d1 <- clone(dataset)
-d1$sample_table %<>% subset(Group %in% c("CW", "TW"))
-d1$tidy_dataset()
-t1 <- trans_beta$new(dataset = d1, group = "Group")
+tmp <- clone(mt)
+tmp$sample_table %<>% subset(Group %in% c("CW", "TW"))
+tmp$tidy_dataset()
+t1 <- trans_beta$new(dataset = tmp, group = "Group")
 # use replace_name to set the label name, group parameter used to set the color
 t1$plot_clustering(group = "Type", replace_name = c("Type"))
 ```
@@ -1516,7 +1525,7 @@ PerMANOVA[@Anderson_Austral_2001] can be applied to the differential test of dis
 based on the `adonis2` function of vegan package.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_beta$new(dataset = dataset, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
 # manova for all groups when manova_all = TRUE
 t1$cal_manova(manova_all = TRUE)
 t1$res_manova
@@ -1632,7 +1641,7 @@ All the differential test result is stored in the `object$res_diff`.
 LEfSe combines the non-parametric test and linear discriminant analysis [@Segata_Metagenomic_2011].
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "lefse", group = "Group", alpha = 0.01, lefse_subgroup = NULL)
+t1 <- trans_diff$new(dataset = mt, method = "lefse", group = "Group", alpha = 0.01, lefse_subgroup = NULL)
 # see t1$res_diff for the result
 # From v0.8.0, threshold is used for the LDA score selection.
 t1$plot_diff_bar(threshold = 4)
@@ -1690,12 +1699,12 @@ At this time, taxa can be manually choosed to show like the following operation.
 
 ```{r, echo = TRUE, eval = FALSE}
 # choose some taxa according to the positions in the previous picture; those taxa labels have minimum overlap
-use_labels <- c("c__Deltaproteobacteria", "c__Actinobacteria", "o__Rhizobiales", "p__Proteobacteria", "p__Bacteroidetes", 
+tmp <- c("c__Deltaproteobacteria", "c__Actinobacteria", "o__Rhizobiales", "p__Proteobacteria", "p__Bacteroidetes", 
 	"o__Micrococcales", "p__Acidobacteria", "p__Verrucomicrobia", "p__Firmicutes", 
 	"p__Chloroflexi", "c__Acidobacteria", "c__Gammaproteobacteria", "c__Betaproteobacteria", "c__KD4-96",
 	"c__Bacilli", "o__Gemmatimonadales", "f__Gemmatimonadaceae", "o__Bacillales", "o__Rhodobacterales")
 # then use parameter select_show_labels to show
-t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = use_labels)
+t1$plot_diff_cladogram(use_taxa_num = 200, use_feature_num = 50, select_show_labels = tmp)
 # Now we can see that more taxa names appear in the tree
 ```
 
@@ -1711,7 +1720,7 @@ MeanDecreaseGini is selected as the indicator value in the analysis.
 ```{r, echo = TRUE, eval = FALSE}
 # use Genus level for parameter taxa_level, if you want to use all taxa, change to "all"
 # nresam = 1 and boots = 1 represent no bootstrapping and use all samples directly
-t1 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = "Genus")
 # plot the MeanDecreaseGini bar
 # group_order is designed to sort the groups
 g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
@@ -1732,7 +1741,7 @@ The significance label can also be added in the abundance plot controlled by `ad
 Now adding labels supports all the differential test methods.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 # filter something not needed to show
 t1$res_diff %<>% subset(Significance %in% "***")
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, add_sig_label = "Significance")
@@ -1743,7 +1752,7 @@ knitr::include_graphics("Images/trans_diff_siglabel_wilcox.png")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 ```
 
@@ -1755,7 +1764,7 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 
 ```{r, echo = TRUE, eval = FALSE}
 # metastat analysis at Genus level
-t1 <- trans_diff$new(dataset = dataset, method = "metastat", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "metastat", group = "Group", taxa_level = "Genus")
 # t1$res_diff is the differential test result
 ```
 
@@ -1776,19 +1785,19 @@ The following are some examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.te
 
 ```{r, echo = TRUE, eval = FALSE}
 # Kruskal-Wallis Rank Sum Test for all groups (>= 2)
-t1 <- trans_diff$new(dataset = dataset, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "KW", group = "Group", taxa_level = "all", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:20)
 # Dunn's Kruskal-Wallis Multiple Comparisons when group number > 2; require FSA package
-t1 <- trans_diff$new(dataset = dataset, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
+t1 <- trans_diff$new(dataset = mt, method = "KW_dunn", group = "Group", taxa_level = "Genus", filter_thres = 0.0001)
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 # Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
-t1 <- trans_diff$new(dataset = dataset, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", group_order = c("TW", "CW"))
 # t.test
-t1 <- trans_diff$new(dataset = dataset, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
 # anova
-t1 <- trans_diff$new(dataset = dataset, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "anova", group = "Group", taxa_level = "Phylum", filter_thres = 0.001)
 head(t1$res_diff)
 ```
 
@@ -1799,8 +1808,8 @@ These three packages are all deposited on the Bioconductor.
 ```{r, echo = TRUE, eval = FALSE}
 # zero-inflated log-normal model-based differential test method from metagenomeSeq package
 # If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")
-t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
-t1 <- trans_diff$new(dataset = dataset, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
+t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
+t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 ```
@@ -1809,13 +1818,13 @@ t1$plot_diff_bar(use_number = 1:20)
 # 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see detailed description of the methods
 # If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
 t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
 t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", add_sig = TRUE)
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
 # ALDEx2_kw
-t1 <- trans_diff$new(dataset = dataset, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
@@ -1824,12 +1833,14 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 
 ```{r, echo = TRUE, eval = FALSE}
 # ANCOMBC2 method
-# when fix_formula is not provided (necessary in the ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
-t1 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
+# when fix_formula is not provided (necessary in ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
+# Restart R if there is an error that "Error in model.matrix.formula(): data must be a data.frame"
+t1 <- trans_diff$new(dataset = mt, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
 t1$plot_diff_bar(keep_full_name = TRUE, heatmap_cell = "P.adj", heatmap_sig = "Significance", heatmap_x = "Factors", heatmap_y = "Taxa")
 # add a continuous variable
-dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t2 <- trans_diff$new(dataset = dataset, method = "ancombc2", group = NULL, fix_formula = "pH+Group", taxa_level = "OTU", filter_thres = 0.005)
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
+t2 <- trans_diff$new(dataset = tmp, method = "ancombc2", group = NULL, fix_formula = "pH+Group", taxa_level = "OTU", filter_thres = 0.005)
 # original results t2$res_diff_raw
 # converted result t2$res_diff
 View(t2$res_diff)
@@ -1839,14 +1850,15 @@ The method `linda` [@LinDA_Zhou_2022] depends on the MicrobiomeStat package.
 
 ```{r, echo = TRUE, eval = FALSE}
 # LinDA method. If MicrobiomeStat package is not installed, please first run: install.packages("MicrobiomeStat")
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "linda", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig = TRUE)
 View(t1$res_diff)
 t1$plot_diff_bar(keep_full_name = TRUE)
 # Either group or formula parameter should be provided in v1.5.0. Then are same for linda method.
-dataset$sample_table <- data.frame(dataset$sample_table, env_data_16S[rownames(dataset$sample_table), ])
-t1 <- trans_diff$new(dataset = dataset, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
-t2 <- trans_diff$new(dataset = dataset, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
+t1 <- trans_diff$new(dataset = tmp, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
+t2 <- trans_diff$new(dataset = tmp, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
 t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
 ```
 
@@ -1861,7 +1873,7 @@ The heatmap can be used in the `plot_diff_bar` function instead of bar plot for 
 ```{r, echo = TRUE, eval = FALSE}
 # AST: arc sine square root transformation
 if(!require("lmerTest")) install.packages("lmerTest")
-t1 <- trans_diff$new(dataset = dataset, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
+t1 <- trans_diff$new(dataset = mt, method = "lme", formula = "Group+(1|Type)", taxa_level = "Phylum", transformation = "AST", filter_thres = 0.001)
 View(t1$res_diff)
 t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
 ```
@@ -1872,8 +1884,8 @@ because beta distribution is especially appropriate to fit the proportional data
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("glmmTMB")) install.packages("glmmTMB")
-d1 <- clone(dataset)
-t1 <- trans_diff$new(dataset = d1, taxa_level = "Phylum", method = "glmm_beta", 
+tmp <- clone(mt)
+t1 <- trans_diff$new(dataset = tmp, taxa_level = "Phylum", method = "glmm_beta", 
 	formula = "Group + (1|Type)", filter_thres = 0.001)
 View(t1$res_diff)
 t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatmap_lab_fill = "Coefficient")
@@ -1882,7 +1894,7 @@ t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatma
 Let's run two-way anova for more usages of heatmap.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_diff$new(dataset = dataset, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
+t1 <- trans_diff$new(dataset = mt, method = "anova", formula = "Group + Type", taxa_level = "Phylum", filter_thres = 0.001, transformation = "AST")
 t1$plot_diff_bar()
 t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
 t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10")
@@ -1930,7 +1942,7 @@ Please check the final part for other network construction methods.
 ```{r, echo = TRUE, eval=FALSE}
 # The parameter cor_method in trans_network is used to select correlation calculation method.
 # default pearson or spearman correlation invoke R base cor.test, a little slow
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", filter_thres = 0.001)
 # return t1$res_cor_p list, containing two tables: correlation coefficient table and p value table
 ```
 
@@ -1939,7 +1951,7 @@ Spearman correlation based on WGCNA package is applied to show all the following
 ```{r, echo = TRUE, eval=FALSE}
 # require WGCNA package
 if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
 ```
 
 The parameter `COR_cut` can be used to select the correlation threshold. 
@@ -2055,7 +2067,7 @@ Then we perform correlation heatmap to show the associations between eigengenes 
 
 ```{r, echo = TRUE, eval = FALSE}
 # create trans_env object
-t2 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t2 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # calculate correlations
 t2$cal_cor(add_abund_table = t1$res_eigen)
 # plot the correlation heatmap
@@ -2081,7 +2093,7 @@ Then let's show how to extract sub-network for samples [@Ma_Geographic_2016].
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
-sub1 <- t1$subset_network(node = dataset$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
+sub1 <- t1$subset_network(node = mt$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
 # see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
 t2 <- clone(t1)
 t2$res_network <- sub1
@@ -2149,27 +2161,27 @@ Pearson or Spearman with data normalization based on NetCoMi package [@Peschel_N
 
 ```{r, echo = TRUE, eval=FALSE}
 # use Bray–Curtis index (1-dissimilarity)
-t1 <- trans_network$new(dataset = dataset, cor_method = "bray", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "bray", filter_thres = 0.001)
 # Pearson correlation
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", filter_thres = 0.001)
 # Pearson correlation using WGCNA package
 # install WGCNA package
 if(!require("WGCNA")) install.packages("WGCNA", repos = BiocManager::repositories())
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
 # Pearson correlation using NetCoMi package; install it from https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "pearson", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
 # Spearman correlation using WGCNA package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.001)
 # Spearman correlation using NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "spearman", use_NetCoMi_pearson_spearman = TRUE, filter_thres = 0.001)
 # SparCC method, from SpiecEasi package, see https://github.com/zdk123/SpiecEasi for the installation
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.003)
+t1 <- trans_network$new(dataset = mt, cor_method = "sparcc", use_sparcc_method = "SpiecEasi", filter_thres = 0.003)
 # SparCC method, from NetCoMi package; https://github.com/stefpeschel/NetCoMi
-t1 <- trans_network$new(dataset = dataset, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "sparcc", use_sparcc_method = "NetCoMi", filter_thres = 0.001)
 # CCLasso method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "cclasso", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "cclasso", filter_thres = 0.001)
 # CCREPE method based on NetCoMi package
-t1 <- trans_network$new(dataset = dataset, cor_method = "ccrepe", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = "ccrepe", filter_thres = 0.001)
 ```
 
 
@@ -2180,7 +2192,7 @@ See https://github.com/zdk123/SpiecEasi for the package installation.
 It is very slow for SpiecEasi_method = 'glasso' when there is a large number (such as hundreds to thousands) according to our test experience.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require SpiecEasi package installed https://github.com/zdk123/SpiecEasi
 # also see SpiecEasi::spiec.easi for available model parameters
 t1$cal_network(network_method = "SpiecEasi", SpiecEasi_method = "mb")
@@ -2197,7 +2209,7 @@ To repeat the following code, please first install julia language in your comput
 3. Open terminal or cmd or Powershell, open julia, install FlashWeave following the operation in https://github.com/meringlab/FlashWeave.jl  
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0)
 # require Julia in the computer path, and the package FlashWeave
 # different with the direct parameter passing of 'SpiecEasi' network_method, FlashWeave_other_para is used to pass parameters to Julia FlashWeave
 # assign FlashWeave_tempdir parameter can change the temporary working directory
@@ -2212,7 +2224,7 @@ So the network from this approach is a directed network.
 Please see https://github.com/CSB5/BEEM-static for installing the R beemStatic package.
 
 ```{r, echo = TRUE, eval=FALSE}
-t1 <- trans_network$new(dataset = dataset, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
+t1 <- trans_network$new(dataset = mt, cor_method = NULL, taxa_level = "OTU", filter_thres = 0.001)
 # require beemStatic package installed
 t1$cal_network(network_method = "beemStatic")
 # use cluster_walktrap method for the directed network
@@ -2255,7 +2267,7 @@ We first check the phylogenetic signal.
 ```{r, echo = TRUE}
 # generate trans_nullmodel object
 # as an example, we only use high abundance OTU with mean relative abundance > 0.0005
-t1 <- trans_nullmodel$new(dataset, filter_thres = 0.0005, add_data = env_data_16S)
+t1 <- trans_nullmodel$new(mt, filter_thres = 0.0005, add_data = env_data_16S)
 ```
 
 ```{r, echo = TRUE, eval=FALSE}
@@ -2292,9 +2304,9 @@ revealing that the basal phylogenetic turnover in TW is high.
 
 ```{r, echo = TRUE, eval=FALSE}
 # add betaNRI matrix to beta_diversity list
-dataset$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
+mt$beta_diversity[["betaNRI"]] <- t1$res_ses_betampd
 # create trans_beta class, use measure "betaNRI"
-t2 <- trans_beta$new(dataset = dataset, group = "Group", measure = "betaNRI")
+t2 <- trans_beta$new(dataset = mt, group = "Group", measure = "betaNRI")
 # transform the distance for each group
 t2$cal_group_distance()
 # see the help document for more methods, e.g. "anova" and "KW_dunn"
@@ -2597,10 +2609,10 @@ The regression is also supported.
 ```{r, echo = TRUE, eval=FALSE}
 # prepare data
 data(env_data_16S)
-new_test <- clone(dataset)
-new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
+tmp <- clone(mt)
+tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
 # pH response variable
-t1 <- trans_classifier$new(dataset = new_test, y.response = "pH", x.predictors = "Genus")
+t1 <- trans_classifier$new(dataset = tmp, y.response = "pH", x.predictors = "Genus")
 t1$cal_split(prop.train = 3/4)
 t1$set_trainControl()
 t1$cal_train()
@@ -2654,24 +2666,23 @@ The following is using additional environmental data which is not in the microta
 
 ```{r, echo = TRUE}
 # add_data is used to add the environmental data
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 ```
 
 Maybe a more general way is to directly use the data from sample_table of your microtable object.
 To show this operation, we first merge additional table into sample_table to generate a new microtable object.
 
 ```{r, echo = TRUE}
-new_test <- clone(dataset)
-new_test$sample_table <- data.frame(new_test$sample_table, env_data_16S[rownames(new_test$sample_table), ])
-# now new_test$sample_table has the whole data
-new_test
+mt$sample_table <- data.frame(mt$sample_table, env_data_16S[rownames(mt$sample_table), ])
+# now mt$sample_table has the whole data
+mt
 ```
 
 Now let's use env_cols to select the required columns from sample_table in the microtable object.
 From v1.0.0, the parameter `standardize = TRUE` is available to standardize each variable.
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 ```
 
 Generally, it is beneficial to analyze environmental variables in order to better use more methods.
@@ -2819,7 +2830,7 @@ The parameter `partial` controls wheter conduct partial correlation.
 The parameter `p_adjust_type` can control the p value adjustment type. 
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 # 'p_adjust_type = "Env"' means p adjustment is performed for each environmental variable separately.
 t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
@@ -2846,9 +2857,9 @@ please use **other_taxa** parameter in `cal_cor` function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
-t2 <- trans_diff$new(dataset = dataset, method = "rf", group = "Group", taxa_level = "Genus")
+t2 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = "Genus")
 # then create trans_env object
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
 t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 t1$plot_cor()
@@ -2891,9 +2902,9 @@ If the user is interested in the relationship between environmental factors and 
 please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
-t1$cal_cor(add_abund_table = dataset$alpha_diversity)
+t1$cal_cor(add_abund_table = mt$alpha_diversity)
 # try to use ggplot2 with clustering plot
 # require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)
 t1$plot_cor(cluster_ggplot = "both")
@@ -2912,7 +2923,7 @@ The function `plot_scatterfit` in trans_env class is designed for the scatter pl
 # add correlation statistics
 t1$plot_scatterfit(
 	x = "pH", 
-	y = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
+	y = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
 	type = "cor",
 	point_size = 3, point_alpha = 0.1, 
 	label.x.npc = "center", label.y.npc = "bottom", 
@@ -2928,7 +2939,7 @@ knitr::include_graphics("Images/trans_env_scatterfit_cor.png")
 ```{r, echo = TRUE, eval = FALSE}
 # regression with type = "lm", use group parameter for different groups
 t1$plot_scatterfit(
-    x = dataset$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
+    x = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
 	y = "pH",
 	type = "lm", 
 	group = "Group", 
@@ -2947,10 +2958,10 @@ perform machine learning to find important environmental variables in classifyin
 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 6:11])
+t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 6:11])
 tmp <- t1$data_env %>% t %>% as.data.frame
 # caret package should be installed
-t2 <- trans_classifier$new(dataset = dataset, x.predictors = tmp, y.response = "Saline")
+t2 <- trans_classifier$new(dataset = mt, x.predictors = tmp, y.response = "Saline")
 t2$cal_preProcess(method = c("center", "scale", "nzv"))
 # All samples are used in training if cal_split function is not performed
 t2$cal_train(method = "rf")
@@ -2975,7 +2986,7 @@ knitr::include_graphics("Images/trans_env_classifier_rf_featureimp_sig.png")
 Other examples:
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = new_test, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
 # with forward selection in RDA
 t1$cal_ordination(method = "dbRDA", feature_sel = TRUE)
 # CCA, canonical correspondence analysis
@@ -3005,7 +3016,7 @@ t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim
 t1$plot_scatterfit(x = "pH", y = "TOC", type = "lm", group = "Group", line_se = FALSE, label.x.npc = "center",
 	shape_values = 1:3, x_axis_title = "pH", y_axis_title = "TOC")
 # correlation between relative abundance of Genus-Arthrobacter and pH
-tmp <- unlist(dataset$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
+tmp <- unlist(mt$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
 t1$plot_scatterfit(x = "pH", y = tmp, point_size = 3, point_alpha = 0.3, 
 	y_axis_title = "Arthrobacter", x_axis_title = "pH")
 ```
@@ -3043,7 +3054,7 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 
 ```{r, echo = TRUE}
 # create object of trans_func
-t2 <- trans_func$new(dataset)
+t2 <- trans_func$new(mt)
 # mapping the taxonomy to the database
 # this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
 # for fungi example, see https://chiliubio.github.io/microeco_tutorial/other-dataset.html#fungi-data
@@ -3088,7 +3099,7 @@ Then we take another example to show the percentages of the OTUs for each trait 
 
 ```{r, echo = TRUE, eval = FALSE}
 # construct a network for the example
-network <- trans_network$new(dataset = dataset, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
+network <- trans_network$new(dataset = mt, cal_cor = "base", taxa_level = "OTU", filter_thres = 0.0001, cor_method = "spearman")
 network$cal_network(p_thres = 0.01, COR_cut = 0.7)
 network$cal_module()
 # convert module info to microtable object
@@ -3112,7 +3123,7 @@ t2$show_prok_func("methanotrophy")
 Then we try to correlate the percentage data in `res_spe_func_perc` to environmental variables.
 
 ```{r, echo = TRUE, eval = FALSE}
-t3 <- trans_env$new(dataset = dataset, add_data = env_data_16S[, 4:11])
+t3 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
 t3$plot_cor(pheatmap = TRUE)
 ```
@@ -3132,8 +3143,6 @@ For windows system, ncbi-blast-2.5.0+ is recommended since other versions can no
 
 
 ```{r, echo = TRUE, eval = FALSE}
-# first delete the dataset created before
-rm(dataset)
 # load the example dataset from microeco package as there is a rep_fasta object in it
 data(dataset)
 dataset
@@ -3522,17 +3531,17 @@ data(sample_info_ITS)
 data(otu_table_ITS)
 data(taxonomy_table_ITS)
 # create microtable object
-meco_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
+mt_fungi <- microtable$new(sample_table = sample_info_ITS, otu_table = otu_table_ITS, tax_table = taxonomy_table_ITS)
 # remove the taxa not assigned in the Kingdom "k__Fungi"
-meco_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
+mt_fungi$tax_table %<>% base::subset(Kingdom == "k__Fungi")
 # use tidy_dataset() to make OTUs and samples information consistent across files
-meco_fungi$tidy_dataset()
+mt_fungi$tidy_dataset()
 ```
 
 Then, let's perform the fungal trait prediction.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_func$new(meco_fungi)
+t1 <- trans_func$new(mt_fungi)
 # Both FungalTraits and FUNGuild are available
 t1$cal_spe_func(fungi_database = "FungalTraits")
 t1$cal_spe_func_perc(abundance_weighted = TRUE)
@@ -3542,8 +3551,8 @@ t1$cal_spe_func_perc(abundance_weighted = TRUE)
 Then we show an example on the differential test of traits across groups.
 
 ```{r, echo = TRUE, eval = FALSE}
-# clone meco_fungi for differential test
-tmp_mt <- clone(meco_fungi)
+# clone mt_fungi for differential test
+tmp_mt <- clone(mt_fungi)
 # we need assign the table to taxa_abund manually
 tmp_mt$taxa_abund$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
 # use trans_diff class to perform differential test
@@ -3555,7 +3564,7 @@ Then we show the distribution of traits across modules in network.
 
 ```{r, echo = TRUE, eval = FALSE}
 # create trans_network object
-t1 <- trans_network$new(dataset = meco_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
+t1 <- trans_network$new(dataset = mt_fungi, cal_cor = "WGCNA", taxa_level = "OTU", filter_thres = 0.000001, cor_method = "spearman")
 # create correlation network 
 t1$cal_network(COR_p_thres = 0.05, COR_cut = 0.6)
 # add modules
@@ -3650,24 +3659,24 @@ abund_file_path <- system.file("extdata", "dada2_table.qza", package="file2meco"
 sample_file_path <- system.file("extdata", "sample-metadata.tsv", package="file2meco")
 taxonomy_file_path <- system.file("extdata", "taxonomy.qza", package="file2meco")
 # construct microtable object
-data1 <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
-data1$tidy_dataset()
+tmp <- qiime2meco(abund_file_path, sample_table = sample_file_path, taxonomy_table = taxonomy_file_path)
+tmp$tidy_dataset()
 # revise the species names in tax_table as the information in the example file is not standard
-select_rows <- data1$tax_table$Species != "s__"
-data1$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", data1$tax_table$Genus[select_rows]), " ", gsub("s__", "", data1$tax_table$Species[select_rows]))
+select_rows <- tmp$tax_table$Species != "s__"
+tmp$tax_table$Species[select_rows] <- paste0("s__", gsub("g__", "", tmp$tax_table$Genus[select_rows]), " ", gsub("s__", "", tmp$tax_table$Species[select_rows]))
 # taxonomic abundance
-data1$cal_abund()
+tmp$cal_abund()
 
 # create object of trans_func
-data2 <- trans_func$new(data1)
+data2 <- trans_func$new(tmp)
 # Select NJC19 database
 data2$cal_spe_func(prok_database = "NJC19")
 # get the trait percentage data
 data2$cal_spe_func_perc(abundance_weighted = FALSE)
 # inset the trait percentage result into taxa_abund of microtable object
-data1$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
+tmp$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
 # use trans_abund to plot
-t1 <- trans_abund$new(dataset = data1, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
+t1 <- trans_abund$new(dataset = tmp, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
 t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
 ```
 
@@ -3679,7 +3688,7 @@ knitr::include_graphics("Images/plot_mouse_NJC19.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 # differential abundance test of the traits percentage and use random forest to find biomarkers
-t1 <- trans_diff$new(dataset = data1, method = "rf", group = "donor_status", taxa_level = "Trait")
+t1 <- trans_diff$new(dataset = tmp, method = "rf", group = "donor_status", taxa_level = "Trait")
 t1$plot_diff_bar(use_number = 1:30)
 ```
 
@@ -4234,10 +4243,10 @@ data(sample_info_16S)
 data(otu_table_16S)
 # set.seed is used to fix the random number generation to make the results repeatable
 set.seed(123)
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
-dataset$tidy_dataset()
+tmp <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
+tmp$tidy_dataset()
 # trans_rarefy class
-t1 <- trans_rarefy$new(dataset, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
 t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = FALSE)
 t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
 ```
@@ -4758,7 +4767,7 @@ d2 <- t1$norm(method = "clr")
 d2 <- t1$norm(method = "rclr")
 # d2 is another microtable object
 # Cumulative sum scaling normalization
-d2 <- t1$norm(method = "CCS")
+d2 <- t1$norm(method = "CSS")
 # Total sum scaling, dividing counts by the sequencing depth
 d2 <- t1$norm(method = "TSS")
 
@@ -4979,6 +4988,7 @@ you should calculate the index for each group, respectively.
 ```{r, echo = TRUE, eval=FALSE}
 library(ggplot2)
 library(microeco)
+data(dataset)
 # we create a list to store the trans_nullmodel results.
 sesbeta_each <- list()
 group_col <- "Group"

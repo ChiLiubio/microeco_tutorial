@@ -12,10 +12,10 @@ data(sample_info_16S)
 data(otu_table_16S)
 # set.seed is used to fix the random number generation to make the results repeatable
 set.seed(123)
-dataset <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
-dataset$tidy_dataset()
+tmp <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
+tmp$tidy_dataset()
 # trans_rarefy class
-t1 <- trans_rarefy$new(dataset, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 4000, 6000, 8000))
 t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = FALSE)
 t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
 ```
