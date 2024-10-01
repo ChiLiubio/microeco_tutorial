@@ -318,5 +318,34 @@ knitr::include_graphics("Images/trans_nullmodel_betaNRI_each_dataset.png")
 
 
 
+## Visualize taxonomic abundance with trans_alpha class
+
+When it is necessary to perform differential analysis and visualization between groups within different categories, 
+the trans_diff class currently struggles to achieve this for multiple taxa. 
+At this time, we can use the trans_alpha class to analyze each taxon and merge the figures into one.
+
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+library(magrittr)
+library(mecoturn)
+data("wheat_16S")
+# first clone the data
+d1 <- clone(wheat_16S)
+# tidy the abundance table and view it as alpha diversity
+d1$alpha_diversity <- d1$taxa_abund$Genus %>% .[!grepl("__$", rownames(.), ignore.case = TRUE), ] %>% t %>% as.data.frame
+# extract a part of taxa as an example
+d1$alpha_diversity %<>% .[, 1:10]
+# simplify the taxa names
+colnames(d1$alpha_diversity) %<>% gsub(".*g__", "", .)
+t1 <- trans_alpha$new(d1, group = "Type", by_group = "Region")
+t1$cal_diff(method = "anova")
+t1$plot_alpha(measure = "Pseudomonas")
+```
+
+
+
+
+
 
 
