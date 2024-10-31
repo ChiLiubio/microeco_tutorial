@@ -52,7 +52,14 @@ pander::pander(res_lefse[1:5, c(1, 3, 4, 6)])
 Then, the abundance of biomarkers detected by LEfSe can be visualized easily.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1$plot_diff_abund(use_number = 1:30, group_order = c("CW", "IW", "TW"))
+t1$plot_diff_abund(use_number = 1:30)
+t1$plot_diff_abund(fill = "Group", alpha = 0.5, add_sig = FALSE)
+t1$plot_diff_abund(group_order = c("CW", "IW", "TW"))
+t1$plot_diff_abund(coord_flip = FALSE)
+t1$plot_diff_abund(plot_type = "errorbar")
+t1$plot_diff_abund(plot_type = "barerrorbar", coord_flip = FALSE)
+t1$plot_diff_abund(plot_type = "barerrorbar", errorbar_addpoint = FALSE, errorbar_color_black = TRUE, plot_SE = TRUE)
+t1$plot_diff_abund(plot_type = "ggviolin", coord_flip = FALSE)
 ```
 
 ```{r, out.width = "650px", fig.align="center", echo = FALSE}
@@ -111,12 +118,13 @@ t1 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = 
 # group_order is designed to sort the groups
 g1 <- t1$plot_diff_bar(use_number = 1:20, group_order = c("TW", "CW", "IW"))
 # plot the abundance using same taxa in g1
-g2 <- t1$plot_diff_abund(group_order = c("TW", "CW", "IW"), select_taxa = t1$plot_diff_bar_taxa)
+g2 <- t1$plot_diff_abund(group_order = c("TW", "CW", "IW"), select_taxa = t1$plot_diff_bar_taxa, plot_type = "barerrorbar", add_sig = FALSE, errorbar_addpoint = FALSE, errorbar_color_black = TRUE)
 # now the y axis in g1 and g2 is same, so we can merge them
 # remove g1 legend; remove g2 y axis text and ticks
 g1 <- g1 + theme(legend.position = "none")
-g2 <- g2 + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
-gridExtra::grid.arrange(g1, g2, ncol = 2, nrow = 1, widths = c(2, 1.7))
+g2 <- g2 + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), panel.border = element_blank())
+p <- g1 %>% aplot::insert_right(g2)
+p
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
@@ -130,7 +138,9 @@ Now adding labels supports all the differential test methods.
 t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
 # filter something not needed to show
 t1$res_diff %<>% subset(Significance %in% "***")
-t1$plot_diff_abund(use_number = 1:10, add_sig = T, add_sig_label = "Significance")
+t1$plot_diff_abund()
+# y_start and y_increase control the position of labels; for the details, please see the document of plot_alpha function in trans_alpha class
+t1$plot_diff_abund(y_start = 0.05, y_increase = 0.1)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -139,7 +149,7 @@ knitr::include_graphics("Images/trans_diff_siglabel_wilcox.png")
 
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_diff$new(dataset = mt, method = "anova", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
-t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
+t1$plot_diff_abund(coord_flip = F, plot_type = "barerrorbar", errorbar_addpoint = FALSE)
 ```
 
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
@@ -152,20 +162,9 @@ Metastat depends on the permutations and t-test and performs well on the sparse 
 # metastat analysis at Genus level
 t1 <- trans_diff$new(dataset = mt, method = "metastat", group = "Group", taxa_level = "Genus")
 # t1$res_diff is the differential test result
+t1$plot_diff_abund(use_number = 1:20, coord_flip = F)
 ```
 
-Because the example 'Group' in sample_table has three groups, 
-the metastat can run the comparisons for each paired group. So there are three pairs in t1\$res_diff\$Comparison.
-For the abundance plotting, the user should use select_group parameter to select the specific pair.
-
-```{r, echo = TRUE, eval = FALSE}
-# select_group should be one of groups in t1$res_diff$Comparison
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", coord_flip = F)
-```
-
-```{r, out.width = "650px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/trans_diff_metastat_1.png")
-```
 
 The following are some examples for the methods 'KW', 'KW_dunn', 'wilcox', 't.test' and 'anova'.
 
@@ -178,8 +177,8 @@ t1 <- trans_diff$new(dataset = mt, method = "KW_dunn", group = "Group", taxa_lev
 t1$plot_diff_abund(use_number = 1:10, add_sig = T, coord_flip = F)
 # Wilcoxon Rank Sum and Signed Rank Tests for all paired groups
 t1 <- trans_diff$new(dataset = mt, method = "wilcox", group = "Group", taxa_level = "Genus", filter_thres = 0.001)
-t1$plot_diff_bar(use_number = 1:20, select_group = "CW - TW")
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", group_order = c("TW", "CW"))
+t1$plot_diff_bar(use_number = 1:20)
+t1$plot_diff_abund(use_number = 1:20)
 # t.test
 t1 <- trans_diff$new(dataset = mt, method = "t.test", group = "Group", taxa_level = "all", filter_thres = 0.001)
 # anova
@@ -205,9 +204,7 @@ t1$plot_diff_bar(use_number = 1:20)
 # If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
-t1$plot_diff_abund(use_number = 1:20, group_order = c("TW", "CW", "IW"))
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW")
-t1$plot_diff_abund(use_number = 1:20, select_group = "CW - TW", add_sig = TRUE)
+t1$plot_diff_abund(use_number = 1:20)
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
 # ALDEx2_kw
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)

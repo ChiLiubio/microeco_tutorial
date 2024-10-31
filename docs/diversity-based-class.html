@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.9.0)</title>
-  <meta name="description" content="Examples for R microeco (v1.9.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
+  <title>Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.10.0)</title>
+  <meta name="description" content="Examples for R microeco (v1.10.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.9.0)" />
+  <meta property="og:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.10.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Examples for R microeco (v1.9.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
+  <meta property="og:description" content="Examples for R microeco (v1.10.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.9.0)" />
+  <meta name="twitter:title" content="Chapter 5 Diversity-based class | Tutorial for R microeco package (v1.10.0)" />
   
-  <meta name="twitter:description" content="Examples for R microeco (v1.9.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
+  <meta name="twitter:description" content="Examples for R microeco (v1.10.0), file2meco (v0.8.0), meconetcomp (v0.5.1) and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2024-09-14" />
+<meta name="date" content="2024-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -331,6 +331,7 @@ div.csl-indent {
 <li class="chapter" data-level="14.9" data-path="other-examples-1.html"><a href="other-examples-1.html#faprotax-differential-test"><i class="fa fa-check"></i><b>14.9</b> FAPROTAX + differential test</a></li>
 <li class="chapter" data-level="14.10" data-path="other-examples-1.html"><a href="other-examples-1.html#rda-results-output"><i class="fa fa-check"></i><b>14.10</b> RDA results output</a></li>
 <li class="chapter" data-level="14.11" data-path="other-examples-1.html"><a href="other-examples-1.html#betanribetanti-for-each-group"><i class="fa fa-check"></i><b>14.11</b> betaNRI/betaNTI for each group</a></li>
+<li class="chapter" data-level="14.12" data-path="other-examples-1.html"><a href="other-examples-1.html#visualize-taxonomic-abundance-with-trans_alpha-class"><i class="fa fa-check"></i><b>14.12</b> Visualize taxonomic abundance with trans_alpha class</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -345,7 +346,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.9.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.10.0)</a>
           </h1>
         </div>
 
@@ -722,7 +723,7 @@ All the options starting with “gg” (e.g., “ggboxplot”, “ggdotplot”, 
 <span id="cb135-15"><a href="diversity-based-class.html#cb135-15" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;ggstripchart&quot;</span>, <span class="at">add =</span> <span class="st">&quot;mean_se&quot;</span>)</span>
 <span id="cb135-16"><a href="diversity-based-class.html#cb135-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-17"><a href="diversity-based-class.html#cb135-17" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;ggerrorplot&quot;</span>)</span></code></pre></div>
-<p>The option <code>plot_type = "errorbar"</code> in <code>plot_alpha</code> will invoke the <code>data_stat</code> instead of <code>data_alpha</code> for the Mean±SE (or SD) plot (based on the ggplot2).
+<p>The option <code>"errorbar"</code> or <code>"barerrorbar"</code> in <code>plot_alpha</code> will invoke the <code>data_stat</code> instead of <code>data_alpha</code> for the Mean±SE (or SD) plot (based on the ggplot2).
 The line is optional to be added between points (Mean) for the case with a gradient.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="diversity-based-class.html#cb136-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb136-2"><a href="diversity-based-class.html#cb136-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">KW_dunn_letter =</span> <span class="cn">TRUE</span>)</span>
@@ -731,19 +732,23 @@ The line is optional to be added between points (Mean) for the case with a gradi
 <span id="cb136-5"><a href="diversity-based-class.html#cb136-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">y_increase =</span> <span class="sc">-</span><span class="fl">0.2</span>)</span>
 <span id="cb136-6"><a href="diversity-based-class.html#cb136-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">y_increase =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>, <span class="at">line_alpha =</span> <span class="fl">0.5</span>, <span class="at">errorbar_width =</span> <span class="fl">0.1</span>)</span>
 <span id="cb136-7"><a href="diversity-based-class.html#cb136-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">plot_SE =</span> <span class="cn">FALSE</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">y_increase =</span> <span class="fl">0.2</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>, <span class="at">line_alpha =</span> <span class="fl">0.5</span>, <span class="at">errorbar_width =</span> <span class="fl">0.1</span>)</span>
-<span id="cb136-8"><a href="diversity-based-class.html#cb136-8" aria-hidden="true" tabindex="-1"></a><span class="co"># by_group example</span></span>
-<span id="cb136-9"><a href="diversity-based-class.html#cb136-9" aria-hidden="true" tabindex="-1"></a><span class="co"># use example data in mecoturn package</span></span>
-<span id="cb136-10"><a href="diversity-based-class.html#cb136-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb136-11"><a href="diversity-based-class.html#cb136-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
-<span id="cb136-12"><a href="diversity-based-class.html#cb136-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb136-13"><a href="diversity-based-class.html#cb136-13" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
-<span id="cb136-14"><a href="diversity-based-class.html#cb136-14" aria-hidden="true" tabindex="-1"></a>wheat_16S<span class="sc">$</span>sample_table<span class="sc">$</span>Type <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">unique</span>(.))</span>
-<span id="cb136-15"><a href="diversity-based-class.html#cb136-15" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> wheat_16S, <span class="at">group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Type&quot;</span>)</span>
-<span id="cb136-16"><a href="diversity-based-class.html#cb136-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">KW_dunn_letter =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb136-17"><a href="diversity-based-class.html#cb136-17" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span>
-<span id="cb136-18"><a href="diversity-based-class.html#cb136-18" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span>
-<span id="cb136-19"><a href="diversity-based-class.html#cb136-19" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>)</span>
-<span id="cb136-20"><a href="diversity-based-class.html#cb136-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">plot_SE =</span> <span class="cn">FALSE</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>)</span></code></pre></div>
+<span id="cb136-8"><a href="diversity-based-class.html#cb136-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;barerrorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>)</span>
+<span id="cb136-9"><a href="diversity-based-class.html#cb136-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;barerrorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">y_increase =</span> <span class="sc">-</span><span class="fl">0.3</span>)</span>
+<span id="cb136-10"><a href="diversity-based-class.html#cb136-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;barerrorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Chao1&quot;</span>, <span class="at">bar_width =</span> <span class="fl">0.6</span>, <span class="at">errorbar_width =</span> <span class="fl">0.2</span>, <span class="at">errorbar_size =</span> <span class="dv">1</span>, <span class="at">errorbar_addpoint =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb136-11"><a href="diversity-based-class.html#cb136-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-12"><a href="diversity-based-class.html#cb136-12" aria-hidden="true" tabindex="-1"></a><span class="co"># by_group example</span></span>
+<span id="cb136-13"><a href="diversity-based-class.html#cb136-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use example data in mecoturn package</span></span>
+<span id="cb136-14"><a href="diversity-based-class.html#cb136-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb136-15"><a href="diversity-based-class.html#cb136-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mecoturn)</span>
+<span id="cb136-16"><a href="diversity-based-class.html#cb136-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb136-17"><a href="diversity-based-class.html#cb136-17" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wheat_16S)</span>
+<span id="cb136-18"><a href="diversity-based-class.html#cb136-18" aria-hidden="true" tabindex="-1"></a>wheat_16S<span class="sc">$</span>sample_table<span class="sc">$</span>Type <span class="sc">%&lt;&gt;%</span> <span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">unique</span>(.))</span>
+<span id="cb136-19"><a href="diversity-based-class.html#cb136-19" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> wheat_16S, <span class="at">group =</span> <span class="st">&quot;Region&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Type&quot;</span>)</span>
+<span id="cb136-20"><a href="diversity-based-class.html#cb136-20" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">KW_dunn_letter =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb136-21"><a href="diversity-based-class.html#cb136-21" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(t1<span class="sc">$</span>res_diff)</span>
+<span id="cb136-22"><a href="diversity-based-class.html#cb136-22" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span>
+<span id="cb136-23"><a href="diversity-based-class.html#cb136-23" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>)</span>
+<span id="cb136-24"><a href="diversity-based-class.html#cb136-24" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">plot_SE =</span> <span class="cn">FALSE</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.</p>
 <div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="diversity-based-class.html#cb137-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>)</span>
 <span id="cb137-2"><a href="diversity-based-class.html#cb137-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;Group+Type+Group:Type&quot;</span>)</span>

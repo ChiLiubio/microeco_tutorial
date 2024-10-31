@@ -190,7 +190,7 @@ t1$plot_alpha(plot_type = "ggerrorplot")
 ```
 
 
-The option `plot_type = "errorbar"` in `plot_alpha` will invoke the `data_stat` instead of `data_alpha` for the Mean±SE (or SD) plot (based on the ggplot2).
+The option `"errorbar"` or `"barerrorbar"` in `plot_alpha` will invoke the `data_stat` instead of `data_alpha` for the Mean±SE (or SD) plot (based on the ggplot2).
 The line is optional to be added between points (Mean) for the case with a gradient.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -201,6 +201,10 @@ t1$plot_alpha(plot_type = "errorbar", measure = "Chao1")
 t1$plot_alpha(plot_type = "errorbar", measure = "Chao1", y_increase = -0.2)
 t1$plot_alpha(plot_type = "errorbar", measure = "Chao1", y_increase = -0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
 t1$plot_alpha(plot_type = "errorbar", plot_SE = FALSE, measure = "Chao1", y_increase = 0.2, add_line = TRUE, line_type = 2, line_alpha = 0.5, errorbar_width = 0.1)
+t1$plot_alpha(plot_type = "barerrorbar", measure = "Chao1")
+t1$plot_alpha(plot_type = "barerrorbar", measure = "Chao1", y_increase = -0.3)
+t1$plot_alpha(plot_type = "barerrorbar", measure = "Chao1", bar_width = 0.6, errorbar_width = 0.2, errorbar_size = 1, errorbar_addpoint = FALSE)
+
 # by_group example
 # use example data in mecoturn package
 library(microeco)
