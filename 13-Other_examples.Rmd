@@ -65,6 +65,9 @@ d2 <- t1$norm(method = "rclr")
 d2 <- t1$norm(method = "CSS")
 # Total sum scaling, dividing counts by the sequencing depth
 d2 <- t1$norm(method = "TSS")
+# rarefaction
+d2 <- t1$norm(method = "rarefy")
+d2 <- t1$norm(method = "SRS", sample.size = 500)
 
 # log transformation
 d3 <- t1$norm(method = "log")
@@ -342,6 +345,43 @@ t1 <- trans_alpha$new(d1, group = "Type", by_group = "Region")
 t1$cal_diff(method = "anova")
 t1$plot_alpha(measure = "Pseudomonas")
 ```
+
+
+## Customized network input and analysis
+
+When users need to use the `trans_network` class to calculate some properties of their customized network, 
+they can refer to the following method. 
+Only the network in igraph format is required, and no other data is necessary. 
+It should be noted that the nodes of the provided network must have the `name` attribute.
+
+
+```{r, echo = TRUE, eval = FALSE}
+library(igraph)
+# first generate an igraph-format network as the input of the example
+g1 <- make_graph(rep(LETTERS, each = 2)[-c(1, 52)], directed = FALSE)
+g1
+
+library(microeco)
+t1 <- trans_network$new(dataset = NULL)
+t1$cal_network(network_method = NULL)
+
+t1$res_network <- g1
+
+t1$cal_module()
+t1$cal_network_attr()
+t1$get_node_table()
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
