@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)</title>
+  <meta name="description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)" />
+  
+  <meta name="twitter:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  
+
+
+
+<meta name="date" content="2025-01-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="other-examples-1.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#framework"><i class="fa fa-check"></i><b>2.1</b> Framework</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.2</b> R6 Class</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.3</b> Help</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#rtools"><i class="fa fa-check"></i><b>2.4</b> RTools</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.5</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="intro.html"><a href="intro.html#description"><i class="fa fa-check"></i><b>2.5.1</b> Description</a></li>
+<li class="chapter" data-level="2.5.2" data-path="intro.html"><a href="intro.html#cran-packages"><i class="fa fa-check"></i><b>2.5.2</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.5.3" data-path="intro.html"><a href="intro.html#bioconductor-packages"><i class="fa fa-check"></i><b>2.5.3</b> Bioconductor packages</a></li>
+<li class="chapter" data-level="2.5.4" data-path="intro.html"><a href="intro.html#github-packages"><i class="fa fa-check"></i><b>2.5.4</b> Github packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.5.5</b> Gephi</a></li>
+<li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
+<li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#rstudio"><i class="fa fa-check"></i><b>2.7</b> Rstudio</a></li>
+<li class="chapter" data-level="2.8" data-path="intro.html"><a href="intro.html#citation"><i class="fa fa-check"></i><b>2.8</b> Citation</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#prepare-the-example-data"><i class="fa fa-check"></i><b>3.1.1</b> Prepare the example data</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#how-to-read-your-files-to-microtable-object"><i class="fa fa-check"></i><b>3.1.2</b> How to read your files to microtable object?</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#functions-in-microtable-class"><i class="fa fa-check"></i><b>3.1.3</b> Functions in microtable class</a></li>
+<li class="chapter" data-level="3.1.4" data-path="basic-class.html"><a href="basic-class.html#merge-taxa-or-samples"><i class="fa fa-check"></i><b>3.1.4</b> merge taxa or samples</a></li>
+<li class="chapter" data-level="3.1.5" data-path="basic-class.html"><a href="basic-class.html#subset-of-samples"><i class="fa fa-check"></i><b>3.1.5</b> subset of samples</a></li>
+<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#subset-of-taxa"><i class="fa fa-check"></i><b>3.1.6</b> subset of taxa</a></li>
+<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.7</b> Other examples</a></li>
+<li class="chapter" data-level="3.1.8" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.8</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example"><i class="fa fa-check"></i><b>4.1.1</b> Example</a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.2.1</b> Example</a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-2"><i class="fa fa-check"></i><b>5.1.1</b> Example</a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.2.1</b> Example</a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-4"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#more-options"><i class="fa fa-check"></i><b>6.1.2</b> More options</a></li>
+<li class="chapter" data-level="6.1.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-5"><i class="fa fa-check"></i><b>6.1.3</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.2.1</b> Example</a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#network-comparison"><i class="fa fa-check"></i><b>6.2.2</b> Network comparison</a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.2.3</b> Key points</a></li>
+<li class="chapter" data-level="6.2.4" data-path="model-based-class.html"><a href="model-based-class.html#other-functions"><i class="fa fa-check"></i><b>6.2.4</b> Other functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.3.1</b> Example</a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.3.2</b> Key points</a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="model-based-class.html"><a href="model-based-class.html#trans_classifier-class"><i class="fa fa-check"></i><b>6.4</b> trans_classifier class</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="model-based-class.html"><a href="model-based-class.html#dependencies"><i class="fa fa-check"></i><b>6.4.1</b> Dependencies</a></li>
+<li class="chapter" data-level="6.4.2" data-path="model-based-class.html"><a href="model-based-class.html#examples"><i class="fa fa-check"></i><b>6.4.2</b> Examples</a></li>
+<li class="chapter" data-level="6.4.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-8"><i class="fa fa-check"></i><b>6.4.3</b> Key points</a></li>
+<li class="chapter" data-level="6.4.4" data-path="model-based-class.html"><a href="model-based-class.html#other-function-1"><i class="fa fa-check"></i><b>6.4.4</b> Other function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-7"><i class="fa fa-check"></i><b>7.1.1</b> Example</a></li>
+<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-9"><i class="fa fa-check"></i><b>7.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-10"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="file2meco-package.html"><a href="file2meco-package.html"><i class="fa fa-check"></i><b>8</b> file2meco package</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime"><i class="fa fa-check"></i><b>8.1</b> QIIME</a></li>
+<li class="chapter" data-level="8.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>8.2</b> QIIME2</a></li>
+<li class="chapter" data-level="8.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>8.3</b> HUMAnN</a></li>
+<li class="chapter" data-level="8.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>8.4</b> MetaPhlAn</a></li>
+<li class="chapter" data-level="8.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2bracken"><i class="fa fa-check"></i><b>8.5</b> Kraken2/Bracken</a></li>
+<li class="chapter" data-level="8.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdbpcycdb"><i class="fa fa-check"></i><b>8.6</b> NCycDB/PCycDB</a></li>
+<li class="chapter" data-level="8.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>8.7</b> phyloseq</a></li>
+<li class="chapter" data-level="8.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>8.8</b> PICRUSt2</a></li>
+<li class="chapter" data-level="8.9" data-path="file2meco-package.html"><a href="file2meco-package.html#viromescan"><i class="fa fa-check"></i><b>8.9</b> ViromeScan</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>9</b> Other dataset</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>9.1</b> Fungi data</a></li>
+<li class="chapter" data-level="9.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>9.2</b> Metagenomic data</a></li>
+<li class="chapter" data-level="9.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>9.3</b> Gut microbiome</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>10</b> Notes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="notes.html"><a href="notes.html#clone-function"><i class="fa fa-check"></i><b>10.1</b> <code>clone</code> function</a></li>
+<li class="chapter" data-level="10.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>10.2</b> <code>save</code> function</a></li>
+<li class="chapter" data-level="10.3" data-path="notes.html"><a href="notes.html#github-issues"><i class="fa fa-check"></i><b>10.3</b> Github Issues</a></li>
+<li class="chapter" data-level="10.4" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>10.4</b> group order</a></li>
+<li class="chapter" data-level="10.5" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>10.5</b> add layers to plot</a></li>
+<li class="chapter" data-level="10.6" data-path="notes.html"><a href="notes.html#colors-for-more-groups"><i class="fa fa-check"></i><b>10.6</b> colors for more groups</a></li>
+<li class="chapter" data-level="10.7" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>10.7</b> change object</a></li>
+<li class="chapter" data-level="10.8" data-path="notes.html"><a href="notes.html#customized-data-input"><i class="fa fa-check"></i><b>10.8</b> customized data input</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html"><i class="fa fa-check"></i><b>11</b> meconetcomp package</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-modularity-for-all-networks"><i class="fa fa-check"></i><b>11.1</b> Network modularity for all networks</a></li>
+<li class="chapter" data-level="11.2" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-topological-attributes-for-all-networks"><i class="fa fa-check"></i><b>11.2</b> Network topological attributes for all networks</a></li>
+<li class="chapter" data-level="11.3" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#node-and-edge-properties-extraction-for-all-networks"><i class="fa fa-check"></i><b>11.3</b> Node and edge properties extraction for all networks</a></li>
+<li class="chapter" data-level="11.4" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-nodes-across-networks"><i class="fa fa-check"></i><b>11.4</b> Compare nodes across networks</a></li>
+<li class="chapter" data-level="11.5" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-edges-across-networks"><i class="fa fa-check"></i><b>11.5</b> Compare edges across networks</a></li>
+<li class="chapter" data-level="11.6" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#extract-overlapped-edges-of-networks-to-a-new-network"><i class="fa fa-check"></i><b>11.6</b> Extract overlapped edges of networks to a new network</a></li>
+<li class="chapter" data-level="11.7" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges"><i class="fa fa-check"></i><b>11.7</b> Compare phylogenetic distances of paired nodes in edges</a></li>
+<li class="chapter" data-level="11.8" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks"><i class="fa fa-check"></i><b>11.8</b> Compare node sources of edges across networks</a></li>
+<li class="chapter" data-level="11.9" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks"><i class="fa fa-check"></i><b>11.9</b> Compare topological properties of sub-networks</a></li>
+<li class="chapter" data-level="11.10" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#robustness-of-network"><i class="fa fa-check"></i><b>11.10</b> Robustness of network</a></li>
+<li class="chapter" data-level="11.11" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#vulnerability-of-nodes"><i class="fa fa-check"></i><b>11.11</b> Vulnerability of nodes</a></li>
+<li class="chapter" data-level="11.12" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#cohesion"><i class="fa fa-check"></i><b>11.12</b> Cohesion</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>12</b> mecodev package</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>12.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="12.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>12.2</b> trans_ts</a></li>
+<li class="chapter" data-level="12.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>12.3</b> trans_gamma</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="mecoturn-package.html"><a href="mecoturn-package.html"><i class="fa fa-check"></i><b>13</b> mecoturn package</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="mecoturn-package.html"><a href="mecoturn-package.html#betaturn-class"><i class="fa fa-check"></i><b>13.1</b> betaturn class</a></li>
+<li class="chapter" data-level="13.2" data-path="mecoturn-package.html"><a href="mecoturn-package.html#taxaturn-class"><i class="fa fa-check"></i><b>13.2</b> taxaturn class</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="other-examples-1.html"><a href="other-examples-1.html"><i class="fa fa-check"></i><b>14</b> Other examples</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="other-examples-1.html"><a href="other-examples-1.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>14.1</b> Custom taxa order in bar plot</a></li>
+<li class="chapter" data-level="14.2" data-path="other-examples-1.html"><a href="other-examples-1.html#tidy_taxonomy-function"><i class="fa fa-check"></i><b>14.2</b> tidy_taxonomy function</a></li>
+<li class="chapter" data-level="14.3" data-path="other-examples-1.html"><a href="other-examples-1.html#show-the-abundance-of-unknown-taxa"><i class="fa fa-check"></i><b>14.3</b> Show the abundance of unknown taxa</a></li>
+<li class="chapter" data-level="14.4" data-path="other-examples-1.html"><a href="other-examples-1.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>14.4</b> Question of prefix in the taxa</a></li>
+<li class="chapter" data-level="14.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>14.5</b> The use of phylogenetic tree</a></li>
+<li class="chapter" data-level="14.6" data-path="other-examples-1.html"><a href="other-examples-1.html#trans_norm"><i class="fa fa-check"></i><b>14.6</b> trans_norm</a></li>
+<li class="chapter" data-level="14.7" data-path="other-examples-1.html"><a href="other-examples-1.html#mantel-test-correlation-heatmap"><i class="fa fa-check"></i><b>14.7</b> Mantel test + Correlation heatmap</a></li>
+<li class="chapter" data-level="14.8" data-path="other-examples-1.html"><a href="other-examples-1.html#pcoa-boxplot"><i class="fa fa-check"></i><b>14.8</b> PCoA + boxplot</a></li>
+<li class="chapter" data-level="14.9" data-path="other-examples-1.html"><a href="other-examples-1.html#faprotax-differential-test"><i class="fa fa-check"></i><b>14.9</b> FAPROTAX + differential test</a></li>
+<li class="chapter" data-level="14.10" data-path="other-examples-1.html"><a href="other-examples-1.html#rda-results-output"><i class="fa fa-check"></i><b>14.10</b> RDA results output</a></li>
+<li class="chapter" data-level="14.11" data-path="other-examples-1.html"><a href="other-examples-1.html#betanribetanti-for-each-group"><i class="fa fa-check"></i><b>14.11</b> betaNRI/betaNTI for each group</a></li>
+<li class="chapter" data-level="14.12" data-path="other-examples-1.html"><a href="other-examples-1.html#visualize-taxonomic-abundance-with-trans_alpha-class"><i class="fa fa-check"></i><b>14.12</b> Visualize taxonomic abundance with trans_alpha class</a></li>
+<li class="chapter" data-level="14.13" data-path="other-examples-1.html"><a href="other-examples-1.html#customized-network-input-and-analysis"><i class="fa fa-check"></i><b>14.13</b> Customized network input and analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="pipeline.html"><a href="pipeline.html"><i class="fa fa-check"></i><b>15</b> Pipeline</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.12.0)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pipeline" class="section level1 hasAnchor" number="15">
+<h1><span class="header-section-number">Chapter 15</span> Pipeline<a href="pipeline.html#pipeline" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Pipelining operations (i.e., method chaining) can make the steps of data analysis more concise and clear.
+The microeco package has fully supported pipelining operations since version 1.12.0.
+Based on the characteristics of R6 class objects, pipelining operations can be performed using the <code>$</code> operator.
+In this section, we list some examples.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="pipeline.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># version &gt;= 1.12.0</span></span>
+<span id="cb1-2"><a href="pipeline.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;microeco&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.12.0&quot;</span>){</span>
+<span id="cb1-3"><a href="pipeline.html#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;microeco&quot;</span>)</span>
+<span id="cb1-4"><a href="pipeline.html#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>When you need to name an object of a class,
+do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="pipeline.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb2-2"><a href="pipeline.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb2-3"><a href="pipeline.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="pipeline.html#cb2-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
+<span id="cb2-5"><a href="pipeline.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb2-6"><a href="pipeline.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span>
+<span id="cb2-7"><a href="pipeline.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="pipeline.html#cb2-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="pipeline.html#cb3-1" aria-hidden="true" tabindex="-1"></a>trans_alpha<span class="sc">$</span></span>
+<span id="cb3-2"><a href="pipeline.html#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb3-3"><a href="pipeline.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
+<span id="cb3-4"><a href="pipeline.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="pipeline.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="pipeline.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="pipeline.html#cb3-7" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
+<span id="cb3-8"><a href="pipeline.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb3-9"><a href="pipeline.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
+<span id="cb3-10"><a href="pipeline.html#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-11"><a href="pipeline.html#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="pipeline.html#cb3-12" aria-hidden="true" tabindex="-1"></a>g1</span></code></pre></div>
+<p>Other examples for reference are shown below.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="pipeline.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># microtable</span></span>
+<span id="cb4-2"><a href="pipeline.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="pipeline.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb4-4"><a href="pipeline.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-5"><a href="pipeline.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb4-6"><a href="pipeline.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb4-7"><a href="pipeline.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb4-8"><a href="pipeline.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(phylo_tree_16S)</span>
+<span id="cb4-9"><a href="pipeline.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb4-10"><a href="pipeline.html#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="pipeline.html#cb4-11" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span></span>
+<span id="cb4-12"><a href="pipeline.html#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)<span class="sc">$</span></span>
+<span id="cb4-13"><a href="pipeline.html#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))<span class="sc">$</span></span>
+<span id="cb4-14"><a href="pipeline.html#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy_dataset</span>()<span class="sc">$</span></span>
+<span id="cb4-15"><a href="pipeline.html#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_taxa</span>()</span>
+<span id="cb4-16"><a href="pipeline.html#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="pipeline.html#cb4-17" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span>
+<span id="cb4-18"><a href="pipeline.html#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="pipeline.html#cb4-19" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span></span>
+<span id="cb4-20"><a href="pipeline.html#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rarefy_samples</span>()<span class="sc">$</span></span>
+<span id="cb4-21"><a href="pipeline.html#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_abund</span>()<span class="sc">$</span></span>
+<span id="cb4-22"><a href="pipeline.html#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_abund</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;taxa_abund&quot;</span>))<span class="sc">$</span></span>
+<span id="cb4-23"><a href="pipeline.html#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_alphadiv</span>()<span class="sc">$</span></span>
+<span id="cb4-24"><a href="pipeline.html#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_alphadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;alpha_diversity&quot;</span>))<span class="sc">$</span></span>
+<span id="cb4-25"><a href="pipeline.html#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_betadiv</span>()<span class="sc">$</span></span>
+<span id="cb4-26"><a href="pipeline.html#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_betadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;beta_diversity&quot;</span>))</span>
+<span id="cb4-27"><a href="pipeline.html#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="pipeline.html#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="pipeline.html#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="pipeline.html#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_beta</span></span>
+<span id="cb4-31"><a href="pipeline.html#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="pipeline.html#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb4-33"><a href="pipeline.html#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-34"><a href="pipeline.html#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb4-35"><a href="pipeline.html#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="pipeline.html#cb4-36" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span></span>
+<span id="cb4-37"><a href="pipeline.html#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-38"><a href="pipeline.html#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;PCoA&quot;</span>, <span class="at">ncomp =</span> <span class="dv">5</span>)</span>
+<span id="cb4-39"><a href="pipeline.html#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="pipeline.html#cb4-40" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb4-41"><a href="pipeline.html#cb4-41" aria-hidden="true" tabindex="-1"></a>g1</span>
+<span id="cb4-42"><a href="pipeline.html#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="pipeline.html#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="pipeline.html#cb4-44" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb4-45"><a href="pipeline.html#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-46"><a href="pipeline.html#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)<span class="sc">$</span></span>
+<span id="cb4-47"><a href="pipeline.html#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-48"><a href="pipeline.html#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_group_distance</span>()</span>
+<span id="cb4-49"><a href="pipeline.html#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="pipeline.html#cb4-50" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb4-51"><a href="pipeline.html#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-52"><a href="pipeline.html#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-53"><a href="pipeline.html#cb4-53" aria-hidden="true" tabindex="-1"></a>    res_manova</span>
+<span id="cb4-54"><a href="pipeline.html#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="pipeline.html#cb4-55" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb4-56"><a href="pipeline.html#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-57"><a href="pipeline.html#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_anosim</span>()<span class="sc">$</span></span>
+<span id="cb4-58"><a href="pipeline.html#cb4-58" aria-hidden="true" tabindex="-1"></a>    res_anosim</span>
+<span id="cb4-59"><a href="pipeline.html#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="pipeline.html#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="pipeline.html#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="pipeline.html#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_network</span></span>
+<span id="cb4-63"><a href="pipeline.html#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-64"><a href="pipeline.html#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-65"><a href="pipeline.html#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb4-66"><a href="pipeline.html#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-67"><a href="pipeline.html#cb4-67" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)<span class="sc">$</span></span>
+<span id="cb4-68"><a href="pipeline.html#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)<span class="sc">$</span></span>
+<span id="cb4-69"><a href="pipeline.html#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_module</span>()<span class="sc">$</span></span>
+<span id="cb4-70"><a href="pipeline.html#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network_attr</span>()<span class="sc">$</span></span>
+<span id="cb4-71"><a href="pipeline.html#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_node_table</span>()<span class="sc">$</span></span>
+<span id="cb4-72"><a href="pipeline.html#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_edge_table</span>()<span class="sc">$</span></span>
+<span id="cb4-73"><a href="pipeline.html#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_sum_links</span>()<span class="sc">$</span></span>
+<span id="cb4-74"><a href="pipeline.html#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_network</span>()</span>
+<span id="cb4-75"><a href="pipeline.html#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="pipeline.html#cb4-76" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>()</span>
+<span id="cb4-77"><a href="pipeline.html#cb4-77" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">method =</span> <span class="st">&quot;circlize&quot;</span>, <span class="at">transparency =</span> <span class="fl">0.2</span>, <span class="at">annotationTrackHeight =</span> circlize<span class="sc">::</span><span class="fu">mm_h</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)))</span>
+<span id="cb4-78"><a href="pipeline.html#cb4-78" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span>
+<span id="cb4-79"><a href="pipeline.html#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-80"><a href="pipeline.html#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-81"><a href="pipeline.html#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="pipeline.html#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_classifier</span></span>
+<span id="cb4-83"><a href="pipeline.html#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-84"><a href="pipeline.html#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb4-85"><a href="pipeline.html#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-86"><a href="pipeline.html#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb4-87"><a href="pipeline.html#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-88"><a href="pipeline.html#cb4-88" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span></span>
+<span id="cb4-89"><a href="pipeline.html#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">y.response =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-90"><a href="pipeline.html#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_preProcess</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;nzv&quot;</span>))<span class="sc">$</span></span>
+<span id="cb4-91"><a href="pipeline.html#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)<span class="sc">$</span></span>
+<span id="cb4-92"><a href="pipeline.html#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)<span class="sc">$</span></span>
+<span id="cb4-93"><a href="pipeline.html#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_trainControl</span>()<span class="sc">$</span></span>
+<span id="cb4-94"><a href="pipeline.html#cb4-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_train</span>()<span class="sc">$</span></span>
+<span id="cb4-95"><a href="pipeline.html#cb4-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_predict</span>()<span class="sc">$</span></span>
+<span id="cb4-96"><a href="pipeline.html#cb4-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ROC</span>()</span>
+<span id="cb4-97"><a href="pipeline.html#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-98"><a href="pipeline.html#cb4-98" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ROC</span>()</span>
+<span id="cb4-99"><a href="pipeline.html#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="pipeline.html#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="pipeline.html#cb4-101" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span></span>
+<span id="cb4-102"><a href="pipeline.html#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList</span>(<span class="at">methodList =</span> <span class="fu">c</span>(<span class="st">&#39;rf&#39;</span>, <span class="st">&#39;svmRadial&#39;</span>))<span class="sc">$</span></span>
+<span id="cb4-103"><a href="pipeline.html#cb4-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList_resamples</span>()<span class="sc">$</span></span>
+<span id="cb4-104"><a href="pipeline.html#cb4-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_caretList_resamples</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb4-105"><a href="pipeline.html#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-106"><a href="pipeline.html#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-107"><a href="pipeline.html#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_env</span></span>
+<span id="cb4-108"><a href="pipeline.html#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-109"><a href="pipeline.html#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-110"><a href="pipeline.html#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb4-111"><a href="pipeline.html#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
+<span id="cb4-112"><a href="pipeline.html#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-113"><a href="pipeline.html#cb4-113" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
+<span id="cb4-114"><a href="pipeline.html#cb4-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">10</span>])<span class="sc">$</span></span>
+<span id="cb4-115"><a href="pipeline.html#cb4-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-116"><a href="pipeline.html#cb4-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">add_sig =</span> T)</span>
+<span id="cb4-117"><a href="pipeline.html#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-118"><a href="pipeline.html#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-119"><a href="pipeline.html#cb4-119" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span></span>
+<span id="cb4-120"><a href="pipeline.html#cb4-120" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
+<span id="cb4-121"><a href="pipeline.html#cb4-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;dbRDA&quot;</span>, <span class="at">use_measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-122"><a href="pipeline.html#cb4-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">trans_ordination</span>(<span class="at">adjust_arrow_length =</span> <span class="cn">TRUE</span>, <span class="at">max_perc_env =</span> <span class="fl">1.5</span>)<span class="sc">$</span></span>
+<span id="cb4-123"><a href="pipeline.html#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination_anova</span>()</span>
+<span id="cb4-124"><a href="pipeline.html#cb4-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-125"><a href="pipeline.html#cb4-125" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb4-126"><a href="pipeline.html#cb4-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-127"><a href="pipeline.html#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-128"><a href="pipeline.html#cb4-128" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
+<span id="cb4-129"><a href="pipeline.html#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
+<span id="cb4-130"><a href="pipeline.html#cb4-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-131"><a href="pipeline.html#cb4-131" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_cor</span>()</span>
+<span id="cb4-132"><a href="pipeline.html#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-133"><a href="pipeline.html#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-134"><a href="pipeline.html#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_func</span></span>
+<span id="cb4-135"><a href="pipeline.html#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="pipeline.html#cb4-136" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb4-137"><a href="pipeline.html#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb4-138"><a href="pipeline.html#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb4-139"><a href="pipeline.html#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-140"><a href="pipeline.html#cb4-140" aria-hidden="true" tabindex="-1"></a>trans_func<span class="sc">$</span></span>
+<span id="cb4-141"><a href="pipeline.html#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(dataset)<span class="sc">$</span></span>
+<span id="cb4-142"><a href="pipeline.html#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;FAPROTAX&quot;</span>)<span class="sc">$</span></span>
+<span id="cb4-143"><a href="pipeline.html#cb4-143" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func_perc</span>(<span class="at">abundance_weighted =</span> <span class="cn">FALSE</span>)<span class="sc">$</span></span>
+<span id="cb4-144"><a href="pipeline.html#cb4-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_spe_func_perc</span>()</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="other-examples-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/14-Pipeline.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

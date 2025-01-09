@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.10.0)},
+  pdftitle={Tutorial for R microeco package (v1.12.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.10.0)}
+\title{Tutorial for R microeco package (v1.12.0)}
 \author{}
-\date{\vspace{-2.5em}2024-10-29}
+\date{\vspace{-2.5em}2025-01-08}
 
 \begin{document}
 \maketitle
@@ -965,7 +965,7 @@ Those have been shown in file2meco package part (\url{https://chiliubio.github.i
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use default parameters}
+\CommentTok{\# default parameter (rel = TRUE) denotes relative abundance}
 \NormalTok{mt}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -3570,7 +3570,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Oct 29 16:44:55 2024. Please wait...
+## Now randomizing by parallel computing. Begin at Wed Jan  8 09:50:30 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3600,9 +3600,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6534 & 0.386 & 0.3636 & 9.126 \\
-CW & 435 & 0.563 & 0.2963 & 0.2865 & 14.33 \\
-TW & 435 & 0.6244 & 0.4147 & 0.3999 & 9.833 \\
+IW & 435 & 0.6539 & 0.3876 & 0.3639 & 9.125 \\
+CW & 435 & 0.5629 & 0.2965 & 0.2865 & 14.31 \\
+TW & 435 & 0.6245 & 0.4164 & 0.4 & 9.914 \\
 \bottomrule()
 \end{longtable}
 
@@ -4666,7 +4666,7 @@ Note that the \texttt{sample\_table} parameter in each function of file2meco pac
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# install file2meco package (\textgreater{}= 0.7.1)}
+\CommentTok{\# install file2meco package (\textgreater{}= 0.9.0)}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"file2meco"}\NormalTok{, }\AttributeTok{repos =}\NormalTok{ BiocManager}\SpecialCharTok{::}\FunctionTok{repositories}\NormalTok{())}
 \end{Highlighting}
@@ -4775,14 +4775,14 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{bar\_full =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# select both function and taxa}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"Superclass1"}\NormalTok{, }\StringTok{"Phylum"}\NormalTok{, }\StringTok{"Genus"}\NormalTok{), }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_taxonomy\_lineage =}\NormalTok{ T)}
+\NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{taxrank =} \StringTok{"Phylum"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{delete\_taxonomy\_lineage =} \ConstantTok{FALSE}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{facet =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# functional biomarker}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Superclass1 }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test, }\AttributeTok{method =} \StringTok{"lefse"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
-\CommentTok{\# taxa biomarker}
+\CommentTok{\# taxonomic biomarker}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \DecValTok{4}\SpecialCharTok{:}\DecValTok{9}\NormalTok{, }\AttributeTok{rel =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Phylum }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"unclass"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(.)), ]}
 \CommentTok{\# p\_adjust\_method = "none" shut down the p value adjustment}
@@ -6448,6 +6448,9 @@ For the details and references of the approaches, please refer to the help docum
 \NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CSS"}\NormalTok{)}
 \CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
 \NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
+\CommentTok{\# rarefaction}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rarefy"}\NormalTok{)}
+\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"SRS"}\NormalTok{, }\AttributeTok{sample.size =} \DecValTok{500}\NormalTok{)}
 
 \CommentTok{\# log transformation}
 \NormalTok{d3 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
@@ -6729,6 +6732,236 @@ At this time, we can use the trans\_alpha class to analyze each taxon and merge 
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(d1, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Region"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Pseudomonas"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{customized-network-input-and-analysis}{%
+\section{Customized network input and analysis}\label{customized-network-input-and-analysis}}
+
+When users need to use the \texttt{trans\_network} class to calculate some properties of their customized network,
+they can refer to the following method.
+Only the network in igraph format is required, and no other data is necessary.
+It should be noted that the nodes of the provided network must have the \texttt{name} attribute.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(igraph)}
+\CommentTok{\# first generate an igraph{-}format network as the input of the example}
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{make\_graph}\NormalTok{(}\FunctionTok{rep}\NormalTok{(LETTERS, }\AttributeTok{each =} \DecValTok{2}\NormalTok{)[}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{52}\NormalTok{)], }\AttributeTok{directed =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{g1}
+
+\FunctionTok{library}\NormalTok{(microeco)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{network\_method =} \ConstantTok{NULL}\NormalTok{)}
+
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_network }\OtherTok{\textless{}{-}}\NormalTok{ g1}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_network\_attr}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{get\_node\_table}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{pipeline}{%
+\chapter{Pipeline}\label{pipeline}}
+
+Pipelining operations (i.e., method chaining) can make the steps of data analysis more concise and clear.
+The microeco package has fully supported pipelining operations since version 1.12.0.
+Based on the characteristics of R6 class objects, pipelining operations can be performed using the \texttt{\$} operator.
+In this section, we list some examples.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# version \textgreater{}= 1.12.0}
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{packageVersion}\NormalTok{(}\StringTok{"microeco"}\NormalTok{) }\SpecialCharTok{\textless{}} \StringTok{"1.12.0"}\NormalTok{)\{}
+    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"microeco"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+When you need to name an object of a class,
+do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(microeco)}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"errorbar"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{trans\_alpha}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"errorbar"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+
+
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"errorbar"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{, }\AttributeTok{add\_sig =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{g1}
+\end{Highlighting}
+\end{Shaded}
+
+Other examples for reference are shown below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# microtable}
+
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\FunctionTok{data}\NormalTok{(taxonomy\_table\_16S)}
+\FunctionTok{data}\NormalTok{(phylo\_tree\_16S)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{tax\_table =}\NormalTok{ taxonomy\_table\_16S, }\AttributeTok{phylo\_tree =}\NormalTok{ phylo\_tree\_16S)}\SpecialCharTok{$}
+    \FunctionTok{filter\_pollution}\NormalTok{(}\AttributeTok{taxa =} \FunctionTok{c}\NormalTok{(}\StringTok{"mitochondria"}\NormalTok{, }\StringTok{"chloroplast"}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{tidy\_dataset}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{filter\_taxa}\NormalTok{()}
+
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
+
+\NormalTok{test}\SpecialCharTok{$}
+    \FunctionTok{rarefy\_samples}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_abund}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{save\_abund}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(test\_dir, }\StringTok{"taxa\_abund"}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{cal\_alphadiv}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{save\_alphadiv}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(test\_dir, }\StringTok{"alpha\_diversity"}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{cal\_betadiv}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{save\_betadiv}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(test\_dir, }\StringTok{"beta\_diversity"}\NormalTok{))}
+
+
+
+\CommentTok{\# trans\_beta}
+
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"PCoA"}\NormalTok{, }\AttributeTok{ncomp =} \DecValTok{5}\NormalTok{)}
+
+\NormalTok{g1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{g1}
+
+
+\NormalTok{trans\_beta}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{TRUE}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_group\_distance\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_group\_distance}\NormalTok{()}
+
+\NormalTok{trans\_beta}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_all =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{)}\SpecialCharTok{$}
+\NormalTok{    res\_manova}
+
+\NormalTok{trans\_beta}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_anosim}\NormalTok{()}\SpecialCharTok{$}
+\NormalTok{    res\_anosim}
+
+
+
+\CommentTok{\# trans\_network}
+
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.003}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \DecValTok{0}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.3}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_module}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_network\_attr}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{get\_adjacency\_matrix}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_sum\_links}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{save\_network}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(test\_dir, }\StringTok{"network\_test\_bray\_OTU.gexf"}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{cal\_powerlaw}\NormalTok{()}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{method =} \StringTok{"circlize"}\NormalTok{, }\AttributeTok{transparency =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{annotationTrackHeight =}\NormalTok{ circlize}\SpecialCharTok{::}\FunctionTok{mm\_h}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{)))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_taxa\_roles}\NormalTok{(}\AttributeTok{use\_type =} \DecValTok{1}\NormalTok{)}
+
+
+
+\CommentTok{\# trans\_classifier}
+
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{y.response =} \StringTok{"Saline"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"Genus"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_preProcess}\NormalTok{(}\AttributeTok{method =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{, }\StringTok{"nzv"}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{set\_trainControl}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_train}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_predict}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{cal\_ROC}\NormalTok{()}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ROC}\NormalTok{()}
+
+
+\NormalTok{t1}\SpecialCharTok{$}
+    \FunctionTok{cal\_caretList}\NormalTok{(}\AttributeTok{methodList =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}rf\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}svmRadial\textquotesingle{}}\NormalTok{))}\SpecialCharTok{$}
+    \FunctionTok{cal\_caretList\_resamples}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{plot\_caretList\_resamples}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{position =} \StringTok{"jitter"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{()}
+
+
+\CommentTok{\# trans\_env}
+
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+\FunctionTok{data}\NormalTok{(env\_data\_16S)}
+
+\NormalTok{trans\_env}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])}\SpecialCharTok{$}
+    \FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_diff}\NormalTok{(}\AttributeTok{measure =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{add\_sig =}\NormalTok{ T)}
+
+
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}\SpecialCharTok{$}
+    \FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"dbRDA"}\NormalTok{, }\AttributeTok{use\_measure =} \StringTok{"bray"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{trans\_ordination}\NormalTok{(}\AttributeTok{adjust\_arrow\_length =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{max\_perc\_env =} \FloatTok{1.5}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_ordination\_anova}\NormalTok{()}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_ordination}\NormalTok{(}\AttributeTok{plot\_color =} \StringTok{"Group"}\NormalTok{)}
+
+
+\NormalTok{trans\_env}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}\SpecialCharTok{$}
+    \FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"Genus"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_cor}\NormalTok{()}
+
+
+\CommentTok{\# trans\_func}
+
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(dataset)}
+
+\NormalTok{trans\_func}\SpecialCharTok{$}
+    \FunctionTok{new}\NormalTok{(dataset)}\SpecialCharTok{$}
+    \FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{plot\_spe\_func\_perc}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 

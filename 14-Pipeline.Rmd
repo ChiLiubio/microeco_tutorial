@@ -1,0 +1,216 @@
+# Pipeline
+
+
+Pipelining operations (i.e., method chaining) can make the steps of data analysis more concise and clear. 
+The microeco package has fully supported pipelining operations since version 1.12.0. 
+Based on the characteristics of R6 class objects, pipelining operations can be performed using the `$` operator. 
+In this section, we list some examples.
+
+
+```{r, echo = TRUE, eval = FALSE}
+# version >= 1.12.0
+if(packageVersion("microeco") < "1.12.0"){
+	install.packages("microeco")
+}
+```
+
+When you need to name an object of a class, 
+do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.
+
+```{r, echo = TRUE, eval = FALSE}
+library(magrittr)
+library(microeco)
+
+t1 <- trans_alpha$
+	new(dataset = dataset, group = "Type")$
+	cal_diff(method = "anova", measure = "Shannon")
+
+t1$plot_alpha(plot_type = "errorbar", measure = "Shannon", add_sig = TRUE)
+```
+
+
+When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.
+
+
+```{r, echo = TRUE, eval = FALSE}
+trans_alpha$
+	new(dataset = dataset, group = "Type")$
+	cal_diff(method = "anova", measure = "Shannon")$
+	plot_alpha(plot_type = "errorbar", measure = "Shannon", add_sig = TRUE)
+
+
+g1 <- trans_alpha$
+	new(dataset = dataset, group = "Type")$
+	cal_diff(method = "anova", measure = "Shannon")$
+	plot_alpha(plot_type = "errorbar", measure = "Shannon", add_sig = TRUE)
+
+g1
+```
+
+
+Other examples for reference are shown below.
+
+```{r, echo = TRUE, eval = FALSE}
+# microtable
+
+library(magrittr)
+library(microeco)
+data(sample_info_16S)
+data(otu_table_16S)
+data(taxonomy_table_16S)
+data(phylo_tree_16S)
+set.seed(123)
+
+test <- microtable$
+	new(sample_table = sample_info_16S, otu_table = otu_table_16S, tax_table = taxonomy_table_16S, phylo_tree = phylo_tree_16S)$
+	filter_pollution(taxa = c("mitochondria", "chloroplast"))$
+	tidy_dataset()$
+	filter_taxa()
+
+test$sample_sums() %>% range
+
+test$
+	rarefy_samples()$
+	cal_abund()$
+	save_abund(file.path(test_dir, "taxa_abund"))$
+	cal_alphadiv()$
+	save_alphadiv(file.path(test_dir, "alpha_diversity"))$
+	cal_betadiv()$
+	save_betadiv(file.path(test_dir, "beta_diversity"))
+
+
+
+# trans_beta
+
+library(magrittr)
+library(microeco)
+data(dataset)
+
+t1 <- trans_beta$
+	new(dataset = dataset, group = "Group", measure = "bray")$
+	cal_ordination(method = "PCoA", ncomp = 5)
+
+g1 <- t1$plot_ordination(plot_color = "Group")
+g1
+
+
+trans_beta$
+	new(dataset = dataset, group = "Type", measure = "bray")$
+	cal_group_distance(within_group = TRUE)$
+	cal_group_distance_diff(method = "wilcox")$
+	plot_group_distance()
+
+trans_beta$
+	new(dataset = dataset, measure = "bray")$
+	cal_manova(manova_all = FALSE, group = "Type", by_group = "Group")$
+	res_manova
+
+trans_beta$
+	new(dataset = dataset, group = "Group", measure = "bray")$
+	cal_anosim()$
+	res_anosim
+
+
+
+# trans_network
+
+library(microeco)
+data(dataset)
+
+t1 <- trans_network$new(dataset = dataset, cor_method = "pearson", filter_thres = 0.001)$
+	cal_network(COR_p_thres = 0.05, COR_cut = 0.6)$
+	cal_module()$
+	cal_network_attr()$
+	get_node_table()$
+	get_edge_table()$
+	cal_sum_links()$
+	save_network()
+
+t1$plot_network()
+t1$plot_sum_links(method = "circlize", transparency = 0.2, annotationTrackHeight = circlize::mm_h(c(5, 5)))
+t1$plot_taxa_roles(use_type = 1)
+
+
+
+# trans_classifier
+
+library(magrittr)
+library(microeco)
+data(dataset)
+
+t1 <- trans_classifier$
+	new(dataset = dataset, y.response = "Saline", x.predictors = "Genus")$
+	cal_preProcess(method = c("center", "scale", "nzv"))$
+	cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)$
+	cal_split(prop.train = 3/4)$
+	set_trainControl()$
+	cal_train()$
+	cal_predict()$
+	cal_ROC()
+
+t1$plot_ROC()
+
+
+t1$
+	cal_caretList(methodList = c('rf', 'svmRadial'))$
+	cal_caretList_resamples()$
+	plot_caretList_resamples() + geom_point(position = "jitter") + theme_bw()
+
+
+# trans_env
+
+library(microeco)
+data(dataset)
+data(env_data_16S)
+
+trans_env$
+	new(dataset = dataset, add_data = env_data_16S[, 4:10])$
+	cal_diff(group = "Group", method = "KW_dunn")$
+	plot_diff(measure = "pH", add_sig = T)
+
+
+t1 <- trans_env$
+	new(dataset = dataset, add_data = env_data_16S[, 4:11])$
+	cal_ordination(method = "dbRDA", use_measure = "bray")$
+	trans_ordination(adjust_arrow_length = TRUE, max_perc_env = 1.5)$
+	cal_ordination_anova()
+
+t1$plot_ordination(plot_color = "Group")
+
+
+trans_env$
+	new(dataset = dataset, add_data = env_data_16S[, 4:11])$
+	cal_cor(use_data = "Genus")$
+	plot_cor()
+
+
+# trans_func
+
+library(magrittr)
+library(microeco)
+data(dataset)
+
+trans_func$
+	new(dataset)$
+	cal_spe_func(prok_database = "FAPROTAX")$
+	cal_spe_func_perc(abundance_weighted = FALSE)$
+	plot_spe_func_perc()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
