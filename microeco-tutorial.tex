@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.12.0)},
+  pdftitle={Tutorial for R microeco package (v1.13.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.12.0)}
+\title{Tutorial for R microeco package (v1.13.0)}
 \author{}
-\date{\vspace{-2.5em}2025-01-08}
+\date{\vspace{-2.5em}2025-02-09}
 
 \begin{document}
 \maketitle
@@ -3570,7 +3570,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Jan  8 09:50:30 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Feb  9 10:40:47 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3600,9 +3600,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6539 & 0.3876 & 0.3639 & 9.125 \\
-CW & 435 & 0.5629 & 0.2965 & 0.2865 & 14.31 \\
-TW & 435 & 0.6245 & 0.4164 & 0.4 & 9.914 \\
+IW & 435 & 0.6537 & 0.3864 & 0.3638 & 9.133 \\
+CW & 435 & 0.5633 & 0.2963 & 0.2868 & 14.34 \\
+TW & 435 & 0.6248 & 0.4167 & 0.4002 & 9.793 \\
 \bottomrule()
 \end{longtable}
 
@@ -3779,8 +3779,8 @@ we also perfom all the analysis with feature selection to show the whole results
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ d1, }\AttributeTok{y.response =} \StringTok{"genotype"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"All"}\NormalTok{)}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{()}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_predict}\NormalTok{()}
@@ -3865,6 +3865,13 @@ The regression is also supported.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_feature\_imp}\NormalTok{()}
 \FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_feature\_imp)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_feature\_imp}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"IncNodePurity"}\NormalTok{)}
+
+\CommentTok{\# sort and select some taxa with high importance}
+\NormalTok{tmp\_top20 }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_feature\_imp[}\FunctionTok{order}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_feature\_imp[, }\DecValTok{1}\NormalTok{], }\AttributeTok{decreasing =} \ConstantTok{TRUE}\NormalTok{), , }\AttributeTok{drop =} \ConstantTok{FALSE}\NormalTok{])[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{]}
+\CommentTok{\# correlation analysis}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{other\_taxa =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\textasciigrave{}"}\NormalTok{, }\StringTok{""}\NormalTok{, tmp\_top20))}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5752,9 +5759,10 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 \NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# trans\_rarefy class}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{4000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{8000}\NormalTok{))}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{10000}\NormalTok{, }\DecValTok{15000}\NormalTok{, }\DecValTok{20000}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{show\_samplename =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{rep}\NormalTok{(}\StringTok{"grey70"}\NormalTok{, }\DecValTok{100}\NormalTok{), }\AttributeTok{show\_legend =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6884,14 +6892,14 @@ Other examples for reference are shown below.
 \FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{data}\NormalTok{(dataset)}
 
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"bray"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.003}\NormalTok{)}\SpecialCharTok{$}
-    \FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \DecValTok{0}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.3}\NormalTok{)}\SpecialCharTok{$}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_network}\NormalTok{(}\AttributeTok{COR\_p\_thres =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{COR\_cut =} \FloatTok{0.6}\NormalTok{)}\SpecialCharTok{$}
     \FunctionTok{cal\_module}\NormalTok{()}\SpecialCharTok{$}
     \FunctionTok{cal\_network\_attr}\NormalTok{()}\SpecialCharTok{$}
-    \FunctionTok{get\_adjacency\_matrix}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{get\_node\_table}\NormalTok{()}\SpecialCharTok{$}
+    \FunctionTok{get\_edge\_table}\NormalTok{()}\SpecialCharTok{$}
     \FunctionTok{cal\_sum\_links}\NormalTok{()}\SpecialCharTok{$}
-    \FunctionTok{save\_network}\NormalTok{(}\FunctionTok{file.path}\NormalTok{(test\_dir, }\StringTok{"network\_test\_bray\_OTU.gexf"}\NormalTok{))}\SpecialCharTok{$}
-    \FunctionTok{cal\_powerlaw}\NormalTok{()}
+    \FunctionTok{save\_network}\NormalTok{()}
 
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{()}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_sum\_links}\NormalTok{(}\AttributeTok{method =} \StringTok{"circlize"}\NormalTok{, }\AttributeTok{transparency =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{annotationTrackHeight =}\NormalTok{ circlize}\SpecialCharTok{::}\FunctionTok{mm\_h}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{)))}

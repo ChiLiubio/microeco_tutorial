@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)</title>
-  <meta name="description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
-  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+  <title>Chapter 15 Pipeline | Tutorial for R microeco package (v1.13.0)</title>
+  <meta name="description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)" />
+  <meta property="og:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.13.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta property="og:description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.12.0)" />
+  <meta name="twitter:title" content="Chapter 15 Pipeline | Tutorial for R microeco package (v1.13.0)" />
   
-  <meta name="twitter:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="twitter:description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2025-01-08" />
+<meta name="date" content="2025-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -121,6 +121,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <style type="text/css">
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -326,7 +348,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.12.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.13.0)</a>
           </h1>
         </div>
 
@@ -340,178 +362,178 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 The microeco package has fully supported pipelining operations since version 1.12.0.
 Based on the characteristics of R6 class objects, pipelining operations can be performed using the <code>$</code> operator.
 In this section, we list some examples.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="pipeline.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># version &gt;= 1.12.0</span></span>
-<span id="cb1-2"><a href="pipeline.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;microeco&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.12.0&quot;</span>){</span>
-<span id="cb1-3"><a href="pipeline.html#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;microeco&quot;</span>)</span>
-<span id="cb1-4"><a href="pipeline.html#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="pipeline.html#cb398-1" aria-hidden="true" tabindex="-1"></a><span class="co"># version &gt;= 1.12.0</span></span>
+<span id="cb398-2"><a href="pipeline.html#cb398-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;microeco&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.12.0&quot;</span>){</span>
+<span id="cb398-3"><a href="pipeline.html#cb398-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;microeco&quot;</span>)</span>
+<span id="cb398-4"><a href="pipeline.html#cb398-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>When you need to name an object of a class,
 do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="pipeline.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb2-2"><a href="pipeline.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb2-3"><a href="pipeline.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="pipeline.html#cb2-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
-<span id="cb2-5"><a href="pipeline.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
-<span id="cb2-6"><a href="pipeline.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span>
-<span id="cb2-7"><a href="pipeline.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="pipeline.html#cb2-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="pipeline.html#cb399-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb399-2"><a href="pipeline.html#cb399-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb399-3"><a href="pipeline.html#cb399-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb399-4"><a href="pipeline.html#cb399-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
+<span id="cb399-5"><a href="pipeline.html#cb399-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb399-6"><a href="pipeline.html#cb399-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)</span>
+<span id="cb399-7"><a href="pipeline.html#cb399-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb399-8"><a href="pipeline.html#cb399-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="pipeline.html#cb3-1" aria-hidden="true" tabindex="-1"></a>trans_alpha<span class="sc">$</span></span>
-<span id="cb3-2"><a href="pipeline.html#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
-<span id="cb3-3"><a href="pipeline.html#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
-<span id="cb3-4"><a href="pipeline.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-5"><a href="pipeline.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="pipeline.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="pipeline.html#cb3-7" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
-<span id="cb3-8"><a href="pipeline.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
-<span id="cb3-9"><a href="pipeline.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
-<span id="cb3-10"><a href="pipeline.html#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-11"><a href="pipeline.html#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="pipeline.html#cb3-12" aria-hidden="true" tabindex="-1"></a>g1</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="pipeline.html#cb400-1" aria-hidden="true" tabindex="-1"></a>trans_alpha<span class="sc">$</span></span>
+<span id="cb400-2"><a href="pipeline.html#cb400-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb400-3"><a href="pipeline.html#cb400-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
+<span id="cb400-4"><a href="pipeline.html#cb400-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb400-5"><a href="pipeline.html#cb400-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb400-6"><a href="pipeline.html#cb400-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb400-7"><a href="pipeline.html#cb400-7" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span></span>
+<span id="cb400-8"><a href="pipeline.html#cb400-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>)<span class="sc">$</span></span>
+<span id="cb400-9"><a href="pipeline.html#cb400-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">&quot;anova&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>)<span class="sc">$</span></span>
+<span id="cb400-10"><a href="pipeline.html#cb400-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb400-11"><a href="pipeline.html#cb400-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb400-12"><a href="pipeline.html#cb400-12" aria-hidden="true" tabindex="-1"></a>g1</span></code></pre></div>
 <p>Other examples for reference are shown below.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="pipeline.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># microtable</span></span>
-<span id="cb4-2"><a href="pipeline.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="pipeline.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb4-4"><a href="pipeline.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-5"><a href="pipeline.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
-<span id="cb4-6"><a href="pipeline.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
-<span id="cb4-7"><a href="pipeline.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
-<span id="cb4-8"><a href="pipeline.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(phylo_tree_16S)</span>
-<span id="cb4-9"><a href="pipeline.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb4-10"><a href="pipeline.html#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="pipeline.html#cb4-11" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span></span>
-<span id="cb4-12"><a href="pipeline.html#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)<span class="sc">$</span></span>
-<span id="cb4-13"><a href="pipeline.html#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))<span class="sc">$</span></span>
-<span id="cb4-14"><a href="pipeline.html#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy_dataset</span>()<span class="sc">$</span></span>
-<span id="cb4-15"><a href="pipeline.html#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_taxa</span>()</span>
-<span id="cb4-16"><a href="pipeline.html#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="pipeline.html#cb4-17" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span>
-<span id="cb4-18"><a href="pipeline.html#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="pipeline.html#cb4-19" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span></span>
-<span id="cb4-20"><a href="pipeline.html#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rarefy_samples</span>()<span class="sc">$</span></span>
-<span id="cb4-21"><a href="pipeline.html#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_abund</span>()<span class="sc">$</span></span>
-<span id="cb4-22"><a href="pipeline.html#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_abund</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;taxa_abund&quot;</span>))<span class="sc">$</span></span>
-<span id="cb4-23"><a href="pipeline.html#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_alphadiv</span>()<span class="sc">$</span></span>
-<span id="cb4-24"><a href="pipeline.html#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_alphadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;alpha_diversity&quot;</span>))<span class="sc">$</span></span>
-<span id="cb4-25"><a href="pipeline.html#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_betadiv</span>()<span class="sc">$</span></span>
-<span id="cb4-26"><a href="pipeline.html#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_betadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;beta_diversity&quot;</span>))</span>
-<span id="cb4-27"><a href="pipeline.html#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="pipeline.html#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="pipeline.html#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="pipeline.html#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_beta</span></span>
-<span id="cb4-31"><a href="pipeline.html#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="pipeline.html#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb4-33"><a href="pipeline.html#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-34"><a href="pipeline.html#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb4-35"><a href="pipeline.html#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="pipeline.html#cb4-36" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span></span>
-<span id="cb4-37"><a href="pipeline.html#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-38"><a href="pipeline.html#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;PCoA&quot;</span>, <span class="at">ncomp =</span> <span class="dv">5</span>)</span>
-<span id="cb4-39"><a href="pipeline.html#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="pipeline.html#cb4-40" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb4-41"><a href="pipeline.html#cb4-41" aria-hidden="true" tabindex="-1"></a>g1</span>
-<span id="cb4-42"><a href="pipeline.html#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="pipeline.html#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-44"><a href="pipeline.html#cb4-44" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
-<span id="cb4-45"><a href="pipeline.html#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-46"><a href="pipeline.html#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)<span class="sc">$</span></span>
-<span id="cb4-47"><a href="pipeline.html#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-48"><a href="pipeline.html#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_group_distance</span>()</span>
-<span id="cb4-49"><a href="pipeline.html#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="pipeline.html#cb4-50" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
-<span id="cb4-51"><a href="pipeline.html#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-52"><a href="pipeline.html#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-53"><a href="pipeline.html#cb4-53" aria-hidden="true" tabindex="-1"></a>    res_manova</span>
-<span id="cb4-54"><a href="pipeline.html#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="pipeline.html#cb4-55" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
-<span id="cb4-56"><a href="pipeline.html#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-57"><a href="pipeline.html#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_anosim</span>()<span class="sc">$</span></span>
-<span id="cb4-58"><a href="pipeline.html#cb4-58" aria-hidden="true" tabindex="-1"></a>    res_anosim</span>
-<span id="cb4-59"><a href="pipeline.html#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="pipeline.html#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="pipeline.html#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-62"><a href="pipeline.html#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_network</span></span>
-<span id="cb4-63"><a href="pipeline.html#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-64"><a href="pipeline.html#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-65"><a href="pipeline.html#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb4-66"><a href="pipeline.html#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-67"><a href="pipeline.html#cb4-67" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)<span class="sc">$</span></span>
-<span id="cb4-68"><a href="pipeline.html#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)<span class="sc">$</span></span>
-<span id="cb4-69"><a href="pipeline.html#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_module</span>()<span class="sc">$</span></span>
-<span id="cb4-70"><a href="pipeline.html#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network_attr</span>()<span class="sc">$</span></span>
-<span id="cb4-71"><a href="pipeline.html#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_node_table</span>()<span class="sc">$</span></span>
-<span id="cb4-72"><a href="pipeline.html#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_edge_table</span>()<span class="sc">$</span></span>
-<span id="cb4-73"><a href="pipeline.html#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_sum_links</span>()<span class="sc">$</span></span>
-<span id="cb4-74"><a href="pipeline.html#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_network</span>()</span>
-<span id="cb4-75"><a href="pipeline.html#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-76"><a href="pipeline.html#cb4-76" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>()</span>
-<span id="cb4-77"><a href="pipeline.html#cb4-77" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">method =</span> <span class="st">&quot;circlize&quot;</span>, <span class="at">transparency =</span> <span class="fl">0.2</span>, <span class="at">annotationTrackHeight =</span> circlize<span class="sc">::</span><span class="fu">mm_h</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)))</span>
-<span id="cb4-78"><a href="pipeline.html#cb4-78" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span>
-<span id="cb4-79"><a href="pipeline.html#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-80"><a href="pipeline.html#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-81"><a href="pipeline.html#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-82"><a href="pipeline.html#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_classifier</span></span>
-<span id="cb4-83"><a href="pipeline.html#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-84"><a href="pipeline.html#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb4-85"><a href="pipeline.html#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-86"><a href="pipeline.html#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb4-87"><a href="pipeline.html#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-88"><a href="pipeline.html#cb4-88" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span></span>
-<span id="cb4-89"><a href="pipeline.html#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">y.response =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-90"><a href="pipeline.html#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_preProcess</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;nzv&quot;</span>))<span class="sc">$</span></span>
-<span id="cb4-91"><a href="pipeline.html#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)<span class="sc">$</span></span>
-<span id="cb4-92"><a href="pipeline.html#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)<span class="sc">$</span></span>
-<span id="cb4-93"><a href="pipeline.html#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_trainControl</span>()<span class="sc">$</span></span>
-<span id="cb4-94"><a href="pipeline.html#cb4-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_train</span>()<span class="sc">$</span></span>
-<span id="cb4-95"><a href="pipeline.html#cb4-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_predict</span>()<span class="sc">$</span></span>
-<span id="cb4-96"><a href="pipeline.html#cb4-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ROC</span>()</span>
-<span id="cb4-97"><a href="pipeline.html#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-98"><a href="pipeline.html#cb4-98" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ROC</span>()</span>
-<span id="cb4-99"><a href="pipeline.html#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-100"><a href="pipeline.html#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-101"><a href="pipeline.html#cb4-101" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span></span>
-<span id="cb4-102"><a href="pipeline.html#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList</span>(<span class="at">methodList =</span> <span class="fu">c</span>(<span class="st">&#39;rf&#39;</span>, <span class="st">&#39;svmRadial&#39;</span>))<span class="sc">$</span></span>
-<span id="cb4-103"><a href="pipeline.html#cb4-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList_resamples</span>()<span class="sc">$</span></span>
-<span id="cb4-104"><a href="pipeline.html#cb4-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_caretList_resamples</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb4-105"><a href="pipeline.html#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-106"><a href="pipeline.html#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-107"><a href="pipeline.html#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_env</span></span>
-<span id="cb4-108"><a href="pipeline.html#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-109"><a href="pipeline.html#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-110"><a href="pipeline.html#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb4-111"><a href="pipeline.html#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
-<span id="cb4-112"><a href="pipeline.html#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-113"><a href="pipeline.html#cb4-113" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
-<span id="cb4-114"><a href="pipeline.html#cb4-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">10</span>])<span class="sc">$</span></span>
-<span id="cb4-115"><a href="pipeline.html#cb4-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-116"><a href="pipeline.html#cb4-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">add_sig =</span> T)</span>
-<span id="cb4-117"><a href="pipeline.html#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-118"><a href="pipeline.html#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-119"><a href="pipeline.html#cb4-119" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span></span>
-<span id="cb4-120"><a href="pipeline.html#cb4-120" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
-<span id="cb4-121"><a href="pipeline.html#cb4-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;dbRDA&quot;</span>, <span class="at">use_measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-122"><a href="pipeline.html#cb4-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">trans_ordination</span>(<span class="at">adjust_arrow_length =</span> <span class="cn">TRUE</span>, <span class="at">max_perc_env =</span> <span class="fl">1.5</span>)<span class="sc">$</span></span>
-<span id="cb4-123"><a href="pipeline.html#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination_anova</span>()</span>
-<span id="cb4-124"><a href="pipeline.html#cb4-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-125"><a href="pipeline.html#cb4-125" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
-<span id="cb4-126"><a href="pipeline.html#cb4-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-127"><a href="pipeline.html#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-128"><a href="pipeline.html#cb4-128" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
-<span id="cb4-129"><a href="pipeline.html#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
-<span id="cb4-130"><a href="pipeline.html#cb4-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-131"><a href="pipeline.html#cb4-131" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_cor</span>()</span>
-<span id="cb4-132"><a href="pipeline.html#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-133"><a href="pipeline.html#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-134"><a href="pipeline.html#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_func</span></span>
-<span id="cb4-135"><a href="pipeline.html#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-136"><a href="pipeline.html#cb4-136" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb4-137"><a href="pipeline.html#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
-<span id="cb4-138"><a href="pipeline.html#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
-<span id="cb4-139"><a href="pipeline.html#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-140"><a href="pipeline.html#cb4-140" aria-hidden="true" tabindex="-1"></a>trans_func<span class="sc">$</span></span>
-<span id="cb4-141"><a href="pipeline.html#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(dataset)<span class="sc">$</span></span>
-<span id="cb4-142"><a href="pipeline.html#cb4-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;FAPROTAX&quot;</span>)<span class="sc">$</span></span>
-<span id="cb4-143"><a href="pipeline.html#cb4-143" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func_perc</span>(<span class="at">abundance_weighted =</span> <span class="cn">FALSE</span>)<span class="sc">$</span></span>
-<span id="cb4-144"><a href="pipeline.html#cb4-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_spe_func_perc</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="pipeline.html#cb401-1" aria-hidden="true" tabindex="-1"></a><span class="co"># microtable</span></span>
+<span id="cb401-2"><a href="pipeline.html#cb401-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-3"><a href="pipeline.html#cb401-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb401-4"><a href="pipeline.html#cb401-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-5"><a href="pipeline.html#cb401-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sample_info_16S)</span>
+<span id="cb401-6"><a href="pipeline.html#cb401-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(otu_table_16S)</span>
+<span id="cb401-7"><a href="pipeline.html#cb401-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(taxonomy_table_16S)</span>
+<span id="cb401-8"><a href="pipeline.html#cb401-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(phylo_tree_16S)</span>
+<span id="cb401-9"><a href="pipeline.html#cb401-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb401-10"><a href="pipeline.html#cb401-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-11"><a href="pipeline.html#cb401-11" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> microtable<span class="sc">$</span></span>
+<span id="cb401-12"><a href="pipeline.html#cb401-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">sample_table =</span> sample_info_16S, <span class="at">otu_table =</span> otu_table_16S, <span class="at">tax_table =</span> taxonomy_table_16S, <span class="at">phylo_tree =</span> phylo_tree_16S)<span class="sc">$</span></span>
+<span id="cb401-13"><a href="pipeline.html#cb401-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_pollution</span>(<span class="at">taxa =</span> <span class="fu">c</span>(<span class="st">&quot;mitochondria&quot;</span>, <span class="st">&quot;chloroplast&quot;</span>))<span class="sc">$</span></span>
+<span id="cb401-14"><a href="pipeline.html#cb401-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy_dataset</span>()<span class="sc">$</span></span>
+<span id="cb401-15"><a href="pipeline.html#cb401-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter_taxa</span>()</span>
+<span id="cb401-16"><a href="pipeline.html#cb401-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-17"><a href="pipeline.html#cb401-17" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">sample_sums</span>() <span class="sc">%&gt;%</span> range</span>
+<span id="cb401-18"><a href="pipeline.html#cb401-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-19"><a href="pipeline.html#cb401-19" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span></span>
+<span id="cb401-20"><a href="pipeline.html#cb401-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rarefy_samples</span>()<span class="sc">$</span></span>
+<span id="cb401-21"><a href="pipeline.html#cb401-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_abund</span>()<span class="sc">$</span></span>
+<span id="cb401-22"><a href="pipeline.html#cb401-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_abund</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;taxa_abund&quot;</span>))<span class="sc">$</span></span>
+<span id="cb401-23"><a href="pipeline.html#cb401-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_alphadiv</span>()<span class="sc">$</span></span>
+<span id="cb401-24"><a href="pipeline.html#cb401-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_alphadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;alpha_diversity&quot;</span>))<span class="sc">$</span></span>
+<span id="cb401-25"><a href="pipeline.html#cb401-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_betadiv</span>()<span class="sc">$</span></span>
+<span id="cb401-26"><a href="pipeline.html#cb401-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_betadiv</span>(<span class="fu">file.path</span>(test_dir, <span class="st">&quot;beta_diversity&quot;</span>))</span>
+<span id="cb401-27"><a href="pipeline.html#cb401-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-28"><a href="pipeline.html#cb401-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-29"><a href="pipeline.html#cb401-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-30"><a href="pipeline.html#cb401-30" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_beta</span></span>
+<span id="cb401-31"><a href="pipeline.html#cb401-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-32"><a href="pipeline.html#cb401-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb401-33"><a href="pipeline.html#cb401-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-34"><a href="pipeline.html#cb401-34" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb401-35"><a href="pipeline.html#cb401-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-36"><a href="pipeline.html#cb401-36" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span></span>
+<span id="cb401-37"><a href="pipeline.html#cb401-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-38"><a href="pipeline.html#cb401-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;PCoA&quot;</span>, <span class="at">ncomp =</span> <span class="dv">5</span>)</span>
+<span id="cb401-39"><a href="pipeline.html#cb401-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-40"><a href="pipeline.html#cb401-40" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb401-41"><a href="pipeline.html#cb401-41" aria-hidden="true" tabindex="-1"></a>g1</span>
+<span id="cb401-42"><a href="pipeline.html#cb401-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-43"><a href="pipeline.html#cb401-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-44"><a href="pipeline.html#cb401-44" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb401-45"><a href="pipeline.html#cb401-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-46"><a href="pipeline.html#cb401-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance</span>(<span class="at">within_group =</span> <span class="cn">TRUE</span>)<span class="sc">$</span></span>
+<span id="cb401-47"><a href="pipeline.html#cb401-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_group_distance_diff</span>(<span class="at">method =</span> <span class="st">&quot;wilcox&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-48"><a href="pipeline.html#cb401-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_group_distance</span>()</span>
+<span id="cb401-49"><a href="pipeline.html#cb401-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-50"><a href="pipeline.html#cb401-50" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb401-51"><a href="pipeline.html#cb401-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-52"><a href="pipeline.html#cb401-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_manova</span>(<span class="at">manova_all =</span> <span class="cn">FALSE</span>, <span class="at">group =</span> <span class="st">&quot;Type&quot;</span>, <span class="at">by_group =</span> <span class="st">&quot;Group&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-53"><a href="pipeline.html#cb401-53" aria-hidden="true" tabindex="-1"></a>    res_manova</span>
+<span id="cb401-54"><a href="pipeline.html#cb401-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-55"><a href="pipeline.html#cb401-55" aria-hidden="true" tabindex="-1"></a>trans_beta<span class="sc">$</span></span>
+<span id="cb401-56"><a href="pipeline.html#cb401-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-57"><a href="pipeline.html#cb401-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_anosim</span>()<span class="sc">$</span></span>
+<span id="cb401-58"><a href="pipeline.html#cb401-58" aria-hidden="true" tabindex="-1"></a>    res_anosim</span>
+<span id="cb401-59"><a href="pipeline.html#cb401-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-60"><a href="pipeline.html#cb401-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-61"><a href="pipeline.html#cb401-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-62"><a href="pipeline.html#cb401-62" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_network</span></span>
+<span id="cb401-63"><a href="pipeline.html#cb401-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-64"><a href="pipeline.html#cb401-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-65"><a href="pipeline.html#cb401-65" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb401-66"><a href="pipeline.html#cb401-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-67"><a href="pipeline.html#cb401-67" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">cor_method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)<span class="sc">$</span></span>
+<span id="cb401-68"><a href="pipeline.html#cb401-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network</span>(<span class="at">COR_p_thres =</span> <span class="fl">0.05</span>, <span class="at">COR_cut =</span> <span class="fl">0.6</span>)<span class="sc">$</span></span>
+<span id="cb401-69"><a href="pipeline.html#cb401-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_module</span>()<span class="sc">$</span></span>
+<span id="cb401-70"><a href="pipeline.html#cb401-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_network_attr</span>()<span class="sc">$</span></span>
+<span id="cb401-71"><a href="pipeline.html#cb401-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_node_table</span>()<span class="sc">$</span></span>
+<span id="cb401-72"><a href="pipeline.html#cb401-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_edge_table</span>()<span class="sc">$</span></span>
+<span id="cb401-73"><a href="pipeline.html#cb401-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_sum_links</span>()<span class="sc">$</span></span>
+<span id="cb401-74"><a href="pipeline.html#cb401-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_network</span>()</span>
+<span id="cb401-75"><a href="pipeline.html#cb401-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-76"><a href="pipeline.html#cb401-76" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_network</span>()</span>
+<span id="cb401-77"><a href="pipeline.html#cb401-77" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_sum_links</span>(<span class="at">method =</span> <span class="st">&quot;circlize&quot;</span>, <span class="at">transparency =</span> <span class="fl">0.2</span>, <span class="at">annotationTrackHeight =</span> circlize<span class="sc">::</span><span class="fu">mm_h</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)))</span>
+<span id="cb401-78"><a href="pipeline.html#cb401-78" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_taxa_roles</span>(<span class="at">use_type =</span> <span class="dv">1</span>)</span>
+<span id="cb401-79"><a href="pipeline.html#cb401-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-80"><a href="pipeline.html#cb401-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-81"><a href="pipeline.html#cb401-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-82"><a href="pipeline.html#cb401-82" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_classifier</span></span>
+<span id="cb401-83"><a href="pipeline.html#cb401-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-84"><a href="pipeline.html#cb401-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb401-85"><a href="pipeline.html#cb401-85" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-86"><a href="pipeline.html#cb401-86" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb401-87"><a href="pipeline.html#cb401-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-88"><a href="pipeline.html#cb401-88" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span></span>
+<span id="cb401-89"><a href="pipeline.html#cb401-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">y.response =</span> <span class="st">&quot;Saline&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-90"><a href="pipeline.html#cb401-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_preProcess</span>(<span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;nzv&quot;</span>))<span class="sc">$</span></span>
+<span id="cb401-91"><a href="pipeline.html#cb401-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)<span class="sc">$</span></span>
+<span id="cb401-92"><a href="pipeline.html#cb401-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)<span class="sc">$</span></span>
+<span id="cb401-93"><a href="pipeline.html#cb401-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_trainControl</span>()<span class="sc">$</span></span>
+<span id="cb401-94"><a href="pipeline.html#cb401-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_train</span>()<span class="sc">$</span></span>
+<span id="cb401-95"><a href="pipeline.html#cb401-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_predict</span>()<span class="sc">$</span></span>
+<span id="cb401-96"><a href="pipeline.html#cb401-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ROC</span>()</span>
+<span id="cb401-97"><a href="pipeline.html#cb401-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-98"><a href="pipeline.html#cb401-98" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ROC</span>()</span>
+<span id="cb401-99"><a href="pipeline.html#cb401-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-100"><a href="pipeline.html#cb401-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-101"><a href="pipeline.html#cb401-101" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span></span>
+<span id="cb401-102"><a href="pipeline.html#cb401-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList</span>(<span class="at">methodList =</span> <span class="fu">c</span>(<span class="st">&#39;rf&#39;</span>, <span class="st">&#39;svmRadial&#39;</span>))<span class="sc">$</span></span>
+<span id="cb401-103"><a href="pipeline.html#cb401-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_caretList_resamples</span>()<span class="sc">$</span></span>
+<span id="cb401-104"><a href="pipeline.html#cb401-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_caretList_resamples</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb401-105"><a href="pipeline.html#cb401-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-106"><a href="pipeline.html#cb401-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-107"><a href="pipeline.html#cb401-107" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_env</span></span>
+<span id="cb401-108"><a href="pipeline.html#cb401-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-109"><a href="pipeline.html#cb401-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-110"><a href="pipeline.html#cb401-110" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb401-111"><a href="pipeline.html#cb401-111" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(env_data_16S)</span>
+<span id="cb401-112"><a href="pipeline.html#cb401-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-113"><a href="pipeline.html#cb401-113" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
+<span id="cb401-114"><a href="pipeline.html#cb401-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">10</span>])<span class="sc">$</span></span>
+<span id="cb401-115"><a href="pipeline.html#cb401-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_diff</span>(<span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">method =</span> <span class="st">&quot;KW_dunn&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-116"><a href="pipeline.html#cb401-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_diff</span>(<span class="at">measure =</span> <span class="st">&quot;pH&quot;</span>, <span class="at">add_sig =</span> T)</span>
+<span id="cb401-117"><a href="pipeline.html#cb401-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-118"><a href="pipeline.html#cb401-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-119"><a href="pipeline.html#cb401-119" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span></span>
+<span id="cb401-120"><a href="pipeline.html#cb401-120" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
+<span id="cb401-121"><a href="pipeline.html#cb401-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">&quot;dbRDA&quot;</span>, <span class="at">use_measure =</span> <span class="st">&quot;bray&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-122"><a href="pipeline.html#cb401-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">trans_ordination</span>(<span class="at">adjust_arrow_length =</span> <span class="cn">TRUE</span>, <span class="at">max_perc_env =</span> <span class="fl">1.5</span>)<span class="sc">$</span></span>
+<span id="cb401-123"><a href="pipeline.html#cb401-123" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_ordination_anova</span>()</span>
+<span id="cb401-124"><a href="pipeline.html#cb401-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-125"><a href="pipeline.html#cb401-125" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">&quot;Group&quot;</span>)</span>
+<span id="cb401-126"><a href="pipeline.html#cb401-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-127"><a href="pipeline.html#cb401-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-128"><a href="pipeline.html#cb401-128" aria-hidden="true" tabindex="-1"></a>trans_env<span class="sc">$</span></span>
+<span id="cb401-129"><a href="pipeline.html#cb401-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(<span class="at">dataset =</span> dataset, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">$</span></span>
+<span id="cb401-130"><a href="pipeline.html#cb401-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;Genus&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-131"><a href="pipeline.html#cb401-131" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_cor</span>()</span>
+<span id="cb401-132"><a href="pipeline.html#cb401-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-133"><a href="pipeline.html#cb401-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-134"><a href="pipeline.html#cb401-134" aria-hidden="true" tabindex="-1"></a><span class="co"># trans_func</span></span>
+<span id="cb401-135"><a href="pipeline.html#cb401-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-136"><a href="pipeline.html#cb401-136" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb401-137"><a href="pipeline.html#cb401-137" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb401-138"><a href="pipeline.html#cb401-138" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dataset)</span>
+<span id="cb401-139"><a href="pipeline.html#cb401-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-140"><a href="pipeline.html#cb401-140" aria-hidden="true" tabindex="-1"></a>trans_func<span class="sc">$</span></span>
+<span id="cb401-141"><a href="pipeline.html#cb401-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">new</span>(dataset)<span class="sc">$</span></span>
+<span id="cb401-142"><a href="pipeline.html#cb401-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func</span>(<span class="at">prok_database =</span> <span class="st">&quot;FAPROTAX&quot;</span>)<span class="sc">$</span></span>
+<span id="cb401-143"><a href="pipeline.html#cb401-143" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cal_spe_func_perc</span>(<span class="at">abundance_weighted =</span> <span class="cn">FALSE</span>)<span class="sc">$</span></span>
+<span id="cb401-144"><a href="pipeline.html#cb401-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_spe_func_perc</span>()</span></code></pre></div>
 
 </div>
             </section>
@@ -574,6 +596,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

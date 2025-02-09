@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v1.12.0)</title>
-  <meta name="description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
-  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+  <title>Chapter 6 Model-based class | Tutorial for R microeco package (v1.13.0)</title>
+  <meta name="description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.12.0)" />
+  <meta property="og:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.13.0)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta property="og:description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.12.0)" />
+  <meta name="twitter:title" content="Chapter 6 Model-based class | Tutorial for R microeco package (v1.13.0)" />
   
-  <meta name="twitter:description" content="Examples for R microeco (v1.12.0), file2meco, meconetcomp and mecoturn packages" />
+  <meta name="twitter:description" content="Examples for R microeco (v1.13.0), file2meco, meconetcomp and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2025-01-08" />
+<meta name="date" content="2025-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -348,7 +348,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.12.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.13.0)</a>
           </h1>
         </div>
 
@@ -1123,7 +1123,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb213-3"><a href="model-based-class.html#cb213-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Wed Jan  8 09:48:15 2025. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Sun Feb  9 10:38:24 2025. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1149,25 +1149,25 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <td align="center">IW</td>
 <td align="center">435</td>
 <td align="center">0.6541</td>
-<td align="center">0.3875</td>
-<td align="center">0.3642</td>
-<td align="center">9.065</td>
+<td align="center">0.3873</td>
+<td align="center">0.3641</td>
+<td align="center">9.107</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5627</td>
-<td align="center">0.2958</td>
-<td align="center">0.2863</td>
-<td align="center">14.39</td>
+<td align="center">0.5633</td>
+<td align="center">0.2967</td>
+<td align="center">0.2868</td>
+<td align="center">14.26</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.6245</td>
+<td align="center">0.6248</td>
 <td align="center">0.4159</td>
-<td align="center">0.4001</td>
-<td align="center">9.876</td>
+<td align="center">0.4003</td>
+<td align="center">9.843</td>
 </tr>
 </tbody>
 </table>
@@ -1262,8 +1262,8 @@ Then, we attempt to use Boruta package <span class="citation">(<a href="#ref-Kur
 <p>To compare the results between the procedure with feature selection and that without feature selection,
 we also perfom all the analysis with feature selection to show the whole results.</p>
 <div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="model-based-class.html#cb230-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_classifier<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> d1, <span class="at">y.response =</span> <span class="st">&quot;genotype&quot;</span>, <span class="at">x.predictors =</span> <span class="st">&quot;All&quot;</span>)</span>
-<span id="cb230-2"><a href="model-based-class.html#cb230-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span>
-<span id="cb230-3"><a href="model-based-class.html#cb230-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb230-2"><a href="model-based-class.html#cb230-2" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_split</span>(<span class="at">prop.train =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb230-3"><a href="model-based-class.html#cb230-3" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_feature_sel</span>(<span class="at">boruta.maxRuns =</span> <span class="dv">300</span>, <span class="at">boruta.pValue =</span> <span class="fl">0.01</span>)</span>
 <span id="cb230-4"><a href="model-based-class.html#cb230-4" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">set_trainControl</span>()</span>
 <span id="cb230-5"><a href="model-based-class.html#cb230-5" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_train</span>()</span>
 <span id="cb230-6"><a href="model-based-class.html#cb230-6" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_predict</span>()</span>
@@ -1313,7 +1313,14 @@ we also perfom all the analysis with feature selection to show the whole results
 <span id="cb235-13"><a href="model-based-class.html#cb235-13" aria-hidden="true" tabindex="-1"></a><span class="co"># feature importance</span></span>
 <span id="cb235-14"><a href="model-based-class.html#cb235-14" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_feature_imp</span>()</span>
 <span id="cb235-15"><a href="model-based-class.html#cb235-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_feature_imp)</span>
-<span id="cb235-16"><a href="model-based-class.html#cb235-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_feature_imp</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;IncNodePurity&quot;</span>)</span></code></pre></div>
+<span id="cb235-16"><a href="model-based-class.html#cb235-16" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_feature_imp</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;IncNodePurity&quot;</span>)</span>
+<span id="cb235-17"><a href="model-based-class.html#cb235-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb235-18"><a href="model-based-class.html#cb235-18" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and select some taxa with high importance</span></span>
+<span id="cb235-19"><a href="model-based-class.html#cb235-19" aria-hidden="true" tabindex="-1"></a>tmp_top20 <span class="ot">&lt;-</span> <span class="fu">rownames</span>(t1<span class="sc">$</span>res_feature_imp[<span class="fu">order</span>(t1<span class="sc">$</span>res_feature_imp[, <span class="dv">1</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>), , <span class="at">drop =</span> <span class="cn">FALSE</span>])[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span>
+<span id="cb235-20"><a href="model-based-class.html#cb235-20" aria-hidden="true" tabindex="-1"></a><span class="co"># correlation analysis</span></span>
+<span id="cb235-21"><a href="model-based-class.html#cb235-21" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">add_data =</span> env_data_16S[, <span class="dv">4</span><span class="sc">:</span><span class="dv">11</span>])</span>
+<span id="cb235-22"><a href="model-based-class.html#cb235-22" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">use_data =</span> <span class="st">&quot;other&quot;</span>, <span class="at">other_taxa =</span> <span class="fu">gsub</span>(<span class="st">&quot;`&quot;</span>, <span class="st">&quot;&quot;</span>, tmp_top20))</span>
+<span id="cb235-23"><a href="model-based-class.html#cb235-23" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">plot_cor</span>()</span></code></pre></div>
 </div>
 <div id="key-points-8" class="section level3 hasAnchor" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> Key points<a href="model-based-class.html#key-points-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>

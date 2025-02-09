@@ -924,8 +924,8 @@ we also perfom all the analysis with feature selection to show the whole results
 
 ```{r, echo = TRUE, eval=FALSE}
 t2 <- trans_classifier$new(dataset = d1, y.response = "genotype", x.predictors = "All")
-t2$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
 t2$cal_split(prop.train = 3/4)
+t2$cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)
 t2$set_trainControl()
 t2$cal_train()
 t2$cal_predict()
@@ -1006,6 +1006,13 @@ t1$res_predict
 t1$cal_feature_imp()
 head(t1$res_feature_imp)
 t1$plot_feature_imp(use_number = 1:20) + ylab("IncNodePurity")
+
+# sort and select some taxa with high importance
+tmp_top20 <- rownames(t1$res_feature_imp[order(t1$res_feature_imp[, 1], decreasing = TRUE), , drop = FALSE])[1:20]
+# correlation analysis
+t2 <- trans_env$new(dataset = tmp, add_data = env_data_16S[, 4:11])
+t2$cal_cor(use_data = "other", other_taxa = gsub("`", "", tmp_top20))
+t2$plot_cor()
 ```
 
 
