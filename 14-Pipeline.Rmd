@@ -140,9 +140,8 @@ data(dataset)
 
 t1 <- trans_classifier$
 	new(dataset = dataset, y.response = "Saline", x.predictors = "Genus")$
-	cal_preProcess(method = c("center", "scale", "nzv"))$
-	cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)$
 	cal_split(prop.train = 3/4)$
+	cal_feature_sel(boruta.maxRuns = 300, boruta.pValue = 0.01)$
 	set_trainControl()$
 	cal_train()$
 	cal_predict()$
