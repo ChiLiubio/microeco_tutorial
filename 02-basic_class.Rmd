@@ -375,9 +375,10 @@ group_CW
 
 ### subset of taxa
 
-Similar with above operation, **subset of features can be achieved by manipulating the tax_table in microtable object directly.**
+Similar with above operation, **subset of features can be achieved by manipulating the `tax_table` or `otu_table` in microtable object directly.**
 
 ```{r, echo = TRUE, eval = TRUE}
+# extracting OTU data by manipulating tax_table
 proteo <- clone(mt)
 proteo$tax_table <- subset(proteo$tax_table, Phylum == "p__Proteobacteria")
 # or: proteo$tax_table <- subset(proteo$tax_table, grepl("Proteobacteria", Phylum))
@@ -389,10 +390,22 @@ proteo$cal_betadiv()
 ```
 
 
-### Other examples
+```{r, echo = TRUE, eval = FALSE}
+# extracting OTU data by manipulating otu_table
+test <- clone(mt)
+test$otu_table <- test$otu_table[c("OTU_32", "OTU_50", "OTU_1"), ]
+test$tidy_dataset()
+test
+```
 
-The function `add_rownames2taxonomy` can add the rownames of tax_table as the last column of tax_table directly.
-This operation is very useful in some analysis, e.g. biomarker finding at OTU/ASV level with the relative abundance.
+
+
+### add ASV/OTU to tax_table
+
+The function `add_rownames2taxonomy` can add the row names of `tax_table` as the last column of `tax_table` directly.
+This operation is very useful in some analysis, 
+e.g., the visualization of the OTUs/ASVs with the relative abundance.
+
 
 ```{r, echo = TRUE, eval = FALSE}
 test <- clone(mt)
@@ -401,18 +414,34 @@ test$add_rownames2taxonomy(use_name = "OTU")
 ncol(test$tax_table)
 ```
 
+```{r, echo = TRUE, eval = FALSE}
+test <- clone(mt)
+test$add_rownames2taxonomy("ASV")
+# then we can calculate the relative abundance of ASV
+# for all taxonomic levels like commonly operation
+test$cal_abund()
+View(test$taxa_abund$ASV)
+# only ASV level
+test$cal_abund(select_cols = "ASV")
+View(test$taxa_abund$ASV)
+```
+
+### filter the features with low abundance/occurrence frequency
+
 The `filter_taxa` function can be applied to filter the features with low abundance or occurrence frequency when needed.
 For other operations on the features, please directly manipulate the otu_table of your microtable object.
 
 ```{r, echo = TRUE, eval = FALSE}
 # It is better to have a backup before filtering features
 test <- clone(mt)
-test
 # In this example, the relative abundance threshold is 0.0001
 # occurrence frequency 0.1; 10% samples should have the target features
 test$filter_taxa(rel_abund = 0.0001, freq = 0.1)
 test
 ```
+
+
+### Other examples
 
 In microtable$new, if auto_tidy = TRUE, the function can automatically use `tidy_dataset` to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
