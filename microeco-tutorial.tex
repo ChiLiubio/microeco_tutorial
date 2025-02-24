@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.13.0)}
 \author{}
-\date{\vspace{-2.5em}2025-02-09}
+\date{\vspace{-2.5em}2025-02-24}
 
 \begin{document}
 \maketitle
@@ -901,52 +901,6 @@ To make the OTU and sample information consistent across all files in the object
 ## phylo_tree have 13296 tips
 \end{verbatim}
 
-Then let's use sample\_sums() to check the sequence numbers in each sample.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 10316 37087
-\end{verbatim}
-
-Sometimes, to reduce the impact of sequencing depth on diversity measurements,
-it is advisable to perform resampling to equalize the sequence numbers for each sample \citep{McKnight_Methodsnorm_2018}.
-The function \texttt{rarefy\_samples} can automatically invoke the function \texttt{tidy\_dataset} before and after the rarefying process.
-The \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available for performing rarefaction by scaling with ranked subsampling \citep{Beule_normalization_2020}.
-The default choice is \texttt{method\ =\ \textquotesingle{}rarefy\textquotesingle{}}.
-Note that the ``rarefy'' method in microtable object is a shortcut call from the ``rarefy'' method in the \texttt{trans\_norm} class.
-For other normalization methods,
-please refer to the \texttt{trans\_norm} class help documentation and the examples in the tutorial here (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#trans_norm}).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# As an example, use 10000 sequences in each sample}
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 530 features are removed because they are no longer present in any sample after random subsampling ...
-\end{verbatim}
-
-\begin{verbatim}
-## 530 taxa with 0 abundance are removed from the otu_table ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 10000 10000
-\end{verbatim}
-
 The function \texttt{save\_table} can be performed to save all the basic data in microtable object to local files,
 including feature abundance, metadata, taxonomic table, phylogenetic tree and representative sequences.
 
@@ -993,12 +947,12 @@ Those have been shown in file2meco package part (\url{https://chiliubio.github.i
 \end{Shaded}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.4444}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.4235}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1059}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 ~
@@ -1015,11 +969,11 @@ S5
 \end{minipage} \\
 \midrule()
 \endhead
-**k\_\_Bacteria\textbar p\_\_Proteobacteria** & 0.2008 & 0.1996 & 0.2151 & 0.261 & 0.1663 \\
-**k\_\_Bacteria\textbar p\_\_Chloroflexi** & 0.1215 & 0.1937 & 0.1588 & 0.1471 & 0.3098 \\
-**k\_\_Bacteria\textbar p\_\_Bacteroidetes** & 0.1816 & 0.0359 & 0.0267 & 0.0215 & 0.0266 \\
-**k\_\_Bacteria\textbar p\_\_Acidobacteria** & 0.1215 & 0.2467 & 0.2532 & 0.262 & 0.2482 \\
-**k\_\_Bacteria\textbar p\_\_Actinobacteria** & 0.1182 & 0.0861 & 0.0875 & 0.0954 & 0.0824 \\
+**k\_\_Bacteria\textbar p\_\_Proteobacteria** & 0.2005 & 0.2055 & 0.2115 & 0.2572 & 0.1683 \\
+**k\_\_Bacteria\textbar p\_\_Chloroflexi** & 0.1208 & 0.1888 & 0.1668 & 0.1494 & 0.312 \\
+**k\_\_Bacteria\textbar p\_\_Bacteroidetes** & 0.1814 & 0.03274 & 0.02704 & 0.02249 & 0.02859 \\
+**k\_\_Bacteria\textbar p\_\_Acidobacteria** & 0.1193 & 0.2483 & 0.2497 & 0.2644 & 0.2462 \\
+**k\_\_Bacteria\textbar p\_\_Actinobacteria** & 0.1222 & 0.08405 & 0.08869 & 0.08852 & 0.07963 \\
 \bottomrule()
 \end{longtable}
 
@@ -1043,13 +997,60 @@ This type of file format can be opened directly by other software, such as STAMP
 \end{Highlighting}
 \end{Shaded}
 
+Sometimes, to reduce the impact of sequencing depth on diversity measurements,
+it is advisable to perform resampling to equalize the sequence numbers for each sample \citep{McKnight_Methodsnorm_2018}.
+The function \texttt{rarefy\_samples} can automatically invoke the function \texttt{tidy\_dataset} before and after the rarefying process.
+The \texttt{method\ =\ \textquotesingle{}SRS\textquotesingle{}} is available for performing rarefaction by scaling with ranked subsampling \citep{Beule_normalization_2020}.
+The default choice is \texttt{method\ =\ \textquotesingle{}rarefy\textquotesingle{}}.
+Note that the ``rarefy'' method in microtable object is a shortcut call from the ``rarefy'' method in the \texttt{trans\_norm} class.
+For other normalization methods,
+please refer to the section of the \texttt{trans\_norm} class.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# first clone the data}
+\NormalTok{mt\_rarefied }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
+\CommentTok{\# use sample\_sums to check the sequence numbers in each sample}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10316 37087
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# As an example, use 10000 sequences in each sample}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{rarefy\_samples}\NormalTok{(}\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 530 features are removed because they are no longer present in any sample after random subsampling ...
+\end{verbatim}
+
+\begin{verbatim}
+## 530 taxa with 0 abundance are removed from the otu_table ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{sample\_sums}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ range}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10000 10000
+\end{verbatim}
+
 Then, let's calculate the alpha diversity.
 The result is also stored in the object microtable automatically.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# If you want to add Faith\textquotesingle{}s phylogenetic diversity, use PD = TRUE, this will be a little slow}
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{cal\_alphadiv}\NormalTok{(}\AttributeTok{PD =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{cal\_alphadiv}\NormalTok{(}\AttributeTok{PD =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1060,7 +1061,7 @@ The result is also stored in the object microtable automatically.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# return alpha\_diversity in the object}
-\FunctionTok{class}\NormalTok{(mt}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
+\FunctionTok{class}\NormalTok{(mt\_rarefied}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1071,7 +1072,7 @@ The result is also stored in the object microtable automatically.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# save alpha\_diversity to a directory}
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{save\_alphadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"alpha\_diversity"}\NormalTok{)}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{save\_alphadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"alpha\_diversity"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1082,11 +1083,11 @@ If method parameter is not provided, the function automatically calculates Bray-
 \begin{Highlighting}[]
 \CommentTok{\# unifrac = FALSE means do not calculate unifrac metric}
 \CommentTok{\# require GUniFrac package installed}
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{unifrac =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{cal\_betadiv}\NormalTok{(}\AttributeTok{unifrac =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return beta\_diversity list in the object}
-\FunctionTok{class}\NormalTok{(mt}\SpecialCharTok{$}\NormalTok{beta\_diversity)}
+\FunctionTok{class}\NormalTok{(mt\_rarefied}\SpecialCharTok{$}\NormalTok{beta\_diversity)}
 \CommentTok{\# save beta\_diversity to a directory}
-\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{save\_betadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"beta\_diversity"}\NormalTok{)}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\FunctionTok{save\_betadiv}\NormalTok{(}\AttributeTok{dirpath =} \StringTok{"beta\_diversity"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1106,8 +1107,8 @@ In the new microtable object, each feature in otu\_table represents one taxon at
 \begin{verbatim}
 ## microtable-class object:
 ## sample_table have 90 rows and 4 columns
-## otu_table have 1245 rows and 90 columns
-## tax_table have 1245 rows and 6 columns
+## otu_table have 1267 rows and 90 columns
+## tax_table have 1267 rows and 6 columns
 \end{verbatim}
 
 Similarly, merging samples according to a specific group of sample\_table can also generate a new microtable object.
@@ -1122,9 +1123,9 @@ Similarly, merging samples according to a specific group of sample\_table can al
 \begin{verbatim}
 ## microtable-class object:
 ## sample_table have 3 rows and 1 columns
-## otu_table have 12766 rows and 3 columns
-## tax_table have 12766 rows and 7 columns
-## phylo_tree have 12766 tips
+## otu_table have 13296 rows and 3 columns
+## tax_table have 13296 rows and 7 columns
+## phylo_tree have 13296 tips
 \end{verbatim}
 
 \hypertarget{subset-of-samples}{%
@@ -1151,21 +1152,20 @@ For example, if the user want to extract samples, please do like this:
 \begin{verbatim}
 ## microtable-class object:
 ## sample_table have 30 rows and 4 columns
-## otu_table have 9727 rows and 30 columns
-## tax_table have 9727 rows and 7 columns
-## phylo_tree have 9727 tips
-## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Pielou,Coverage 
-## Beta diversity: calculated for bray,jaccard
+## otu_table have 11351 rows and 30 columns
+## tax_table have 11351 rows and 7 columns
+## phylo_tree have 11351 tips
+## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species
 \end{verbatim}
 
 \hypertarget{subset-of-taxa}{%
 \subsection{subset of taxa}\label{subset-of-taxa}}
 
-Similar with above operation, \textbf{subset of features can be achieved by manipulating the tax\_table in microtable object directly.}
+Similar with above operation, \textbf{subset of features can be achieved by manipulating the \texttt{tax\_table} or \texttt{otu\_table} in microtable object directly.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# extracting OTU data by manipulating tax\_table}
 \NormalTok{proteo }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
 \NormalTok{proteo}\SpecialCharTok{$}\NormalTok{tax\_table }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(proteo}\SpecialCharTok{$}\NormalTok{tax\_table, Phylum }\SpecialCharTok{==} \StringTok{"p\_\_Proteobacteria"}\NormalTok{)}
 \CommentTok{\# or: proteo$tax\_table \textless{}{-} subset(proteo$tax\_table, grepl("Proteobacteria", Phylum))}
@@ -1177,12 +1177,10 @@ Similar with above operation, \textbf{subset of features can be achieved by mani
 \begin{verbatim}
 ## microtable-class object:
 ## sample_table have 90 rows and 4 columns
-## otu_table have 3052 rows and 90 columns
-## tax_table have 3052 rows and 7 columns
-## phylo_tree have 3052 tips
-## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species 
-## Alpha diversity: calculated for Observed,Chao1,se.chao1,ACE,se.ACE,Shannon,Simpson,InvSimpson,Fisher,Pielou,Coverage 
-## Beta diversity: calculated for bray,jaccard
+## otu_table have 3166 rows and 90 columns
+## tax_table have 3166 rows and 7 columns
+## phylo_tree have 3166 tips
+## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species
 \end{verbatim}
 
 \begin{Shaded}
@@ -1197,11 +1195,22 @@ Similar with above operation, \textbf{subset of features can be achieved by mani
 ## The result is stored in object$beta_diversity ...
 \end{verbatim}
 
-\hypertarget{other-examples}{%
-\subsection{Other examples}\label{other-examples}}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# extracting OTU data by manipulating otu\_table}
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{otu\_table }\OtherTok{\textless{}{-}}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{otu\_table[}\FunctionTok{c}\NormalTok{(}\StringTok{"OTU\_32"}\NormalTok{, }\StringTok{"OTU\_50"}\NormalTok{, }\StringTok{"OTU\_1"}\NormalTok{), ]}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\NormalTok{test}
+\end{Highlighting}
+\end{Shaded}
 
-The function \texttt{add\_rownames2taxonomy} can add the rownames of tax\_table as the last column of tax\_table directly.
-This operation is very useful in some analysis, e.g.~biomarker finding at OTU/ASV level with the relative abundance.
+\hypertarget{add-asvotu-to-tax_table}{%
+\subsection{add ASV/OTU to tax\_table}\label{add-asvotu-to-tax_table}}
+
+The function \texttt{add\_rownames2taxonomy} can add the row names of \texttt{tax\_table} as the last column of \texttt{tax\_table} directly.
+This operation is very useful in some analysis,
+e.g., the visualization of the OTUs/ASVs with the relative abundance.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1212,6 +1221,23 @@ This operation is very useful in some analysis, e.g.~biomarker finding at OTU/AS
 \end{Highlighting}
 \end{Shaded}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{add\_rownames2taxonomy}\NormalTok{(}\StringTok{"ASV"}\NormalTok{)}
+\CommentTok{\# then we can calculate the relative abundance of ASV}
+\CommentTok{\# for all taxonomic levels like commonly operation}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\FunctionTok{View}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{ASV)}
+\CommentTok{\# only ASV level}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{(}\AttributeTok{select\_cols =} \StringTok{"ASV"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{ASV)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{filter-the-features-with-low-abundanceoccurrence-frequency}{%
+\subsection{filter the features with low abundance/occurrence frequency}\label{filter-the-features-with-low-abundanceoccurrence-frequency}}
+
 The \texttt{filter\_taxa} function can be applied to filter the features with low abundance or occurrence frequency when needed.
 For other operations on the features, please directly manipulate the otu\_table of your microtable object.
 
@@ -1219,13 +1245,15 @@ For other operations on the features, please directly manipulate the otu\_table 
 \begin{Highlighting}[]
 \CommentTok{\# It is better to have a backup before filtering features}
 \NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
-\NormalTok{test}
 \CommentTok{\# In this example, the relative abundance threshold is 0.0001}
 \CommentTok{\# occurrence frequency 0.1; 10\% samples should have the target features}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{filter\_taxa}\NormalTok{(}\AttributeTok{rel\_abund =} \FloatTok{0.0001}\NormalTok{, }\AttributeTok{freq =} \FloatTok{0.1}\NormalTok{)}
 \NormalTok{test}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{other-examples}{%
+\subsection{Other examples}\label{other-examples}}
 
 In microtable\$new, if auto\_tidy = TRUE, the function can automatically use \texttt{tidy\_dataset} to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
@@ -1340,6 +1368,69 @@ Other functions and examples are listed here.
 \item
   beta\_diversity: beta\_diversity is a list stored in microtable object and have several distance matrix
 \end{itemize}
+
+\hypertarget{trans_norm-class}{%
+\section{trans\_norm class}\label{trans_norm-class}}
+
+The ASV/OTU data generated by amplicon sequencing have several issues that need to be considered, including sequencing depth, compositional effect, and sparsity.\\
+How to normalize the data usually depends on the following analysis content.
+The \texttt{trans\_norm} class in the microeco package (\textgreater= 1.6.0) provides several data normalization approaches for the microtable object.
+Current available methods include rarefaction, centered log-ratio (CLR) \citep{Aitchison_book_1986, Greenacre_Compositional_2021},
+robust centered log-ratio (RCLR) \citep{Martino_Novel_2019},
+total sum scaling (TSS, also known as Proportion),
+median ratio of counts relative to geometric mean (DESeq2) \citep{Love_Moderated_2014},
+trimmed mean of M-values (TMM) \citep{Robinson_scaling_2010}, relative log expression (RLE),
+cumulative sum scaling (CSS) \citep{Paulson_Differential_2013},
+geometric mean of pairwise ratios (GMPR) \citep{Chen_GMPR_2018},
+and Wrench \citep{Kumar_Analysis_2018}.
+The rarefaction method used here is exactly the same as the \texttt{rarefy\_samples} function in the previous \texttt{microtable} chapter,
+in which using resampling was to conveniently connect with the calculation of diversity.
+TSS/CLR/RCLR are also recommended in some beta diversity analysis by some researchers.
+CLR and RCLR are specifically designed for compositional effects.
+The relative abundance calculated using \texttt{cal\_abund} as demonstrated in the previous chapter also falls under TSS.
+The relative abundance values (ranging from 0 to 1) are commonly used for visualization or differential abundance test at high taxonomic levels (e.g., Genus and Phylum).
+Other normalization methods are mainly developed for differential abundance analysis of ASVs/OTUs,
+considering compositional effects and sequencing depth issues. \citep{Swift_reviewnorm_2022}.
+The format of output is same with the input.
+For the details and references of the approaches, please refer to the help document of the class with the command \texttt{?trans\_norm}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# rarefaction}
+\NormalTok{mt\_rarefied }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rarefy"}\NormalTok{, }\AttributeTok{sample.size =} \DecValTok{10000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Centered log{-}ratio normalization}
+\NormalTok{mt\_clr }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"clr"}\NormalTok{)}
+\CommentTok{\# Robust centered log{-}ratio normalization}
+\NormalTok{mt\_rclr }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rclr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
+\NormalTok{mt\_TSS }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Geometric mean of pairwise ratios}
+\NormalTok{mt\_GMPR }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"GMPR"}\NormalTok{)}
+\CommentTok{\# Cumulative sum scaling normalization}
+\NormalTok{mt\_CSS }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CSS"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{composition-based-class}{%
 \chapter{Composition-based class}\label{composition-based-class}}
@@ -1590,7 +1681,7 @@ we first merge samples according to the ``Group'' column of sample\_table.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# merge samples as one community for each group}
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# tmp is a new microtable object}
 \CommentTok{\# create trans\_venn object}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{ratio =} \ConstantTok{NULL}\NormalTok{)}
@@ -1618,7 +1709,7 @@ To assign different colors in petals, please provide multiple colors to \texttt{
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use "Type" column in sample\_table}
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_color =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_venn}\NormalTok{(}\AttributeTok{petal\_plot =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{petal\_center\_size =} \DecValTok{50}\NormalTok{, }\AttributeTok{petal\_r =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{petal\_a =} \DecValTok{3}\NormalTok{, }\AttributeTok{petal\_move\_xy =} \FloatTok{3.8}\NormalTok{, }\AttributeTok{petal\_color\_center =} \StringTok{"\#BEBADA"}\NormalTok{)}
@@ -1632,7 +1723,7 @@ This way is generally called UpSet plot. Please see the help document for more p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{tmp}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp)}
 \CommentTok{\# only show some sets with large intersection numbers}
@@ -1655,7 +1746,7 @@ For this goal, we first transform the results of venn plot to the traditional fe
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp)}
 \end{Highlighting}
 \end{Shaded}
@@ -1714,7 +1805,7 @@ To reorder samples in the plots, please manipulate the sample\_table in the obje
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{test}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[}\FunctionTok{c}\NormalTok{(}\StringTok{"YML"}\NormalTok{, }\StringTok{"NE"}\NormalTok{, }\StringTok{"NW"}\NormalTok{, }\StringTok{"NC"}\NormalTok{, }\StringTok{"QTP"}\NormalTok{, }\StringTok{"SC"}\NormalTok{), , drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
 \NormalTok{test}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \CommentTok{\# The columns of otu\_table can also be reordered according to the sample\_table after running tidy\_dataset function}
@@ -1728,7 +1819,7 @@ The left bar plot can be removed when the parameter \texttt{left\_plot\ =\ FALSE
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
 \CommentTok{\# remove left bar in the UpSet plot}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_plot =} \ConstantTok{FALSE}\NormalTok{)}
@@ -1741,7 +1832,7 @@ The left bar plot can be removed when the parameter \texttt{left\_plot\ =\ FALSE
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_samples}\NormalTok{(}\StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_venn}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(test)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_bar}\NormalTok{(}\AttributeTok{left\_bar\_fill =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{), }\AttributeTok{left\_bar\_alpha =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{bottom\_background\_fill =}\NormalTok{ RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{), }\AttributeTok{bottom\_background\_alpha =} \FloatTok{0.2}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{data\_summary }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{Counts }\SpecialCharTok{\textgreater{}} \DecValTok{1}\NormalTok{, ]}
@@ -1780,7 +1871,7 @@ Creating a \texttt{trans\_alpha} object can return two data.frame with the prefi
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \CommentTok{\# return t1$data\_stat}
 \FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_stat)}
 \end{Highlighting}
@@ -1984,7 +2075,7 @@ The multi-factor analysis of variance is also supported with the \texttt{formula
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type"}\NormalTok{)}
 \FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
 \CommentTok{\# see the help document for the usage of formula}
@@ -2034,7 +2125,7 @@ The trans\_alpha class supports the differential test of groups within each grou
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{, }\AttributeTok{by\_group =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"wilcox"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}
 \end{Highlighting}
@@ -2046,7 +2137,7 @@ Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way fa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied)}
 \CommentTok{\# require rcompanion package to be installed}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"scheirerRayHare"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type"}\NormalTok{)}
 \end{Highlighting}
@@ -2063,7 +2154,7 @@ and marginal R2 is the variance explained by fixed effects.
 \begin{Shaded}
 \begin{Highlighting}[]
 \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lmerTest"}\NormalTok{)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied)}
 \CommentTok{\# just using (1|Type) as an example to show the random effect}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"lme"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group + (1|Type)"}\NormalTok{)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_diff)}
@@ -2077,7 +2168,7 @@ All the options starting with ``gg'' (e.g., ``ggboxplot'', ``ggdotplot'', ``ggvi
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{, }\AttributeTok{KW\_dunn\_letter =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"ggboxplot"}\NormalTok{, }\AttributeTok{add =} \StringTok{"none"}\NormalTok{)}
 
@@ -2102,7 +2193,7 @@ The line is optional to be added between points (Mean) for the case with a gradi
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"KW\_dunn"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{, }\AttributeTok{KW\_dunn\_letter =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{plot\_type =} \StringTok{"errorbar"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Chao1"}\NormalTok{)}
@@ -2133,7 +2224,7 @@ From v1.4.0, the heatmap can be used to visualize the significances for the case
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_alpha}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"Group+Type+Group:Type"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{rev}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{11}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdYlBu"}\NormalTok{)), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_alpha}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
@@ -2178,8 +2269,8 @@ PCA (principal component analysis), DCA (detrended correspondence analysis) and 
 \begin{Highlighting}[]
 \CommentTok{\# create trans\_beta object}
 \CommentTok{\# For PCoA and NMDS, measure parameter must be provided.}
-\CommentTok{\# measure parameter should be either one of names(mt$beta\_diversity) or a customized symmetric matrix}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
+\CommentTok{\# measure parameter should be either one of names(mt\_rarefied$beta\_diversity) or a customized symmetric matrix}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2219,7 +2310,7 @@ One example for PCA or DCA with Genus data and loading arrow.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\FunctionTok{merge\_taxa}\NormalTok{(}\AttributeTok{taxa =} \StringTok{"Genus"}\NormalTok{)}
 \NormalTok{tmp}\SpecialCharTok{$}\NormalTok{tax\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[.}\SpecialCharTok{$}\NormalTok{Genus }\SpecialCharTok{!=} \StringTok{"g\_\_"}\NormalTok{, ]}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \FunctionTok{rownames}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{otu\_table) }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\NormalTok{tax\_table[}\FunctionTok{rownames}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{otu\_table), }\StringTok{"Genus"}\NormalTok{]}
@@ -2236,7 +2327,7 @@ Then we plot and compare the group distances.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# calculate and plot sample distances within groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_group\_distance}\NormalTok{(}\AttributeTok{within\_group =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return t1$res\_group\_distance}
@@ -2267,7 +2358,7 @@ Clustering plot is also a frequently used method.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# extract a part of data}
-\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt\_rarefied)}
 \NormalTok{tmp}\SpecialCharTok{$}\NormalTok{sample\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{subset}\NormalTok{(Group }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"CW"}\NormalTok{, }\StringTok{"TW"}\NormalTok{))}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{)}
@@ -2283,7 +2374,7 @@ based on the \texttt{adonis2} function of vegan package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_beta}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"bray"}\NormalTok{)}
 \CommentTok{\# manova for all groups when manova\_all = TRUE}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_manova}\NormalTok{(}\AttributeTok{manova\_all =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
@@ -3570,7 +3661,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Feb  9 10:40:47 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Mon Feb 24 11:56:30 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3600,9 +3691,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.6537 & 0.3864 & 0.3638 & 9.133 \\
-CW & 435 & 0.5633 & 0.2963 & 0.2868 & 14.34 \\
-TW & 435 & 0.6248 & 0.4167 & 0.4002 & 9.793 \\
+IW & 435 & 0.5549 & 0.29 & 0.3006 & 19.89 \\
+CW & 435 & 0.5885 & 0.3136 & 0.3178 & 24.39 \\
+TW & 435 & 0.5824 & 0.3596 & 0.3668 & 17.15 \\
 \bottomrule()
 \end{longtable}
 
@@ -3916,7 +4007,7 @@ The following is using additional environmental data which is not in the microta
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# add\_data is used to add the environmental data}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3929,9 +4020,9 @@ To show this operation, we first merge additional table into sample\_table to ge
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mt}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(mt}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(mt}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
-\CommentTok{\# now mt$sample\_table has the whole data}
-\NormalTok{mt}
+\NormalTok{mt\_rarefied}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(mt\_rarefied}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(mt\_rarefied}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
+\CommentTok{\# now mt\_rarefied$sample\_table has the whole data}
+\NormalTok{mt\_rarefied}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3951,7 +4042,7 @@ From v1.0.0, the parameter \texttt{standardize\ =\ TRUE} is available to standar
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4175,7 +4266,7 @@ The parameter \texttt{p\_adjust\_type} can control the p value adjustment type.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4225,9 +4316,9 @@ please use \textbf{other\_taxa} parameter in \texttt{cal\_cor} function.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# first create trans\_diff object as a demonstration}
-\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \CommentTok{\# then create trans\_env object}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \CommentTok{\# use other\_taxa to select taxa you need}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{use\_data =} \StringTok{"other"}\NormalTok{, }\AttributeTok{p\_adjust\_method =} \StringTok{"fdr"}\NormalTok{, }\AttributeTok{other\_taxa =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_diff}\SpecialCharTok{$}\NormalTok{Taxa[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{()}
@@ -4236,22 +4327,8 @@ please use \textbf{other\_taxa} parameter in \texttt{cal\_cor} function.
 
 \begin{center}\includegraphics[width=700px]{Images/trans_env_corr_ggplot} \end{center}
 
-The pheatmap method is also available.
-Note that, besides the \textbf{color\_vector} parameter,
-\textbf{color\_palette} can also be used to control color palette with customized colors.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# clustering heatmap; require pheatmap package}
-\CommentTok{\# Let\textquotesingle{}s take another color pallete}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_palette =} \FunctionTok{rev}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{9}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdYlBu"}\NormalTok{)))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=700px]{Images/trans_env_corr_pheatmap} \end{center}
-
 Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
-\textbf{by\_group parameter} can be used for this goal.
+\textbf{by\_group} parameter can be used for this goal.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4269,9 +4346,9 @@ please use \textbf{add\_abund\_table} parameter in the cal\_cor function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \CommentTok{\# use add\_abund\_table parameter to add the extra data table}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ mt}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\NormalTok{alpha\_diversity)}
 \CommentTok{\# try to use ggplot2 with clustering plot}
 \CommentTok{\# require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco\_tutorial/intro.html\#dependence)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"both"}\NormalTok{)}
@@ -4288,7 +4365,7 @@ The function \texttt{plot\_scatterfit} in trans\_env class is designed for the s
 \CommentTok{\# add correlation statistics}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}
     \AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }
-    \AttributeTok{y =}\NormalTok{ mt}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env)], }
+    \AttributeTok{y =}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env)], }
     \AttributeTok{type =} \StringTok{"cor"}\NormalTok{,}
     \AttributeTok{point\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{point\_alpha =} \FloatTok{0.1}\NormalTok{, }
     \AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{, }\AttributeTok{label.y.npc =} \StringTok{"bottom"}\NormalTok{, }
@@ -4304,7 +4381,7 @@ The function \texttt{plot\_scatterfit} in trans\_env class is designed for the s
 \begin{Highlighting}[]
 \CommentTok{\# regression with type = "lm", use group parameter for different groups}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ mt}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env)],}
+    \AttributeTok{x =}\NormalTok{ mt\_rarefied}\SpecialCharTok{$}\NormalTok{beta\_diversity}\SpecialCharTok{$}\NormalTok{bray[}\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env), }\FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_env)],}
     \AttributeTok{y =} \StringTok{"pH"}\NormalTok{,}
     \AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }
     \AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }
@@ -4348,7 +4425,7 @@ Other examples:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt\_rarefied, }\AttributeTok{env\_cols =} \DecValTok{8}\SpecialCharTok{:}\DecValTok{15}\NormalTok{)}
 \CommentTok{\# with forward selection in RDA}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_ordination}\NormalTok{(}\AttributeTok{method =} \StringTok{"dbRDA"}\NormalTok{, }\AttributeTok{feature\_sel =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# CCA, canonical correspondence analysis}
@@ -4378,7 +4455,7 @@ Other examples:
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y =} \StringTok{"TOC"}\NormalTok{, }\AttributeTok{type =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{line\_se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{label.x.npc =} \StringTok{"center"}\NormalTok{,}
     \AttributeTok{shape\_values =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y\_axis\_title =} \StringTok{"TOC"}\NormalTok{)}
 \CommentTok{\# correlation between relative abundance of Genus{-}Arthrobacter and pH}
-\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{unlist}\NormalTok{(mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Genus[}\StringTok{"k\_\_Bacteria|p\_\_Actinobacteria|c\_\_Actinobacteria|o\_\_Micrococcales|f\_\_Micrococcaceae|g\_\_Arthrobacter"}\NormalTok{, ])}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{unlist}\NormalTok{(mt\_rarefied}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Genus[}\StringTok{"k\_\_Bacteria|p\_\_Actinobacteria|c\_\_Actinobacteria|o\_\_Micrococcales|f\_\_Micrococcaceae|g\_\_Arthrobacter"}\NormalTok{, ])}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_scatterfit}\NormalTok{(}\AttributeTok{x =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{y =}\NormalTok{ tmp, }\AttributeTok{point\_size =} \DecValTok{3}\NormalTok{, }\AttributeTok{point\_alpha =} \FloatTok{0.3}\NormalTok{, }
     \AttributeTok{y\_axis\_title =} \StringTok{"Arthrobacter"}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"pH"}\NormalTok{)}
 \end{Highlighting}
@@ -4515,11 +4592,11 @@ acetoclastic\_methanogenesis
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{S1} & 0.39 & 0.04 \\
-\textbf{S2} & 0.27 & 0 \\
-\textbf{S3} & 0.48 & 0 \\
-\textbf{S4} & 0.48 & 0 \\
-\textbf{S5} & 0.56 & 0 \\
+\textbf{S1} & 0.42 & 0.05 \\
+\textbf{S2} & 0.43 & 0 \\
+\textbf{S3} & 0.37 & 0 \\
+\textbf{S4} & 0.5 & 0 \\
+\textbf{S5} & 0.52 & 0 \\
 \bottomrule()
 \end{longtable}
 
@@ -4570,7 +4647,7 @@ Then we try to correlate the percentage data in \texttt{res\_spe\_func\_perc} to
 \begin{Highlighting}[]
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{pheatmap =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"both"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6421,6 +6498,14 @@ Sometimes, these unknown taxa may be useful to represent uncultured species.
 Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
 Please see the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
 
+\hypertarget{show-the-abundance-of-unknown-taxa-1}{%
+\section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa-1}}
+
+In the \texttt{trans\_abund} class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
+Sometimes, these unknown taxa may be useful to represent uncultured species.
+Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
+Please see the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
+
 \hypertarget{question-of-prefix-in-the-taxa}{%
 \section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}}
 
@@ -6432,38 +6517,6 @@ and (\url{https://github.com/ChiLiubio/microeco/issues/15}).
 \section{The use of phylogenetic tree}\label{the-use-of-phylogenetic-tree}}
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (\url{https://github.com/ChiLiubio/microeco/issues/33}).
-
-\hypertarget{trans_norm}{%
-\section{trans\_norm}\label{trans_norm}}
-
-The class trans\_norm in microeco package (\textgreater= 1.6.0) provides several data normalization or transformation approaches for the microtable object or data.frame object.
-The format of output is same with the input.
-For the details and references of the approaches, please refer to the help document of the class with the command \texttt{?trans\_norm}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(microeco)}
-\FunctionTok{data}\NormalTok{(dataset)}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset)}
-\CommentTok{\# Geometric mean of pairwise ratios}
-\NormalTok{d1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"GMPR"}\NormalTok{)}
-\CommentTok{\# Centered log{-}ratio normalization}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"clr"}\NormalTok{)}
-\CommentTok{\# Robust centered log{-}ratio normalization}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rclr"}\NormalTok{)}
-\CommentTok{\# d2 is another microtable object}
-\CommentTok{\# Cumulative sum scaling normalization}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"CSS"}\NormalTok{)}
-\CommentTok{\# Total sum scaling, dividing counts by the sequencing depth}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}
-\CommentTok{\# rarefaction}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"rarefy"}\NormalTok{)}
-\NormalTok{d2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"SRS"}\NormalTok{, }\AttributeTok{sample.size =} \DecValTok{500}\NormalTok{)}
-
-\CommentTok{\# log transformation}
-\NormalTok{d3 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"log"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \hypertarget{mantel-test-correlation-heatmap}{%
 \section{Mantel test + Correlation heatmap}\label{mantel-test-correlation-heatmap}}
@@ -6780,8 +6833,8 @@ In this section, we list some examples.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# version \textgreater{}= 1.12.0}
-\ControlFlowTok{if}\NormalTok{(}\FunctionTok{packageVersion}\NormalTok{(}\StringTok{"microeco"}\NormalTok{) }\SpecialCharTok{\textless{}} \StringTok{"1.12.0"}\NormalTok{)\{}
+\CommentTok{\# version \textgreater{}= 1.13.0}
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{packageVersion}\NormalTok{(}\StringTok{"microeco"}\NormalTok{) }\SpecialCharTok{\textless{}} \StringTok{"1.13.0"}\NormalTok{)\{}
     \FunctionTok{install.packages}\NormalTok{(}\StringTok{"microeco"}\NormalTok{)}
 \NormalTok{\}}
 \end{Highlighting}
@@ -6915,9 +6968,8 @@ Other examples for reference are shown below.
 
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}
     \FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ dataset, }\AttributeTok{y.response =} \StringTok{"Saline"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"Genus"}\NormalTok{)}\SpecialCharTok{$}
-    \FunctionTok{cal\_preProcess}\NormalTok{(}\AttributeTok{method =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{, }\StringTok{"nzv"}\NormalTok{))}\SpecialCharTok{$}
-    \FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}\SpecialCharTok{$}
     \FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}\SpecialCharTok{$}
+    \FunctionTok{cal\_feature\_sel}\NormalTok{(}\AttributeTok{boruta.maxRuns =} \DecValTok{300}\NormalTok{, }\AttributeTok{boruta.pValue =} \FloatTok{0.01}\NormalTok{)}\SpecialCharTok{$}
     \FunctionTok{set\_trainControl}\NormalTok{()}\SpecialCharTok{$}
     \FunctionTok{cal\_train}\NormalTok{()}\SpecialCharTok{$}
     \FunctionTok{cal\_predict}\NormalTok{()}\SpecialCharTok{$}

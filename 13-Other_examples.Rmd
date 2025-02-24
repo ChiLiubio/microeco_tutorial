@@ -51,39 +51,6 @@ and (https://github.com/ChiLiubio/microeco/issues/15).
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (https://github.com/ChiLiubio/microeco/issues/33).
 
 
-
-## trans_norm
-
-The class trans_norm in microeco package (>= 1.6.0) provides several data normalization or transformation approaches for the microtable object or data.frame object.
-The format of output is same with the input.
-For the details and references of the approaches, please refer to the help document of the class with the command `?trans_norm`.
-
-
-```{r, echo = TRUE, eval = FALSE}
-library(microeco)
-data(dataset)
-t1 <- trans_norm$new(dataset = dataset)
-# Geometric mean of pairwise ratios
-d1 <- t1$norm(method = "GMPR")
-# Centered log-ratio normalization
-d2 <- t1$norm(method = "clr")
-# Robust centered log-ratio normalization
-d2 <- t1$norm(method = "rclr")
-# d2 is another microtable object
-# Cumulative sum scaling normalization
-d2 <- t1$norm(method = "CSS")
-# Total sum scaling, dividing counts by the sequencing depth
-d2 <- t1$norm(method = "TSS")
-# rarefaction
-d2 <- t1$norm(method = "rarefy")
-d2 <- t1$norm(method = "SRS", sample.size = 500)
-
-# log transformation
-d3 <- t1$norm(method = "log")
-```
-
-
-
 ## Mantel test + Correlation heatmap
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.

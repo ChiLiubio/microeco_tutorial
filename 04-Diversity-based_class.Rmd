@@ -17,13 +17,13 @@ Creating a `trans_alpha` object can return two data.frame with the prefix 'data_
 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Group")
 # return t1$data_stat
 head(t1$data_stat)
 ```
 
 ```{r, echo = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Group")
 pander::pander(head(t1$data_stat))
 ```
 
@@ -80,7 +80,7 @@ pander::pander(head(t1$res_diff))
 The multi-factor analysis of variance is also supported with the `formula` parameter, such as two-way anova. 
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Group")
 t1$cal_diff(method = "anova", formula = "Group+Type")
 head(t1$res_diff)
 # see the help document for the usage of formula
@@ -129,7 +129,7 @@ knitr::include_graphics("Images/trans_alpha_wilcox_nons.png")
 The trans_alpha class supports the differential test of groups within each group using the `by_group` parameter.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Type", by_group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Type", by_group = "Group")
 t1$cal_diff(method = "wilcox")
 t1$plot_alpha(measure = "Shannon")
 ```
@@ -142,7 +142,7 @@ knitr::include_graphics("Images/trans_alpha_wilcox_bygroup.png")
 Scheirer Ray Hare test is a nonparametric test that is suitable for a two-way factorial experiment.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt)
+t1 <- trans_alpha$new(dataset = mt_rarefied)
 # require rcompanion package to be installed
 t1$cal_diff(method = "scheirerRayHare", formula = "Group+Type")
 ```
@@ -158,7 +158,7 @@ and marginal R2 is the variance explained by fixed effects.
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("lmerTest")) install.packages("lmerTest")
-t1 <- trans_alpha$new(dataset = mt)
+t1 <- trans_alpha$new(dataset = mt_rarefied)
 # just using (1|Type) as an example to show the random effect
 t1$cal_diff(method = "lme", formula = "Group + (1|Type)")
 View(t1$res_diff)
@@ -170,7 +170,7 @@ Note that from v1.9.0, the parameter `plot_type` control which type of plot is e
 All the options starting with "gg" (e.g., "ggboxplot", "ggdotplot", "ggviolin", "ggstripchart", "ggerrorplot") means they are the functions coming from the ggpubr package.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Type")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Type")
 t1$cal_diff(method = "KW_dunn", KW_dunn_letter = TRUE)
 t1$plot_alpha(plot_type = "ggboxplot", add = "none")
 
@@ -194,7 +194,7 @@ The option `"errorbar"` or `"barerrorbar"` in `plot_alpha` will invoke the `data
 The line is optional to be added between points (Mean) for the case with a gradient.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Group")
 t1$cal_diff(method = "KW_dunn", measure = "Chao1", KW_dunn_letter = TRUE)
 t1$plot_alpha(measure = "Chao1")
 t1$plot_alpha(plot_type = "errorbar", measure = "Chao1")
@@ -223,7 +223,7 @@ t1$plot_alpha(plot_type = "errorbar", plot_SE = FALSE, measure = "Shannon", add_
 From v1.4.0, the heatmap can be used to visualize the significances for the case with multiple factors in the formula.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_alpha$new(dataset = mt, group = "Group")
+t1 <- trans_alpha$new(dataset = mt_rarefied, group = "Group")
 t1$cal_diff(method = "anova", formula = "Group+Type+Group:Type")
 t1$plot_alpha(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
 t1$plot_alpha(color_palette = c("#053061", "white", "#A50026"), trans = "log10")
@@ -258,8 +258,8 @@ PCA (principal component analysis), DCA (detrended correspondence analysis) and 
 ```{r, echo = TRUE, eval = TRUE}
 # create trans_beta object
 # For PCoA and NMDS, measure parameter must be provided.
-# measure parameter should be either one of names(mt$beta_diversity) or a customized symmetric matrix
-t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
+# measure parameter should be either one of names(mt_rarefied$beta_diversity) or a customized symmetric matrix
+t1 <- trans_beta$new(dataset = mt_rarefied, group = "Group", measure = "bray")
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -295,7 +295,7 @@ t1$plot_ordination(plot_color = "Group") + theme(panel.grid = element_blank()) +
 One example for PCA or DCA with Genus data and loading arrow.
 
 ```{r, echo = TRUE, eval = FALSE}
-tmp <- mt$merge_taxa(taxa = "Genus")
+tmp <- mt_rarefied$merge_taxa(taxa = "Genus")
 tmp$tax_table %<>% .[.$Genus != "g__", ]
 tmp$tidy_dataset()
 rownames(tmp$otu_table) <- tmp$tax_table[rownames(tmp$otu_table), "Genus"]
@@ -310,7 +310,7 @@ t1$plot_ordination(plot_color = "Group", loading_arrow = TRUE, loading_text_ital
 Then we plot and compare the group distances.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = mt_rarefied, group = "Group", measure = "bray")
 # calculate and plot sample distances within groups
 t1$cal_group_distance(within_group = TRUE)
 # return t1$res_group_distance
@@ -341,7 +341,7 @@ Clustering plot is also a frequently used method.
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract a part of data
-tmp <- clone(mt)
+tmp <- clone(mt_rarefied)
 tmp$sample_table %<>% subset(Group %in% c("CW", "TW"))
 tmp$tidy_dataset()
 t1 <- trans_beta$new(dataset = tmp, group = "Group")
@@ -358,7 +358,7 @@ PerMANOVA[@Anderson_Austral_2001] can be applied to the differential test of dis
 based on the `adonis2` function of vegan package.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_beta$new(dataset = mt, group = "Group", measure = "bray")
+t1 <- trans_beta$new(dataset = mt_rarefied, group = "Group", measure = "bray")
 # manova for all groups when manova_all = TRUE
 t1$cal_manova(manova_all = TRUE)
 t1$res_manova

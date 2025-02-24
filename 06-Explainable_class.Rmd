@@ -15,23 +15,23 @@ The following is using additional environmental data which is not in the microta
 
 ```{r, echo = TRUE}
 # add_data is used to add the environmental data
-t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt_rarefied, add_data = env_data_16S[, 4:11])
 ```
 
 Maybe a more general way is to directly use the data from sample_table of your microtable object.
 To show this operation, we first merge additional table into sample_table to generate a new microtable object.
 
 ```{r, echo = TRUE}
-mt$sample_table <- data.frame(mt$sample_table, env_data_16S[rownames(mt$sample_table), ])
-# now mt$sample_table has the whole data
-mt
+mt_rarefied$sample_table <- data.frame(mt_rarefied$sample_table, env_data_16S[rownames(mt_rarefied$sample_table), ])
+# now mt_rarefied$sample_table has the whole data
+mt_rarefied
 ```
 
 Now let's use env_cols to select the required columns from sample_table in the microtable object.
 From v1.0.0, the parameter `standardize = TRUE` is available to standardize each variable.
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt_rarefied, env_cols = 8:15)
 ```
 
 Generally, it is beneficial to analyze environmental variables in order to better use more methods.
@@ -179,7 +179,7 @@ The parameter `partial` controls wheter conduct partial correlation.
 The parameter `p_adjust_type` can control the p value adjustment type. 
 
 ```{r, echo = TRUE}
-t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt_rarefied, env_cols = 8:15)
 # 'p_adjust_type = "Env"' means p adjustment is performed for each environmental variable separately.
 t1$cal_cor(use_data = "Genus", p_adjust_method = "fdr", p_adjust_type = "Env")
 # return t1$res_cor
@@ -206,9 +206,9 @@ please use **other_taxa** parameter in `cal_cor` function.
 
 ```{r, echo = TRUE, eval = FALSE}
 # first create trans_diff object as a demonstration
-t2 <- trans_diff$new(dataset = mt, method = "rf", group = "Group", taxa_level = "Genus")
+t2 <- trans_diff$new(dataset = mt_rarefied, method = "rf", group = "Group", taxa_level = "Genus")
 # then create trans_env object
-t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt_rarefied, add_data = env_data_16S[, 4:11])
 # use other_taxa to select taxa you need
 t1$cal_cor(use_data = "other", p_adjust_method = "fdr", other_taxa = t2$res_diff$Taxa[1:40])
 t1$plot_cor()
@@ -218,22 +218,9 @@ t1$plot_cor()
 knitr::include_graphics("Images/trans_env_corr_ggplot.png")
 ```
 
-The pheatmap method is also available.
-Note that, besides the **color_vector** parameter, 
-**color_palette** can also be used to control color palette with customized colors.
-
-```{r, echo = TRUE, eval = FALSE}
-# clustering heatmap; require pheatmap package
-# Let's take another color pallete
-t1$plot_cor(pheatmap = TRUE, color_palette = rev(RColorBrewer::brewer.pal(n = 9, name = "RdYlBu")))
-```
-
-```{r, out.width = "700px", fig.align="center", echo = FALSE}
-knitr::include_graphics("Images/trans_env_corr_pheatmap.png")
-```
 
 Sometimes, if it is needed to study the correlations between environmental variables and taxa for different groups,
-**by_group parameter** can be used for this goal.
+**by_group** parameter can be used for this goal.
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate correlations for different groups using parameter by_group
@@ -251,9 +238,9 @@ If the user is interested in the relationship between environmental factors and 
 please use **add_abund_table** parameter in the cal_cor function.
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
+t1 <- trans_env$new(dataset = mt_rarefied, add_data = env_data_16S[, 4:11])
 # use add_abund_table parameter to add the extra data table
-t1$cal_cor(add_abund_table = mt$alpha_diversity)
+t1$cal_cor(add_abund_table = mt_rarefied$alpha_diversity)
 # try to use ggplot2 with clustering plot
 # require ggtree and aplot packages to be installed (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence)
 t1$plot_cor(cluster_ggplot = "both")
@@ -272,7 +259,7 @@ The function `plot_scatterfit` in trans_env class is designed for the scatter pl
 # add correlation statistics
 t1$plot_scatterfit(
 	x = "pH", 
-	y = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
+	y = mt_rarefied$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)], 
 	type = "cor",
 	point_size = 3, point_alpha = 0.1, 
 	label.x.npc = "center", label.y.npc = "bottom", 
@@ -288,7 +275,7 @@ knitr::include_graphics("Images/trans_env_scatterfit_cor.png")
 ```{r, echo = TRUE, eval = FALSE}
 # regression with type = "lm", use group parameter for different groups
 t1$plot_scatterfit(
-    x = mt$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
+    x = mt_rarefied$beta_diversity$bray[rownames(t1$data_env), rownames(t1$data_env)],
 	y = "pH",
 	type = "lm", 
 	group = "Group", 
@@ -335,7 +322,7 @@ knitr::include_graphics("Images/trans_env_classifier_rf_featureimp_sig.png")
 Other examples:
 
 ```{r, echo = TRUE, eval = FALSE}
-t1 <- trans_env$new(dataset = mt, env_cols = 8:15)
+t1 <- trans_env$new(dataset = mt_rarefied, env_cols = 8:15)
 # with forward selection in RDA
 t1$cal_ordination(method = "dbRDA", feature_sel = TRUE)
 # CCA, canonical correspondence analysis
@@ -365,7 +352,7 @@ t1$plot_scatterfit(x = 1, y = 2, line_se = FALSE, pvalue_trim = 3, cor_coef_trim
 t1$plot_scatterfit(x = "pH", y = "TOC", type = "lm", group = "Group", line_se = FALSE, label.x.npc = "center",
 	shape_values = 1:3, x_axis_title = "pH", y_axis_title = "TOC")
 # correlation between relative abundance of Genus-Arthrobacter and pH
-tmp <- unlist(mt$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
+tmp <- unlist(mt_rarefied$taxa_abund$Genus["k__Bacteria|p__Actinobacteria|c__Actinobacteria|o__Micrococcales|f__Micrococcaceae|g__Arthrobacter", ])
 t1$plot_scatterfit(x = "pH", y = tmp, point_size = 3, point_alpha = 0.3, 
 	y_axis_title = "Arthrobacter", x_axis_title = "pH")
 ```
@@ -474,7 +461,7 @@ Then we try to correlate the percentage data in `res_spe_func_perc` to environme
 ```{r, echo = TRUE, eval = FALSE}
 t3 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
 t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
-t3$plot_cor(pheatmap = TRUE)
+t3$plot_cor(cluster_ggplot = "both")
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
