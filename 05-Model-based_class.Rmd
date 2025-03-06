@@ -21,6 +21,15 @@ Given that multiple approaches are available,
 it is feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
 
+```{r, out.width = "8000px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/trans_diff_demons.png")
+```
+Note: The methods for invoking `otu_table` are primarily designed for differential abundance analysis of ASVs/OTUs (or Genes). 
+These methods for invoking `taxa_abund` list are recommended for analyses at higher taxonomic levels (such as Genus or Phylum).
+
+
+
+
 ### Example
 
 All the differential test result is stored in the `object$res_diff`.
@@ -193,7 +202,6 @@ These three packages are all deposited on the Bioconductor.
 ```{r, echo = TRUE, eval = FALSE}
 # zero-inflated log-normal model-based differential test method from metagenomeSeq package
 # If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")
-t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "Genus")
 t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
@@ -203,8 +211,6 @@ t1$plot_diff_bar(use_number = 1:20)
 # 'ALDEx2_t' and 'ALDEx2_kw' methods; use ?trans_diff to see detailed description of the methods
 # If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
-t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "Phylum")
-t1$plot_diff_abund(use_number = 1:20)
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
 # ALDEx2_kw
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
@@ -218,7 +224,7 @@ t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"), add_sig
 # ANCOMBC2 method
 # when fix_formula is not provided (necessary in ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter
 # Restart R if there is an error that "Error in model.matrix.formula(): data must be a data.frame"
-t1 <- trans_diff$new(dataset = mt, method = "ancombc2", group = "Group", taxa_level = "Genus", filter_thres = 0.01)
+t1 <- trans_diff$new(dataset = mt, method = "ancombc2", group = "Group", taxa_level = "OTU", filter_thres = 0.01)
 t1$plot_diff_bar(keep_full_name = TRUE, heatmap_cell = "P.adj", heatmap_sig = "Significance", heatmap_x = "Factors", heatmap_y = "Taxa")
 # add a continuous variable
 tmp <- clone(mt)
@@ -264,6 +270,8 @@ t1$plot_diff_bar(heatmap_cell = "Estimate", heatmap_sig = "Significance", heatma
 The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function, 
 because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+When no random effects are present, the 'glmm_beta' method is equivalent to the 'betareg' method (beta regression).
+
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require("glmmTMB")) install.packages("glmmTMB")

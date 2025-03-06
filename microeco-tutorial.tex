@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v1.13.0)}
 \author{}
-\date{\vspace{-2.5em}2025-02-24}
+\date{\vspace{-2.5em}2025-03-06}
 
 \begin{document}
 \maketitle
@@ -2698,6 +2698,11 @@ linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available,
 it is feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.
 
+\begin{center}\includegraphics[width=8000px]{Images/trans_diff_demons} \end{center}
+
+Note: The methods for invoking \texttt{otu\_table} are primarily designed for differential abundance analysis of ASVs/OTUs (or Genes).
+These methods for invoking \texttt{taxa\_abund} list are recommended for analyses at higher taxonomic levels (such as Genus or Phylum).
+
 \hypertarget{example-4}{%
 \subsection{Example}\label{example-4}}
 
@@ -2895,7 +2900,6 @@ These three packages are all deposited on the Bioconductor.
 \begin{Highlighting}[]
 \CommentTok{\# zero{-}inflated log{-}normal model{-}based differential test method from metagenomeSeq package}
 \CommentTok{\# If metagenomeSeq package is not installed, please first run: BiocManager::install("metagenomeSeq")}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
@@ -2907,8 +2911,6 @@ These three packages are all deposited on the Bioconductor.
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{} and \textquotesingle{}ALDEx2\_kw\textquotesingle{} methods; use ?trans\_diff to see detailed description of the methods}
 \CommentTok{\# If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")}
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{}}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Phylum"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
 \CommentTok{\# ALDEx2\_kw}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ALDEx2\_kw"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
@@ -2923,7 +2925,7 @@ These three packages are all deposited on the Bioconductor.
 \CommentTok{\# ANCOMBC2 method}
 \CommentTok{\# when fix\_formula is not provided (necessary in ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter}
 \CommentTok{\# Restart R if there is an error that "Error in model.matrix.formula(): data must be a data.frame"}
-\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"Genus"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.01}\NormalTok{)}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ancombc2"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.01}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{heatmap\_cell =} \StringTok{"P.adj"}\NormalTok{, }\AttributeTok{heatmap\_sig =} \StringTok{"Significance"}\NormalTok{, }\AttributeTok{heatmap\_x =} \StringTok{"Factors"}\NormalTok{, }\AttributeTok{heatmap\_y =} \StringTok{"Taxa"}\NormalTok{)}
 \CommentTok{\# add a continuous variable}
 \NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
@@ -2974,6 +2976,7 @@ The heatmap can be used in the \texttt{plot\_diff\_bar} function instead of bar 
 The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function,
 because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+When no random effects are present, the `glmm\_beta' method is equivalent to the `betareg' method (beta regression).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3661,7 +3664,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Mon Feb 24 11:56:30 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Mar  6 13:43:41 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3691,9 +3694,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.5549 & 0.29 & 0.3006 & 19.89 \\
-CW & 435 & 0.5885 & 0.3136 & 0.3178 & 24.39 \\
-TW & 435 & 0.5824 & 0.3596 & 0.3668 & 17.15 \\
+IW & 435 & 0.5548 & 0.2903 & 0.3004 & 20 \\
+CW & 435 & 0.5888 & 0.3137 & 0.3181 & 24.28 \\
+TW & 435 & 0.5823 & 0.3593 & 0.3667 & 17.23 \\
 \bottomrule()
 \end{longtable}
 

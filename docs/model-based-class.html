@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2025-02-24" />
+<meta name="date" content="2025-03-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -378,6 +378,9 @@ LinDA <span class="citation">(<a href="#ref-LinDA_Zhou_2022" role="doc-biblioref
 linear mixed-effects model and generalized linear mixed model.
 Given that multiple approaches are available,
 it is feasible to compare the results from different approaches and extract a part of biomarkers with high confidence for a specific dataset.</p>
+<p><img src="Images/trans_diff_demons.png" width="8000px" style="display: block; margin: auto;" />
+Note: The methods for invoking <code>otu_table</code> are primarily designed for differential abundance analysis of ASVs/OTUs (or Genes).
+These methods for invoking <code>taxa_abund</code> list are recommended for analyses at higher taxonomic levels (such as Genus or Phylum).</p>
 <div id="example-4" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Example<a href="model-based-class.html#example-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>All the differential test result is stored in the <code>object$res_diff</code>.
@@ -529,25 +532,22 @@ The method ‘ALDEx2_t’ and ‘ALDEx2_kw’ depend on the ALDEx2 package <span
 These three packages are all deposited on the Bioconductor.</p>
 <div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="model-based-class.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># zero-inflated log-normal model-based differential test method from metagenomeSeq package</span></span>
 <span id="cb179-2"><a href="model-based-class.html#cb179-2" aria-hidden="true" tabindex="-1"></a><span class="co"># If metagenomeSeq package is not installed, please first run: BiocManager::install(&quot;metagenomeSeq&quot;)</span></span>
-<span id="cb179-3"><a href="model-based-class.html#cb179-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;metagenomeSeq&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>)</span>
-<span id="cb179-4"><a href="model-based-class.html#cb179-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;metagenomeSeq&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>)</span>
-<span id="cb179-5"><a href="model-based-class.html#cb179-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>))</span>
-<span id="cb179-6"><a href="model-based-class.html#cb179-6" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code></pre></div>
+<span id="cb179-3"><a href="model-based-class.html#cb179-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;metagenomeSeq&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>)</span>
+<span id="cb179-4"><a href="model-based-class.html#cb179-4" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>))</span>
+<span id="cb179-5"><a href="model-based-class.html#cb179-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="model-based-class.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;ALDEx2_t&#39; and &#39;ALDEx2_kw&#39; methods; use ?trans_diff to see detailed description of the methods</span></span>
 <span id="cb180-2"><a href="model-based-class.html#cb180-2" aria-hidden="true" tabindex="-1"></a><span class="co"># If ALDEx2 package is not installed, please first run: BiocManager::install(&quot;ALDEx2&quot;)</span></span>
 <span id="cb180-3"><a href="model-based-class.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;ALDEx2_t&#39;</span></span>
-<span id="cb180-4"><a href="model-based-class.html#cb180-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ALDEx2_t&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>)</span>
-<span id="cb180-5"><a href="model-based-class.html#cb180-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
-<span id="cb180-6"><a href="model-based-class.html#cb180-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ALDEx2_t&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
-<span id="cb180-7"><a href="model-based-class.html#cb180-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ALDEx2_kw</span></span>
-<span id="cb180-8"><a href="model-based-class.html#cb180-8" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ALDEx2_kw&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
-<span id="cb180-9"><a href="model-based-class.html#cb180-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>))</span>
-<span id="cb180-10"><a href="model-based-class.html#cb180-10" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
-<span id="cb180-11"><a href="model-based-class.html#cb180-11" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>), <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb180-4"><a href="model-based-class.html#cb180-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ALDEx2_t&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.0005</span>)</span>
+<span id="cb180-5"><a href="model-based-class.html#cb180-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ALDEx2_kw</span></span>
+<span id="cb180-6"><a href="model-based-class.html#cb180-6" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ALDEx2_kw&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.001</span>)</span>
+<span id="cb180-7"><a href="model-based-class.html#cb180-7" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>))</span>
+<span id="cb180-8"><a href="model-based-class.html#cb180-8" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb180-9"><a href="model-based-class.html#cb180-9" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_abund</span>(<span class="at">use_number =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">group_order =</span> <span class="fu">c</span>(<span class="st">&quot;TW&quot;</span>, <span class="st">&quot;CW&quot;</span>, <span class="st">&quot;IW&quot;</span>), <span class="at">add_sig =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="model-based-class.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ANCOMBC2 method</span></span>
 <span id="cb181-2"><a href="model-based-class.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="co"># when fix_formula is not provided (necessary in ancombc2 function of ANCOMBC package), it will be assigned automatically by using group parameter</span></span>
 <span id="cb181-3"><a href="model-based-class.html#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Restart R if there is an error that &quot;Error in model.matrix.formula(): data must be a data.frame&quot;</span></span>
-<span id="cb181-4"><a href="model-based-class.html#cb181-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ancombc2&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;Genus&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.01</span>)</span>
+<span id="cb181-4"><a href="model-based-class.html#cb181-4" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> mt, <span class="at">method =</span> <span class="st">&quot;ancombc2&quot;</span>, <span class="at">group =</span> <span class="st">&quot;Group&quot;</span>, <span class="at">taxa_level =</span> <span class="st">&quot;OTU&quot;</span>, <span class="at">filter_thres =</span> <span class="fl">0.01</span>)</span>
 <span id="cb181-5"><a href="model-based-class.html#cb181-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">keep_full_name =</span> <span class="cn">TRUE</span>, <span class="at">heatmap_cell =</span> <span class="st">&quot;P.adj&quot;</span>, <span class="at">heatmap_sig =</span> <span class="st">&quot;Significance&quot;</span>, <span class="at">heatmap_x =</span> <span class="st">&quot;Factors&quot;</span>, <span class="at">heatmap_y =</span> <span class="st">&quot;Taxa&quot;</span>)</span>
 <span id="cb181-6"><a href="model-based-class.html#cb181-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add a continuous variable</span></span>
 <span id="cb181-7"><a href="model-based-class.html#cb181-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(mt)</span>
@@ -582,7 +582,8 @@ The heatmap can be used in the <code>plot_diff_bar</code> function instead of ba
 <span id="cb183-5"><a href="model-based-class.html#cb183-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diff_bar</span>(<span class="at">heatmap_cell =</span> <span class="st">&quot;Estimate&quot;</span>, <span class="at">heatmap_sig =</span> <span class="st">&quot;Significance&quot;</span>, <span class="at">heatmap_lab_fill =</span> <span class="st">&quot;Coefficient&quot;</span>)</span></code></pre></div>
 <p>The generalized linear mixed model (GLMM) is implemented based on the glmmTMB package.
 In this example, we use beta distribution function as the family function,
-because beta distribution is especially appropriate to fit the proportional data (relative abundance here).</p>
+because beta distribution is especially appropriate to fit the proportional data (relative abundance here).
+When no random effects are present, the ‘glmm_beta’ method is equivalent to the ‘betareg’ method (beta regression).</p>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="model-based-class.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;glmmTMB&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;glmmTMB&quot;</span>)</span>
 <span id="cb184-2"><a href="model-based-class.html#cb184-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clone</span>(mt)</span>
 <span id="cb184-3"><a href="model-based-class.html#cb184-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_diff<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp, <span class="at">taxa_level =</span> <span class="st">&quot;Phylum&quot;</span>, <span class="at">method =</span> <span class="st">&quot;glmm_beta&quot;</span>, </span>
@@ -1126,7 +1127,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb220-3"><a href="model-based-class.html#cb220-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Mon Feb 24 11:53:39 2025. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Thu Mar  6 13:41:06 2025. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1151,24 +1152,24 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.555</td>
+<td align="center">0.5549</td>
 <td align="center">0.2904</td>
-<td align="center">0.3007</td>
-<td align="center">19.9</td>
+<td align="center">0.3006</td>
+<td align="center">20</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
-<td align="center">0.5885</td>
-<td align="center">0.3136</td>
+<td align="center">0.5886</td>
+<td align="center">0.314</td>
 <td align="center">0.3178</td>
-<td align="center">24.48</td>
+<td align="center">24.3</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
-<td align="center">0.5826</td>
-<td align="center">0.3603</td>
+<td align="center">0.5825</td>
+<td align="center">0.3598</td>
 <td align="center">0.367</td>
 <td align="center">17.14</td>
 </tr>
