@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.13.0)},
+  pdftitle={Tutorial for R microeco package (v1.15.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.13.0)}
+\title{Tutorial for R microeco package (v1.15.0)}
 \author{}
-\date{\vspace{-2.5em}2025-03-06}
+\date{\vspace{-2.5em}2025-05-19}
 
 \begin{document}
 \maketitle
@@ -371,7 +371,7 @@ Using Tax4Fun2 approach require the representative fasta file.
 The user do not need to install Tax4Fun2 R package again.
 The only thing need to do is to download the blast tool (\textbf{ignore this if the blast tool has been in the path}) and Ref99NR/Ref100NR database (select one).
 Download blast tools from ``\url{https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+}'' ; e.g.~ncbi-blast-****-x64-win64.tar.gz for windows system.
-Note that some errors can come from the latest versions because of memory issue (\url{https://www.biostars.org/p/413294/}).
+Note that some errors may come from the latest versions because of memory issue (\url{https://www.biostars.org/p/413294/}).
 An easy solution is to use previous version (such as 2.5.0).
 Download Ref99NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/DkoZIyZpMNbrzSw/download}'' or Ref100NR.zip from ``\url{https://cloudstor.aarnet.edu.au/plus/s/jIByczak9ZAFUB4/download}''.
 The alternative of the download link is ``\url{https://github.com/ChiLiubio/microeco_extra_data/releases/download/v1.0.0/Tax4Fun2_ReferenceData_v2.zip}'' or
@@ -1145,6 +1145,15 @@ For example, if the user want to extract samples, please do like this:
 \CommentTok{\# or: group\_CW$sample\_table \textless{}{-} subset(group\_CW$sample\_table, grepl("CW", Group))}
 \CommentTok{\# trim all the data}
 \NormalTok{group\_CW}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 1945 taxa with 0 abundance are removed from the otu_table ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{group\_CW}
 \end{Highlighting}
 \end{Shaded}
@@ -1275,6 +1284,15 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{test1 }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{, ], }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S, }\AttributeTok{auto\_tidy =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 881 taxa with 0 abundance are removed from the otu_table ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{test1}
 \end{Highlighting}
 \end{Shaded}
@@ -1301,6 +1319,15 @@ the class can not recognize this modification, the user should use \texttt{tidy\
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{test1}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 3883 taxa with 0 abundance are removed from the otu_table ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{test1}
 \end{Highlighting}
 \end{Shaded}
@@ -2574,13 +2601,13 @@ The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1923}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0641}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1026}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1923}}@{}}
 \toprule()
 \begin{minipage}[b]{\linewidth}\centering
 ~
@@ -2599,7 +2626,7 @@ Significance
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{Group} & 2 & 6.121 & 0.1955 & 12.01 & 0.001 & *** \\
+\textbf{Group} & 0 & -3.553e-15 & -1.135e-16 & -Inf & NA & NA \\
 \textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 & *** \\
 \textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA & NA \\
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA & NA \\
@@ -3664,7 +3691,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Thu Mar  6 13:43:41 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Mon May 19 10:02:48 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3694,9 +3721,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.5548 & 0.2903 & 0.3004 & 20 \\
-CW & 435 & 0.5888 & 0.3137 & 0.3181 & 24.28 \\
-TW & 435 & 0.5823 & 0.3593 & 0.3667 & 17.23 \\
+IW & 435 & 0.5548 & 0.2903 & 0.3005 & 19.99 \\
+CW & 435 & 0.5884 & 0.3137 & 0.3177 & 24.57 \\
+TW & 435 & 0.5826 & 0.3604 & 0.3671 & 17.4 \\
 \bottomrule()
 \end{longtable}
 
@@ -3950,6 +3977,8 @@ The regression is also supported.
 \CommentTok{\# pH response variable}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_classifier}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{y.response =} \StringTok{"pH"}\NormalTok{, }\AttributeTok{x.predictors =} \StringTok{"Genus"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_split}\NormalTok{(}\AttributeTok{prop.train =} \DecValTok{3}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\CommentTok{\# optional: preprocessing}
+\CommentTok{\# t1$cal\_preProcess(method = c("center", "scale"))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_trainControl}\NormalTok{()}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_train}\NormalTok{()}
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_train}
@@ -6499,15 +6528,7 @@ See those Issues with the detailed examples: (\url{https://github.com/ChiLiubio/
 In the \texttt{trans\_abund} class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
 Sometimes, these unknown taxa may be useful to represent uncultured species.
 Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
-Please see the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
-
-\hypertarget{show-the-abundance-of-unknown-taxa-1}{%
-\section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa-1}}
-
-In the \texttt{trans\_abund} class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
-Sometimes, these unknown taxa may be useful to represent uncultured species.
-Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
-Please see the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
+Please refer to the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
 
 \hypertarget{question-of-prefix-in-the-taxa}{%
 \section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}}

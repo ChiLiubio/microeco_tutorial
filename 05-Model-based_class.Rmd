@@ -1005,6 +1005,8 @@ tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sampl
 # pH response variable
 t1 <- trans_classifier$new(dataset = tmp, y.response = "pH", x.predictors = "Genus")
 t1$cal_split(prop.train = 3/4)
+# optional: preprocessing
+# t1$cal_preProcess(method = c("center", "scale"))
 t1$set_trainControl()
 t1$cal_train()
 t1$res_train
