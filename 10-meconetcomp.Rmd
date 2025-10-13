@@ -334,8 +334,12 @@ $\bar{r_{i}}_{|r>0}$ denotes the mean weight (correlation coefficient, interacti
 t1 <- cohesionclass$new(soil_amp_network)
 View(t1$res_list$sample)
 View(t1$res_list$feature)
-t1$cal_diff(method = "anova")
-t1$plot(measure = "r_pos")
+t1$cal_diff(measure = "r_pos", method = "anova")
+t1$plot()
+
+# without statistical result
+t1 <- cohesionclass$new(soil_amp_network)
+t1$plot(measure = "c_neg")
 ```
 
 
