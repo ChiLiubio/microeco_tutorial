@@ -193,18 +193,18 @@ knitr::include_graphics("Images/Other_PCoA_boxplot2.png")
 ## FAPROTAX + differential test
 
 In the `trans_func` section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
-Now, we go ahead and use `trans_diff` class to demonstrate the differential test of the abundances of OTUs with the traits across groups.
+Now, we go ahead and use `trans_diff` class to demonstrate the differential test of the abundances of OTUs with specific traits across groups.
 
 ```{r, echo = TRUE, eval = FALSE}
 library(microeco)
 data(dataset)
 t1 <- trans_func$new(dataset)
-t1$cal_spe_func(prok_database = "FAPROTAX")
-t1$cal_spe_func_perc(abundance_weighted = TRUE)
+t1$cal_func(prok_database = "FAPROTAX")
+t1$cal_func_FR(abundance_weighted = TRUE)
 # it is better to clone a dataset
 tmp_mt <- clone(dataset)
 # transpose res_spe_func_perc to be a data.frame like taxonomic abundance
-tmp <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
+tmp <- as.data.frame(t(t1$res_func_FR), check.names = FALSE)
 # assign the table back to taxa_abund list for further analysis
 tmp_mt$taxa_abund$func <- tmp
 # select the "func" in taxa_abund list in trans_diff

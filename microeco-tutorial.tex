@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.15.0)},
+  pdftitle={Tutorial for R microeco package (v1.16.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.15.0)}
+\title{Tutorial for R microeco package (v1.16.0)}
 \author{}
-\date{\vspace{-2.5em}2025-05-19}
+\date{\vspace{-2.5em}2025-11-25}
 
 \begin{document}
 \maketitle
@@ -153,7 +153,7 @@ In addition, some web tools associated with R language are also useful for micro
 such as Shiny-phyloseq \citep{McMurdie_Shiny_2015}, MicrobiomeExplorer \citep{Reeder_MicrobiomeExplorer_2021},
 animalcules \citep{Zhao_animalcules_2021} and Namco \citep{Dietrich_Namco_2022}.
 Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-Based on this background, we created the R microeco package \citep{Liu_microeco_2021} (\url{https://github.com/ChiLiubio/microeco}).
+Based on this background, we created the R microeco package \citep{Liu_microeco_2021, Liu_workflow_2025} (\url{https://github.com/ChiLiubio/microeco}).
 Besides, we also developed the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some famous tools easily.
 
 \hypertarget{intro}{%
@@ -3691,7 +3691,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Mon May 19 10:02:48 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Nov 25 10:40:59 2025. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3721,9 +3721,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.5548 & 0.2903 & 0.3005 & 19.99 \\
-CW & 435 & 0.5884 & 0.3137 & 0.3177 & 24.57 \\
-TW & 435 & 0.5826 & 0.3604 & 0.3671 & 17.4 \\
+IW & 435 & 0.5549 & 0.2907 & 0.3005 & 20.05 \\
+CW & 435 & 0.5885 & 0.3136 & 0.3178 & 24.29 \\
+TW & 435 & 0.5823 & 0.3595 & 0.3667 & 17.34 \\
 \bottomrule()
 \end{longtable}
 
@@ -4540,12 +4540,12 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \CommentTok{\# this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.}
 \CommentTok{\# for fungi example, see https://chiliubio.github.io/microeco\_tutorial/other{-}dataset.html\#fungi{-}data}
 \CommentTok{\# default database for prokaryotes is FAPROTAX database}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## FAPROTAX v1.2.10. Please also cite the original FAPROTAX paper: Louca et al. (2016).
+## FAPROTAX v1.2.12. Please also cite the original FAPROTAX paper: Louca et al. (2016).
 \end{verbatim}
 
 \begin{verbatim}
@@ -4553,18 +4553,18 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \end{verbatim}
 
 \begin{verbatim}
-## The functional binary table is stored in object$res_spe_func ...
+## Functional binary result is stored in object$res_func ...
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# return t2$res\_spe\_func, 1 represent trait exists, 0 represent no or cannot confirmed.}
+\CommentTok{\# return t2$res\_func, 1 represent trait exists, 0 represent no or cannot confirmed.}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t2}\SpecialCharTok{$}\NormalTok{res\_spe\_func[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{t2}\SpecialCharTok{$}\NormalTok{res\_func[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4590,23 +4590,23 @@ acetoclastic\_methanogenesis
 \bottomrule()
 \end{longtable}
 
-The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community.
+The ratio/abundance of OTUs having the same trait/function can reflect the functional redundancy (FR).
+The \texttt{cal\_func\_FR} function is designed to obtain the FR for each function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# calculate the percentages for communities}
-\CommentTok{\# here do not consider the abundance}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
+\CommentTok{\# here do not consider OTU abundances and taxonomic dispersion of traits}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{perc =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{adj\_tax =} \ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## The result table is stored in object$res_spe_func_perc ...
+## The result table is stored in object$res_func_FR ...
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# t2$res\_spe\_func\_perc[1:5, 1:2]}
+\CommentTok{\# t2$res\_func\_FR[1:5, 1:2]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4624,28 +4624,38 @@ acetoclastic\_methanogenesis
 \end{minipage} \\
 \midrule()
 \endhead
-\textbf{S1} & 0.42 & 0.05 \\
-\textbf{S2} & 0.43 & 0 \\
-\textbf{S3} & 0.37 & 0 \\
-\textbf{S4} & 0.5 & 0 \\
-\textbf{S5} & 0.52 & 0 \\
+\textbf{S1} & 0.004239 & 0.000499 \\
+\textbf{S2} & 0.004346 & 0 \\
+\textbf{S3} & 0.003745 & 0 \\
+\textbf{S4} & 0.004981 & 0 \\
+\textbf{S5} & 0.005228 & 0 \\
 \bottomrule()
 \end{longtable}
 
-From v1.3.0, the \texttt{trans\_spe\_func\_perc} function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping.
-The return \texttt{res\_spe\_func\_perc\_trans} in the object is the table for the following visualization.
-Note that this step is not necessary as \texttt{plot\_spe\_func\_perc} function can automatically invoke this function if \texttt{res\_spe\_func\_perc\_trans} is not found.
+The \texttt{trans\_func\_FR} function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping.
+The return \texttt{res\_func\_FR\_trans} in the object is the table for the following visualization.
+Note that this step is not necessary as \texttt{plot\_func\_FR} function can automatically invoke this function if \texttt{res\_func\_FR\_trans} is not found.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{trans\_spe\_func\_perc}\NormalTok{()}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{trans\_func\_FR}\NormalTok{()}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_func\_FR}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-For the differential test of the abundance percentages across groups,
+The function \texttt{cal\_func\_FR\_comm} can be used to calculate overall FR of a community based on the the result of each function from \texttt{cal\_func\_FR} function.
+The result is the geometric mean of FR of all functions in a community.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR\_comm}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+For the differential test of the FR across groups,
 please move to another part (\url{https://chiliubio.github.io/microeco_tutorial/other-examples-1.html\#faprotax-differential-test}).
-Then we take another example to show the percentages of the OTUs for each trait in network modules.
+
+Then we take another example to show the FR for each trait in network modules.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4656,9 +4666,9 @@ Then we take another example to show the percentages of the OTUs for each trait 
 \CommentTok{\# convert module info to microtable object}
 \NormalTok{meco\_module }\OtherTok{\textless{}{-}}\NormalTok{ network}\SpecialCharTok{$}\FunctionTok{trans\_comm}\NormalTok{(}\AttributeTok{use\_col =} \StringTok{"module"}\NormalTok{)}
 \NormalTok{meco\_module\_func }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(meco\_module)}
-\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
-\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
+\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
+\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{perc =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{meco\_module\_func}\SpecialCharTok{$}\FunctionTok{plot\_func\_FR}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4673,12 +4683,12 @@ Then we take another example to show the percentages of the OTUs for each trait 
 \end{Highlighting}
 \end{Shaded}
 
-Then we try to correlate the percentage data in \texttt{res\_spe\_func\_perc} to environmental variables.
+Then we try to correlate the FR data in \texttt{res\_func\_FR} to environmental variables.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_env}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{add\_data =}\NormalTok{ env\_data\_16S[, }\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
-\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{cal\_cor}\NormalTok{(}\AttributeTok{add\_abund\_table =}\NormalTok{ t2}\SpecialCharTok{$}\NormalTok{res\_func\_FR, }\AttributeTok{cor\_method =} \StringTok{"spearman"}\NormalTok{)}
 \NormalTok{t3}\SpecialCharTok{$}\FunctionTok{plot\_cor}\NormalTok{(}\AttributeTok{cluster\_ggplot =} \StringTok{"both"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5119,7 +5129,7 @@ Then, let's perform the fungal trait prediction.
 \begin{Highlighting}[]
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(mt\_fungi)}
 \CommentTok{\# Both FungalTraits and FUNGuild are available}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FungalTraits"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FungalTraits"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# return: t1$res\_spe\_func\_perc}
 \end{Highlighting}
@@ -5155,11 +5165,11 @@ Then we show the distribution of traits across modules in network.
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(meco\_module)}
 \CommentTok{\# identify species traits, automatically select database for prokaryotes or fungi}
 \CommentTok{\# fungi\_database = "FungalTraits" for the FungalTraits database}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FUNGuild"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FUNGuild"}\NormalTok{)}
 \CommentTok{\# calculate abundance{-}unweighted functional redundancy of each trait for each network module}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# plot the functional redundancy of network modules}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_spe\_func\_perc}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_func\_FR}\NormalTok{(}\AttributeTok{order\_x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5251,14 +5261,14 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 \CommentTok{\# create object of trans\_func}
 \NormalTok{data2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp)}
 \CommentTok{\# Select NJC19 database}
-\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"NJC19"}\NormalTok{)}
-\CommentTok{\# get the trait percentage data}
-\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{FALSE}\NormalTok{)}
-\CommentTok{\# inset the trait percentage result into taxa\_abund of microtable object}
-\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Trait }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(data2}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc))}
+\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"NJC19"}\NormalTok{)}
+\CommentTok{\# get the FR data using weighted abundance method}
+\NormalTok{data2}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{perc =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# inset the FR result into taxa\_abund of microtable object}
+\NormalTok{tmp}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{Trait }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(data2}\SpecialCharTok{$}\NormalTok{res\_func\_FR))}
 \CommentTok{\# use trans\_abund to plot}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_abund}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{taxrank =} \StringTok{"Trait"}\NormalTok{, }\AttributeTok{ntaxa =} \DecValTok{10}\NormalTok{, }\AttributeTok{use\_percentage =} \ConstantTok{FALSE}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"donor\_status"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative population abundance (\%)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{13}\NormalTok{))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_box}\NormalTok{(}\AttributeTok{group =} \StringTok{"donor\_status"}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{30}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{13}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5841,8 +5851,12 @@ where \(C_{j}^{pos}\) is the positive cohesion, and \(C_{j}^{neg}\) is the negat
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ cohesionclass}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_list}\SpecialCharTok{$}\NormalTok{sample)}
 \FunctionTok{View}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_list}\SpecialCharTok{$}\NormalTok{feature)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{measure =} \StringTok{"r\_pos"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_diff}\NormalTok{(}\AttributeTok{measure =} \StringTok{"r\_pos"}\NormalTok{, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{()}
+
+\CommentTok{\# without statistical result}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ cohesionclass}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(soil\_amp\_network)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot}\NormalTok{(}\AttributeTok{measure =} \StringTok{"c\_neg"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5976,8 +5990,11 @@ other than random sampling based on the species log-normal distribution.
 \hypertarget{mecoturn-package}{%
 \chapter{mecoturn package}\label{mecoturn-package}}
 
-The mecoturn package is designed to study microbial turnover along plant compartments originally (\url{https://github.com/ChiLiubio/mecoturn}).
+The mecoturn package \citep{Liu_mecoturn_2025} is designed to study microbial turnover along plant compartments originally (\url{https://github.com/ChiLiubio/mecoturn}).
 Generally speaking, it can be used in any case associated with a gradient.
+To cite mecoturn in publications, please use:
+
+Chi Liu, Jiahui Luo, Chunmiao Lu, Tianlong Sheng, Raymond Jianxiong Zeng, Xiangzhen Li, Minjie Yao. mecoturn: An R package for deciphering microbial turnover patterns along gradients. Soil Ecology Letters. 2025, 7(4): 250355. \url{https://doi.org/10.1007/s42832-025-0355-6}
 
 \begin{Shaded}
 \begin{Highlighting}[]

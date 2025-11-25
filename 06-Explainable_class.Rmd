@@ -395,43 +395,51 @@ t2 <- trans_func$new(mt)
 # this can recognize prokaryotes or fungi automatically if the names of taxonomic levels are standard.
 # for fungi example, see https://chiliubio.github.io/microeco_tutorial/other-dataset.html#fungi-data
 # default database for prokaryotes is FAPROTAX database
-t2$cal_spe_func(prok_database = "FAPROTAX")
-# return t2$res_spe_func, 1 represent trait exists, 0 represent no or cannot confirmed.
+t2$cal_func(prok_database = "FAPROTAX")
+# return t2$res_func, 1 represent trait exists, 0 represent no or cannot confirmed.
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
-t2$res_spe_func[1:5, 1:2]
+t2$res_func[1:5, 1:2]
 ```
 
 ```{r, echo = FALSE}
-pander::pander(t2$res_spe_func[1:5, 1:2])
+pander::pander(t2$res_func[1:5, 1:2])
 ```
 
-The percentages of the OTUs having the same trait can reflect the functional redundancy of this function in the community.
+The ratio/abundance of OTUs having the same trait/function can reflect the functional redundancy (FR).
+The `cal_func_FR` function is designed to obtain the FR for each function.
 
 ```{r, echo = TRUE}
-# calculate the percentages for communities
-# here do not consider the abundance
-t2$cal_spe_func_perc(abundance_weighted = FALSE)
-# t2$res_spe_func_perc[1:5, 1:2]
+# here do not consider OTU abundances and taxonomic dispersion of traits
+t2$cal_func_FR(abundance_weighted = FALSE, perc = FALSE, adj_tax = FALSE)
+# t2$res_func_FR[1:5, 1:2]
 ```
 
 ```{r, echo = FALSE}
-pander::pander(t2$res_spe_func_perc[1:5, 1:2])
+pander::pander(t2$res_func_FR[1:5, 1:2])
 ```
 
-From v1.3.0, the `trans_spe_func_perc` function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping. 
-The return `res_spe_func_perc_trans` in the object is the table for the following visualization.
-Note that this step is not necessary as `plot_spe_func_perc` function can automatically invoke this function if `res_spe_func_perc_trans` is not found.
+The `trans_func_FR` function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping. 
+The return `res_func_FR_trans` in the object is the table for the following visualization.
+Note that this step is not necessary as `plot_func_FR` function can automatically invoke this function if `res_func_FR_trans` is not found.
 
 ```{r, echo = TRUE, eval = FALSE}
-t2$trans_spe_func_perc()
-t2$plot_spe_func_perc()
+t2$trans_func_FR()
+t2$plot_func_FR()
 ```
 
-For the differential test of the abundance percentages across groups, 
+The function `cal_func_FR_comm` can be used to calculate overall FR of a community based on the the result of each function from `cal_func_FR` function. 
+The result is the geometric mean of FR of all functions in a community.
+
+```{r, echo = TRUE, eval = FALSE}
+t2$cal_func_FR_comm()
+```
+
+For the differential test of the FR across groups, 
 please move to another part (https://chiliubio.github.io/microeco_tutorial/other-examples-1.html#faprotax-differential-test).
-Then we take another example to show the percentages of the OTUs for each trait in network modules.
+
+Then we take another example to show the FR for each trait in network modules.
 
 ```{r, echo = TRUE, eval = FALSE}
 # construct a network for the example
@@ -441,9 +449,9 @@ network$cal_module()
 # convert module info to microtable object
 meco_module <- network$trans_comm(use_col = "module")
 meco_module_func <- trans_func$new(meco_module)
-meco_module_func$cal_spe_func(prok_database = "FAPROTAX")
-meco_module_func$cal_spe_func_perc(abundance_weighted = FALSE)
-meco_module_func$plot_spe_func_perc(order_x = paste0("M", 1:10))
+meco_module_func$cal_func(prok_database = "FAPROTAX")
+meco_module_func$cal_func_FR(abundance_weighted = FALSE, perc = TRUE)
+meco_module_func$plot_func_FR(order_x = paste0("M", 1:10))
 ```
 ```{r, out.width = "700px", fig.align="center", echo = FALSE}
 knitr::include_graphics("Images/plot_func_perc_module.png")
@@ -456,11 +464,11 @@ t2$func_group_list
 t2$show_prok_func("methanotrophy")
 ```
 
-Then we try to correlate the percentage data in `res_spe_func_perc` to environmental variables.
+Then we try to correlate the FR data in `res_func_FR` to environmental variables.
 
 ```{r, echo = TRUE, eval = FALSE}
 t3 <- trans_env$new(dataset = mt, add_data = env_data_16S[, 4:11])
-t3$cal_cor(add_abund_table = t2$res_spe_func_perc, cor_method = "spearman")
+t3$cal_cor(add_abund_table = t2$res_func_FR, cor_method = "spearman")
 t3$plot_cor(cluster_ggplot = "both")
 ```
 

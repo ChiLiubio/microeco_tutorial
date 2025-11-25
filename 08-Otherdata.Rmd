@@ -27,9 +27,9 @@ Then, let's perform the fungal trait prediction.
 ```{r, echo = TRUE, eval = FALSE}
 t1 <- trans_func$new(mt_fungi)
 # Both FungalTraits and FUNGuild are available
-t1$cal_spe_func(fungi_database = "FungalTraits")
-t1$cal_spe_func_perc(abundance_weighted = TRUE)
-# return: t1$res_spe_func_perc
+t1$cal_func(fungi_database = "FungalTraits")
+t1$cal_func_FR(abundance_weighted = TRUE)
+# return: t1$res_func_FR
 ```
 
 Then we show an example on the differential test of traits across groups.
@@ -38,7 +38,7 @@ Then we show an example on the differential test of traits across groups.
 # clone mt_fungi for differential test
 tmp_mt <- clone(mt_fungi)
 # we need assign the table to taxa_abund manually
-tmp_mt$taxa_abund$func <- as.data.frame(t(t1$res_spe_func_perc), check.names = FALSE)
+tmp_mt$taxa_abund$func <- as.data.frame(t(t1$res_func_FR), check.names = FALSE)
 # use trans_diff class to perform differential test
 t2 <- trans_diff$new(dataset = tmp_mt, method = "anova", group = "sample_type", taxa_level = "func")
 t2$plot_diff_abund(add_sig = T, simplify_names = FALSE) + ggplot2::ylab("Relative abundance (%)")
@@ -59,11 +59,11 @@ meco_module <- t1$trans_comm(use_col = "module")
 t2 <- trans_func$new(meco_module)
 # identify species traits, automatically select database for prokaryotes or fungi
 # fungi_database = "FungalTraits" for the FungalTraits database
-t2$cal_spe_func(fungi_database = "FUNGuild")
+t2$cal_func(fungi_database = "FUNGuild")
 # calculate abundance-unweighted functional redundancy of each trait for each network module
-t2$cal_spe_func_perc(abundance_weighted = FALSE)
+t2$cal_func_FR(abundance_weighted = FALSE)
 # plot the functional redundancy of network modules
-t2$plot_spe_func_perc(order_x = paste0("M", 1:10))
+t2$plot_func_FR(order_x = paste0("M", 1:10))
 ```
 
 
@@ -154,14 +154,14 @@ tmp$cal_abund()
 # create object of trans_func
 data2 <- trans_func$new(tmp)
 # Select NJC19 database
-data2$cal_spe_func(prok_database = "NJC19")
-# get the trait percentage data
-data2$cal_spe_func_perc(abundance_weighted = FALSE)
-# inset the trait percentage result into taxa_abund of microtable object
-tmp$taxa_abund$Trait <- as.data.frame(t(data2$res_spe_func_perc))
+data2$cal_func(prok_database = "NJC19")
+# get the FR data using weighted abundance method
+data2$cal_func_FR(abundance_weighted = TRUE, perc = TRUE)
+# inset the FR result into taxa_abund of microtable object
+tmp$taxa_abund$Trait <- as.data.frame(t(data2$res_func_FR))
 # use trans_abund to plot
 t1 <- trans_abund$new(dataset = tmp, taxrank = "Trait", ntaxa = 10, use_percentage = FALSE)
-t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative population abundance (%)") + theme(axis.text.x = element_text(size = 13))
+t1$plot_box(group = "donor_status", xtext_angle = 30) + ylab("Relative abundance (%)") + theme(axis.text.x = element_text(size = 13))
 ```
 
 ```{r, out.width = "800px", fig.align="center", echo = FALSE}
