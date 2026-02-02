@@ -205,6 +205,8 @@ These three packages are all deposited on the Bioconductor.
 t1 <- trans_diff$new(dataset = mt, method = "metagenomeSeq", group = "Group", taxa_level = "OTU")
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
 t1$plot_diff_bar(use_number = 1:20)
+t1$plot_volcano()
+t1$plot_volcano(select_group = 2)
 ```
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -212,6 +214,7 @@ t1$plot_diff_bar(use_number = 1:20)
 # If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")
 # 'ALDEx2_t'
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_t", group = "Group", taxa_level = "OTU", filter_thres = 0.0005)
+t1$plot_diff_abund()
 # ALDEx2_kw
 t1 <- trans_diff$new(dataset = mt, method = "ALDEx2_kw", group = "Group", taxa_level = "OTU", filter_thres = 0.001)
 t1$plot_diff_abund(use_number = 1:30, group_order = c("TW", "CW", "IW"))
@@ -248,13 +251,15 @@ tmp <- clone(mt)
 tmp$sample_table <- data.frame(tmp$sample_table, env_data_16S[rownames(tmp$sample_table), ])
 t1 <- trans_diff$new(dataset = tmp, method = "linda", group = "pH + Group", taxa_level = "OTU", filter_thres = 0.001)
 t2 <- trans_diff$new(dataset = tmp, method = "linda", formula = "~pH + Group", taxa_level = "OTU", filter_thres = 0.001)
-t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "left")
+t2$plot_diff_bar(keep_full_name = FALSE, color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", ytext_position = "left")
 ```
+
+
 
 ### More options
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (https://chiliubio.github.io/microeco_tutorial/intro.html#dependence).
-The method `DESeq2` from DESeq2 package is also supported in the trans_diff class and no longer demonstrated here.
+The methods `DESeq2` and `edgeR` are also supported in the trans_diff class and no longer demonstrated here.
 The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option `method = 'lm'` and `method = 'lme'`, respectively.
 The heatmap can be used in the `plot_diff_bar` function instead of bar plot for the case with multiple factors or formula.
 
@@ -289,7 +294,7 @@ t1 <- trans_diff$new(dataset = mt, method = "anova", formula = "Group + Type", t
 t1$plot_diff_bar()
 t1$plot_diff_bar(color_palette = rev(RColorBrewer::brewer.pal(n = 11, name = "RdYlBu")), trans = "log10")
 t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10")
-t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", text_y_position = "right", cluster_ggplot = "row")
+t1$plot_diff_bar(color_values = c("#053061", "white", "#A50026"), trans = "log10", filter_feature = "", ytext_position = "right", cluster_ggplot = "row")
 ```
 
 ### Key points

@@ -4,25 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Tutorial for R microeco package (v1.16.0)</title>
+  <title>Tutorial for R microeco package (v2.0.0)</title>
   <meta name="description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="generator" content="bookdown 0.45 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Tutorial for R microeco package (v1.16.0)" />
+  <meta property="og:title" content="Tutorial for R microeco package (v2.0.0)" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Tutorial for R microeco package (v1.16.0)" />
+  <meta name="twitter:title" content="Tutorial for R microeco package (v2.0.0)" />
   
   <meta name="twitter:description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
   
 
 
 
-<meta name="date" content="2025-11-25" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -350,7 +350,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v1.16.0)</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v2.0.0)</a>
           </h1>
         </div>
 
@@ -359,8 +359,8 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Tutorial for R microeco package (v1.16.0)</h1>
-<p class="date"><em>2025-11-25</em></p>
+<h1 class="title">Tutorial for R microeco package (v2.0.0)</h1>
+<p class="date"><em>2026-02-02</em></p>
 </div>
 <div id="background" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Background<a href="index.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -376,13 +376,14 @@ ampvis2 (<a href="https://github.com/KasperSkytte/ampvis2" class="uri">https://g
 theseus <span class="citation">(<a href="#ref-Price_theseus_2018" role="doc-biblioref">Price et al. 2018</a>)</span>, rANOMALY <span class="citation">(<a href="#ref-Theil_rANOMALY_2021" role="doc-biblioref">Theil and Rifa 2021</a>)</span>,
 tidyMicro <span class="citation">(<a href="#ref-Carpenter_tidyMicro_2021" role="doc-biblioref">Carpenter et al. 2021</a>)</span>, microbial (<a href="https://github.com/guokai8/microbial" class="uri">https://github.com/guokai8/microbial</a>),
 amplicon (<a href="https://github.com/microbiota/amplicon" class="uri">https://github.com/microbiota/amplicon</a>),
-MicrobiotaProcess (<a href="https://github.com/YuLab-SMU/MicrobiotaProcess" class="uri">https://github.com/YuLab-SMU/MicrobiotaProcess</a>)
+MicrobiotaProcess <span class="citation">(<a href="#ref-Xu_MicrobiotaProcess_2023" role="doc-biblioref">Xu et al. 2023</a>)</span>
 and so on.
 In addition, some web tools associated with R language are also useful for microbiome data analysis,
 such as Shiny-phyloseq <span class="citation">(<a href="#ref-McMurdie_Shiny_2015" role="doc-biblioref">McMurdie and Holmes 2015</a>)</span>, MicrobiomeExplorer <span class="citation">(<a href="#ref-Reeder_MicrobiomeExplorer_2021" role="doc-biblioref">Reeder et al. 2021</a>)</span>,
 animalcules <span class="citation">(<a href="#ref-Zhao_animalcules_2021" role="doc-biblioref">Zhao et al. 2021</a>)</span> and Namco <span class="citation">(<a href="#ref-Dietrich_Namco_2022" role="doc-biblioref">Dietrich et al. 2022</a>)</span>.
 Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-Based on this background, we created the R microeco package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">C. Liu et al. 2021</a>; <a href="#ref-Liu_workflow_2025" role="doc-biblioref">C. Liu, Mansoldo, et al. 2025</a>)</span> (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
+Based on this background, we created the R microeco package <span class="citation">(<a href="#ref-Liu_microeco_2021" role="doc-biblioref">C. Liu et al. 2021</a>; <a href="#ref-Liu_workflow_2025" role="doc-biblioref">C. Liu, Mansoldo, et al. 2025</a>)</span>.
+It can be found in CRAN and GitHub (<a href="https://github.com/ChiLiubio/microeco" class="uri">https://github.com/ChiLiubio/microeco</a>).
 Besides, we also developed the file2meco package (<a href="https://github.com/ChiLiubio/file2meco" class="uri">https://github.com/ChiLiubio/file2meco</a>) for the data input from some famous tools easily.</p>
 
 </div>
@@ -426,6 +427,9 @@ Reeder, J., M. Huang, J. S. Kaminker, and J. N. Paulson. 2021. <span>“Microbio
 </div>
 <div id="ref-Theil_rANOMALY_2021" class="csl-entry">
 Theil, S., and E. Rifa. 2021. <span>“rANOMALY: AmplicoN wOrkflow for Microbial Community AnaLYsis.”</span> Journal Article. <em>F1000Res</em> 10: 7. <a href="https://doi.org/10.12688/f1000research.27268.1">https://doi.org/10.12688/f1000research.27268.1</a>.
+</div>
+<div id="ref-Xu_MicrobiotaProcess_2023" class="csl-entry">
+Xu, Shuangbin, Li Zhan, Wenli Tang, Qianwen Wang, Zehan Dai, Lang Zhou, Tingze Feng, et al. 2023. <span>“<span class="nocase">MicrobiotaProcess: A comprehensive R package for deep mining microbiome</span>.”</span> Journal Article. <em>The Innovation</em> 4 (2): 100388.
 </div>
 <div id="ref-Zhao_animalcules_2021" class="csl-entry">
 Zhao, Y., A. Federico, T. Faits, S. Manimaran, D. Segre, S. Monti, and W. E. Johnson. 2021. <span>“Animalcules: Interactive Microbiome Analytics and Visualization in r.”</span> Journal Article. <em>Microbiome</em> 9 (1): 76. <a href="https://doi.org/10.1186/s40168-021-01013-0">https://doi.org/10.1186/s40168-021-01013-0</a>.

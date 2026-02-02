@@ -117,13 +117,13 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v1.16.0)},
+  pdftitle={Tutorial for R microeco package (v2.0.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v1.16.0)}
+\title{Tutorial for R microeco package (v2.0.0)}
 \author{}
-\date{\vspace{-2.5em}2025-11-25}
+\date{\vspace{-2.5em}2026-02-02}
 
 \begin{document}
 \maketitle
@@ -147,13 +147,14 @@ ampvis2 (\url{https://github.com/KasperSkytte/ampvis2}), MicrobiomeR(\url{https:
 theseus \citep{Price_theseus_2018}, rANOMALY \citep{Theil_rANOMALY_2021},
 tidyMicro \citep{Carpenter_tidyMicro_2021}, microbial (\url{https://github.com/guokai8/microbial}),
 amplicon (\url{https://github.com/microbiota/amplicon}),
-MicrobiotaProcess (\url{https://github.com/YuLab-SMU/MicrobiotaProcess})
+MicrobiotaProcess \citep{Xu_MicrobiotaProcess_2023}
 and so on.
 In addition, some web tools associated with R language are also useful for microbiome data analysis,
 such as Shiny-phyloseq \citep{McMurdie_Shiny_2015}, MicrobiomeExplorer \citep{Reeder_MicrobiomeExplorer_2021},
 animalcules \citep{Zhao_animalcules_2021} and Namco \citep{Dietrich_Namco_2022}.
 Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-Based on this background, we created the R microeco package \citep{Liu_microeco_2021, Liu_workflow_2025} (\url{https://github.com/ChiLiubio/microeco}).
+Based on this background, we created the R microeco package \citep{Liu_microeco_2021, Liu_workflow_2025}.
+It can be found in CRAN and GitHub (\url{https://github.com/ChiLiubio/microeco}).
 Besides, we also developed the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some famous tools easily.
 
 \hypertarget{intro}{%
@@ -523,6 +524,15 @@ It is also recommended to put all the environmental data into sample information
 \FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
 \CommentTok{\# make the plotting background same with the tutorial}
 \FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'ggplot2' was built under R version 4.5.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_bw}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
@@ -2930,6 +2940,8 @@ These three packages are all deposited on the Bioconductor.
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"metagenomeSeq"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_volcano}\NormalTok{()}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_volcano}\NormalTok{(}\AttributeTok{select\_group =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2939,6 +2951,7 @@ These three packages are all deposited on the Bioconductor.
 \CommentTok{\# If ALDEx2 package is not installed, please first run: BiocManager::install("ALDEx2")}
 \CommentTok{\# \textquotesingle{}ALDEx2\_t\textquotesingle{}}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ALDEx2\_t"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.0005}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{()}
 \CommentTok{\# ALDEx2\_kw}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"ALDEx2\_kw"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{use\_number =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\AttributeTok{group\_order =} \FunctionTok{c}\NormalTok{(}\StringTok{"TW"}\NormalTok{, }\StringTok{"CW"}\NormalTok{, }\StringTok{"IW"}\NormalTok{))}
@@ -2978,7 +2991,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 \NormalTok{tmp}\SpecialCharTok{$}\NormalTok{sample\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{sample\_table, env\_data\_16S[}\FunctionTok{rownames}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{sample\_table), ])}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{group =} \StringTok{"pH + Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp, }\AttributeTok{method =} \StringTok{"linda"}\NormalTok{, }\AttributeTok{formula =} \StringTok{"\textasciitilde{}pH + Group"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{filter\_thres =} \FloatTok{0.001}\NormalTok{)}
-\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{text\_y\_position =} \StringTok{"left"}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{keep\_full\_name =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{ytext\_position =} \StringTok{"left"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2986,7 +2999,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 \subsection{More options}\label{more-options}}
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
-The method \texttt{DESeq2} from DESeq2 package is also supported in the trans\_diff class and no longer demonstrated here.
+The methods \texttt{DESeq2} and \texttt{edgeR} are also supported in the trans\_diff class and no longer demonstrated here.
 The linear regression from lm function and linear mixed-effects models from lmerTest package can be fitted with the option \texttt{method\ =\ \textquotesingle{}lm\textquotesingle{}} and \texttt{method\ =\ \textquotesingle{}lme\textquotesingle{}}, respectively.
 The heatmap can be used in the \texttt{plot\_diff\_bar} function instead of bar plot for the case with multiple factors or formula.
 
@@ -3024,7 +3037,7 @@ Let's run two-way anova for more usages of heatmap.
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{()}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{color\_palette =} \FunctionTok{rev}\NormalTok{(RColorBrewer}\SpecialCharTok{::}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{11}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdYlBu"}\NormalTok{)), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{text\_y\_position =} \StringTok{"right"}\NormalTok{, }\AttributeTok{cluster\_ggplot =} \StringTok{"row"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diff\_bar}\NormalTok{(}\AttributeTok{color\_values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#053061"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#A50026"}\NormalTok{), }\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{filter\_feature =} \StringTok{""}\NormalTok{, }\AttributeTok{ytext\_position =} \StringTok{"right"}\NormalTok{, }\AttributeTok{cluster\_ggplot =} \StringTok{"row"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3691,7 +3704,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Nov 25 10:40:59 2025. Please wait...
+## Now randomizing by parallel computing. Begin at Mon Feb  2 15:22:03 2026. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3721,9 +3734,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.5549 & 0.2907 & 0.3005 & 20.05 \\
-CW & 435 & 0.5885 & 0.3136 & 0.3178 & 24.29 \\
-TW & 435 & 0.5823 & 0.3595 & 0.3667 & 17.34 \\
+IW & 435 & 0.5551 & 0.2908 & 0.3007 & 19.88 \\
+CW & 435 & 0.5887 & 0.3137 & 0.3179 & 24.23 \\
+TW & 435 & 0.5825 & 0.3598 & 0.3669 & 17.35 \\
 \bottomrule()
 \end{longtable}
 
@@ -5130,8 +5143,8 @@ Then, let's perform the fungal trait prediction.
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(mt\_fungi)}
 \CommentTok{\# Both FungalTraits and FUNGuild are available}
 \NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{fungi\_database =} \StringTok{"FungalTraits"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
-\CommentTok{\# return: t1$res\_spe\_func\_perc}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\# return: t1$res\_func\_FR}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5142,7 +5155,7 @@ Then we show an example on the differential test of traits across groups.
 \CommentTok{\# clone mt\_fungi for differential test}
 \NormalTok{tmp\_mt }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt\_fungi)}
 \CommentTok{\# we need assign the table to taxa\_abund manually}
-\NormalTok{tmp\_mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{tmp\_mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_func\_FR), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# use trans\_diff class to perform differential test}
 \NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ tmp\_mt, }\AttributeTok{method =} \StringTok{"anova"}\NormalTok{, }\AttributeTok{group =} \StringTok{"sample\_type"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"func"}\NormalTok{)}
 \NormalTok{t2}\SpecialCharTok{$}\FunctionTok{plot\_diff\_abund}\NormalTok{(}\AttributeTok{add\_sig =}\NormalTok{ T, }\AttributeTok{simplify\_names =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ylab}\NormalTok{(}\StringTok{"Relative abundance (\%)"}\NormalTok{)}
@@ -6713,19 +6726,19 @@ Now, the ticks of the coordinate axes fully correspond, and we may selectively r
 \section{FAPROTAX + differential test}\label{faprotax-differential-test}}
 
 In the \texttt{trans\_func} section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
-Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the differential test of the abundances of OTUs with the traits across groups.
+Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the differential test of the abundances of OTUs with specific traits across groups.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(microeco)}
 \FunctionTok{data}\NormalTok{(dataset)}
 \NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_func}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(dataset)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
-\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_spe\_func\_perc}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_func}\NormalTok{(}\AttributeTok{prok\_database =} \StringTok{"FAPROTAX"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_func\_FR}\NormalTok{(}\AttributeTok{abundance\_weighted =} \ConstantTok{TRUE}\NormalTok{)}
 \CommentTok{\# it is better to clone a dataset}
 \NormalTok{tmp\_mt }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
 \CommentTok{\# transpose res\_spe\_func\_perc to be a data.frame like taxonomic abundance}
-\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_spe\_func\_perc), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_func\_FR), }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# assign the table back to taxa\_abund list for further analysis}
 \NormalTok{tmp\_mt}\SpecialCharTok{$}\NormalTok{taxa\_abund}\SpecialCharTok{$}\NormalTok{func }\OtherTok{\textless{}{-}}\NormalTok{ tmp}
 \CommentTok{\# select the "func" in taxa\_abund list in trans\_diff}
@@ -6871,16 +6884,6 @@ Pipelining operations (i.e., method chaining) can make the steps of data analysi
 The microeco package has fully supported pipelining operations since version 1.12.0.
 Based on the characteristics of R6 class objects, pipelining operations can be performed using the \texttt{\$} operator.
 In this section, we list some examples.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# version \textgreater{}= 1.13.0}
-\ControlFlowTok{if}\NormalTok{(}\FunctionTok{packageVersion}\NormalTok{(}\StringTok{"microeco"}\NormalTok{) }\SpecialCharTok{\textless{}} \StringTok{"1.13.0"}\NormalTok{)\{}
-    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"microeco"}\NormalTok{)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
 When you need to name an object of a class,
 do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.
 
@@ -6897,7 +6900,7 @@ do not include plotting function in pipeline operations, because plotting functi
 \end{Highlighting}
 \end{Shaded}
 
-When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.
+When the main purpose is to create a plot and there is no need to retain the object of a class, the user can write the entire operation chain.
 
 \begin{Shaded}
 \begin{Highlighting}[]

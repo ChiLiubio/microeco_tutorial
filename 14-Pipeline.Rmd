@@ -5,15 +5,6 @@ Pipelining operations (i.e., method chaining) can make the steps of data analysi
 The microeco package has fully supported pipelining operations since version 1.12.0. 
 Based on the characteristics of R6 class objects, pipelining operations can be performed using the `$` operator. 
 In this section, we list some examples.
-
-
-```{r, echo = TRUE, eval = FALSE}
-# version >= 1.13.0
-if(packageVersion("microeco") < "1.13.0"){
-	install.packages("microeco")
-}
-```
-
 When you need to name an object of a class, 
 do not include plotting function in pipeline operations, because plotting functions return the plot object (usually ggplot2), not the class object itself.
 
@@ -29,7 +20,7 @@ t1$plot_alpha(plot_type = "errorbar", measure = "Shannon", add_sig = TRUE)
 ```
 
 
-When the main purpose is to create a plot and there is no need to retain the object of a class, you can write the entire operation chain.
+When the main purpose is to create a plot and there is no need to retain the object of a class, the user can write the entire operation chain.
 
 
 ```{r, echo = TRUE, eval = FALSE}
