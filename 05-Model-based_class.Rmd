@@ -489,15 +489,21 @@ Then let's show how to extract sub-network for samples [@Ma_Geographic_2016].
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
-sub1 <- t1$subset_network(node = mt$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE)
-# see https://chiliubio.github.io/microeco_tutorial/notes.html#clone for the 'clone' function explanation
-t2 <- clone(t1)
-t2$res_network <- sub1
-# then t2 have a network for 'S1' and can be used for further analysis
-t2$cal_module()
-t2$save_network("S1.gexf")
-# please use a loop for all samples
+sub1 <- t1$subset_network(node = mt$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE, return_igraph = FALSE)
+# return_igraph = FALSE means return is trans_network object instead of igraph object
+sub1$cal_module()
+sub1$save_network("S1.gexf")
 ```
+
+```{r, echo = TRUE, eval = FALSE}
+# extract all sub-networks for each sample
+samples_network <- list()
+for(i in rownames(t1$data_abund)){
+	samples_network[[i]] <- t1$subset_network(return_igraph = FALSE, sample_name = i)
+}
+# when return_igraph = FALSE, samples_network can be the input for functions in meconetcomp package
+```
+
 
 We also add the function `plot_network` to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
