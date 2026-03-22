@@ -123,7 +123,7 @@
 
 \title{Tutorial for R microeco package (v2.0.0)}
 \author{}
-\date{\vspace{-2.5em}2026-03-21}
+\date{\vspace{-2.5em}2026-03-22}
 
 \begin{document}
 \maketitle
@@ -3457,16 +3457,17 @@ Then let's show how to extract sub-network for samples \citep{Ma_Geographic_2016
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# extract the sub{-}network of sample \textquotesingle{}S1\textquotesingle{}}
-\NormalTok{sub1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{node =}\NormalTok{ mt}\SpecialCharTok{$}\NormalTok{otu\_table }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ .[.[, }\StringTok{"S1"}\NormalTok{] }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{, ] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ rownames, }\AttributeTok{rm\_single =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{return\_igraph =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{sub1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{sample\_name =} \StringTok{"S1"}\NormalTok{, }\AttributeTok{return\_igraph =} \ConstantTok{FALSE}\NormalTok{)}
 \CommentTok{\# return\_igraph = FALSE means return is trans\_network object instead of igraph object}
 \NormalTok{sub1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
 \NormalTok{sub1}\SpecialCharTok{$}\FunctionTok{save\_network}\NormalTok{(}\StringTok{"S1.gexf"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
+Extract all sub-networks for each sample.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# extract all sub{-}networks for each sample}
 \NormalTok{samples\_network }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_abund))\{}
 \NormalTok{    samples\_network[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{subset\_network}\NormalTok{(}\AttributeTok{return\_igraph =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{sample\_name =}\NormalTok{ i)}
@@ -3873,7 +3874,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sat Mar 21 21:51:48 2026. Please wait...
+## Now randomizing by parallel computing. Begin at Sun Mar 22 20:20:19 2026. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3903,9 +3904,9 @@ SES.i.bray
 \end{minipage} \\
 \midrule()
 \endhead
-IW & 435 & 0.5548 & 0.2908 & 0.3005 & 20.02 \\
-CW & 435 & 0.5886 & 0.3143 & 0.3178 & 24.46 \\
-TW & 435 & 0.5822 & 0.3601 & 0.3667 & 17.3 \\
+IW & 435 & 0.5551 & 0.2906 & 0.3007 & 19.95 \\
+CW & 435 & 0.5886 & 0.3129 & 0.3178 & 24.4 \\
+TW & 435 & 0.5825 & 0.3603 & 0.3669 & 17.18 \\
 \bottomrule()
 \end{longtable}
 

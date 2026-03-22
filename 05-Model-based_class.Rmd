@@ -489,14 +489,16 @@ Then let's show how to extract sub-network for samples [@Ma_Geographic_2016].
 
 ```{r, echo = TRUE, eval = FALSE}
 # extract the sub-network of sample 'S1'
-sub1 <- t1$subset_network(node = mt$otu_table %>% .[.[, "S1"] != 0, ] %>% rownames, rm_single = TRUE, return_igraph = FALSE)
+sub1 <- t1$subset_network(sample_name = "S1", return_igraph = FALSE)
 # return_igraph = FALSE means return is trans_network object instead of igraph object
 sub1$cal_module()
 sub1$save_network("S1.gexf")
 ```
 
+
+Extract all sub-networks for each sample.
+
 ```{r, echo = TRUE, eval = FALSE}
-# extract all sub-networks for each sample
 samples_network <- list()
 for(i in rownames(t1$data_abund)){
 	samples_network[[i]] <- t1$subset_network(return_igraph = FALSE, sample_name = i)

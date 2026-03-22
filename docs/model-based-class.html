@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2026-03-21" />
+<meta name="date" content="2026-03-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -818,16 +818,16 @@ In this function, you should provide the nodes you need using the node parameter
 <span id="cb204-5"><a href="model-based-class.html#cb204-5" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">edge =</span> <span class="st">&quot;+&quot;</span>)</span></code></pre></div>
 <p>Then let’s show how to extract sub-network for samples <span class="citation">(<a href="#ref-Ma_Geographic_2016" role="doc-biblioref">Ma et al. 2016</a>)</span>.</p>
 <div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="model-based-class.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the sub-network of sample &#39;S1&#39;</span></span>
-<span id="cb205-2"><a href="model-based-class.html#cb205-2" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">node =</span> mt<span class="sc">$</span>otu_table <span class="sc">%&gt;%</span> .[.[, <span class="st">&quot;S1&quot;</span>] <span class="sc">!=</span> <span class="dv">0</span>, ] <span class="sc">%&gt;%</span> rownames, <span class="at">rm_single =</span> <span class="cn">TRUE</span>, <span class="at">return_igraph =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb205-2"><a href="model-based-class.html#cb205-2" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">sample_name =</span> <span class="st">&quot;S1&quot;</span>, <span class="at">return_igraph =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb205-3"><a href="model-based-class.html#cb205-3" aria-hidden="true" tabindex="-1"></a><span class="co"># return_igraph = FALSE means return is trans_network object instead of igraph object</span></span>
 <span id="cb205-4"><a href="model-based-class.html#cb205-4" aria-hidden="true" tabindex="-1"></a>sub1<span class="sc">$</span><span class="fu">cal_module</span>()</span>
 <span id="cb205-5"><a href="model-based-class.html#cb205-5" aria-hidden="true" tabindex="-1"></a>sub1<span class="sc">$</span><span class="fu">save_network</span>(<span class="st">&quot;S1.gexf&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="model-based-class.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract all sub-networks for each sample</span></span>
-<span id="cb206-2"><a href="model-based-class.html#cb206-2" aria-hidden="true" tabindex="-1"></a>samples_network <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb206-3"><a href="model-based-class.html#cb206-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">rownames</span>(t1<span class="sc">$</span>data_abund)){</span>
-<span id="cb206-4"><a href="model-based-class.html#cb206-4" aria-hidden="true" tabindex="-1"></a>    samples_network[[i]] <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">return_igraph =</span> <span class="cn">FALSE</span>, <span class="at">sample_name =</span> i)</span>
-<span id="cb206-5"><a href="model-based-class.html#cb206-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb206-6"><a href="model-based-class.html#cb206-6" aria-hidden="true" tabindex="-1"></a><span class="co"># when return_igraph = FALSE, samples_network can be the input for functions in meconetcomp package</span></span></code></pre></div>
+<p>Extract all sub-networks for each sample.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="model-based-class.html#cb206-1" aria-hidden="true" tabindex="-1"></a>samples_network <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb206-2"><a href="model-based-class.html#cb206-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">rownames</span>(t1<span class="sc">$</span>data_abund)){</span>
+<span id="cb206-3"><a href="model-based-class.html#cb206-3" aria-hidden="true" tabindex="-1"></a>    samples_network[[i]] <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">subset_network</span>(<span class="at">return_igraph =</span> <span class="cn">FALSE</span>, <span class="at">sample_name =</span> i)</span>
+<span id="cb206-4"><a href="model-based-class.html#cb206-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb206-5"><a href="model-based-class.html#cb206-5" aria-hidden="true" tabindex="-1"></a><span class="co"># when return_igraph = FALSE, samples_network can be the input for functions in meconetcomp package</span></span></code></pre></div>
 <p>We also add the function <code>plot_network</code> to directly plot the network in R, including the static network and dynamic network.
 The static network is suitable for the case with relatively few nodes, while dynamic network can be better applied to a large network.
 See <a href="https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html" class="uri">https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html</a> and <a href="https://kateto.net/network-visualization" class="uri">https://kateto.net/network-visualization</a> for more
@@ -1131,7 +1131,7 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <span id="cb227-3"><a href="model-based-class.html#cb227-3" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">$</span>res_NST<span class="sc">$</span>index.grp</span></code></pre></div>
 <pre><code>## Perform tNST analysis ...</code></pre>
 <pre><code>## All match very well.</code></pre>
-<pre><code>## Now randomizing by parallel computing. Begin at Sat Mar 21 21:48:57 2026. Please wait...</code></pre>
+<pre><code>## Now randomizing by parallel computing. Begin at Sun Mar 22 20:17:47 2026. Please wait...</code></pre>
 <pre><code>## The result is stored in object$res_NST ...</code></pre>
 <table style="width:92%;">
 <colgroup>
@@ -1156,26 +1156,26 @@ including ‘tNST’ and ‘pNST’ methods.</p>
 <tr class="odd">
 <td align="center">IW</td>
 <td align="center">435</td>
-<td align="center">0.5549</td>
-<td align="center">0.2903</td>
+<td align="center">0.5548</td>
+<td align="center">0.2904</td>
 <td align="center">0.3005</td>
-<td align="center">20.05</td>
+<td align="center">19.93</td>
 </tr>
 <tr class="even">
 <td align="center">CW</td>
 <td align="center">435</td>
 <td align="center">0.5886</td>
-<td align="center">0.3131</td>
+<td align="center">0.3138</td>
 <td align="center">0.3179</td>
-<td align="center">24.48</td>
+<td align="center">24.34</td>
 </tr>
 <tr class="odd">
 <td align="center">TW</td>
 <td align="center">435</td>
 <td align="center">0.5824</td>
-<td align="center">0.3594</td>
+<td align="center">0.3602</td>
 <td align="center">0.3669</td>
-<td align="center">17.25</td>
+<td align="center">17.16</td>
 </tr>
 </tbody>
 </table>
