@@ -1,20 +1,24 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-%
 \documentclass[
 ]{book}
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -32,7 +36,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -44,13 +47,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -58,7 +61,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -67,13 +70,14 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -85,21 +89,24 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
 \usepackage{booktabs}
 \usepackage{amsthm}
 \makeatletter
@@ -108,22 +115,17 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\usepackage[]{natbib}
-\bibliographystyle{apalike}
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
-  pdftitle={Tutorial for R microeco package (v2.0.0)},
+  pdftitle={Tutorial for R microeco package (v2.3.0)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Tutorial for R microeco package (v2.0.0)}
+\title{Tutorial for R microeco package (v2.3.0)}
 \author{}
-\date{\vspace{-2.5em}2026-03-22}
+\date{\vspace{-2.5em}2026-07-07}
 
 \begin{document}
 \maketitle
@@ -132,8 +134,7 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{background}{%
-\chapter{Background}\label{background}}
+\chapter{Background}\label{background}
 
 　R language \citep{R-base} and its packages ecosystem are wonderful tools for data analysis.
 In community ecology, a series of packages are available for statistical analysis,
@@ -153,12 +154,11 @@ In addition, some web tools associated with R language are also useful for micro
 such as Shiny-phyloseq \citep{McMurdie_Shiny_2015}, MicrobiomeExplorer \citep{Reeder_MicrobiomeExplorer_2021},
 animalcules \citep{Zhao_animalcules_2021} and Namco \citep{Dietrich_Namco_2022}.
 Even so, researchers still lack a flexible, comprehensive and modularized R package to analyze and manage the data fast and easily.
-Based on this background, we created the R microeco package \citep{Liu_microeco_2021, Liu_workflow_2025}.
+Based on this background, we created the R microeco package \citep{Liu_microeco_2021, Liu_workflow_2026, Liu_microeco2_2026}.
 It can be found in CRAN and GitHub (\url{https://github.com/ChiLiubio/microeco}).
 Besides, we also developed the file2meco package (\url{https://github.com/ChiLiubio/file2meco}) for the data input from some famous tools easily.
 
-\hypertarget{intro}{%
-\chapter{Introduction}\label{intro}}
+\chapter{Introduction}\label{intro}
 
 The microeco package has several advantages compared to other packages in R.
 The primary objective behind the development of this package is to assist users in rapidly analyzing microbiome data and
@@ -170,8 +170,7 @@ Main data stored in the object of each class are the frequently-used \texttt{dat
 thereby making it effortless to save, modify, and employ intermediate and outcome files with other tools.
 Prior to exploring the specific usage of each class, we first introduce a few critical points.
 
-\hypertarget{framework}{%
-\section{Framework}\label{framework}}
+\section{Framework}\label{framework}
 
 This is a rough framework for users to fast understand the design of microeco package.
 
@@ -183,8 +182,7 @@ The dataset is a microtable object.
 The return of functions is generally named with the prefix `res\_' to make users easily find them when using Rstudio and the keyboard shortcuts (Tab).
 Except for microtable class, the transformed data in created object is generally named with the prefix `data\_'.
 
-\hypertarget{r6-class}{%
-\section{R6 Class}\label{r6-class}}
+\section{R6 Class}\label{r6-class}
 
 All the main classes in microeco package depend on the R6 class \citep{R6_Winston}.
 R6 uses the encapsulated object-oriented (OO) programming paradigm,
@@ -201,8 +199,7 @@ If the user is interested in the class features, read more from `Advanced R' boo
   Every R6 object has an S3 class that reflects its hierarchy of R6 class.
 \end{itemize}
 
-\hypertarget{help}{%
-\section{Help}\label{help}}
+\section{Help}\label{help}
 
 The usage of help documents in the microeco package may be a little different from other packages we often used.
 If the user wish to see the help document of a function, please search the name of the class it belongs to (not the name of the function)
@@ -216,6 +213,10 @@ and click the link of the function.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# show all the classes and tutorial links}
@@ -226,17 +227,14 @@ and click the link of the function.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{rtools}{%
-\section{RTools}\label{rtools}}
+\section{RTools}\label{rtools}
 
 For Windows system,
 RTools (\url{https://cran.r-project.org/bin/windows/Rtools/}) is necessary to install some R packages from source (those that need compilation of C/C++ or Fortran code).
 
-\hypertarget{dependence}{%
-\section{Dependence}\label{dependence}}
+\section{Dependence}\label{dependence}
 
-\hypertarget{description}{%
-\subsection{Description}\label{description}}
+\subsection{Description}\label{description}
 
 To keep the start and use of microeco package simplified,
 the installation of microeco only depend on several packages, which are compulsory-installed from CRAN and frequently used in the data analysis.
@@ -273,8 +271,7 @@ The solutions:
   If so, please read all of the following sections and install these packages.
 \end{enumerate}
 
-\hypertarget{cran-packages}{%
-\subsection{CRAN packages}\label{cran-packages}}
+\subsection{CRAN packages}\label{cran-packages}
 
 Some packages released in CRAN can not be installed automatically.
 These packages are necessary to reproduce some parts of the tutorial.
@@ -297,8 +294,7 @@ If you want to install all of these packages or some of them, please run this:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{bioconductor-packages}{%
-\subsection{Bioconductor packages}\label{bioconductor-packages}}
+\subsection{Bioconductor packages}\label{bioconductor-packages}
 
 Some dependent packages are deposited in bioconductor (\url{https://bioconductor.org}).
 Please run the following commands to install them one by one.
@@ -318,8 +314,7 @@ So, for the Windows system, please make sure RTools has been installed (\url{htt
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{github-packages}{%
-\subsection{Github packages}\label{github-packages}}
+\subsection{Github packages}\label{github-packages}
 
 A part of dependent packages in some methods comes from Github (\url{https://github.com/}).
 Each package from the GitHub platform is accompanied by installation instructions.
@@ -356,15 +351,13 @@ For the Windows system, first make sure RTools has been installed (\url{https://
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{gephi}{%
-\subsection{Gephi}\label{gephi}}
+\subsection{Gephi}\label{gephi}
 
 Gephi is an excellent network visualization tool and used to open the saved network file,
 i.e.~network.gexf in the \href{https://chiliubio.github.io/microeco_tutorial/model-based-class.html\#trans_network-class}{tutorial}.
 You can download Gephi and learn how to use it from \url{https://gephi.org/users/download/}
 
-\hypertarget{tax4fun2}{%
-\subsection{Tax4Fun2}\label{tax4fun2}}
+\subsection{Tax4Fun2}\label{tax4fun2}
 
 Tax4Fun2 is an R package for the the prediction of functional profiles and functional gene redundancies of prokaryotic communities \citep{Wemheuer_Tax4Fun2_2020}.
 It has higher accuracies than PICRUSt and Tax4Fun. The Tax4Fun2 approach implemented in microeco is a little different from the original package.
@@ -417,8 +410,7 @@ The blast tool path ``ncbi-blast-2.5.0+/bin'' is also required if it is not adde
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot}{%
-\section{Plot}\label{plot}}
+\section{Plot}\label{plot}
 
 Most of the plots in the package rely on the ggplot2 package system.
 We provide some parameters to optimize the corresponding plot, but it may be far from enough.
@@ -427,8 +419,7 @@ Each data table used for visualization is stored in the object and can be saved 
 Of course, the user can also directly modify the class and reload them to use.
 Any contribution of a modified class is appreciated via Github-Pull requests (\url{https://github.com/ChiLiubio/microeco_tutorial/pulls}) or Email (\href{mailto:liuchi0426@126.com}{\nolinkurl{liuchi0426@126.com}}).
 
-\hypertarget{rstudio}{%
-\section{Rstudio}\label{rstudio}}
+\section{Rstudio}\label{rstudio}
 
 The modular design of help documentation can facilitate the document viewing.
 However, in Rtudio, there may be instances where the links fail to navigate properly.
@@ -436,8 +427,7 @@ In such cases, the issue can be resolved by reopening a document window, as illu
 
 \begin{center}\includegraphics[width=800px]{Images/Rstudio_link_redirection} \end{center}
 
-\hypertarget{citation}{%
-\section{Citation}\label{citation}}
+\section{Citation}\label{citation}
 
 To get the citation in R, please run:
 
@@ -449,8 +439,7 @@ To get the citation in R, please run:
 
 Please download the EndNote or other citation format from the publication website (\url{https://doi.org/10.1093/femsec/fiaa255}).
 
-\hypertarget{basic-class}{%
-\chapter{Basic class}\label{basic-class}}
+\chapter{Basic class}\label{basic-class}
 
 The microtable class is the basic class.
 All the other classes depend on the microtable class.
@@ -461,8 +450,7 @@ The objects inside the rectangle with full line represent functions.
 The red rectangle means it is extremely important function.
 The dashed line denotes the key objects (input or output of functions) that deserve more attention.
 
-\hypertarget{microtable-class}{%
-\section{microtable class}\label{microtable-class}}
+\section{microtable class}\label{microtable-class}
 
 　Many tools can be used for the bioinformatic analysis of amplicon sequencing data, such as QIIME \citep{Caporaso_QIIME_2010}, QIIME2 \citep{Bolyen_Reproducible_2019},
 usearch (\url{https://www.drive5.com/usearch/}), mothur \citep{Schloss_Introducing_2009},
@@ -486,8 +474,7 @@ Currently, those tools/softwares include not only commonly-used QIIME \citep{Cap
 but also several metagenomic tools, such as HUMAnN \citep{Franzosa_Species_2018} and kraken2 \citep{Wood_Improved_2019}.
 In this tutorial, the data inside the package was employed to show some basic operations.
 
-\hypertarget{prepare-the-example-data}{%
-\subsection{Prepare the example data}\label{prepare-the-example-data}}
+\subsection{Prepare the example data}\label{prepare-the-example-data}
 
 　The example data inside the microeco package is used to show the main part of the tutorial.
 This dataset arose from 16S rRNA gene Miseq sequencing results of wetland soils in China published by An et al. \citep{An_Soil_2019},
@@ -546,14 +533,15 @@ Make sure that the data types of sample\_table, otu\_table and tax\_table are al
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0833}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0833}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -567,15 +555,17 @@ S4
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 S5
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{OTU\_4272} & 1 & 0 & 1 & 1 & 0 \\
 \textbf{OTU\_236} & 1 & 4 & 0 & 2 & 35 \\
 \textbf{OTU\_399} & 9 & 2 & 2 & 4 & 4 \\
 \textbf{OTU\_1556} & 5 & 18 & 7 & 3 & 2 \\
 \textbf{OTU\_32} & 83 & 9 & 19 & 8 & 102 \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -593,12 +583,13 @@ S5
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1974}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1842}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3026}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3158}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1974}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1842}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3026}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3158}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -608,16 +599,18 @@ Phylum
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Class
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{OTU\_4272} & k\_\_Bacteria & p\_\_Firmicutes & c\_\_Bacilli \\
 \textbf{OTU\_236} & k\_\_Bacteria & p\_\_Chloroflexi & c\_\_ \\
 \textbf{OTU\_399} & k\_\_Bacteria & p\_\_Proteobacteria & c\_\_Betaproteobacteria \\
 \textbf{OTU\_1556} & k\_\_Bacteria & p\_\_Acidobacteria & c\_\_Acidobacteria \\
 \textbf{OTU\_32} & k\_\_Archaea & p\_\_Miscellaneous
 Crenarchaeotic Group & c\_\_ \\
-\bottomrule()
 \end{longtable}
+}
 
 Generally, users' taxonomic table has some messy information, such as NA, unidentified and unknown.
 These information can potentially influence the following taxonomic abundance calculation and other taxonomy-based analysis.
@@ -652,13 +645,14 @@ Using pure number as sample names is \textbf{not recommended} in case of unknown
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0972}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2500}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0972}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -670,15 +664,17 @@ Type
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Saline
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{S1} & S1 & IW & NE & Non-saline soil \\
 \textbf{S2} & S2 & IW & NE & Non-saline soil \\
 \textbf{S3} & S3 & IW & NE & Non-saline soil \\
 \textbf{S4} & S4 & IW & NE & Non-saline soil \\
 \textbf{S5} & S5 & IW & NE & Non-saline soil \\
-\bottomrule()
 \end{longtable}
+}
 
 In this example, the environmental data is stored in the env\_data\_16S alone.
 The user can also directly integrate those data into the sample information table.
@@ -693,14 +689,15 @@ The user can also directly integrate those data into the sample information tabl
 ## [1] "data.frame"
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1233}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1507}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1644}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1507}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1918}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2192}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1233}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1507}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1644}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1507}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1918}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2192}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -714,15 +711,17 @@ Temperature
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Precipitation
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{S1} & 52.96 & 122.6 & 432 & -4.2 & 445 \\
 \textbf{S2} & 52.95 & 122.6 & 445 & -4.3 & 449 \\
 \textbf{S3} & 52.95 & 122.6 & 430 & -4.3 & 449 \\
 \textbf{S4} & 52.95 & 122.6 & 430 & -4.3 & 449 \\
 \textbf{S5} & 52.95 & 122.6 & 429 & -4.3 & 449 \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -749,7 +748,7 @@ Otherwise, the following check can filter all the samples of otu\_table because 
 \end{Shaded}
 
 \begin{verbatim}
-## No sample_table provided, automatically use colnames in otu_table to create one ...
+## No sample_table provided, automatically use column names in otu_table to create one ...
 \end{verbatim}
 
 \begin{Shaded}
@@ -801,8 +800,7 @@ To further save the dataset to a local computer file, the \texttt{save} function
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{how-to-read-your-files-to-microtable-object}{%
-\subsection{How to read your files to microtable object?}\label{how-to-read-your-files-to-microtable-object}}
+\subsection{How to read your files to microtable object?}\label{how-to-read-your-files-to-microtable-object}
 
 The above-mentioned example data are directly loaded from microeco package.
 So the question is \textbf{how to read your data to create a microtable object?}\\
@@ -834,8 +832,7 @@ Please also see the help document of the microtable class for detailed descripti
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{functions-in-microtable-class}{%
-\subsection{Functions in microtable class}\label{functions-in-microtable-class}}
+\subsection{Functions in microtable class}\label{functions-in-microtable-class}
 
 Then, we remove OTUs which are not assigned in the Kingdom ``k\_\_Archaea'' or ``k\_\_Bacteria''.
 
@@ -947,14 +944,15 @@ Those have been shown in file2meco package part (\url{https://chiliubio.github.i
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.4235}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1059}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.4235}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1059}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1176}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1176}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -968,15 +966,17 @@ S4
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 S5
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 **k\_\_Bacteria\textbar p\_\_Proteobacteria** & 0.2005 & 0.2055 & 0.2115 & 0.2572 & 0.1683 \\
 **k\_\_Bacteria\textbar p\_\_Chloroflexi** & 0.1208 & 0.1888 & 0.1668 & 0.1494 & 0.312 \\
 **k\_\_Bacteria\textbar p\_\_Bacteroidetes** & 0.1814 & 0.03274 & 0.02704 & 0.02249 & 0.02859 \\
 **k\_\_Bacteria\textbar p\_\_Acidobacteria** & 0.1193 & 0.2483 & 0.2497 & 0.2644 & 0.2462 \\
 **k\_\_Bacteria\textbar p\_\_Actinobacteria** & 0.1222 & 0.08405 & 0.08869 & 0.08852 & 0.07963 \\
-\bottomrule()
 \end{longtable}
+}
 
 The function \texttt{save\_abund()} can be used to save the taxa abundance file to a local place easily.
 
@@ -1092,8 +1092,7 @@ If method parameter is not provided, the function automatically calculates Bray-
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{merge-taxa-or-samples}{%
-\subsection{merge taxa or samples}\label{merge-taxa-or-samples}}
+\subsection{merge taxa or samples}\label{merge-taxa-or-samples}
 
 Merging taxa according to a specific taxonomic rank level of tax\_table can generate a new microtable object.
 In the new microtable object, each feature in otu\_table represents one taxon at the output level.
@@ -1129,8 +1128,7 @@ Similarly, merging samples according to a specific group of sample\_table can al
 ## phylo_tree have 13296 tips
 \end{verbatim}
 
-\hypertarget{subset-of-samples}{%
-\subsection{subset of samples}\label{subset-of-samples}}
+\subsection{subset of samples}\label{subset-of-samples}
 
 We donnot provide a special function to filter samples in microtable object, as we think it is redundant.
 \textbf{We recommend manipulating the \texttt{sample\_table} in microtable object directly.}
@@ -1168,8 +1166,7 @@ For example, if the user want to extract samples, please do like this:
 ## Taxa abundance: calculated for Kingdom,Phylum,Class,Order,Family,Genus,Species
 \end{verbatim}
 
-\hypertarget{subset-of-taxa}{%
-\subsection{subset of taxa}\label{subset-of-taxa}}
+\subsection{subset of taxa}\label{subset-of-taxa}
 
 Similar with above operation, \textbf{subset of features can be achieved by manipulating the \texttt{tax\_table} or \texttt{otu\_table} in microtable object directly.}
 
@@ -1215,8 +1212,7 @@ Similar with above operation, \textbf{subset of features can be achieved by mani
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{add-asvotu-to-tax_table}{%
-\subsection{add ASV/OTU to tax\_table}\label{add-asvotu-to-tax_table}}
+\subsection{add ASV/OTU to tax\_table}\label{add-asvotu-to-tax_table}
 
 The function \texttt{add\_rownames2taxonomy} can add the row names of \texttt{tax\_table} as the last column of \texttt{tax\_table} directly.
 This operation is very useful in some analysis,
@@ -1245,8 +1241,7 @@ e.g., the visualization of the OTUs/ASVs with the relative abundance.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{filter-the-features-with-low-abundanceoccurrence-frequency}{%
-\subsection{filter the features with low abundance/occurrence frequency}\label{filter-the-features-with-low-abundanceoccurrence-frequency}}
+\subsection{filter the features with low abundance/occurrence frequency}\label{filter-the-features-with-low-abundanceoccurrence-frequency}
 
 The \texttt{filter\_taxa} function can be applied to filter the features with low abundance or occurrence frequency when needed.
 For other operations on the features, please directly manipulate the otu\_table of your microtable object.
@@ -1262,8 +1257,7 @@ For other operations on the features, please directly manipulate the otu\_table 
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{other-examples}{%
-\subsection{Other examples}\label{other-examples}}
+\subsection{Other examples}\label{other-examples}
 
 In microtable\$new, if auto\_tidy = TRUE, the function can automatically use \texttt{tidy\_dataset} to make all files uniform.
 Then, all other functions in microtable will also do this. But if the user changes the file in microtable object,
@@ -1372,8 +1366,7 @@ Other functions and examples are listed here.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points}{%
-\subsection{Key points}\label{key-points}}
+\subsection{Key points}\label{key-points}
 
 \begin{itemize}
 \tightlist
@@ -1397,8 +1390,7 @@ Other functions and examples are listed here.
   beta\_diversity: beta\_diversity is a list stored in microtable object and have several distance matrix
 \end{itemize}
 
-\hypertarget{trans_norm-class}{%
-\section{trans\_norm class}\label{trans_norm-class}}
+\section{trans\_norm class}\label{trans_norm-class}
 
 The ASV/OTU data generated by amplicon sequencing have several issues that need to be considered, including sequencing depth, compositional effect, and sparsity.\\
 How to normalize the data usually depends on the following analysis content.
@@ -1460,19 +1452,16 @@ For the details and references of the approaches, please refer to the help docum
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{composition-based-class}{%
-\chapter{Composition-based class}\label{composition-based-class}}
+\chapter{Composition-based class}\label{composition-based-class}
 
 The trans\_abund class and trans\_venn class are organised into the section `Composition-based class',
 since they are mainly used to show the composition information of communities.
 
-\hypertarget{trans_abund-class}{%
-\section{trans\_abund class}\label{trans_abund-class}}
+\section{trans\_abund class}\label{trans_abund-class}
 
 　The trans\_abund class has several functions to visualize taxonomic abundance based on the ggplot2 package.
 
-\hypertarget{example}{%
-\subsection{Example}\label{example}}
+\subsection{Example}\label{example}
 
 We first show the bar plot example.
 
@@ -1677,8 +1666,7 @@ In this case, the coordinate axis will be flipped automatically for better visua
 
 \begin{center}\includegraphics[width=600px]{Images/trans_abund_barplot_groupmean_clustering_flip} \end{center}
 
-\hypertarget{key-points-1}{%
-\subsection{Key points}\label{key-points-1}}
+\subsection{Key points}\label{key-points-1}
 
 \begin{itemize}
 \tightlist
@@ -1694,13 +1682,11 @@ In this case, the coordinate axis will be flipped automatically for better visua
   order\_x parameter: order the sample (group) names in x axis in the bar plot
 \end{itemize}
 
-\hypertarget{trans_venn-class}{%
-\section{trans\_venn class}\label{trans_venn-class}}
+\section{trans\_venn class}\label{trans_venn-class}
 
 The trans\_venn class is developed for venn analysis, i.e.~shared and unique taxa across samples/groups.
 
-\hypertarget{example-1}{%
-\subsection{Example}\label{example-1}}
+\subsection{Example}\label{example-1}
 
 This part can be performed using samples or groups at OTU/ASV level or higher taxonomic level.
 To analyze the unique and shared OTUs of groups,
@@ -1868,8 +1854,7 @@ The left bar plot can be removed when the parameter \texttt{left\_plot\ =\ FALSE
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-2}{%
-\subsection{Key points}\label{key-points-2}}
+\subsection{Key points}\label{key-points-2}
 
 \begin{itemize}
 \tightlist
@@ -1879,20 +1864,17 @@ The left bar plot can be removed when the parameter \texttt{left\_plot\ =\ FALSE
   return data: using trans\_venn\$new() return data\_details and data\_summary stored in trans\_venn object for further ploting
 \end{itemize}
 
-\hypertarget{diversity-based-class}{%
-\chapter{Diversity-based class}\label{diversity-based-class}}
+\chapter{Diversity-based class}\label{diversity-based-class}
 
 Diversity is one of the core topics in community ecology.
 It refers to alpha diversity, beta diversity and gamma diversity.
 
-\hypertarget{trans_alpha-class}{%
-\section{trans\_alpha class}\label{trans_alpha-class}}
+\section{trans\_alpha class}\label{trans_alpha-class}
 
 　Alpha diversity can be transformed and visualized using the \texttt{trans\_alpha} class.
 Creating an object of \texttt{trans\_alpha} class can invoke the alpha\_diversity data stored in the microtable object.
 
-\hypertarget{example-2}{%
-\subsection{Example}\label{example-2}}
+\subsection{Example}\label{example-2}
 
 Creating a \texttt{trans\_alpha} object can return two data.frame with the prefix `data\_': \texttt{data\_alpha} and \texttt{data\_stat}.
 \texttt{data\_alpha} is used for subsequent differential test and visualization.
@@ -1913,14 +1895,15 @@ Creating a \texttt{trans\_alpha} object can return two data.frame with the prefi
 ## The transformed diversity data is stored in object$data_alpha ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1528}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1528}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -1934,16 +1917,18 @@ SD
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 SE
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 CW & Observed & 30 & 1843 & 220.6 & 40.27 \\
 CW & Chao1 & 30 & 2553 & 338.1 & 61.73 \\
 CW & ACE & 30 & 2716 & 367 & 67.01 \\
 CW & Shannon & 30 & 6.308 & 0.5355 & 0.09777 \\
 CW & Simpson & 30 & 0.9897 & 0.01305 & 0.002382 \\
 CW & InvSimpson & 30 & 198.8 & 108.4 & 19.8 \\
-\bottomrule()
 \end{longtable}
+}
 
 Then, we test the differences among groups using Kruskal-Wallis Rank Sum Test (overall test when groups \textgreater{} 2), Wilcoxon Rank Sum Tests (for paired groups),
 Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups \textgreater{} 2) and anova with multiple comparisons.
@@ -1960,14 +1945,15 @@ Dunn's Kruskal-Wallis Multiple Comparisons (for paired groups when groups \textg
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2083}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2083}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Comparison
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -1981,16 +1967,18 @@ P.adj
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 IW - CW - TW & Observed & IW & 0.155 & 0.2791 & ns \\
 IW - CW - TW & Chao1 & IW & 0.01696 & 0.05088 & ns \\
 IW - CW - TW & ACE & IW & 0.01333 & 0.05088 & ns \\
 IW - CW - TW & Shannon & IW & 0.5319 & 0.7978 & ns \\
 IW - CW - TW & Simpson & CW & 0.8083 & 0.9094 & ns \\
 IW - CW - TW & InvSimpson & CW & 0.8083 & 0.9094 & ns \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2179,13 +2167,14 @@ IW - CW - TW & InvSimpson & CW & 0.8083 & 0.9094 & ns \\
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1486}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.4459}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1081}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1216}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1757}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1486}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.4459}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1081}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1216}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1757}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Measure
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2197,8 +2186,10 @@ Letter
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 MonoLetter
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Observed & Dunn's Kruskal-Wallis Multiple
 Comparisons & IW & a & a \\
 Observed & Dunn's Kruskal-Wallis Multiple
@@ -2211,8 +2202,8 @@ Chao1 & Dunn's Kruskal-Wallis Multiple
 Comparisons & TW & ab & ab \\
 Chao1 & Dunn's Kruskal-Wallis Multiple
 Comparisons & CW & b & b \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2244,12 +2235,13 @@ From v1.0.0, the \texttt{alpha} parameter can be used to adjust the significance
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1250}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Measure
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2259,16 +2251,18 @@ Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Letter
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Observed & anova & IW & a \\
 Observed & anova & TW & a \\
 Observed & anova & CW & a \\
 Chao1 & anova & IW & a \\
 Chao1 & anova & TW & ab \\
 Chao1 & anova & CW & b \\
-\bottomrule()
 \end{longtable}
+}
 
 The multi-factor analysis of variance is also supported with the \texttt{formula} parameter, such as two-way anova.
 
@@ -2433,8 +2427,7 @@ From v1.4.0, the heatmap can be used to visualize the significances for the case
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-3}{%
-\subsection{Key points}\label{key-points-3}}
+\subsection{Key points}\label{key-points-3}
 
 \begin{itemize}
 \tightlist
@@ -2448,8 +2441,7 @@ From v1.4.0, the heatmap can be used to visualize the significances for the case
   plot\_alpha: the significance label comes from the results in \texttt{object\$res\_diff}
 \end{itemize}
 
-\hypertarget{trans_beta-class}{%
-\section{trans\_beta class}\label{trans_beta-class}}
+\section{trans\_beta class}\label{trans_beta-class}
 
 　The trans\_beta class is specifically designed for the beta diversity analysis, i.e.~the dissimilarities among samples.
 Beta diversity can be defined at different forms\citep{Tuomisto_diversity_2010} and can be explored with different ways\citep{Anderson_Navigating_2011}.
@@ -2458,8 +2450,7 @@ Note that the part of beta diversity related with environmental factors are plac
 The distance matrix in beta\_diversity list of microtable object will be invoked for transformation and ploting using trans\_beta class when needed.
 The analysis referred to the beta diversity in this class mainly include ordination, group distance, clustering and manova.
 
-\hypertarget{example-3}{%
-\subsection{Example}\label{example-3}}
+\subsection{Example}\label{example-3}
 
 The available ordination methods include PCoA (principal coordinates analysis), NMDS (non-metric multidimensional scaling),
 PCA (principal component analysis), DCA (detrended correspondence analysis) and PLS-DA (partial least squares discriminant analysis).
@@ -2581,18 +2572,23 @@ based on the \texttt{adonis2} function of vegan package.
 \end{Shaded}
 
 \begin{verbatim}
+## Use Group column for the overall test!
+\end{verbatim}
+
+\begin{verbatim}
 ## The result is stored in object$res_manova ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0694}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1528}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2083}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2083}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2608,13 +2604,15 @@ Pr(\textgreater F)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{Group} & 2 & 6.121 & 0.1955 & 10.57 & 0.001 & *** \\
 \textbf{Residual} & 87 & 25.18 & 0.8045 & NA & NA & NA \\
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA & NA \\
-\bottomrule()
 \end{longtable}
+}
 
 The parameter \texttt{manova\_all\ =\ FALSE} can make the test switch to paired group comparison.
 
@@ -2627,18 +2625,23 @@ The parameter \texttt{manova\_all\ =\ FALSE} can make the test switch to paired 
 \end{Shaded}
 
 \begin{verbatim}
+## Use groups in Group column for the paired test!
+\end{verbatim}
+
+\begin{verbatim}
 ## The result is stored in object$res_manova ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1447}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1316}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1053}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1184}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1316}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1711}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1974}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1447}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1316}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1053}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1184}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1316}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1711}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1974}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Groups
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2654,13 +2657,15 @@ p.adjusted
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 IW vs CW & bray & 11.01 & 0.1595 & 0.001 & 0.001 & *** \\
 IW vs TW & bray & 9.992 & 0.147 & 0.001 & 0.001 & *** \\
 CW vs TW & bray & 10.69 & 0.1556 & 0.001 & 0.001 & *** \\
-\bottomrule()
 \end{longtable}
+}
 
 When there are too many comparison pairs or when comparisons are valuable only within certain categories, the \texttt{by\_group} parameter can be used.
 
@@ -2670,6 +2675,10 @@ When there are too many comparison pairs or when comparisons are valuable only w
 \NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_manova}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Use groups in Type column for the paired test!
+\end{verbatim}
 
 \begin{verbatim}
 ## For by_group: IW ...
@@ -2692,15 +2701,15 @@ When there are too many comparison pairs or when comparisons are valuable only w
 \end{verbatim}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1507}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1644}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1370}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1096}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1233}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1370}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1781}}@{}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1507}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1644}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1370}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1096}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1233}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1370}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1781}}@{}}
 \caption{Table continues below}\tabularnewline
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 by\_group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2716,9 +2725,9 @@ p.value
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.adjusted
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endfirsthead
-\toprule()
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 by\_group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2734,29 +2743,33 @@ p.value
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 p.adjusted
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 IW & NE vs NW & bray & 4.462 & 0.1375 & 0.001 & 0.001 \\
 CW & NC vs YML & bray & 4.077 & 0.2896 & 0.004 & 0.004 \\
 CW & NC vs SC & bray & 7.095 & 0.2211 & 0.001 & 0.003 \\
 CW & YML vs SC & bray & 4.492 & 0.1912 & 0.003 & 0.004 \\
-\bottomrule()
 \end{longtable}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.2083}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 0\tabcolsep) * \real{0.2083}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 *** \\
 ** \\
 ** \\
 ** \\
-\bottomrule()
 \end{longtable}
+}
 
 The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}. If \texttt{manova\_set} is provided, manova\_all parameter will be disabled.
 
@@ -2772,15 +2785,16 @@ The parameter \texttt{manova\_set} has higher priority than \texttt{manova\_all}
 ## The result is stored in object$res_manova ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1923}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0641}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1667}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1667}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1026}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1923}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1923}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0641}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1026}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1923}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2796,14 +2810,16 @@ Pr(\textgreater F)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{Group} & 0 & -3.553e-15 & -1.135e-16 & -Inf & NA & NA \\
 \textbf{Type} & 3 & 3.783 & 0.1208 & 4.949 & 0.001 & *** \\
 \textbf{Residual} & 84 & 21.4 & 0.6836 & NA & NA & NA \\
 \textbf{Total} & 89 & 31.3 & 1 & NA & NA & NA \\
-\bottomrule()
 \end{longtable}
+}
 
 From v1.0.0, ANOSIM method is also available.
 
@@ -2859,8 +2875,7 @@ PERMDISP\citep{Anderson_Navigating_2011} is implemented to test multivariate hom
 
 For the explanation of statistical methods in microbial ecology, please read the references \citep{Ramette_Multivariate_2007, Buttigieg_guide_2014}.
 
-\hypertarget{key-points-4}{%
-\subsection{Key points}\label{key-points-4}}
+\subsection{Key points}\label{key-points-4}
 
 \begin{itemize}
 \tightlist
@@ -2874,13 +2889,11 @@ For the explanation of statistical methods in microbial ecology, please read the
   plot\_group\_distance(): manipulating \texttt{object\$res\_group\_distance\_diff} can control what statistical results are presented in the plot.
 \end{itemize}
 
-\hypertarget{model-based-class}{%
-\chapter{Model-based class}\label{model-based-class}}
+\chapter{Model-based class}\label{model-based-class}
 
 All the classes with complex models are grouped into this section.
 
-\hypertarget{trans_diff-class}{%
-\section{trans\_diff class}\label{trans_diff-class}}
+\section{trans\_diff class}\label{trans_diff-class}
 
 　Differential abundance test is an important part in the microbiome profiling analysis.
 It can find the significant taxa in determining community differences across groups.
@@ -2902,8 +2915,7 @@ it is feasible to compare the results from different approaches and extract a pa
 Note: The methods for invoking \texttt{otu\_table} are primarily designed for differential abundance analysis of ASVs/OTUs (or Genes).
 These methods for invoking \texttt{taxa\_abund} list are recommended for analyses at higher taxonomic levels (such as Genus or Phylum).
 
-\hypertarget{example-4}{%
-\subsection{Example}\label{example-4}}
+\subsection{Example}\label{example-4}
 
 All the differential test result is stored in the \texttt{object\$res\_diff}.
 LEfSe combines the non-parametric test and linear discriminant analysis \citep{Segata_Metagenomic_2011}.
@@ -2928,12 +2940,13 @@ LEfSe combines the non-parametric test and linear discriminant analysis \citep{S
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.6627}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0964}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0964}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1446}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6627}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0964}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0964}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1446}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Taxa
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -2943,15 +2956,17 @@ LDA
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 P.adj
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 k\_\_Bacteria\textbar p\_\_Proteobacteria & CW & 4.837 & 1.076e-09 \\
 k\_\_Bacteria\textbar p\_\_Acidobacteria & IW & 4.797 & 2.955e-10 \\
 k\_\_Bacteria\textbar p\_\_Acidobacteria\textbar c\_\_Acidobacteria & IW & 4.797 & 6.946e-11 \\
 k\_\_Bacteria\textbar p\_\_Bacteroidetes & TW & 4.782 & 1.529e-08 \\
 k\_\_Bacteria\textbar p\_\_Proteobacteria\textbar c\_\_Gammaproteobacteria & CW & 4.613 & 2.911e-10 \\
-\bottomrule()
 \end{longtable}
+}
 
 Then, the abundance of biomarkers detected by LEfSe can be visualized easily.
 
@@ -3157,8 +3172,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{more-options}{%
-\subsection{More options}\label{more-options}}
+\subsection{More options}\label{more-options}
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
 The methods \texttt{DESeq2} and \texttt{edgeR} are also supported in the trans\_diff class and no longer demonstrated here.
@@ -3203,8 +3217,7 @@ Let's run two-way anova for more usages of heatmap.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-5}{%
-\subsection{Key points}\label{key-points-5}}
+\subsection{Key points}\label{key-points-5}
 
 \begin{itemize}
 \tightlist
@@ -3228,8 +3241,7 @@ Let's run two-way anova for more usages of heatmap.
   fix the color in each group when part of groups are not shown in the plot, which is especially useful when multiple approaches or data are needed to run the same step.
 \end{itemize}
 
-\hypertarget{trans_network-class}{%
-\section{trans\_network class}\label{trans_network-class}}
+\section{trans\_network class}\label{trans_network-class}
 
 　Network analysis has been frequently used to study microbial co-occurrence patterns \citep{Deng_Molecular_2012, Faust_Microbial_2012, Coyte_Theecology_2015}.
 In this part, we describe part of the implemented methods in the trans\_network class.
@@ -3239,8 +3251,7 @@ In this part, we describe part of the implemented methods in the trans\_network 
 The objects inside the rectangle with full line represent functions.
 The dashed line denotes the key objects (input or output). The \texttt{res\_network} inside the ellipse with dashed line means it is a hub object for other analysis.
 
-\hypertarget{example-5}{%
-\subsection{Example}\label{example-5}}
+\subsection{Example}\label{example-5}
 
 The correlation-based network is selected to show the main operations.
 This is only intended to show some operations conveniently.
@@ -3316,17 +3327,20 @@ All the data used has been stored in the network.gexf file, including modules cl
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3472}}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1389}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3472}}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.1389}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Property
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Value
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Vertex & 407 \\
 Edge & 1989 \\
 Average\_degree & 9.774 \\
@@ -3336,8 +3350,8 @@ Clustering\_coefficient & 0.4698 \\
 Density & 0.02407 \\
 Heterogeneity & 1.194 \\
 Centralization & 0.09908 \\
-\bottomrule()
 \end{longtable}
+}
 
 The function get\_node\_table, get\_edge\_table and get\_adjacency\_matrix are designed to
 get node properties table, edge properties table and adjacency matrix from network, respectively.
@@ -3350,15 +3364,16 @@ get node properties table, edge properties table and adjacency matrix from netwo
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1772}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1266}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1139}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1772}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1519}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1139}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1392}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1772}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1266}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1139}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1772}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1519}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1139}}
+  >{\centering\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1392}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -3374,15 +3389,17 @@ module
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 z
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{OTU\_50} & OTU\_50 & 2 & 0 & 0.2301 & M2 & -1.305 \\
 \textbf{OTU\_305} & OTU\_305 & 3 & 4 & 0.1394 & M8 & 1.118 \\
 \textbf{OTU\_1} & OTU\_1 & 21 & 2 & 1.409 & M2 & -0.04067 \\
 \textbf{OTU\_41} & OTU\_41 & 1 & 0 & 0.1603 & M14 & -0.5774 \\
 \textbf{OTU\_59} & OTU\_59 & 3 & 2306 & 0.5588 & M6 & 0.7771 \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3622,14 +3639,12 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{network-comparison}{%
-\subsection{Network comparison}\label{network-comparison}}
+\subsection{Network comparison}\label{network-comparison}
 
 To compare different networks from trans\_network class,
 please see the meconetcomp package chapter (\url{https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html}).
 
-\hypertarget{key-points-6}{%
-\subsection{Key points}\label{key-points-6}}
+\subsection{Key points}\label{key-points-6}
 
 \begin{itemize}
 \tightlist
@@ -3641,8 +3656,7 @@ please see the meconetcomp package chapter (\url{https://chiliubio.github.io/mic
   subset\_network(): this function can extract any sub-network according to the input nodes, e.g.~sub-network for modules or samples
 \end{itemize}
 
-\hypertarget{other-functions}{%
-\subsection{Other functions}\label{other-functions}}
+\subsection{Other functions}\label{other-functions}
 
 \begin{itemize}
 \tightlist
@@ -3652,8 +3666,7 @@ please see the meconetcomp package chapter (\url{https://chiliubio.github.io/mic
   random\_network(): generate random networks, compare them with the empirical network and get the p value of topological properties.
 \end{itemize}
 
-\hypertarget{trans_nullmodel-class}{%
-\section{trans\_nullmodel class}\label{trans_nullmodel-class}}
+\section{trans\_nullmodel class}\label{trans_nullmodel-class}
 
 In recent decades,
 the integration of phylogenetic analysis and null model promotes the inference of niche and neutral influences on community assembly more powerfully
@@ -3666,8 +3679,7 @@ in which the change of phylogenetic signal is intuitional and clear compared to 
 The combinations between RCbray and betaNTI can be used to infer the strength of each ecological process dominating the community assembly
 under the specific hypothesis \citep{Stegen_Quantifying_2013}.
 
-\hypertarget{example-6}{%
-\subsection{Example}\label{example-6}}
+\subsection{Example}\label{example-6}
 
 We first check the phylogenetic signal.
 
@@ -3740,14 +3752,15 @@ BetaNTI(ses.betamntd) can be used to indicate the phylogenetic terminal turnover
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1389}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1389}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -3761,15 +3774,17 @@ S4
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 S5
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{S1} & 0 & -0.432 & -0.7318 & 0.6482 & 1.236 \\
 \textbf{S2} & -0.432 & 0 & -0.9817 & 0.1372 & 0.8991 \\
 \textbf{S3} & -0.7318 & -0.9817 & 0 & 1.098 & 0.02069 \\
 \textbf{S4} & 0.6482 & 0.1372 & 1.098 & 0 & -1.085 \\
 \textbf{S5} & 1.236 & 0.8991 & 0.02069 & -1.085 & 0 \\
-\bottomrule()
 \end{longtable}
+}
 
 If the dataset is large, it is faster with use\_iCAMP = TRUE for betaNTI.
 
@@ -3835,24 +3850,27 @@ The fraction of all pairwise comparisons with \textbar βNTI\textbar{} \textless
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1806}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3333}}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.1806}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 process
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 percentage
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 variable selection & 9.238 \\
 homogeneous selection & 0 \\
 dispersal limitation & 8.964 \\
 homogeneous dispersal & 11.54 \\
 drift & 70.26 \\
-\bottomrule()
 \end{longtable}
+}
 
 The \texttt{cal\_NST} function can be used to calculate normalized stochasticity ratio based on the NST package \citep{Ning_general_2019},
 including `tNST' and `pNST' methods.
@@ -3874,21 +3892,22 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Sun Mar 22 20:20:19 2026. Please wait...
+## Now randomizing by parallel computing. Begin at Tue Jul  7 16:35:54 2026. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
 ## The result is stored in object$res_NST ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0972}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}
-  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1806}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0972}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1806}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -3902,13 +3921,15 @@ MST.i.bray
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 SES.i.bray
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
-IW & 435 & 0.5551 & 0.2906 & 0.3007 & 19.95 \\
-CW & 435 & 0.5886 & 0.3129 & 0.3178 & 24.4 \\
-TW & 435 & 0.5825 & 0.3603 & 0.3669 & 17.18 \\
-\bottomrule()
+\bottomrule\noalign{}
+\endlastfoot
+IW & 435 & 0.5546 & 0.2904 & 0.3003 & 20.02 \\
+CW & 435 & 0.5887 & 0.314 & 0.3179 & 24.35 \\
+TW & 435 & 0.5827 & 0.36 & 0.3671 & 17.21 \\
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3942,8 +3963,7 @@ For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal\_
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-7}{%
-\subsection{Key points}\label{key-points-7}}
+\subsection{Key points}\label{key-points-7}
 
 \begin{itemize}
 \tightlist
@@ -3953,8 +3973,7 @@ For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal\_
   cal\_rcbray(): if only need rcbray, ignore other phylogenetic operations
 \end{itemize}
 
-\hypertarget{other-function}{%
-\subsection{Other function}\label{other-function}}
+\subsection{Other function}\label{other-function}
 
 \begin{itemize}
 \tightlist
@@ -3962,15 +3981,13 @@ For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal\_
   cal\_Cscore(): calculates the (normalised) mean number of checkerboard combinations (C-score) using C.score
 \end{itemize}
 
-\hypertarget{trans_classifier-class}{%
-\section{trans\_classifier class}\label{trans_classifier-class}}
+\section{trans\_classifier class}\label{trans_classifier-class}
 
 The trans\_classifier class is a wrapper for methods of machine-learning-based classification models.
 Microbiome-based supervised machine-learning has been successful in predicting human health status \citep{Poore_Microbiome_2020}
 and soil categories \citep{Wilhelm_Predicting_2021}.
 
-\hypertarget{dependencies}{%
-\subsection{Dependencies}\label{dependencies}}
+\subsection{Dependencies}\label{dependencies}
 
 Before starting the examples, make sure those packages have been installed.
 
@@ -3986,8 +4003,7 @@ Before starting the examples, make sure those packages have been installed.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{examples}{%
-\subsection{Examples}\label{examples}}
+\subsection{Examples}\label{examples}
 
 In this section, we use the example data in file2meco package (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html}) to demonstrate the feature selection,
 data training and prediction with random forest algorithm.
@@ -4181,8 +4197,7 @@ The regression is also supported.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-8}{%
-\subsection{Key points}\label{key-points-8}}
+\subsection{Key points}\label{key-points-8}
 
 \begin{itemize}
 \tightlist
@@ -4190,8 +4205,7 @@ The regression is also supported.
   cal\_feature\_sel(): perform feature selection
 \end{itemize}
 
-\hypertarget{other-function-1}{%
-\subsection{Other function}\label{other-function-1}}
+\subsection{Other function}\label{other-function-1}
 
 \begin{itemize}
 \tightlist
@@ -4201,20 +4215,17 @@ The regression is also supported.
   cal\_preProcess(): Pre-process (centering, scaling etc.) of the feature data based on the caret::preProcess function.
 \end{itemize}
 
-\hypertarget{explainable-class}{%
-\chapter{Explainable class}\label{explainable-class}}
+\chapter{Explainable class}\label{explainable-class}
 
 The trans\_env and trans\_func classes are placed into the section `Explainable class',
-as environmental factors and microbial functions can be generally applied to explain microbial community structure and assembly.
+as environmental factors, microbial functions and metabolites can be generally applied to explain microbial dynamics, community structure and assembly.
 
-\hypertarget{trans_env-class}{%
-\section{trans\_env class}\label{trans_env-class}}
+\section{trans\_env class}\label{trans_env-class}
 
 There may be some NA (missing value) in the user's env data.
 If so, please add \texttt{complete\_na\ =\ TRUE} for the interpolation when creating a trans\_env object.
 
-\hypertarget{example-7}{%
-\subsection{Example}\label{example-7}}
+\subsection{Example}\label{example-7}
 
 Creating trans\_env object has at least two ways.
 The following is using additional environmental data which is not in the microtable object.
@@ -4280,13 +4291,14 @@ The \texttt{cal\_diff} function is used to test the significance of variables ac
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1806}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2222}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1111}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1667}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2083}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2222}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2083}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Comparison
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -4298,8 +4310,10 @@ P.adj
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 IW - CW & Temperature & CW & 3.283e-10 & *** \\
 IW - TW & Temperature & TW & 0.0001958 & *** \\
 CW - TW & Temperature & CW & 3.283e-10 & *** \\
@@ -4307,8 +4321,8 @@ IW - CW & Precipitation & CW & 5.239e-09 & *** \\
 IW - TW & Precipitation & IW & 0.07758 & ns \\
 CW - TW & Precipitation & CW & 4.002e-07 & *** \\
 IW - CW & TOC & IW & 0.4687 & ns \\
-\bottomrule()
 \end{longtable}
+}
 
 Let's perform the ANOVA and show the letters in the box plot. We use list to store all the plots for each factor and plot them together.
 
@@ -4431,13 +4445,14 @@ Mantel test can be used to check whether there is significant correlations betwe
 ## The result is stored in object$res_mantel ...
 \end{verbatim}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1625}}
-  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1875}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3250}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1625}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1875}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Variables
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -4449,8 +4464,10 @@ p.adjusted
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Significance
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Temperature & 0.452 & 0.001 & 0.002 & ** \\
 Precipitation & 0.2791 & 0.001 & 0.002 & ** \\
 TOC & 0.13 & 0.004 & 0.005333 & ** \\
@@ -4459,8 +4476,8 @@ NO3 & 0.06758 & 0.049 & 0.056 & \\
 pH & 0.4085 & 0.001 & 0.002 & ** \\
 Conductivity & 0.2643 & 0.001 & 0.002 & ** \\
 TN & 0.1321 & 0.003 & 0.0048 & ** \\
-\bottomrule()
 \end{longtable}
+}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4676,8 +4693,7 @@ Other examples:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{key-points-9}{%
-\subsection{Key points}\label{key-points-9}}
+\subsection{Key points}\label{key-points-9}
 
 \begin{itemize}
 \tightlist
@@ -4695,8 +4711,7 @@ Other examples:
   plot\_ordination(): use plot\_type parameter to select point types and env\_nudge\_x and taxa\_nudge\_x (also \_y) to adjust the text positions.
 \end{itemize}
 
-\hypertarget{trans_func-class}{%
-\section{trans\_func class}\label{trans_func-class}}
+\section{trans\_func class}\label{trans_func-class}
 
 　Ecological researchers are usually interested in the the funtional profiles of microbial communities,
 because functional or metabolic data is powerful to explain the structure and dynamics of microbial communities.
@@ -4710,8 +4725,7 @@ The NJC19 database \citep{Lim_Large_2020} is also available for animal-associate
 We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to predict the fungal traits.
 The idea identifying prokaryotic traits and functional redundancy was initially inspired by our another study \citep{Liu_Microbial_2022}.
 
-\hypertarget{example-8}{%
-\subsection{Example}\label{example-8}}
+\subsection{Example}\label{example-8}
 
 We first identify/predict traits of taxa with the prokaryotic example data.
 
@@ -4751,11 +4765,12 @@ We first identify/predict traits of taxa with the prokaryotic example data.
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2083}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2222}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4167}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2222}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4167}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -4763,15 +4778,17 @@ methanotrophy
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 acetoclastic\_methanogenesis
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{OTU\_4272} & 0 & 0 \\
 \textbf{OTU\_236} & 0 & 0 \\
 \textbf{OTU\_399} & 0 & 0 \\
 \textbf{OTU\_1556} & 0 & 0 \\
 \textbf{OTU\_32} & 0 & 0 \\
-\bottomrule()
 \end{longtable}
+}
 
 The ratio/abundance of OTUs having the same trait/function can reflect the functional redundancy (FR).
 The \texttt{cal\_func\_FR} function is designed to obtain the FR for each function.
@@ -4793,11 +4810,12 @@ The \texttt{cal\_func\_FR} function is designed to obtain the FR for each functi
 \end{Highlighting}
 \end{Shaded}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1250}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2222}}
-  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4167}}@{}}
-\toprule()
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2222}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4167}}@{}}
+\toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 ~
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
@@ -4805,15 +4823,17 @@ methanotrophy
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 acetoclastic\_methanogenesis
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{S1} & 0.004239 & 0.000499 \\
 \textbf{S2} & 0.004346 & 0 \\
 \textbf{S3} & 0.003745 & 0 \\
 \textbf{S4} & 0.004981 & 0 \\
 \textbf{S5} & 0.005228 & 0 \\
-\bottomrule()
 \end{longtable}
+}
 
 The \texttt{trans\_func\_FR} function is implemented to get the long-format table for more flexible manipulation, e.g., filtering and grouping.
 The return \texttt{res\_func\_FR\_trans} in the object is the table for the following visualization.
@@ -4950,8 +4970,7 @@ The main difference on operations between these two methods lies in the file rea
 PICRUSt2 requires reading the preliminary analysis result files.
 We have placed PICRUSt2 examples in the file2meco package section (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html\#picrust2}).
 
-\hypertarget{key-points-10}{%
-\subsection{Key points}\label{key-points-10}}
+\subsection{Key points}\label{key-points-10}
 
 \begin{itemize}
 \tightlist
@@ -4961,8 +4980,395 @@ We have placed PICRUSt2 examples in the file2meco package section (\url{https://
   blast version: tax4fun2 require NCBI blast tool. However, some errors often come from the latest versions (\url{https://www.biostars.org/p/413294/}). An easy solution is to use previous version (such as v2.5.0).
 \end{itemize}
 
-\hypertarget{file2meco-package}{%
-\chapter{file2meco package}\label{file2meco-package}}
+\section{trans\_metab class}\label{trans_metab-class}
+
+This class is a wrapper for a series of metabolite analysis, including origin inference and pathway enrichment.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use data inside the microeco package}
+
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_metab}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{metab =}\NormalTok{ soil\_metab, }\AttributeTok{microb =}\NormalTok{ soil\_microb)}
+
+\CommentTok{\# If the tax\_table in the input metab data already contains detailed annotations (such as KEGG, HMDB columns),}
+\CommentTok{\# user can skip the following step. This step performs text{-}based matching to align the input metabolite names with those in the database.}
+\CommentTok{\# please download the database from https://zenodo.org/records/18618912; uncompress the zip file}
+\CommentTok{\# Fuzzy matching of metabolite names against those in the database}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_match}\NormalTok{(}\AttributeTok{database\_path =} \StringTok{"./metorigindb\_split\_202602"}\NormalTok{)}
+\CommentTok{\# View(test$res\_match)}
+
+\CommentTok{\# origin inference}
+\CommentTok{\# The parameter match\_col works by determining metabolite assignment based on the provided "names" (row names) or other columns (e.g., "KEGG\_ID"). }
+\CommentTok{\# For "names", the function first checks whether res\_match (from the last step) exists; if it does, metabolite identification is performed according to the distance threshold.}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_origin}\NormalTok{(}\AttributeTok{database\_path =} \StringTok{"./metorigindb\_split\_202602"}\NormalTok{, }\AttributeTok{match\_col =} \FunctionTok{c}\NormalTok{(}\StringTok{"names"}\NormalTok{, }\StringTok{"HMDB\_ID"}\NormalTok{, }\StringTok{"KEGG\_ID"}\NormalTok{))}
+\CommentTok{\# tmp$res\_origin\_rawtable and tmp$res\_origin\_list}
+
+\CommentTok{\# create the metabolites{-}bacteria network according to the result from the last step}
+\NormalTok{res\_network }\OtherTok{\textless{}{-}}\NormalTok{ tmp}\SpecialCharTok{$}\FunctionTok{cal\_origin\_network}\NormalTok{()}
+
+\CommentTok{\# use trans\_network class to visualize the result}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{()}
+\NormalTok{test}\SpecialCharTok{$}\NormalTok{res\_network }\OtherTok{\textless{}{-}}\NormalTok{ res\_network}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\NormalTok{test}\SpecialCharTok{$}\FunctionTok{get\_node\_table}\NormalTok{()}
+\FunctionTok{head}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{res\_node\_table)}
+
+\CommentTok{\# test$plot\_network(method = "networkD3", node\_color = "type")}
+
+
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\# Pathway analysis}
+\CommentTok{\# Map metabolites to pathways based on a database}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_pathway}\NormalTok{(}\AttributeTok{db\_type =} \StringTok{"kegg"}\NormalTok{)}
+
+\CommentTok{\# Perform pathway enrichment analysis for target metabolites using Fisher\textquotesingle{}s exact test}
+\NormalTok{target }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(soil\_metab}\SpecialCharTok{$}\NormalTok{data\_metab}\SpecialCharTok{$}\NormalTok{otu\_table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{50}\NormalTok{]}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_pathway\_enrich}\NormalTok{(}\AttributeTok{target\_metabs =}\NormalTok{ target, }\AttributeTok{p\_adjust\_method =} \StringTok{"BH"}\NormalTok{, }\AttributeTok{p\_cutoff =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{min\_metab\_count =} \DecValTok{3}\NormalTok{)}
+
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{plot\_pathway\_enrich}\NormalTok{()}
+
+
+\DocumentationTok{\#\#\#\# Following steps can be used to get the metabolite{-}pathway network}
+\CommentTok{\# res\_net \textless{}{-} tmp$cal\_pathway\_network()}
+
+\CommentTok{\# test \textless{}{-} trans\_network$new()}
+\CommentTok{\# test$res\_network \textless{}{-} res\_net}
+\CommentTok{\# test$cal\_module()}
+\CommentTok{\# test$get\_node\_table()}
+\CommentTok{\# head(test$res\_node\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\chapter{trans\_niche and trans\_phylo}\label{trans_niche-and-trans_phylo}
+
+Starting from version 2.3.0, two new classes have been added: trans\_niche and trans\_phylo.
+The trans\_niche class is used to calculate niche breadth and niche overlap.
+The trans\_phylo class relies on the ggtree package to visualize phylogenetic trees of ASVs/OTUs/Species and annotate attributes on the outer layers of trees.
+Demonstrations are provided using sample datasets herein.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(ggtree)}
+\FunctionTok{library}\NormalTok{(ggtreeExtra)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(ape)}
+\FunctionTok{library}\NormalTok{(RColorBrewer)}
+
+
+\NormalTok{mt }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(dataset)}
+\NormalTok{mt200 }\OtherTok{\textless{}{-}} \FunctionTok{clone}\NormalTok{(mt)}
+
+\CommentTok{\# Subset to top 200 OTUs}
+\NormalTok{top\_otus }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(mt200}\SpecialCharTok{$}\FunctionTok{taxa\_sums}\NormalTok{(), }\AttributeTok{decreasing =} \ConstantTok{TRUE}\NormalTok{))[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{200}\NormalTok{]}
+\NormalTok{mt200}\SpecialCharTok{$}\NormalTok{otu\_table }\SpecialCharTok{\%\textless{}\textgreater{}\%}\NormalTok{ .[top\_otus, ]}
+\NormalTok{mt200}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+
+\CommentTok{\# ========================================================================}
+\CommentTok{\# Build rich ring annotation data}
+\CommentTok{\# ========================================================================}
+
+\NormalTok{otu }\OtherTok{\textless{}{-}}\NormalTok{ mt200}\SpecialCharTok{$}\NormalTok{otu\_table}
+\NormalTok{tax }\OtherTok{\textless{}{-}}\NormalTok{ mt200}\SpecialCharTok{$}\NormalTok{tax\_table}
+\NormalTok{si  }\OtherTok{\textless{}{-}}\NormalTok{ mt200}\SpecialCharTok{$}\NormalTok{sample\_table}
+\NormalTok{n\_otus }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(otu)}
+
+\CommentTok{\# Relative abundance (mean \%)}
+\NormalTok{total\_rel\_abund }\OtherTok{\textless{}{-}}\NormalTok{ trans\_norm}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(mt)}\SpecialCharTok{$}\FunctionTok{norm}\NormalTok{(}\AttributeTok{method =} \StringTok{"TSS"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{otu\_table}
+\NormalTok{rel\_abund   }\OtherTok{\textless{}{-}}\NormalTok{ total\_rel\_abund[}\FunctionTok{rownames}\NormalTok{(otu), ]}
+\NormalTok{mean\_abund  }\OtherTok{\textless{}{-}} \FunctionTok{rowMeans}\NormalTok{(rel\_abund) }\SpecialCharTok{*} \DecValTok{100}
+
+\CommentTok{\# Prevalence (\% of samples where detected)}
+\NormalTok{prevalence }\OtherTok{\textless{}{-}} \FunctionTok{rowMeans}\NormalTok{(otu }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) }\SpecialCharTok{*} \DecValTok{100}
+
+\CommentTok{\# Log10 abundance}
+\NormalTok{log\_abund }\OtherTok{\textless{}{-}} \FunctionTok{log10}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(otu) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# {-}{-}{-}{-} Simulated ecological indicators {-}{-}{-}{-}}
+\CommentTok{\# Importance index: composite of abundance and prevalence}
+\CommentTok{\# (mimics indicators like indicator species analysis or random forest importance)}
+\NormalTok{importance\_raw }\OtherTok{\textless{}{-}}\NormalTok{ mean\_abund }\SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(prevalence }\SpecialCharTok{/} \DecValTok{100}\NormalTok{)}
+\NormalTok{importance }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(importance\_raw }\SpecialCharTok{/} \FunctionTok{max}\NormalTok{(importance\_raw, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+
+\CommentTok{\# Specificity: how concentrated is an OTU in its preferred habitat; Use niche breadth value from trans\_niche class}
+\CommentTok{\# (low = generalist, high = specialist)}
+\NormalTok{niche }\OtherTok{\textless{}{-}}\NormalTok{ trans\_niche}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(mt)}\SpecialCharTok{$}\FunctionTok{cal\_niche\_breadth}\NormalTok{()}
+\NormalTok{specificity }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ niche}\SpecialCharTok{$}\NormalTok{res\_niche\_breadth[}\FunctionTok{rownames}\NormalTok{(otu), }\StringTok{"Levins\_Standardized"}\NormalTok{]}
+
+\CommentTok{\# network metrics with trans\_network class example}
+\NormalTok{net }\OtherTok{\textless{}{-}}\NormalTok{ trans\_network}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(mt, }\AttributeTok{cor\_method =} \StringTok{"pearson"}\NormalTok{)}\SpecialCharTok{$}\FunctionTok{cal\_network}\NormalTok{()}\SpecialCharTok{$}\FunctionTok{get\_node\_table}\NormalTok{()}
+\NormalTok{centrality }\OtherTok{\textless{}{-}}\NormalTok{ net}\SpecialCharTok{$}\NormalTok{res\_node\_table[}\FunctionTok{rownames}\NormalTok{(otu), }\StringTok{"closeness\_centrality"}\NormalTok{]}
+\NormalTok{connectivity }\OtherTok{\textless{}{-}}\NormalTok{ net}\SpecialCharTok{$}\NormalTok{res\_node\_table[}\FunctionTok{rownames}\NormalTok{(otu), }\StringTok{"z"}\NormalTok{]}
+
+\CommentTok{\# Habitat}
+\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{add\_rownames2tax}\NormalTok{(}\StringTok{"OTU"}\NormalTok{)}
+\NormalTok{mt}\SpecialCharTok{$}\FunctionTok{cal\_abund}\NormalTok{()}
+\NormalTok{mt\_diff }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{)}
+\NormalTok{mt\_diff\_res }\OtherTok{\textless{}{-}}\NormalTok{ mt\_diff}\SpecialCharTok{$}\NormalTok{res\_diff }
+\FunctionTok{rownames}\NormalTok{(mt\_diff\_res) }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{gsub}\NormalTok{(}\StringTok{".*}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{, }\StringTok{""}\NormalTok{, .)}
+\NormalTok{dominant\_habitat }\OtherTok{\textless{}{-}}\NormalTok{ mt\_diff\_res[}\FunctionTok{rownames}\NormalTok{(otu), }\StringTok{"Group"}\NormalTok{]}
+
+\CommentTok{\# Salinity}
+\NormalTok{mt\_diff }\OtherTok{\textless{}{-}}\NormalTok{ trans\_diff}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ mt, }\AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }\AttributeTok{taxa\_level =} \StringTok{"OTU"}\NormalTok{, }\AttributeTok{group =} \StringTok{"Saline"}\NormalTok{, }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{)}
+\NormalTok{mt\_diff\_res }\OtherTok{\textless{}{-}}\NormalTok{ mt\_diff}\SpecialCharTok{$}\NormalTok{res\_diff }
+\FunctionTok{rownames}\NormalTok{(mt\_diff\_res) }\SpecialCharTok{\%\textless{}\textgreater{}\%} \FunctionTok{gsub}\NormalTok{(}\StringTok{".*}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{|"}\NormalTok{, }\StringTok{""}\NormalTok{, .)}
+\NormalTok{dominant\_salinity }\OtherTok{\textless{}{-}}\NormalTok{ mt\_diff\_res[}\FunctionTok{rownames}\NormalTok{(otu), }\StringTok{"Group"}\NormalTok{]}
+
+
+\CommentTok{\# Class taxonomy}
+\NormalTok{class\_col }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{ (}\StringTok{"Class"} \SpecialCharTok{\%in\%} \FunctionTok{colnames}\NormalTok{(tax)) tax}\SpecialCharTok{$}\NormalTok{Class }\ControlFlowTok{else} \FunctionTok{rep}\NormalTok{(}\StringTok{"Unknown"}\NormalTok{, n\_otus)}
+
+
+\CommentTok{\# Assemble ring data}
+\NormalTok{ring\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{label        =} \FunctionTok{rownames}\NormalTok{(otu),}
+  \AttributeTok{RelAbund     =} \FunctionTok{round}\NormalTok{(mean\_abund, }\DecValTok{4}\NormalTok{),}
+  \AttributeTok{Prevalence   =} \FunctionTok{round}\NormalTok{(prevalence, }\DecValTok{1}\NormalTok{),}
+  \AttributeTok{LogAbund     =} \FunctionTok{round}\NormalTok{(log\_abund, }\DecValTok{3}\NormalTok{),}
+  \AttributeTok{Importance   =}\NormalTok{ importance,}
+  \AttributeTok{Specificity  =}\NormalTok{ specificity,}
+  \AttributeTok{Connectivity =}\NormalTok{ connectivity,}
+  \AttributeTok{Habitat      =}\NormalTok{ dominant\_habitat,}
+  \AttributeTok{Salinity     =}\NormalTok{ dominant\_salinity,}
+  \AttributeTok{Class        =}\NormalTok{ class\_col,}
+  \AttributeTok{stringsAsFactors =} \ConstantTok{FALSE}
+\NormalTok{)}
+
+\CommentTok{\# Clean Class column}
+\NormalTok{ring\_df}\SpecialCharTok{$}\NormalTok{Class }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\^{}c\_\_"}\NormalTok{, }\StringTok{""}\NormalTok{, ring\_df}\SpecialCharTok{$}\NormalTok{Class)}
+\NormalTok{ring\_df}\SpecialCharTok{$}\NormalTok{Class[ring\_df}\SpecialCharTok{$}\NormalTok{Class }\SpecialCharTok{==} \StringTok{""} \SpecialCharTok{|} \FunctionTok{is.na}\NormalTok{(ring\_df}\SpecialCharTok{$}\NormalTok{Class)] }\OtherTok{\textless{}{-}} \StringTok{"Unclassified"}
+
+
+
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Create trans\_phylo object and plot tree}
+\CommentTok{\# ============================================================================}
+
+\NormalTok{OPEN\_ANGLE }\OtherTok{\textless{}{-}} \DecValTok{18}   \CommentTok{\# degrees — slightly wider opening for ring label text}
+
+\NormalTok{pviz }\OtherTok{\textless{}{-}}\NormalTok{ trans\_phylo}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}
+  \AttributeTok{dataset             =}\NormalTok{ mt200,}
+  \AttributeTok{group\_col           =} \StringTok{"Phylum"}\NormalTok{,}
+  \AttributeTok{group\_prefix\_remove =} \StringTok{"p\_\_"}\NormalTok{,}
+  \AttributeTok{ring\_data           =}\NormalTok{ ring\_df,}
+  \AttributeTok{color\_palette       =} \ConstantTok{NULL}\NormalTok{,}
+  \AttributeTok{clade\_coloring      =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{plot\_tree}\NormalTok{(}
+  \AttributeTok{open\_angle       =}\NormalTok{ OPEN\_ANGLE,}
+  \AttributeTok{branch\_size      =} \FloatTok{0.15}\NormalTok{,}
+  \AttributeTok{tip\_point\_size   =} \FloatTok{1.2}\NormalTok{,}
+  \AttributeTok{tip\_point\_shape  =} \DecValTok{21}\NormalTok{,}
+  \AttributeTok{tip\_point\_stroke =} \FloatTok{0.1}\NormalTok{,}
+  \AttributeTok{tip\_point\_alpha  =} \FloatTok{0.80}\NormalTok{,}
+  \AttributeTok{legend\_title     =} \StringTok{"Phylum"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Add ring layers}
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Two approaches are shown below:}
+\CommentTok{\#   (A) Individual add\_ring() calls — maximum per{-}ring control}
+\CommentTok{\#   (B) Batch add\_rings\_batch() with vector parameters — concise alternative}
+\CommentTok{\# ============================================================================}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-} Approach A: Individual add\_ring() calls {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-} Numeric rings {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+
+\CommentTok{\# Ring 1: Log10 Abundance — viridis{-}style purple{-}to{-}yellow}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"LogAbund"}\NormalTok{,}
+  \AttributeTok{geom                =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{ring\_width          =} \FloatTok{0.038}\NormalTok{,}
+  \AttributeTok{ring\_offset         =} \FloatTok{0.012}\NormalTok{,}
+  \AttributeTok{color\_low           =} \StringTok{"\#440154"}\NormalTok{,}
+  \AttributeTok{color\_high          =} \StringTok{"\#FDE725"}\NormalTok{,}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Log10}\SpecialCharTok{\textbackslash{}n}\StringTok{Abund."}\NormalTok{,}
+  \AttributeTok{ring\_label          =} \StringTok{"Log10 Abund."}
+\NormalTok{)}
+
+\CommentTok{\# Ring 2: Prevalence (\%) — green gradient}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Prevalence"}\NormalTok{,}
+  \AttributeTok{geom                =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{color\_low           =} \StringTok{"\#EDF8FB"}\NormalTok{,}
+  \AttributeTok{color\_high          =} \StringTok{"\#006D2C"}\NormalTok{,}
+  \AttributeTok{limits              =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{),}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Prevalence}\SpecialCharTok{\textbackslash{}n}\StringTok{(\%)"}\NormalTok{,}
+  \AttributeTok{ring\_label          =} \StringTok{"Prevalence"}
+\NormalTok{)}
+
+\CommentTok{\# Ring 3: Ecological Importance — orange{-}red gradient}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Importance"}\NormalTok{,}
+  \AttributeTok{geom                =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{color\_low           =} \StringTok{"\#FFF5EB"}\NormalTok{,}
+  \AttributeTok{color\_high          =} \StringTok{"\#D94801"}\NormalTok{,}
+  \AttributeTok{limits              =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{),}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Importance}\SpecialCharTok{\textbackslash{}n}\StringTok{Index"}\NormalTok{,}
+  \AttributeTok{ring\_label          =} \StringTok{"Importance"}
+\NormalTok{)}
+
+\CommentTok{\# Ring 4: Habitat Specificity — blue gradient}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Specificity"}\NormalTok{,}
+  \AttributeTok{geom                =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{color\_low           =} \StringTok{"\#F7FBFF"}\NormalTok{,}
+  \AttributeTok{color\_high          =} \StringTok{"\#08306B"}\NormalTok{,}
+  \AttributeTok{limits              =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{),}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Specificity"}
+\NormalTok{)}
+
+\CommentTok{\# Ring 5: Network Connectivity — warm gradient}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Connectivity"}\NormalTok{,}
+  \AttributeTok{geom                =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{color\_low           =} \StringTok{"\#FFF7EC"}\NormalTok{,}
+  \AttributeTok{color\_high          =} \StringTok{"\#7F2704"}\NormalTok{,}
+  \AttributeTok{limits              =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{),}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Connectivity"}
+\NormalTok{)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-} Categorical rings {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+
+\CommentTok{\# Ring 6: Habitat preference}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Habitat"}\NormalTok{,}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Habitat"}\NormalTok{,}
+  \AttributeTok{categorical\_colors  =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"} \OtherTok{=} \StringTok{"\#E64B35"}\NormalTok{, }\StringTok{"CW"} \OtherTok{=} \StringTok{"\#4DBBD5"}\NormalTok{, }\StringTok{"TW"} \OtherTok{=} \StringTok{"\#00A087"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Ring 7: Salinity preference}
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Salinity"}\NormalTok{,}
+  \AttributeTok{ring\_offset         =} \FloatTok{0.1}\NormalTok{,}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Salinity"}\NormalTok{,}
+  \AttributeTok{categorical\_colors  =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Non{-}saline soil"} \OtherTok{=} \StringTok{"\#F39B7F"}\NormalTok{,}
+    \StringTok{"Saline soil"}     \OtherTok{=} \StringTok{"\#3C5488"}
+\NormalTok{  )}
+\NormalTok{)}
+
+\CommentTok{\# Ring 8: Class taxonomy}
+\NormalTok{class\_counts  }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(}\FunctionTok{table}\NormalTok{(ring\_df}\SpecialCharTok{$}\NormalTok{Class), }\AttributeTok{decreasing =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{top\_classes   }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(class\_counts)[}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{min}\NormalTok{(}\DecValTok{8}\NormalTok{, }\FunctionTok{length}\NormalTok{(class\_counts))]}
+\NormalTok{other\_classes }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(}\FunctionTok{names}\NormalTok{(class\_counts), top\_classes)}
+
+\NormalTok{n\_top     }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(top\_classes)}
+\NormalTok{class\_pal }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \FunctionTok{brewer.pal}\NormalTok{(}\FunctionTok{max}\NormalTok{(}\DecValTok{3}\NormalTok{, n\_top), }\StringTok{"Set2"}\NormalTok{)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_top],}
+  \FunctionTok{rep}\NormalTok{(}\StringTok{"grey80"}\NormalTok{, }\FunctionTok{length}\NormalTok{(other\_classes))}
+\NormalTok{)}
+\FunctionTok{names}\NormalTok{(class\_pal) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(top\_classes, other\_classes)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring}\NormalTok{(}
+  \AttributeTok{col\_name            =} \StringTok{"Class"}\NormalTok{,}
+  \AttributeTok{ring\_width          =} \FloatTok{0.06}\NormalTok{,}
+  \AttributeTok{ring\_offset         =} \FloatTok{0.2}\NormalTok{,}
+  \AttributeTok{na\_fill             =} \StringTok{"grey95"}\NormalTok{,}
+  \AttributeTok{legend\_title\_custom =} \StringTok{"Class"}\NormalTok{,}
+  \AttributeTok{categorical\_colors  =}\NormalTok{ class\_pal}
+\NormalTok{)}
+
+
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Auto{-}label all rings at the fan opening}
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Now fully automated via add\_ring\_labels() — no manual geometry table needed.}
+\CommentTok{\# The ring geometry (offset, width) is automatically tracked by add\_ring().}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring\_labels}\NormalTok{(}\AttributeTok{size =} \FloatTok{1.8}\NormalTok{, }\AttributeTok{color =} \StringTok{"grey25"}\NormalTok{)}
+
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_scale\_bar}\NormalTok{(}\AttributeTok{x =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{y =} \DecValTok{0}\NormalTok{, }\AttributeTok{label =} \StringTok{"0.05"}\NormalTok{)}
+
+
+\CommentTok{\# ============================================================================}
+\CommentTok{\# Apply publication theme and save}
+\CommentTok{\# ============================================================================}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{theme\_publication}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{7}\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{save\_plot}\NormalTok{(}
+  \StringTok{"Phylotree\_addring.png"}\NormalTok{,}
+  \AttributeTok{width  =} \DecValTok{16}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{16}\NormalTok{,}
+  \AttributeTok{dpi    =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/Phylotree_addring} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-} Approach B: Equivalent batch call with vector parameters {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# The code below produces the same 5 numeric rings as Approach A above,}
+\CommentTok{\# but in a single add\_rings\_batch() call with per{-}ring vector parameters.}
+\CommentTok{\#}
+
+\NormalTok{pviz }\OtherTok{\textless{}{-}}\NormalTok{ trans\_phylo}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}
+  \AttributeTok{dataset             =}\NormalTok{ mt200,}
+  \AttributeTok{group\_col           =} \StringTok{"Phylum"}\NormalTok{,}
+  \AttributeTok{group\_prefix\_remove =} \StringTok{"p\_\_"}\NormalTok{,}
+  \AttributeTok{ring\_data           =}\NormalTok{ ring\_df,}
+  \AttributeTok{clade\_coloring      =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{plot\_tree}\NormalTok{(}
+  \AttributeTok{open\_angle       =}\NormalTok{ OPEN\_ANGLE,}
+  \AttributeTok{branch\_size      =} \FloatTok{0.15}\NormalTok{,}
+  \AttributeTok{tip\_point\_size   =} \FloatTok{1.2}\NormalTok{,}
+  \AttributeTok{tip\_point\_shape  =} \DecValTok{21}\NormalTok{,}
+  \AttributeTok{tip\_point\_stroke =} \FloatTok{0.1}\NormalTok{,}
+  \AttributeTok{tip\_point\_alpha  =} \FloatTok{0.80}\NormalTok{,}
+  \AttributeTok{legend\_title     =} \StringTok{"Phylum"}
+\NormalTok{)}
+
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_rings\_batch}\NormalTok{(}
+  \AttributeTok{col\_names    =} \FunctionTok{c}\NormalTok{(}\StringTok{"LogAbund"}\NormalTok{, }\StringTok{"Prevalence"}\NormalTok{, }\StringTok{"Importance"}\NormalTok{, }\StringTok{"Specificity"}\NormalTok{, }\StringTok{"Connectivity"}\NormalTok{, }\StringTok{"Habitat"}\NormalTok{, }\StringTok{"Salinity"}\NormalTok{),}
+  \AttributeTok{numeric\_geom =} \StringTok{"bar"}\NormalTok{,}
+  \AttributeTok{ring\_offset  =} \FloatTok{0.05}\NormalTok{,}
+  \AttributeTok{color\_low    =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#440154"}\NormalTok{, }\StringTok{"\#EDF8FB"}\NormalTok{, }\StringTok{"\#FFF5EB"}\NormalTok{, }\StringTok{"\#F7FBFF"}\NormalTok{, }\StringTok{"\#FFF7EC"}\NormalTok{),}
+  \AttributeTok{color\_high   =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#FDE725"}\NormalTok{, }\StringTok{"\#006D2C"}\NormalTok{, }\StringTok{"\#D94801"}\NormalTok{, }\StringTok{"\#08306B"}\NormalTok{, }\StringTok{"\#7F2704"}\NormalTok{),}
+  \AttributeTok{categorical\_palette =} \FunctionTok{list}\NormalTok{(}\AttributeTok{Habitat =} \FunctionTok{c}\NormalTok{(}\StringTok{"IW"} \OtherTok{=} \StringTok{"red"}\NormalTok{, }\StringTok{"CW"} \OtherTok{=} \StringTok{"blue"}\NormalTok{, }\StringTok{"TW"} \OtherTok{=} \StringTok{"green"}\NormalTok{), }\AttributeTok{Salinity =} \FunctionTok{c}\NormalTok{(}\StringTok{"Non{-}saline soil"} \OtherTok{=} \StringTok{"\#F39B7F"}\NormalTok{, }\StringTok{"Saline soil"} \OtherTok{=} \StringTok{"\#3C5488"}\NormalTok{)),}
+  \AttributeTok{show\_legend  =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_scale\_bar}\NormalTok{(}\AttributeTok{x =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{y =} \DecValTok{0}\NormalTok{, }\AttributeTok{label =} \StringTok{"0.05"}\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{add\_ring\_labels}\NormalTok{(}\AttributeTok{size =} \FloatTok{1.8}\NormalTok{, }\AttributeTok{color =} \StringTok{"grey25"}\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{theme\_publication}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{7}\NormalTok{)}
+
+\NormalTok{pviz}\SpecialCharTok{$}\FunctionTok{save\_plot}\NormalTok{(}
+  \StringTok{"Phylotree\_addringbatch.png"}\NormalTok{,}
+  \AttributeTok{width  =} \DecValTok{16}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{16}\NormalTok{,}
+  \AttributeTok{dpi    =} \DecValTok{300}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=800px]{Images/Phylotree_addringbatch} \end{center}
+
+\chapter{file2meco package}\label{file2meco-package}
 
 In the microtable class part, we showed the basic way about how to create microtable object with the example data.
 Actually, constructing the microtable object from other tools/platforms (e.g., QIIME, QIIME2, HUMAnN, Kraken2 and phyloseq)
@@ -4989,8 +5395,7 @@ The user should either provide a full path to the import function or only the fi
 For the latter one, if the user does not know where the working directory is,
 please use the function \texttt{getwd} to find the working directory or directly create a new project in the target directory with RStudio {[}File --\textgreater{} New Project{]}.
 
-\hypertarget{qiime}{%
-\section{QIIME}\label{qiime}}
+\section{QIIME}\label{qiime}
 
 The qiime1meco() function can be used to construct the microtable object using the raw OTU file from QIIME 1 \citep{Caporaso_QIIME_2010}.
 
@@ -5015,8 +5420,7 @@ The qiime1meco() function can be used to construct the microtable object using t
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{qiime2}{%
-\section{QIIME2}\label{qiime2}}
+\section{QIIME2}\label{qiime2}
 
 The qiime2meco() function is designed to create the microtable object using files from QIIME2 \citep{Bolyen_Reproducible_2019}.
 The example data is the ASV (amplicon sequence variant) abundance table based on DADA2 \citep{Callahan_DADA2_2016}.
@@ -5045,8 +5449,7 @@ The example data is the ASV (amplicon sequence variant) abundance table based on
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{humann}{%
-\section{HUMAnN}\label{humann}}
+\section{HUMAnN}\label{humann}
 
 Many methods in microeco package can be used not only for the traditional species abundance data, i.e.~species-sample table,
 but also for other data, such as metagenomic data.
@@ -5110,16 +5513,14 @@ Currently, it supports both the MetaCyc (\url{https://metacyc.org/}) and KEGG pa
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{metaphlan}{%
-\section{MetaPhlAn}\label{metaphlan}}
+\section{MetaPhlAn}\label{metaphlan}
 
 MetaPhlAn is an software used for metagenomic taxonomic profiling \citep{Blanco_MetaPhlAn_2023}.
 The format of MetaPhlAn classification results is usually called `mpa' format.
 The mpa2meco function is developed for this format conversion to microtable object.
 See the following example of Kraken2 part.
 
-\hypertarget{kraken2bracken}{%
-\section{Kraken2/Bracken}\label{kraken2bracken}}
+\section{Kraken2/Bracken}\label{kraken2bracken}
 
 Kraken is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences.
 Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database.
@@ -5151,8 +5552,7 @@ The merged Kraken2/Bracken results can be obtained by merge\_metaphlan\_tables.p
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ncycdbpcycdb}{%
-\section{NCycDB/PCycDB}\label{ncycdbpcycdb}}
+\section{NCycDB/PCycDB}\label{ncycdbpcycdb}
 
 NCycDB database \citep{Tu_NCycDB_2018} is a curated integrative database for fast and accurate metagenomic profiling of nitrogen cycling genes.
 The \texttt{ncyc2meco} function is designed for construct the microtable object using gene abundance files from NCycDB.
@@ -5192,8 +5592,7 @@ The \texttt{ncyc2meco} function can identify the database and invoke the interna
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{phyloseq}{%
-\section{phyloseq}\label{phyloseq}}
+\section{phyloseq}\label{phyloseq}
 
 Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversion between microtable object and phyloseq object of phyloseq package \citep{Mcmurdie_phyloseq_2013}.
 
@@ -5224,8 +5623,7 @@ Two functions meco2phyloseq() and phyloseq2meco() were provided for the conversi
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{picrust2}{%
-\section{PICRUSt2}\label{picrust2}}
+\section{PICRUSt2}\label{picrust2}
 
 PICRUSt2 \citep{Douglas_PICRUSt2_2020} contains an updated and larger database of gene families and reference genomes compared to the original version of PICRUSt.
 We do not create a special file conversion function for PICRUSt2
@@ -5256,8 +5654,7 @@ Two example files of PICRUSt2 output in file2meco package were used to show the 
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{viromescan}{%
-\section{ViromeScan}\label{viromescan}}
+\section{ViromeScan}\label{viromescan}
 
 ViromeScan \citep{Rampelli_ViromeScan_2016} is a tool for metagenomic viral community profiling.
 The input of \texttt{vs2meco} function must be a folder containing all the directories named by sample names.
@@ -5279,11 +5676,9 @@ Each sample directory should have the original output files generated by ViromeS
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{other-dataset}{%
-\chapter{Other dataset}\label{other-dataset}}
+\chapter{Other dataset}\label{other-dataset}
 
-\hypertarget{fungi-data}{%
-\section{Fungi data}\label{fungi-data}}
+\section{Fungi data}\label{fungi-data}
 
 Another ITS sequencing dataset \citep{Gao_Strong_2019} is also stored in the example data of the package.
 Here, we use it as an example to show the use of FUNGuild database\citep{Nguyen_FUNGuild_2016}.
@@ -5356,8 +5751,7 @@ Then we show the distribution of traits across modules in network.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{metagenomic-data}{%
-\section{Metagenomic data}\label{metagenomic-data}}
+\section{Metagenomic data}\label{metagenomic-data}
 
 In the file2meco package part,
 we provide several examples to transform the output files of some famous metagenomic tools (e.g.~HUMAnN and kraken2) to
@@ -5417,8 +5811,7 @@ Let's run LEfSe to find some functional biomarkers to differentiate two groups.
 
 \begin{center}\includegraphics[width=700px]{Images/file2meco_HUMANN_KEGG_lefse_bar} \end{center}
 
-\hypertarget{gut-microbiome}{%
-\section{Gut microbiome}\label{gut-microbiome}}
+\section{Gut microbiome}\label{gut-microbiome}
 
 We use mouse gut data stored in file2meco package to show the input of QIIME2 file and the use of metabolic trait database NJC19 database\citep{Lim_Large_2020}.
 
@@ -5467,13 +5860,11 @@ We use mouse gut data stored in file2meco package to show the input of QIIME2 fi
 
 \begin{center}\includegraphics[width=800px]{Images/plot_mouse_NJC19_rf} \end{center}
 
-\hypertarget{notes}{%
-\chapter{Notes}\label{notes}}
+\chapter{Notes}\label{notes}
 
 We show some other important points here.
 
-\hypertarget{clone-function}{%
-\section{\texorpdfstring{\texttt{clone} function}{clone function}}\label{clone-function}}
+\section{\texorpdfstring{\texttt{clone} function}{clone function}}\label{clone-function}
 
 R6 class has a special copy mechanism which is different from S3 and S4.
 \textbf{If you want to copy an object completely, you should use the function \texttt{clone} instead of direct assignment.}
@@ -5505,8 +5896,7 @@ R6 class has a special copy mechanism which is different from S3 and S4.
 ## [1] TRUE
 \end{verbatim}
 
-\hypertarget{save-function}{%
-\section{\texorpdfstring{\texttt{save} function}{save function}}\label{save-function}}
+\section{\texorpdfstring{\texttt{save} function}{save function}}\label{save-function}
 
 As an R6 object is an encapsulated environment, there is also another useful advantage, i.e.~the data repeatability.
 By applying R6 classes, the analyzed data in `R Environment' can have fewest intermediate files.
@@ -5535,8 +5925,7 @@ The `test\_data.zip' is the final compressed file for the upload.
 This saved object is only related with the package version when you save it and has no matter with the updated package when one load it again.
 So it is repeatable.
 
-\hypertarget{github-issues}{%
-\section{Github Issues}\label{github-issues}}
+\section{Github Issues}\label{github-issues}
 
 Please write the question/bug/suggestion in `Github Issues' (\url{https://github.com/ChiLiubio/microeco/issues}).
 Several points are recommended.
@@ -5558,8 +5947,7 @@ Several points are recommended.
   as \# can cause format chaos without code tag.
 \end{itemize}
 
-\hypertarget{group-order}{%
-\section{group order}\label{group-order}}
+\section{group order}\label{group-order}
 
 If the user want to reorder the groups, \textbf{assigning factors may be the simplest way.}
 
@@ -5589,8 +5977,7 @@ We can find the changed group order in the legend and colors in the plot.
 
 \begin{center}\includegraphics[width=500px]{Images/Notes_group_order_2} \end{center}
 
-\hypertarget{add-layers-to-plot}{%
-\section{add layers to plot}\label{add-layers-to-plot}}
+\section{add layers to plot}\label{add-layers-to-plot}
 
 Most of the plots are generated by applying the ggplot2 package.
 The important parameters in the plotting functions are configured according to our experience.
@@ -5607,8 +5994,7 @@ make the plot using the data (generally data.frame class) stored in the object.
 
 \begin{center}\includegraphics[width=400px]{Images/plot_bar_mean_classic} \end{center}
 
-\hypertarget{colors-for-more-groups}{%
-\section{colors for more groups}\label{colors-for-more-groups}}
+\section{colors for more groups}\label{colors-for-more-groups}
 
 Within the R microeco package, for the visualization of discrete data,
 \texttt{RColorBrewer::brewer.pal(8,\ "Dark2")} is employed as the default color generation option.
@@ -5647,8 +6033,7 @@ users who require additional variations or seek to switch to a different color p
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{change-object}{%
-\section{change object}\label{change-object}}
+\section{change object}\label{change-object}
 
 All the classes are set public, meaning that you can \textbf{change, add or remove the objects stored in them as you want}.
 
@@ -5661,8 +6046,7 @@ All the classes are set public, meaning that you can \textbf{change, add or remo
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{customized-data-input}{%
-\section{customized data input}\label{customized-data-input}}
+\section{customized data input}\label{customized-data-input}
 
 From v0.7.0, trans\_alpha, trans\_env and trans\_venn classes can accept NULL dataset input for some customized usage of some functions in those classes.
 
@@ -5673,8 +6057,7 @@ From v0.7.0, trans\_alpha, trans\_env and trans\_venn classes can accept NULL da
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{meconetcomp-package}{%
-\chapter{meconetcomp package}\label{meconetcomp-package}}
+\chapter{meconetcomp package}\label{meconetcomp-package}
 
 To facilitate microbial co-occurrence network comparison,
 R package meconetcomp (\url{https://github.com/ChiLiubio/meconetcomp}) was developed.
@@ -5771,8 +6154,7 @@ First reconstruct three correlation networks for the three groups `IW', `TW' and
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{network-modularity-for-all-networks}{%
-\section{Network modularity for all networks}\label{network-modularity-for-all-networks}}
+\section{Network modularity for all networks}\label{network-modularity-for-all-networks}
 
 The function cal\_module in meconetcomp package is designed to partition modules for all the networks in the list.
 
@@ -5782,8 +6164,7 @@ The function cal\_module in meconetcomp package is designed to partition modules
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{network-topological-attributes-for-all-networks}{%
-\section{Network topological attributes for all networks}\label{network-topological-attributes-for-all-networks}}
+\section{Network topological attributes for all networks}\label{network-topological-attributes-for-all-networks}
 
 we extracted all the res\_network\_attr tables in the networks and merged them into one final table by using cal\_network\_attr function in meconetcomp package.
 
@@ -5794,8 +6175,7 @@ we extracted all the res\_network\_attr tables in the networks and merged them i
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{node-and-edge-properties-extraction-for-all-networks}{%
-\section{Node and edge properties extraction for all networks}\label{node-and-edge-properties-extraction-for-all-networks}}
+\section{Node and edge properties extraction for all networks}\label{node-and-edge-properties-extraction-for-all-networks}
 
 The get\_node\_table and get\_edge\_table functions of meconetcomp package can be used to directly extract node and edge properties for all the networks.
 The return table is stored in each network object.
@@ -5806,8 +6186,7 @@ The return table is stored in each network object.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compare-nodes-across-networks}{%
-\section{Compare nodes across networks}\label{compare-nodes-across-networks}}
+\section{Compare nodes across networks}\label{compare-nodes-across-networks}
 
 The nodes in all the networks can be converted to a new microtable object by using the node\_comp function of meconetcomp package.
 Then, it is easy to analyse the nodes overlap with trans\_venn class.
@@ -5826,8 +6205,7 @@ Then, it is easy to analyse the nodes overlap with trans\_venn class.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compare-edges-across-networks}{%
-\section{Compare edges across networks}\label{compare-edges-across-networks}}
+\section{Compare edges across networks}\label{compare-edges-across-networks}
 
 The pipeline of studying edges overlap is similar with the above operations of nodes comparison.
 The edge\_comp function of meconetcomp package is used to convert edges distribution to a new microtable object.
@@ -5846,8 +6224,7 @@ The edge\_comp function of meconetcomp package is used to convert edges distribu
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{extract-overlapped-edges-of-networks-to-a-new-network}{%
-\section{Extract overlapped edges of networks to a new network}\label{extract-overlapped-edges-of-networks-to-a-new-network}}
+\section{Extract overlapped edges of networks to a new network}\label{extract-overlapped-edges-of-networks-to-a-new-network}
 
 Then we extracted the subset of edges according to the intersections of edges across networks,
 which can be accomplished with the subset\_network function in meconetcomp package.
@@ -5868,8 +6245,7 @@ which can be accomplished with the subset\_network function in meconetcomp packa
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compare-phylogenetic-distances-of-paired-nodes-in-edges}{%
-\section{Compare phylogenetic distances of paired nodes in edges}\label{compare-phylogenetic-distances-of-paired-nodes-in-edges}}
+\section{Compare phylogenetic distances of paired nodes in edges}\label{compare-phylogenetic-distances-of-paired-nodes-in-edges}
 
 The edge\_node\_distance class (R6 class) in meconetcomp package is designed to compare the distribution of distance values of paired nodes in all the edges across networks.
 Here, we indicated the phylogenetic distance distributions and performed the differential test among networks.
@@ -5901,8 +6277,7 @@ So it is also feasible to compare other properties of features, such as Levin's 
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compare-node-sources-of-edges-across-networks}{%
-\section{Compare node sources of edges across networks}\label{compare-node-sources-of-edges-across-networks}}
+\section{Compare node sources of edges across networks}\label{compare-node-sources-of-edges-across-networks}
 
 To know which taxa constitute the nodes in edges is important in understanding species co-occurrence patterns and answering ecological questions.
 In this part, as an instance, we used edge\_tax\_comp function of meconetcomp package to get the sums of node sources (at Phylum level) in the positive edges.
@@ -5920,8 +6295,7 @@ Then, to make the results comparable, the ratio was calculated with the positive
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{compare-topological-properties-of-sub-networks}{%
-\section{Compare topological properties of sub-networks}\label{compare-topological-properties-of-sub-networks}}
+\section{Compare topological properties of sub-networks}\label{compare-topological-properties-of-sub-networks}
 
 In this part, we extracted the sub-networks according to the OTU existed in each sample of soil\_amp dataset for each network in soil\_amp\_network.
 Then, the global topological properties of sub-networks were calculated.
@@ -5946,8 +6320,7 @@ All the operations were encapsulated into the subnet\_property function of mecon
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{robustness-of-network}{%
-\section{Robustness of network}\label{robustness-of-network}}
+\section{Robustness of network}\label{robustness-of-network}
 
 The robustness analysis is implemented in the robustness class based on
 several edge and node removal strategies and robustness measures \citep{Bellingeri_comprem_2020, LiuJing_comprobust_2017}.
@@ -6003,8 +6376,7 @@ We can also extract the result for a specified metric and perform the visualizat
 
 \begin{center}\includegraphics[width=550px]{Images/meconetcomp_robustness_single} \end{center}
 
-\hypertarget{vulnerability-of-nodes}{%
-\section{Vulnerability of nodes}\label{vulnerability-of-nodes}}
+\section{Vulnerability of nodes}\label{vulnerability-of-nodes}
 
 From v0.4.0, the vulnerability of nodes can be calculated with the \texttt{vulnerability} function.
 The vulnerability of one node is defined as the efficiency of network after removing this targeted node \citep{Yuan_Climatewarm_2021}.
@@ -6017,8 +6389,7 @@ For the details, please swith to the help document.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{cohesion}{%
-\section{Cohesion}\label{cohesion}}
+\section{Cohesion}\label{cohesion}
 
 The cohesion is a method for quantifying the connectivity of microbial communities \citep{Herren_Cohesion_2017}.
 From v0.5.0, the cohesion is implemented in cohesionclass.
@@ -6043,13 +6414,11 @@ where \(C_{j}^{pos}\) is the positive cohesion, and \(C_{j}^{neg}\) is the negat
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{mecodev-package}{%
-\chapter{mecodev package}\label{mecodev-package}}
+\chapter{mecodev package}\label{mecodev-package}
 
 The mecodev package (\url{https://github.com/ChiLiubio/mecodev/}) is designed for more extended analysis approaches based on the microeco package.
 
-\hypertarget{trans_rarefy}{%
-\section{trans\_rarefy}\label{trans_rarefy}}
+\section{trans\_rarefy}\label{trans_rarefy}
 
 The class trans\_rarefy in mecodev package can be used for the rarefaction and the following plotting to see whether
 the sequencing depth is enough to cover all the so-called species in the microbial community.
@@ -6074,8 +6443,7 @@ the sequencing depth is enough to cover all the so-called species in the microbi
 
 \begin{center}\includegraphics[width=550px]{Images/plot_trans_rarefy} \end{center}
 
-\hypertarget{trans_ts}{%
-\section{trans\_ts}\label{trans_ts}}
+\section{trans\_ts}\label{trans_ts}
 
 The class trans\_ts is designed for the time series data analysis.
 A commonly used approach for modeling microbial ecology for time series data is the generalized Lotka-Volterra (gLV) model, the classical predator-prey systems.
@@ -6121,8 +6489,7 @@ The example data `gut\_microb\_ts' comes from the article \citep{Gibbons_twodyna
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{trans_gamma}{%
-\section{trans\_gamma}\label{trans_gamma}}
+\section{trans\_gamma}\label{trans_gamma}
 
 The class trans\_gamma is developed to explore the relationship between gamma diversity and beta diversity
 based on the methods from biogeographic studies\citep{Zhang_Local_2020}.
@@ -6170,8 +6537,7 @@ other than random sampling based on the species log-normal distribution.
 
 \begin{center}\includegraphics[width=600px]{Images/plot_gamma_simu} \end{center}
 
-\hypertarget{mecoturn-package}{%
-\chapter{mecoturn package}\label{mecoturn-package}}
+\chapter{mecoturn package}\label{mecoturn-package}
 
 The mecoturn package \citep{Liu_mecoturn_2025} is designed to study microbial turnover along plant compartments originally (\url{https://github.com/ChiLiubio/mecoturn}).
 Generally speaking, it can be used in any case associated with a gradient.
@@ -6193,8 +6559,7 @@ Chi Liu, Jiahui Luo, Chunmiao Lu, Tianlong Sheng, Raymond Jianxiong Zeng, Xiangz
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{betaturn-class}{%
-\section{betaturn class}\label{betaturn-class}}
+\section{betaturn class}\label{betaturn-class}
 
 The betaturn class is used to study the turnover of communities, i.e.~beta diversity along a gradient \citep{Anderson_Navigating_2011}.
 The pipeline consists of the steps of dissimilarity matrix generation, matrix conversion, differential test and visualization.
@@ -6413,8 +6778,7 @@ In this scenario, by\_group parameter is designed to generate the additional com
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{taxaturn-class}{%
-\section{taxaturn class}\label{taxaturn-class}}
+\section{taxaturn class}\label{taxaturn-class}
 
 The taxaturn class refers to microbial abundance change along a gradient.
 Its workflow includes the taxonomic abundance calculation, abundance transformation, abundance change summary, statistical analysis and visualization.
@@ -6699,22 +7063,19 @@ generalized linear mixed model can be employed with the family function beta dis
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{other-examples-1}{%
-\chapter{Other examples}\label{other-examples-1}}
+\chapter{Other examples}\label{other-examples-1}
 
 We've gathered a few tricks to make several issues easier to solve.
 We encourage users to contribute some unique, special or helpful examples inspired by the packages.
 
-\hypertarget{custom-taxa-order-in-bar-plot}{%
-\section{Custom taxa order in bar plot}\label{custom-taxa-order-in-bar-plot}}
+\section{Custom taxa order in bar plot}\label{custom-taxa-order-in-bar-plot}
 
 The flexibility of the package design can be reflected on many aspects.
 In some cases, it is possible to tactfully handle some particular challenges.
 For example, Dr.Jarrod contribute a cool answer to the question that how to use custom taxa and the order in bar plot by modifying the data inside the object.
 This is a discussion topic in microeco Discussions (\url{https://github.com/ChiLiubio/microeco/discussions/45}).
 
-\hypertarget{tidy_taxonomy-function}{%
-\section{tidy\_taxonomy function}\label{tidy_taxonomy-function}}
+\section{tidy\_taxonomy function}\label{tidy_taxonomy-function}
 
 The taxonomic classification with standard prefix is very important for some analyses,
 e.g.~taxonomic abundance plotting and biomarker finding.
@@ -6722,28 +7083,24 @@ The \texttt{tidy\_taxonomy} function in microeco package is designed to make the
 See those Issues with the detailed examples: (\url{https://github.com/ChiLiubio/microeco/issues/32}), (\url{https://github.com/ChiLiubio/microeco/issues/22}),
 (\url{https://github.com/ChiLiubio/microeco/issues/231}), (\url{https://github.com/ChiLiubio/microeco/issues/254}) and (\url{https://github.com/ChiLiubio/microeco/issues/338}).
 
-\hypertarget{show-the-abundance-of-unknown-taxa}{%
-\section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa}}
+\section{Show the abundance of unknown taxa}\label{show-the-abundance-of-unknown-taxa}
 
 In the \texttt{trans\_abund} class, the default operation can filter the unclassified taxa, such as those with 'g\_\_'.
 Sometimes, these unknown taxa may be useful to represent uncultured species.
 Under the circumstance, the abundance of unknown taxa can be used to show the ratio of unknown taxa in the system.
 Please refer to the solution in this topic (\url{https://github.com/ChiLiubio/microeco/issues/165}).
 
-\hypertarget{question-of-prefix-in-the-taxa}{%
-\section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}}
+\section{Question of prefix in the taxa}\label{question-of-prefix-in-the-taxa}
 
 The prefix of taxa in taxonomic table may affect the following performance of plotting, e.g.~text in legend.
 Please see those Issues (\url{https://github.com/ChiLiubio/microeco/issues/32}), (\url{https://github.com/ChiLiubio/microeco/issues/7})
 and (\url{https://github.com/ChiLiubio/microeco/issues/15}).
 
-\hypertarget{the-use-of-phylogenetic-tree}{%
-\section{The use of phylogenetic tree}\label{the-use-of-phylogenetic-tree}}
+\section{The use of phylogenetic tree}\label{the-use-of-phylogenetic-tree}
 
 One of Issues referred to the basic use of phylogenetic tree in the microeco package (\url{https://github.com/ChiLiubio/microeco/issues/33}).
 
-\hypertarget{mantel-test-correlation-heatmap}{%
-\section{Mantel test + Correlation heatmap}\label{mantel-test-correlation-heatmap}}
+\section{Mantel test + Correlation heatmap}\label{mantel-test-correlation-heatmap}
 
 Sometimes, mantel test results and correlations of environmental factors are visualized together to deliver more information.
 In this example, we show how to extend the mantel test results from \texttt{trans\_env} class with the package ggcor.
@@ -6805,8 +7162,7 @@ Please install \texttt{ggcor} package according to the document (\url{https://ch
 
 \begin{center}\includegraphics[width=650px]{Images/plot_env_mantel_ggcor} \end{center}
 
-\hypertarget{pcoa-boxplot}{%
-\section{PCoA + boxplot}\label{pcoa-boxplot}}
+\section{PCoA + boxplot}\label{pcoa-boxplot}
 
 In the sections involving trans\_venn and trans\_env classes,
 we mentioned some combination graphs generated based on the \texttt{aplot} package.
@@ -6892,8 +7248,7 @@ Now, the ticks of the coordinate axes fully correspond, and we may selectively r
 
 \begin{center}\includegraphics[width=650px]{Images/Other_PCoA_boxplot2} \end{center}
 
-\hypertarget{faprotax-differential-test}{%
-\section{FAPROTAX + differential test}\label{faprotax-differential-test}}
+\section{FAPROTAX + differential test}\label{faprotax-differential-test}
 
 In the \texttt{trans\_func} section, we showed an example of correlations between the abundances of OTUs with the traits from FAPROTAX database and environmental factors.
 Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the differential test of the abundances of OTUs with specific traits across groups.
@@ -6917,8 +7272,7 @@ Now, we go ahead and use \texttt{trans\_diff} class to demonstrate the different
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{rda-results-output}{%
-\section{RDA results output}\label{rda-results-output}}
+\section{RDA results output}\label{rda-results-output}
 
 In some analyses, it is often necessary to preserve intermediate files of various analysis results,
 and not all files are in the data.frame format.
@@ -6952,8 +7306,7 @@ For those outputs, we can utilize the \texttt{capture.output} function to redire
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{betanribetanti-for-each-group}{%
-\section{betaNRI/betaNTI for each group}\label{betanribetanti-for-each-group}}
+\section{betaNRI/betaNTI for each group}\label{betanribetanti-for-each-group}
 
 Sometimes, if you want to perform betaNRI/betaNTI for each group individually (one group is considered one species pool),
 you should calculate the index for each group, respectively.
@@ -6993,8 +7346,7 @@ you should calculate the index for each group, respectively.
 
 \begin{center}\includegraphics[width=550px]{Images/trans_nullmodel_betaNRI_each_dataset} \end{center}
 
-\hypertarget{visualize-taxonomic-abundance-with-trans_alpha-class}{%
-\section{Visualize taxonomic abundance with trans\_alpha class}\label{visualize-taxonomic-abundance-with-trans_alpha-class}}
+\section{Visualize taxonomic abundance with trans\_alpha class}\label{visualize-taxonomic-abundance-with-trans_alpha-class}
 
 When it is necessary to perform differential analysis and visualization between groups within different categories,
 the trans\_diff class currently struggles to achieve this for multiple taxa.
@@ -7020,8 +7372,7 @@ At this time, we can use the trans\_alpha class to analyze each taxon and merge 
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{customized-network-input-and-analysis}{%
-\section{Customized network input and analysis}\label{customized-network-input-and-analysis}}
+\section{Customized network input and analysis}\label{customized-network-input-and-analysis}
 
 When users need to use the \texttt{trans\_network} class to calculate some properties of their customized network,
 they can refer to the following method.
@@ -7047,8 +7398,7 @@ It should be noted that the nodes of the provided network must have the \texttt{
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{pipeline}{%
-\chapter{Pipeline}\label{pipeline}}
+\chapter{Pipeline}\label{pipeline}
 
 Pipelining operations (i.e., method chaining) can make the steps of data analysis more concise and clear.
 The microeco package has fully supported pipelining operations since version 1.12.0.
@@ -7240,6 +7590,6 @@ Other examples for reference are shown below.
 \end{Shaded}
 
 
-  \bibliography{book.bib,packages.bib}
+\bibliography{book.bib,packages.bib}
 
 \end{document}
