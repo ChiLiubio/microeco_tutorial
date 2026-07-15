@@ -22,7 +22,7 @@
 
 
 
-<meta name="date" content="2026-07-07" />
+<meta name="date" content="2026-07-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -945,58 +945,57 @@ We have placed PICRUSt2 examples in the file2meco package section (<a href="http
 </div>
 <div id="trans_metab-class" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> trans_metab class<a href="explainable-class.html#trans_metab-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This class is a wrapper for a series of metabolite analysis, including origin inference and pathway enrichment.</p>
+<p>This class is a wrapper for a series of metabolite analysis, including origin inference <span class="citation">(<a href="#ref-Wang_TidyMass2_2026"><span class="nocase">Wang et al.</span> 2026</a>)</span> and pathway enrichment.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="explainable-class.html#cb305-1" tabindex="-1"></a><span class="co"># use data inside the microeco package</span></span>
-<span id="cb305-2"><a href="explainable-class.html#cb305-2" tabindex="-1"></a></span>
-<span id="cb305-3"><a href="explainable-class.html#cb305-3" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_metab<span class="sc">$</span><span class="fu">new</span>(<span class="at">metab =</span> soil_metab, <span class="at">microb =</span> soil_microb)</span>
-<span id="cb305-4"><a href="explainable-class.html#cb305-4" tabindex="-1"></a></span>
-<span id="cb305-5"><a href="explainable-class.html#cb305-5" tabindex="-1"></a><span class="co"># If the tax_table in the input metab data already contains detailed annotations (such as KEGG, HMDB columns),</span></span>
-<span id="cb305-6"><a href="explainable-class.html#cb305-6" tabindex="-1"></a><span class="co"># user can skip the following step. This step performs text-based matching to align the input metabolite names with those in the database.</span></span>
-<span id="cb305-7"><a href="explainable-class.html#cb305-7" tabindex="-1"></a><span class="co"># please download the database from https://zenodo.org/records/18618912; uncompress the zip file</span></span>
-<span id="cb305-8"><a href="explainable-class.html#cb305-8" tabindex="-1"></a><span class="co"># Fuzzy matching of metabolite names against those in the database</span></span>
-<span id="cb305-9"><a href="explainable-class.html#cb305-9" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_match</span>(<span class="at">database_path =</span> <span class="st">&quot;./metorigindb_split_202602&quot;</span>)</span>
-<span id="cb305-10"><a href="explainable-class.html#cb305-10" tabindex="-1"></a><span class="co"># View(test$res_match)</span></span>
-<span id="cb305-11"><a href="explainable-class.html#cb305-11" tabindex="-1"></a></span>
-<span id="cb305-12"><a href="explainable-class.html#cb305-12" tabindex="-1"></a><span class="co"># origin inference</span></span>
-<span id="cb305-13"><a href="explainable-class.html#cb305-13" tabindex="-1"></a><span class="co"># The parameter match_col works by determining metabolite assignment based on the provided &quot;names&quot; (row names) or other columns (e.g., &quot;KEGG_ID&quot;). </span></span>
-<span id="cb305-14"><a href="explainable-class.html#cb305-14" tabindex="-1"></a><span class="co"># For &quot;names&quot;, the function first checks whether res_match (from the last step) exists; if it does, metabolite identification is performed according to the distance threshold.</span></span>
-<span id="cb305-15"><a href="explainable-class.html#cb305-15" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_origin</span>(<span class="at">database_path =</span> <span class="st">&quot;./metorigindb_split_202602&quot;</span>, <span class="at">match_col =</span> <span class="fu">c</span>(<span class="st">&quot;names&quot;</span>, <span class="st">&quot;HMDB_ID&quot;</span>, <span class="st">&quot;KEGG_ID&quot;</span>))</span>
-<span id="cb305-16"><a href="explainable-class.html#cb305-16" tabindex="-1"></a><span class="co"># tmp$res_origin_rawtable and tmp$res_origin_list</span></span>
-<span id="cb305-17"><a href="explainable-class.html#cb305-17" tabindex="-1"></a></span>
-<span id="cb305-18"><a href="explainable-class.html#cb305-18" tabindex="-1"></a><span class="co"># create the metabolites-bacteria network according to the result from the last step</span></span>
-<span id="cb305-19"><a href="explainable-class.html#cb305-19" tabindex="-1"></a>res_network <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">cal_origin_network</span>()</span>
-<span id="cb305-20"><a href="explainable-class.html#cb305-20" tabindex="-1"></a></span>
-<span id="cb305-21"><a href="explainable-class.html#cb305-21" tabindex="-1"></a><span class="co"># use trans_network class to visualize the result</span></span>
-<span id="cb305-22"><a href="explainable-class.html#cb305-22" tabindex="-1"></a>test <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>()</span>
-<span id="cb305-23"><a href="explainable-class.html#cb305-23" tabindex="-1"></a>test<span class="sc">$</span>res_network <span class="ot">&lt;-</span> res_network</span>
-<span id="cb305-24"><a href="explainable-class.html#cb305-24" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_module</span>()</span>
-<span id="cb305-25"><a href="explainable-class.html#cb305-25" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">get_node_table</span>()</span>
-<span id="cb305-26"><a href="explainable-class.html#cb305-26" tabindex="-1"></a><span class="fu">head</span>(test<span class="sc">$</span>res_node_table)</span>
-<span id="cb305-27"><a href="explainable-class.html#cb305-27" tabindex="-1"></a></span>
-<span id="cb305-28"><a href="explainable-class.html#cb305-28" tabindex="-1"></a><span class="co"># test$plot_network(method = &quot;networkD3&quot;, node_color = &quot;type&quot;)</span></span>
+<span id="cb305-2"><a href="explainable-class.html#cb305-2" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> trans_metab<span class="sc">$</span><span class="fu">new</span>(<span class="at">metab =</span> soil_metab, <span class="at">microb =</span> soil_microb)</span>
+<span id="cb305-3"><a href="explainable-class.html#cb305-3" tabindex="-1"></a></span>
+<span id="cb305-4"><a href="explainable-class.html#cb305-4" tabindex="-1"></a><span class="co"># If the tax_table in the input metab data already contains detailed annotations (such as KEGG, HMDB columns),</span></span>
+<span id="cb305-5"><a href="explainable-class.html#cb305-5" tabindex="-1"></a><span class="co"># user can skip the following step. This step performs text-based matching to align the input metabolite names with those in the database.</span></span>
+<span id="cb305-6"><a href="explainable-class.html#cb305-6" tabindex="-1"></a><span class="co"># please download the database from https://zenodo.org/records/18618912; uncompress the zip file</span></span>
+<span id="cb305-7"><a href="explainable-class.html#cb305-7" tabindex="-1"></a><span class="co"># Fuzzy matching of metabolite names against those in the database</span></span>
+<span id="cb305-8"><a href="explainable-class.html#cb305-8" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_match</span>(<span class="at">database_path =</span> <span class="st">&quot;./metorigindb_split_202602&quot;</span>)</span>
+<span id="cb305-9"><a href="explainable-class.html#cb305-9" tabindex="-1"></a><span class="co"># View(test$res_match)</span></span>
+<span id="cb305-10"><a href="explainable-class.html#cb305-10" tabindex="-1"></a></span>
+<span id="cb305-11"><a href="explainable-class.html#cb305-11" tabindex="-1"></a><span class="co"># origin inference based on the database of TidyMass2</span></span>
+<span id="cb305-12"><a href="explainable-class.html#cb305-12" tabindex="-1"></a><span class="co"># The parameter match_col works by determining metabolite assignment based on the provided &quot;names&quot; (row names) or other columns (e.g., &quot;KEGG_ID&quot;). </span></span>
+<span id="cb305-13"><a href="explainable-class.html#cb305-13" tabindex="-1"></a><span class="co"># For &quot;names&quot;, the function first checks whether res_match (from the last step) exists; if it does, metabolite identification is performed according to the distance threshold.</span></span>
+<span id="cb305-14"><a href="explainable-class.html#cb305-14" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_origin</span>(<span class="at">database_path =</span> <span class="st">&quot;./metorigindb_split_202602&quot;</span>, <span class="at">match_col =</span> <span class="fu">c</span>(<span class="st">&quot;names&quot;</span>, <span class="st">&quot;HMDB_ID&quot;</span>, <span class="st">&quot;KEGG_ID&quot;</span>))</span>
+<span id="cb305-15"><a href="explainable-class.html#cb305-15" tabindex="-1"></a><span class="co"># tmp$res_origin_rawtable and tmp$res_origin_list</span></span>
+<span id="cb305-16"><a href="explainable-class.html#cb305-16" tabindex="-1"></a></span>
+<span id="cb305-17"><a href="explainable-class.html#cb305-17" tabindex="-1"></a><span class="co"># create the metabolites-bacteria network according to the result from the last step</span></span>
+<span id="cb305-18"><a href="explainable-class.html#cb305-18" tabindex="-1"></a>res_network <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">cal_origin_network</span>()</span>
+<span id="cb305-19"><a href="explainable-class.html#cb305-19" tabindex="-1"></a></span>
+<span id="cb305-20"><a href="explainable-class.html#cb305-20" tabindex="-1"></a><span class="co"># use trans_network class to visualize the result</span></span>
+<span id="cb305-21"><a href="explainable-class.html#cb305-21" tabindex="-1"></a>test <span class="ot">&lt;-</span> trans_network<span class="sc">$</span><span class="fu">new</span>()</span>
+<span id="cb305-22"><a href="explainable-class.html#cb305-22" tabindex="-1"></a>test<span class="sc">$</span>res_network <span class="ot">&lt;-</span> res_network</span>
+<span id="cb305-23"><a href="explainable-class.html#cb305-23" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">cal_module</span>()</span>
+<span id="cb305-24"><a href="explainable-class.html#cb305-24" tabindex="-1"></a>test<span class="sc">$</span><span class="fu">get_node_table</span>()</span>
+<span id="cb305-25"><a href="explainable-class.html#cb305-25" tabindex="-1"></a><span class="fu">head</span>(test<span class="sc">$</span>res_node_table)</span>
+<span id="cb305-26"><a href="explainable-class.html#cb305-26" tabindex="-1"></a></span>
+<span id="cb305-27"><a href="explainable-class.html#cb305-27" tabindex="-1"></a><span class="co"># test$plot_network(method = &quot;networkD3&quot;, node_color = &quot;type&quot;)</span></span>
+<span id="cb305-28"><a href="explainable-class.html#cb305-28" tabindex="-1"></a></span>
 <span id="cb305-29"><a href="explainable-class.html#cb305-29" tabindex="-1"></a></span>
 <span id="cb305-30"><a href="explainable-class.html#cb305-30" tabindex="-1"></a></span>
-<span id="cb305-31"><a href="explainable-class.html#cb305-31" tabindex="-1"></a></span>
-<span id="cb305-32"><a href="explainable-class.html#cb305-32" tabindex="-1"></a><span class="do">################################################</span></span>
-<span id="cb305-33"><a href="explainable-class.html#cb305-33" tabindex="-1"></a><span class="do">########## Pathway analysis</span></span>
-<span id="cb305-34"><a href="explainable-class.html#cb305-34" tabindex="-1"></a><span class="co"># Map metabolites to pathways based on a database</span></span>
-<span id="cb305-35"><a href="explainable-class.html#cb305-35" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_pathway</span>(<span class="at">db_type =</span> <span class="st">&quot;kegg&quot;</span>)</span>
-<span id="cb305-36"><a href="explainable-class.html#cb305-36" tabindex="-1"></a></span>
-<span id="cb305-37"><a href="explainable-class.html#cb305-37" tabindex="-1"></a><span class="co"># Perform pathway enrichment analysis for target metabolites using Fisher&#39;s exact test</span></span>
-<span id="cb305-38"><a href="explainable-class.html#cb305-38" tabindex="-1"></a>target <span class="ot">&lt;-</span> <span class="fu">rownames</span>(soil_metab<span class="sc">$</span>data_metab<span class="sc">$</span>otu_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span>
-<span id="cb305-39"><a href="explainable-class.html#cb305-39" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_pathway_enrich</span>(<span class="at">target_metabs =</span> target, <span class="at">p_adjust_method =</span> <span class="st">&quot;BH&quot;</span>, <span class="at">p_cutoff =</span> <span class="fl">0.05</span>, <span class="at">min_metab_count =</span> <span class="dv">3</span>)</span>
-<span id="cb305-40"><a href="explainable-class.html#cb305-40" tabindex="-1"></a></span>
-<span id="cb305-41"><a href="explainable-class.html#cb305-41" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">plot_pathway_enrich</span>()</span>
+<span id="cb305-31"><a href="explainable-class.html#cb305-31" tabindex="-1"></a><span class="do">################################################</span></span>
+<span id="cb305-32"><a href="explainable-class.html#cb305-32" tabindex="-1"></a><span class="do">########## Pathway analysis</span></span>
+<span id="cb305-33"><a href="explainable-class.html#cb305-33" tabindex="-1"></a><span class="co"># Map metabolites to pathways based on a database</span></span>
+<span id="cb305-34"><a href="explainable-class.html#cb305-34" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_pathway</span>(<span class="at">db_type =</span> <span class="st">&quot;kegg&quot;</span>)</span>
+<span id="cb305-35"><a href="explainable-class.html#cb305-35" tabindex="-1"></a></span>
+<span id="cb305-36"><a href="explainable-class.html#cb305-36" tabindex="-1"></a><span class="co"># Perform pathway enrichment analysis for target metabolites using Fisher&#39;s exact test</span></span>
+<span id="cb305-37"><a href="explainable-class.html#cb305-37" tabindex="-1"></a>target <span class="ot">&lt;-</span> <span class="fu">rownames</span>(soil_metab<span class="sc">$</span>data_metab<span class="sc">$</span>otu_table)[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span>
+<span id="cb305-38"><a href="explainable-class.html#cb305-38" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">cal_pathway_enrich</span>(<span class="at">target_metabs =</span> target, <span class="at">p_adjust_method =</span> <span class="st">&quot;BH&quot;</span>, <span class="at">p_cutoff =</span> <span class="fl">0.05</span>, <span class="at">min_metab_count =</span> <span class="dv">3</span>)</span>
+<span id="cb305-39"><a href="explainable-class.html#cb305-39" tabindex="-1"></a></span>
+<span id="cb305-40"><a href="explainable-class.html#cb305-40" tabindex="-1"></a>tmp<span class="sc">$</span><span class="fu">plot_pathway_enrich</span>()</span>
+<span id="cb305-41"><a href="explainable-class.html#cb305-41" tabindex="-1"></a></span>
 <span id="cb305-42"><a href="explainable-class.html#cb305-42" tabindex="-1"></a></span>
-<span id="cb305-43"><a href="explainable-class.html#cb305-43" tabindex="-1"></a></span>
-<span id="cb305-44"><a href="explainable-class.html#cb305-44" tabindex="-1"></a><span class="do">#### Following steps can be used to get the metabolite-pathway network</span></span>
-<span id="cb305-45"><a href="explainable-class.html#cb305-45" tabindex="-1"></a><span class="co"># res_net &lt;- tmp$cal_pathway_network()</span></span>
-<span id="cb305-46"><a href="explainable-class.html#cb305-46" tabindex="-1"></a></span>
-<span id="cb305-47"><a href="explainable-class.html#cb305-47" tabindex="-1"></a><span class="co"># test &lt;- trans_network$new()</span></span>
-<span id="cb305-48"><a href="explainable-class.html#cb305-48" tabindex="-1"></a><span class="co"># test$res_network &lt;- res_net</span></span>
-<span id="cb305-49"><a href="explainable-class.html#cb305-49" tabindex="-1"></a><span class="co"># test$cal_module()</span></span>
-<span id="cb305-50"><a href="explainable-class.html#cb305-50" tabindex="-1"></a><span class="co"># test$get_node_table()</span></span>
-<span id="cb305-51"><a href="explainable-class.html#cb305-51" tabindex="-1"></a><span class="co"># head(test$res_node_table)</span></span></code></pre></div>
+<span id="cb305-43"><a href="explainable-class.html#cb305-43" tabindex="-1"></a><span class="do">#### Following steps can be used to get the metabolite-pathway network</span></span>
+<span id="cb305-44"><a href="explainable-class.html#cb305-44" tabindex="-1"></a><span class="co"># res_net &lt;- tmp$cal_pathway_network()</span></span>
+<span id="cb305-45"><a href="explainable-class.html#cb305-45" tabindex="-1"></a></span>
+<span id="cb305-46"><a href="explainable-class.html#cb305-46" tabindex="-1"></a><span class="co"># test &lt;- trans_network$new()</span></span>
+<span id="cb305-47"><a href="explainable-class.html#cb305-47" tabindex="-1"></a><span class="co"># test$res_network &lt;- res_net</span></span>
+<span id="cb305-48"><a href="explainable-class.html#cb305-48" tabindex="-1"></a><span class="co"># test$cal_module()</span></span>
+<span id="cb305-49"><a href="explainable-class.html#cb305-49" tabindex="-1"></a><span class="co"># test$get_node_table()</span></span>
+<span id="cb305-50"><a href="explainable-class.html#cb305-50" tabindex="-1"></a><span class="co"># head(test$res_node_table)</span></span></code></pre></div>
 
 </div>
 </div>
@@ -1025,6 +1024,9 @@ Nguyen, Nhu H., Zewei Song, Scott T. Bates, et al. 2016. <span>“FUNGuild: An O
 </div>
 <div id="ref-Polme_FungalTraits_2020" class="csl-entry">
 <span class="nocase">Põlme, Sergei, Kessy Abarenkov, R. Henrik Nilsson, et al.</span> 2020. <span>“FungalTraits: A User-Friendly Traits Database of Fungi and Fungus-Like Stramenopiles.”</span> Journal Article. <em>Fungal Diversity</em> 105 (1): 1–16. <a href="https://doi.org/10.1007/s13225-020-00466-2">https://doi.org/10.1007/s13225-020-00466-2</a>.
+</div>
+<div id="ref-Wang_TidyMass2_2026" class="csl-entry">
+<span class="nocase">Wang, Xiao, Yijiang Liu, Chuchu Jiang, et al.</span> 2026. <span>“TidyMass2: Advancing LC-MS Untargeted Metabolomics Through Metabolite Origin Inference and Metabolic Feature-Based Functional Module Analysis.”</span> <em>Nature Communications</em> 17: 1755. <a href="https://doi.org/10.1038/s41467-026-68464-7">https://doi.org/10.1038/s41467-026-68464-7</a>.
 </div>
 <div id="ref-Wemheuer_Tax4Fun2_2020" class="csl-entry">
 Wemheuer, Franziska, Jessica A. Taylor, Rolf Daniel, et al. 2020. <span>“Tax4Fun2: Prediction of Habitat-Specific Functional Profiles and Functional Redundancy Based on 16S rRNA Gene Sequences.”</span> Journal Article. <em>Environmental Microbiome</em> 15 (1). <a href="https://doi.org/10.1186/s40793-020-00358-7">https://doi.org/10.1186/s40793-020-00358-7</a>.

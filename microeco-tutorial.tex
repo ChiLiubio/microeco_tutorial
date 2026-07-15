@@ -125,7 +125,7 @@
 
 \title{Tutorial for R microeco package (v2.3.0)}
 \author{}
-\date{\vspace{-2.5em}2026-07-07}
+\date{\vspace{-2.5em}2026-07-15}
 
 \begin{document}
 \maketitle
@@ -3892,7 +3892,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Tue Jul  7 16:35:54 2026. Please wait...
+## Now randomizing by parallel computing. Begin at Wed Jul 15 14:19:32 2026. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3925,9 +3925,9 @@ SES.i.bray
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-IW & 435 & 0.5546 & 0.2904 & 0.3003 & 20.02 \\
-CW & 435 & 0.5887 & 0.314 & 0.3179 & 24.35 \\
-TW & 435 & 0.5827 & 0.36 & 0.3671 & 17.21 \\
+IW & 435 & 0.555 & 0.29 & 0.3007 & 19.9 \\
+CW & 435 & 0.5887 & 0.3136 & 0.318 & 24.28 \\
+TW & 435 & 0.5827 & 0.3602 & 0.3671 & 17.18 \\
 \end{longtable}
 }
 
@@ -4982,12 +4982,11 @@ We have placed PICRUSt2 examples in the file2meco package section (\url{https://
 
 \section{trans\_metab class}\label{trans_metab-class}
 
-This class is a wrapper for a series of metabolite analysis, including origin inference and pathway enrichment.
+This class is a wrapper for a series of metabolite analysis, including origin inference \citep{Wang_TidyMass2_2026} and pathway enrichment.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# use data inside the microeco package}
-
 \NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ trans\_metab}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{metab =}\NormalTok{ soil\_metab, }\AttributeTok{microb =}\NormalTok{ soil\_microb)}
 
 \CommentTok{\# If the tax\_table in the input metab data already contains detailed annotations (such as KEGG, HMDB columns),}
@@ -4997,7 +4996,7 @@ This class is a wrapper for a series of metabolite analysis, including origin in
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_match}\NormalTok{(}\AttributeTok{database\_path =} \StringTok{"./metorigindb\_split\_202602"}\NormalTok{)}
 \CommentTok{\# View(test$res\_match)}
 
-\CommentTok{\# origin inference}
+\CommentTok{\# origin inference based on the database of TidyMass2}
 \CommentTok{\# The parameter match\_col works by determining metabolite assignment based on the provided "names" (row names) or other columns (e.g., "KEGG\_ID"). }
 \CommentTok{\# For "names", the function first checks whether res\_match (from the last step) exists; if it does, metabolite identification is performed according to the distance threshold.}
 \NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{cal\_origin}\NormalTok{(}\AttributeTok{database\_path =} \StringTok{"./metorigindb\_split\_202602"}\NormalTok{, }\AttributeTok{match\_col =} \FunctionTok{c}\NormalTok{(}\StringTok{"names"}\NormalTok{, }\StringTok{"HMDB\_ID"}\NormalTok{, }\StringTok{"KEGG\_ID"}\NormalTok{))}

@@ -557,12 +557,11 @@ We have placed PICRUSt2 examples in the file2meco package section (https://chili
 
 ## trans_metab class
 
-This class is a wrapper for a series of metabolite analysis, including origin inference and pathway enrichment.
+This class is a wrapper for a series of metabolite analysis, including origin inference [@Wang_TidyMass2_2026] and pathway enrichment.
 
 
 ```{r, echo = TRUE, eval = FALSE}
 # use data inside the microeco package
-
 tmp <- trans_metab$new(metab = soil_metab, microb = soil_microb)
 
 # If the tax_table in the input metab data already contains detailed annotations (such as KEGG, HMDB columns),
@@ -572,7 +571,7 @@ tmp <- trans_metab$new(metab = soil_metab, microb = soil_microb)
 tmp$cal_match(database_path = "./metorigindb_split_202602")
 # View(test$res_match)
 
-# origin inference
+# origin inference based on the database of TidyMass2
 # The parameter match_col works by determining metabolite assignment based on the provided "names" (row names) or other columns (e.g., "KEGG_ID"). 
 # For "names", the function first checks whether res_match (from the last step) exists; if it does, metabolite identification is performed according to the distance threshold.
 tmp$cal_origin(database_path = "./metorigindb_split_202602", match_col = c("names", "HMDB_ID", "KEGG_ID"))
@@ -612,8 +611,6 @@ tmp$plot_pathway_enrich()
 # test$cal_module()
 # test$get_node_table()
 # head(test$res_node_table)
-
-
 ```
 
 
