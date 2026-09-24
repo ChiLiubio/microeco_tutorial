@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 trans_multiomics and trans_mst class | Tutorial for R microeco package (v2.3.0)</title>
+  <meta name="description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 trans_multiomics and trans_mst class | Tutorial for R microeco package (v2.3.0)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 trans_multiomics and trans_mst class | Tutorial for R microeco package (v2.3.0)" />
+  
+  <meta name="twitter:description" content="Examples for R microeco, file2meco, meconetcomp and mecoturn packages" />
+  
+
+
+
+<meta name="date" content="2026-09-24" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="trans_niche-and-trans_phylo.html"/>
+<link rel="next" href="file2meco-package.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">microeco tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#framework"><i class="fa fa-check"></i><b>2.1</b> Framework</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#r6-class"><i class="fa fa-check"></i><b>2.2</b> R6 Class</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#help"><i class="fa fa-check"></i><b>2.3</b> Help</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#rtools"><i class="fa fa-check"></i><b>2.4</b> RTools</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#dependence"><i class="fa fa-check"></i><b>2.5</b> Dependence</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="intro.html"><a href="intro.html#description"><i class="fa fa-check"></i><b>2.5.1</b> Description</a></li>
+<li class="chapter" data-level="2.5.2" data-path="intro.html"><a href="intro.html#cran-packages"><i class="fa fa-check"></i><b>2.5.2</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.5.3" data-path="intro.html"><a href="intro.html#bioconductor-packages"><i class="fa fa-check"></i><b>2.5.3</b> Bioconductor packages</a></li>
+<li class="chapter" data-level="2.5.4" data-path="intro.html"><a href="intro.html#github-packages"><i class="fa fa-check"></i><b>2.5.4</b> Github packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="intro.html"><a href="intro.html#gephi"><i class="fa fa-check"></i><b>2.5.5</b> Gephi</a></li>
+<li class="chapter" data-level="2.5.6" data-path="intro.html"><a href="intro.html#tax4fun2"><i class="fa fa-check"></i><b>2.5.6</b> Tax4Fun2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#plot"><i class="fa fa-check"></i><b>2.6</b> Plot</a></li>
+<li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#rstudio"><i class="fa fa-check"></i><b>2.7</b> Rstudio</a></li>
+<li class="chapter" data-level="2.8" data-path="intro.html"><a href="intro.html#citation"><i class="fa fa-check"></i><b>2.8</b> Citation</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-class.html"><a href="basic-class.html"><i class="fa fa-check"></i><b>3</b> Basic class</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-class.html"><a href="basic-class.html#microtable-class"><i class="fa fa-check"></i><b>3.1</b> microtable class</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-class.html"><a href="basic-class.html#prepare-the-example-data"><i class="fa fa-check"></i><b>3.1.1</b> Prepare the example data</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-class.html"><a href="basic-class.html#how-to-read-your-files-to-microtable-object"><i class="fa fa-check"></i><b>3.1.2</b> How to read your files to microtable object?</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-class.html"><a href="basic-class.html#functions-in-microtable-class"><i class="fa fa-check"></i><b>3.1.3</b> Functions in microtable class</a></li>
+<li class="chapter" data-level="3.1.4" data-path="basic-class.html"><a href="basic-class.html#merge-taxa-or-samples"><i class="fa fa-check"></i><b>3.1.4</b> merge taxa or samples</a></li>
+<li class="chapter" data-level="3.1.5" data-path="basic-class.html"><a href="basic-class.html#subset-of-samples"><i class="fa fa-check"></i><b>3.1.5</b> subset of samples</a></li>
+<li class="chapter" data-level="3.1.6" data-path="basic-class.html"><a href="basic-class.html#subset-of-taxa"><i class="fa fa-check"></i><b>3.1.6</b> subset of taxa</a></li>
+<li class="chapter" data-level="3.1.7" data-path="basic-class.html"><a href="basic-class.html#add-asvotu-to-tax_table"><i class="fa fa-check"></i><b>3.1.7</b> add ASV/OTU to tax_table</a></li>
+<li class="chapter" data-level="3.1.8" data-path="basic-class.html"><a href="basic-class.html#filter-the-features-with-low-abundanceoccurrence-frequency"><i class="fa fa-check"></i><b>3.1.8</b> filter the features with low abundance/occurrence frequency</a></li>
+<li class="chapter" data-level="3.1.9" data-path="basic-class.html"><a href="basic-class.html#other-examples"><i class="fa fa-check"></i><b>3.1.9</b> Other examples</a></li>
+<li class="chapter" data-level="3.1.10" data-path="basic-class.html"><a href="basic-class.html#key-points"><i class="fa fa-check"></i><b>3.1.10</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="basic-class.html"><a href="basic-class.html#trans_norm-class"><i class="fa fa-check"></i><b>3.2</b> trans_norm class</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="composition-based-class.html"><a href="composition-based-class.html"><i class="fa fa-check"></i><b>4</b> Composition-based class</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_abund-class"><i class="fa fa-check"></i><b>4.1</b> trans_abund class</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example"><i class="fa fa-check"></i><b>4.1.1</b> Example</a></li>
+<li class="chapter" data-level="4.1.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-1"><i class="fa fa-check"></i><b>4.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="composition-based-class.html"><a href="composition-based-class.html#trans_venn-class"><i class="fa fa-check"></i><b>4.2</b> trans_venn class</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="composition-based-class.html"><a href="composition-based-class.html#example-1"><i class="fa fa-check"></i><b>4.2.1</b> Example</a></li>
+<li class="chapter" data-level="4.2.2" data-path="composition-based-class.html"><a href="composition-based-class.html#key-points-2"><i class="fa fa-check"></i><b>4.2.2</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="diversity-based-class.html"><a href="diversity-based-class.html"><i class="fa fa-check"></i><b>5</b> Diversity-based class</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_alpha-class"><i class="fa fa-check"></i><b>5.1</b> trans_alpha class</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-2"><i class="fa fa-check"></i><b>5.1.1</b> Example</a></li>
+<li class="chapter" data-level="5.1.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-3"><i class="fa fa-check"></i><b>5.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_beta-class"><i class="fa fa-check"></i><b>5.2</b> trans_beta class</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-3"><i class="fa fa-check"></i><b>5.2.1</b> Example</a></li>
+<li class="chapter" data-level="5.2.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-4"><i class="fa fa-check"></i><b>5.2.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="diversity-based-class.html"><a href="diversity-based-class.html#trans_rarefy-class"><i class="fa fa-check"></i><b>5.3</b> trans_rarefy class</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="diversity-based-class.html"><a href="diversity-based-class.html#example-4"><i class="fa fa-check"></i><b>5.3.1</b> Example</a></li>
+<li class="chapter" data-level="5.3.2" data-path="diversity-based-class.html"><a href="diversity-based-class.html#more-options"><i class="fa fa-check"></i><b>5.3.2</b> More options</a></li>
+<li class="chapter" data-level="5.3.3" data-path="diversity-based-class.html"><a href="diversity-based-class.html#key-points-5"><i class="fa fa-check"></i><b>5.3.3</b> Key points</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model-based-class.html"><a href="model-based-class.html"><i class="fa fa-check"></i><b>6</b> Model-based class</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="model-based-class.html"><a href="model-based-class.html#trans_diff-class"><i class="fa fa-check"></i><b>6.1</b> trans_diff class</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="model-based-class.html"><a href="model-based-class.html#example-5"><i class="fa fa-check"></i><b>6.1.1</b> Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="model-based-class.html"><a href="model-based-class.html#more-options-1"><i class="fa fa-check"></i><b>6.1.2</b> More options</a></li>
+<li class="chapter" data-level="6.1.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-6"><i class="fa fa-check"></i><b>6.1.3</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="model-based-class.html"><a href="model-based-class.html#trans_network-class"><i class="fa fa-check"></i><b>6.2</b> trans_network class</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="model-based-class.html"><a href="model-based-class.html#example-6"><i class="fa fa-check"></i><b>6.2.1</b> Example</a></li>
+<li class="chapter" data-level="6.2.2" data-path="model-based-class.html"><a href="model-based-class.html#network-comparison"><i class="fa fa-check"></i><b>6.2.2</b> Network comparison</a></li>
+<li class="chapter" data-level="6.2.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-7"><i class="fa fa-check"></i><b>6.2.3</b> Key points</a></li>
+<li class="chapter" data-level="6.2.4" data-path="model-based-class.html"><a href="model-based-class.html#other-functions"><i class="fa fa-check"></i><b>6.2.4</b> Other functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="model-based-class.html"><a href="model-based-class.html#trans_nullmodel-class"><i class="fa fa-check"></i><b>6.3</b> trans_nullmodel class</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="model-based-class.html"><a href="model-based-class.html#example-7"><i class="fa fa-check"></i><b>6.3.1</b> Example</a></li>
+<li class="chapter" data-level="6.3.2" data-path="model-based-class.html"><a href="model-based-class.html#key-points-8"><i class="fa fa-check"></i><b>6.3.2</b> Key points</a></li>
+<li class="chapter" data-level="6.3.3" data-path="model-based-class.html"><a href="model-based-class.html#other-function"><i class="fa fa-check"></i><b>6.3.3</b> Other function</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="model-based-class.html"><a href="model-based-class.html#trans_classifier-class"><i class="fa fa-check"></i><b>6.4</b> trans_classifier class</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="model-based-class.html"><a href="model-based-class.html#dependencies"><i class="fa fa-check"></i><b>6.4.1</b> Dependencies</a></li>
+<li class="chapter" data-level="6.4.2" data-path="model-based-class.html"><a href="model-based-class.html#examples"><i class="fa fa-check"></i><b>6.4.2</b> Examples</a></li>
+<li class="chapter" data-level="6.4.3" data-path="model-based-class.html"><a href="model-based-class.html#key-points-9"><i class="fa fa-check"></i><b>6.4.3</b> Key points</a></li>
+<li class="chapter" data-level="6.4.4" data-path="model-based-class.html"><a href="model-based-class.html#other-function-1"><i class="fa fa-check"></i><b>6.4.4</b> Other function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="explainable-class.html"><a href="explainable-class.html"><i class="fa fa-check"></i><b>7</b> Explainable class</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="explainable-class.html"><a href="explainable-class.html#trans_env-class"><i class="fa fa-check"></i><b>7.1</b> trans_env class</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="explainable-class.html"><a href="explainable-class.html#example-8"><i class="fa fa-check"></i><b>7.1.1</b> Example</a></li>
+<li class="chapter" data-level="7.1.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-10"><i class="fa fa-check"></i><b>7.1.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="explainable-class.html"><a href="explainable-class.html#trans_func-class"><i class="fa fa-check"></i><b>7.2</b> trans_func class</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="explainable-class.html"><a href="explainable-class.html#example-9"><i class="fa fa-check"></i><b>7.2.1</b> Example</a></li>
+<li class="chapter" data-level="7.2.2" data-path="explainable-class.html"><a href="explainable-class.html#key-points-11"><i class="fa fa-check"></i><b>7.2.2</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="explainable-class.html"><a href="explainable-class.html#trans_metab-class"><i class="fa fa-check"></i><b>7.3</b> trans_metab class</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="trans_niche-and-trans_phylo.html"><a href="trans_niche-and-trans_phylo.html"><i class="fa fa-check"></i><b>8</b> trans_niche and trans_phylo</a></li>
+<li class="chapter" data-level="9" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html"><i class="fa fa-check"></i><b>9</b> trans_multiomics and trans_mst class</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#trans_multiomics-class"><i class="fa fa-check"></i><b>9.1</b> trans_multiomics class</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#prerequisites"><i class="fa fa-check"></i><b>9.1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.1.2" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#prepare-the-example-data-1"><i class="fa fa-check"></i><b>9.1.2</b> Prepare the example data</a></li>
+<li class="chapter" data-level="9.1.3" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#create-the-trans_multiomics-object"><i class="fa fa-check"></i><b>9.1.3</b> Create the trans_multiomics object</a></li>
+<li class="chapter" data-level="9.1.4" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#preprocess-the-data"><i class="fa fa-check"></i><b>9.1.4</b> Preprocess the data</a></li>
+<li class="chapter" data-level="9.1.5" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#set-the-design-matrix"><i class="fa fa-check"></i><b>9.1.5</b> Set the design matrix</a></li>
+<li class="chapter" data-level="9.1.6" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#supervised-integration-block.splsda"><i class="fa fa-check"></i><b>9.1.6</b> Supervised integration (block.splsda)</a></li>
+<li class="chapter" data-level="9.1.7" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#performance-evaluation"><i class="fa fa-check"></i><b>9.1.7</b> Performance evaluation</a></li>
+<li class="chapter" data-level="9.1.8" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#feature-selection-stability"><i class="fa fa-check"></i><b>9.1.8</b> Feature selection stability</a></li>
+<li class="chapter" data-level="9.1.9" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#hyperparameter-tuning-keepx"><i class="fa fa-check"></i><b>9.1.9</b> Hyperparameter tuning (keepX)</a></li>
+<li class="chapter" data-level="9.1.10" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#feature-extraction-and-cross-block-correlation"><i class="fa fa-check"></i><b>9.1.10</b> Feature extraction and cross-block correlation</a></li>
+<li class="chapter" data-level="9.1.11" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#visualizations"><i class="fa fa-check"></i><b>9.1.11</b> Visualizations</a></li>
+<li class="chapter" data-level="9.1.12" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#unsupervised-alternatives"><i class="fa fa-check"></i><b>9.1.12</b> Unsupervised alternatives</a></li>
+<li class="chapter" data-level="9.1.13" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#trans-kingdom-network-tkna"><i class="fa fa-check"></i><b>9.1.13</b> Trans-kingdom network (TkNA)</a></li>
+<li class="chapter" data-level="9.1.14" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#bridge-to-the-trans_network-class"><i class="fa fa-check"></i><b>9.1.14</b> Bridge to the trans_network class</a></li>
+<li class="chapter" data-level="9.1.15" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#mediation-analysis-multimedia-bridge"><i class="fa fa-check"></i><b>9.1.15</b> Mediation analysis (multimedia bridge)</a></li>
+<li class="chapter" data-level="9.1.16" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#export-feature-tables-for-knowledge-tools"><i class="fa fa-check"></i><b>9.1.16</b> Export feature tables for knowledge tools</a></li>
+<li class="chapter" data-level="9.1.17" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#suggested-workflow"><i class="fa fa-check"></i><b>9.1.17</b> Suggested workflow</a></li>
+<li class="chapter" data-level="9.1.18" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#key-points-12"><i class="fa fa-check"></i><b>9.1.18</b> Key points</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#trans_mst-class"><i class="fa fa-check"></i><b>9.2</b> trans_mst class</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#prepare-the-example-data-2"><i class="fa fa-check"></i><b>9.2.1</b> Prepare the example data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#create-the-object"><i class="fa fa-check"></i><b>9.2.2</b> Create the object</a></li>
+<li class="chapter" data-level="9.2.3" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#source-tracking-with-a-shared-source-pool"><i class="fa fa-check"></i><b>9.2.3</b> Source tracking with a shared source pool</a></li>
+<li class="chapter" data-level="9.2.4" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#source-tracking-with-different-source-sets"><i class="fa fa-check"></i><b>9.2.4</b> Source tracking with different source sets</a></li>
+<li class="chapter" data-level="9.2.5" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#run-sequential-steps-in-one-call"><i class="fa fa-check"></i><b>9.2.5</b> Run sequential steps in one call</a></li>
+<li class="chapter" data-level="9.2.6" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#specify-sources-and-sinks-by-sample-names"><i class="fa fa-check"></i><b>9.2.6</b> Specify sources and sinks by sample names</a></li>
+<li class="chapter" data-level="9.2.7" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#visualization"><i class="fa fa-check"></i><b>9.2.7</b> Visualization</a></li>
+<li class="chapter" data-level="9.2.8" data-path="trans_multiomics-and-trans_mst-class.html"><a href="trans_multiomics-and-trans_mst-class.html#downstream-analysis-of-the-results"><i class="fa fa-check"></i><b>9.2.8</b> Downstream analysis of the results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="file2meco-package.html"><a href="file2meco-package.html"><i class="fa fa-check"></i><b>10</b> file2meco package</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime"><i class="fa fa-check"></i><b>10.1</b> QIIME</a></li>
+<li class="chapter" data-level="10.2" data-path="file2meco-package.html"><a href="file2meco-package.html#qiime2"><i class="fa fa-check"></i><b>10.2</b> QIIME2</a></li>
+<li class="chapter" data-level="10.3" data-path="file2meco-package.html"><a href="file2meco-package.html#humann"><i class="fa fa-check"></i><b>10.3</b> HUMAnN</a></li>
+<li class="chapter" data-level="10.4" data-path="file2meco-package.html"><a href="file2meco-package.html#metaphlan"><i class="fa fa-check"></i><b>10.4</b> MetaPhlAn</a></li>
+<li class="chapter" data-level="10.5" data-path="file2meco-package.html"><a href="file2meco-package.html#kraken2bracken"><i class="fa fa-check"></i><b>10.5</b> Kraken2/Bracken</a></li>
+<li class="chapter" data-level="10.6" data-path="file2meco-package.html"><a href="file2meco-package.html#ncycdbpcycdb"><i class="fa fa-check"></i><b>10.6</b> NCycDB/PCycDB</a></li>
+<li class="chapter" data-level="10.7" data-path="file2meco-package.html"><a href="file2meco-package.html#phyloseq"><i class="fa fa-check"></i><b>10.7</b> phyloseq</a></li>
+<li class="chapter" data-level="10.8" data-path="file2meco-package.html"><a href="file2meco-package.html#picrust2"><i class="fa fa-check"></i><b>10.8</b> PICRUSt2</a></li>
+<li class="chapter" data-level="10.9" data-path="file2meco-package.html"><a href="file2meco-package.html#viromescan"><i class="fa fa-check"></i><b>10.9</b> ViromeScan</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="other-dataset.html"><a href="other-dataset.html"><i class="fa fa-check"></i><b>11</b> Other dataset</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="other-dataset.html"><a href="other-dataset.html#fungi-data"><i class="fa fa-check"></i><b>11.1</b> Fungi data</a></li>
+<li class="chapter" data-level="11.2" data-path="other-dataset.html"><a href="other-dataset.html#metagenomic-data"><i class="fa fa-check"></i><b>11.2</b> Metagenomic data</a></li>
+<li class="chapter" data-level="11.3" data-path="other-dataset.html"><a href="other-dataset.html#gut-microbiome"><i class="fa fa-check"></i><b>11.3</b> Gut microbiome</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="notes.html"><a href="notes.html"><i class="fa fa-check"></i><b>12</b> Notes</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="notes.html"><a href="notes.html#clone-function"><i class="fa fa-check"></i><b>12.1</b> <code>clone</code> function</a></li>
+<li class="chapter" data-level="12.2" data-path="notes.html"><a href="notes.html#save-function"><i class="fa fa-check"></i><b>12.2</b> <code>save</code> function</a></li>
+<li class="chapter" data-level="12.3" data-path="notes.html"><a href="notes.html#github-issues"><i class="fa fa-check"></i><b>12.3</b> Github Issues</a></li>
+<li class="chapter" data-level="12.4" data-path="notes.html"><a href="notes.html#group-order"><i class="fa fa-check"></i><b>12.4</b> group order</a></li>
+<li class="chapter" data-level="12.5" data-path="notes.html"><a href="notes.html#add-layers-to-plot"><i class="fa fa-check"></i><b>12.5</b> add layers to plot</a></li>
+<li class="chapter" data-level="12.6" data-path="notes.html"><a href="notes.html#colors-for-more-groups"><i class="fa fa-check"></i><b>12.6</b> colors for more groups</a></li>
+<li class="chapter" data-level="12.7" data-path="notes.html"><a href="notes.html#change-object"><i class="fa fa-check"></i><b>12.7</b> change object</a></li>
+<li class="chapter" data-level="12.8" data-path="notes.html"><a href="notes.html#customized-data-input"><i class="fa fa-check"></i><b>12.8</b> customized data input</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html"><i class="fa fa-check"></i><b>13</b> meconetcomp package</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-modularity-for-all-networks"><i class="fa fa-check"></i><b>13.1</b> Network modularity for all networks</a></li>
+<li class="chapter" data-level="13.2" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#network-topological-attributes-for-all-networks"><i class="fa fa-check"></i><b>13.2</b> Network topological attributes for all networks</a></li>
+<li class="chapter" data-level="13.3" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#node-and-edge-properties-extraction-for-all-networks"><i class="fa fa-check"></i><b>13.3</b> Node and edge properties extraction for all networks</a></li>
+<li class="chapter" data-level="13.4" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-nodes-across-networks"><i class="fa fa-check"></i><b>13.4</b> Compare nodes across networks</a></li>
+<li class="chapter" data-level="13.5" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-edges-across-networks"><i class="fa fa-check"></i><b>13.5</b> Compare edges across networks</a></li>
+<li class="chapter" data-level="13.6" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#extract-overlapped-edges-of-networks-to-a-new-network"><i class="fa fa-check"></i><b>13.6</b> Extract overlapped edges of networks to a new network</a></li>
+<li class="chapter" data-level="13.7" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-phylogenetic-distances-of-paired-nodes-in-edges"><i class="fa fa-check"></i><b>13.7</b> Compare phylogenetic distances of paired nodes in edges</a></li>
+<li class="chapter" data-level="13.8" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-node-sources-of-edges-across-networks"><i class="fa fa-check"></i><b>13.8</b> Compare node sources of edges across networks</a></li>
+<li class="chapter" data-level="13.9" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#compare-topological-properties-of-sub-networks"><i class="fa fa-check"></i><b>13.9</b> Compare topological properties of sub-networks</a></li>
+<li class="chapter" data-level="13.10" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#robustness-of-network"><i class="fa fa-check"></i><b>13.10</b> Robustness of network</a></li>
+<li class="chapter" data-level="13.11" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#vulnerability-of-nodes"><i class="fa fa-check"></i><b>13.11</b> Vulnerability of nodes</a></li>
+<li class="chapter" data-level="13.12" data-path="meconetcomp-package.html"><a href="meconetcomp-package.html#cohesion"><i class="fa fa-check"></i><b>13.12</b> Cohesion</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="mecodev-package.html"><a href="mecodev-package.html"><i class="fa fa-check"></i><b>14</b> mecodev package</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_rarefy"><i class="fa fa-check"></i><b>14.1</b> trans_rarefy</a></li>
+<li class="chapter" data-level="14.2" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_ts"><i class="fa fa-check"></i><b>14.2</b> trans_ts</a></li>
+<li class="chapter" data-level="14.3" data-path="mecodev-package.html"><a href="mecodev-package.html#trans_gamma"><i class="fa fa-check"></i><b>14.3</b> trans_gamma</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="mecoturn-package.html"><a href="mecoturn-package.html"><i class="fa fa-check"></i><b>15</b> mecoturn package</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="mecoturn-package.html"><a href="mecoturn-package.html#betaturn-class"><i class="fa fa-check"></i><b>15.1</b> betaturn class</a></li>
+<li class="chapter" data-level="15.2" data-path="mecoturn-package.html"><a href="mecoturn-package.html#taxaturn-class"><i class="fa fa-check"></i><b>15.2</b> taxaturn class</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="other-examples-1.html"><a href="other-examples-1.html"><i class="fa fa-check"></i><b>16</b> Other examples</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="other-examples-1.html"><a href="other-examples-1.html#custom-taxa-order-in-bar-plot"><i class="fa fa-check"></i><b>16.1</b> Custom taxa order in bar plot</a></li>
+<li class="chapter" data-level="16.2" data-path="other-examples-1.html"><a href="other-examples-1.html#tidy_taxonomy-function"><i class="fa fa-check"></i><b>16.2</b> tidy_taxonomy function</a></li>
+<li class="chapter" data-level="16.3" data-path="other-examples-1.html"><a href="other-examples-1.html#show-the-abundance-of-unknown-taxa"><i class="fa fa-check"></i><b>16.3</b> Show the abundance of unknown taxa</a></li>
+<li class="chapter" data-level="16.4" data-path="other-examples-1.html"><a href="other-examples-1.html#question-of-prefix-in-the-taxa"><i class="fa fa-check"></i><b>16.4</b> Question of prefix in the taxa</a></li>
+<li class="chapter" data-level="16.5" data-path="other-examples-1.html"><a href="other-examples-1.html#the-use-of-phylogenetic-tree"><i class="fa fa-check"></i><b>16.5</b> The use of phylogenetic tree</a></li>
+<li class="chapter" data-level="16.6" data-path="other-examples-1.html"><a href="other-examples-1.html#mantel-test-correlation-heatmap"><i class="fa fa-check"></i><b>16.6</b> Mantel test + Correlation heatmap</a></li>
+<li class="chapter" data-level="16.7" data-path="other-examples-1.html"><a href="other-examples-1.html#pcoa-boxplot"><i class="fa fa-check"></i><b>16.7</b> PCoA + boxplot</a></li>
+<li class="chapter" data-level="16.8" data-path="other-examples-1.html"><a href="other-examples-1.html#faprotax-differential-test"><i class="fa fa-check"></i><b>16.8</b> FAPROTAX + differential test</a></li>
+<li class="chapter" data-level="16.9" data-path="other-examples-1.html"><a href="other-examples-1.html#rda-results-output"><i class="fa fa-check"></i><b>16.9</b> RDA results output</a></li>
+<li class="chapter" data-level="16.10" data-path="other-examples-1.html"><a href="other-examples-1.html#betanribetanti-for-each-group"><i class="fa fa-check"></i><b>16.10</b> betaNRI/betaNTI for each group</a></li>
+<li class="chapter" data-level="16.11" data-path="other-examples-1.html"><a href="other-examples-1.html#visualize-taxonomic-abundance-with-trans_alpha-class"><i class="fa fa-check"></i><b>16.11</b> Visualize taxonomic abundance with trans_alpha class</a></li>
+<li class="chapter" data-level="16.12" data-path="other-examples-1.html"><a href="other-examples-1.html#customized-network-input-and-analysis"><i class="fa fa-check"></i><b>16.12</b> Customized network input and analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="pipeline.html"><a href="pipeline.html"><i class="fa fa-check"></i><b>17</b> Pipeline</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tutorial for R microeco package (v2.3.0)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="trans_multiomics-and-trans_mst-class" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> trans_multiomics and trans_mst class<a href="trans_multiomics-and-trans_mst-class.html#trans_multiomics-and-trans_mst-class" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="trans_multiomics-class" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> trans_multiomics class<a href="trans_multiomics-and-trans_mst-class.html#trans_multiomics-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>trans_multiomics</code> class integrates two or more omics data sets (typically a microbiome <code>microtable</code> plus one or more other <code>microtable</code> objects such as metabolome or transcriptome) and provides a complete supervised/unsupervised multi-block workflow powered by the <code>mixOmics</code> package <span class="citation">(<a href="#ref-Rohart_mixOmics_2017">Rohart et al. 2017</a>)</span>.
+It wraps the most common <code>mixOmics</code> models (<code>block.splsda</code>, <code>block.spls</code>, <code>spls</code>) and adds several analysis layers that are useful in microbiome studies: cross-omics feature extraction and stability, a trans-kingdom correlation network (TkNA-style) with a bridge to the <code>trans_network</code> class, mediation analysis (bridging to the <code>multimedia</code> package), and exporters for knowledge-driven mechanism tools (MIMOSA2 / AMON / anansi).</p>
+<p><img src="Images/trans_multiomics_overview.png" alt="" width="750px" style="display: block; margin: auto;" /></p>
+<p>As with the other classes of <code>microeco</code>, each method returns the object itself (invisibly), so the steps can be chained with <code>$</code>, and every intermediate result is kept in the object, for example <code>data_list</code>, <code>model</code>, <code>perf_result</code>, <code>res_features</code>, <code>res_stability</code>, <code>res_transkingdom</code> and <code>res_mediation</code>.
+The example below follows the whole pipeline on the two omics data sets shipped with <code>microeco</code>: prokaryotic amplicon sequencing and untargeted metabolomics from the same agricultural field experiment.
+All the results shown in this section were checked with microeco 2.4.0 and mixOmics 6.36.0.</p>
+<div id="prerequisites" class="section level3 hasAnchor" number="9.1.1">
+<h3><span class="header-section-number">9.1.1</span> Prerequisites<a href="trans_multiomics-and-trans_mst-class.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Install the required packages first.
+<code>mixOmics</code> is on Bioconductor; <code>multimedia</code> is only needed for the mediation analysis section and can be skipped if you do not use it.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="trans_multiomics-and-trans_mst-class.html#cb320-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;microeco&quot;</span>)</span>
+<span id="cb320-2"><a href="trans_multiomics-and-trans_mst-class.html#cb320-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb320-3"><a href="trans_multiomics-and-trans_mst-class.html#cb320-3" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;mixOmics&quot;</span>)</span>
+<span id="cb320-4"><a href="trans_multiomics-and-trans_mst-class.html#cb320-4" tabindex="-1"></a><span class="co"># optional, only for mediation analysis</span></span>
+<span id="cb320-5"><a href="trans_multiomics-and-trans_mst-class.html#cb320-5" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;multimedia&quot;</span>)</span></code></pre></div>
+</div>
+<div id="prepare-the-example-data-1" class="section level3 hasAnchor" number="9.1.2">
+<h3><span class="header-section-number">9.1.2</span> Prepare the example data<a href="trans_multiomics-and-trans_mst-class.html#prepare-the-example-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The example uses two data sets shipped with <code>microeco</code>: <code>soil_microb</code> (prokaryotic amplicon sequencing, 1245 taxa x 90 samples) and <code>soil_metab</code> (untargeted metabolomics, 160 metabolites x 60 samples).
+Both come from the same agricultural field experiment with crop rotation and fertilization treatments and share 60 samples across six treatment groups <span class="citation">(<a href="#ref-Liu_microeco_2021">Liu et al. 2021</a>; <a href="#ref-Liu_workflow_2026">Liu, Mansoldo, et al. 2026</a>)</span>.</p>
+<p>Each omics layer must be a <code>microtable</code> object.
+The <code>sample_table</code> must contain a grouping column (e.g. <code>Group</code>) that will be used as the supervised response <code>Y</code> in DIABLO.
+The names of the list become the block names in <code>mixOmics</code>.
+For your own data, create one <code>microtable</code> per omics layer (see the microtable class section) and pass them as a named list.</p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="trans_multiomics-and-trans_mst-class.html#cb321-1" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb321-2"><a href="trans_multiomics-and-trans_mst-class.html#cb321-2" tabindex="-1"></a><span class="fu">library</span>(mixOmics)</span>
+<span id="cb321-3"><a href="trans_multiomics-and-trans_mst-class.html#cb321-3" tabindex="-1"></a><span class="fu">data</span>(soil_microb)</span>
+<span id="cb321-4"><a href="trans_multiomics-and-trans_mst-class.html#cb321-4" tabindex="-1"></a><span class="fu">data</span>(soil_metab)</span>
+<span id="cb321-5"><a href="trans_multiomics-and-trans_mst-class.html#cb321-5" tabindex="-1"></a><span class="co"># soil_microb: 1245 taxa x 90 samples; soil_metab: 160 metabolites x 60 samples</span></span>
+<span id="cb321-6"><a href="trans_multiomics-and-trans_mst-class.html#cb321-6" tabindex="-1"></a><span class="co"># both share 60 samples from the same field experiment</span></span></code></pre></div>
+</div>
+<div id="create-the-trans_multiomics-object" class="section level3 hasAnchor" number="9.1.3">
+<h3><span class="header-section-number">9.1.3</span> Create the trans_multiomics object<a href="trans_multiomics-and-trans_mst-class.html#create-the-trans_multiomics-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>trans_multiomics$new</code> takes a named list of <code>microtable</code> objects, aligns samples by intersection, and extracts the response <code>Y</code> from <code>group_col</code> of the first <code>sample_table</code>.</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="trans_multiomics-and-trans_mst-class.html#cb322-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_multiomics<span class="sc">$</span><span class="fu">new</span>(</span>
+<span id="cb322-2"><a href="trans_multiomics-and-trans_mst-class.html#cb322-2" tabindex="-1"></a>  <span class="at">microtables =</span> <span class="fu">list</span>(<span class="at">microb =</span> soil_microb, <span class="at">metab =</span> soil_metab),</span>
+<span id="cb322-3"><a href="trans_multiomics-and-trans_mst-class.html#cb322-3" tabindex="-1"></a>  <span class="at">group_col   =</span> <span class="st">&quot;Group&quot;</span></span>
+<span id="cb322-4"><a href="trans_multiomics-and-trans_mst-class.html#cb322-4" tabindex="-1"></a>)</span></code></pre></div>
+<p>Expected messages:</p>
+<pre><code>30 sample(s) removed to align samples across all blocks (intersection) ...
+Multi-omics data loaded with 60 samples and 2 blocks: microb, metab ...</code></pre>
+<p>Important details:</p>
+<ul>
+<li>Samples are aligned by <strong>intersection</strong> across all blocks.
+The number in the message is the total number of sample rows dropped over all blocks, so here it is 30: the 30 samples occurring only in <code>soil_microb</code> are removed while <code>soil_metab</code> keeps its 60 samples.</li>
+<li><code>Y</code> must contain at least two levels.
+You can also pass a named factor/character vector via the <code>group</code> argument to override <code>group_col</code>.
+A named vector is matched by sample name (a warning is issued if the names are missing and the samples are then matched by order).</li>
+<li>The original <code>microtable</code> objects are deep-cloned inside the class so later changes to the user’s data do not affect the model.
+All preprocessing therefore happens on the cloned data.</li>
+</ul>
+</div>
+<div id="preprocess-the-data" class="section level3 hasAnchor" number="9.1.4">
+<h3><span class="header-section-number">9.1.4</span> Preprocess the data<a href="trans_multiomics-and-trans_mst-class.html#preprocess-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>preprocess_data</code> reuses the <code>trans_norm</code> machinery to apply a normalization method to each block.
+For compositional microbiome/metabolome data, <strong>CLR (centered log-ratio) is recommended</strong> because it removes the compositional constraint and produces values whose sum is zero within each sample.</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="trans_multiomics-and-trans_mst-class.html#cb324-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">preprocess_data</span>(</span>
+<span id="cb324-2"><a href="trans_multiomics-and-trans_mst-class.html#cb324-2" tabindex="-1"></a>  <span class="at">method      =</span> <span class="st">&quot;clr&quot;</span>,      <span class="co"># CLR transformation</span></span>
+<span id="cb324-3"><a href="trans_multiomics-and-trans_mst-class.html#cb324-3" tabindex="-1"></a>  <span class="at">pseudocount =</span> <span class="dv">1</span>,          <span class="co"># added before log for zero values</span></span>
+<span id="cb324-4"><a href="trans_multiomics-and-trans_mst-class.html#cb324-4" tabindex="-1"></a>  <span class="at">filter_freq =</span> <span class="fl">0.2</span>         <span class="co"># keep features present in at least 20% of samples</span></span>
+<span id="cb324-5"><a href="trans_multiomics-and-trans_mst-class.html#cb324-5" tabindex="-1"></a>)</span></code></pre></div>
+<p>The feature filtering is delegated to <code>microtable$filter_taxa</code>, so the usual filtering messages of the microtable class are printed first.
+Expected output (truncated):</p>
+<pre><code>Filter features for otu_table in the object ...
+Use converted freq integer: 12 for the following filtering ...
+Block &#39;microb&#39;: 60 samples x 1241 features after preprocessing ...
+Block &#39;metab&#39;: 60 samples x 144 features after preprocessing ...</code></pre>
+<p>The processed matrices (rows are samples, columns are features) are stored in <code>t1$data_list</code> and will be passed to <code>mixOmics</code>.</p>
+<p>The argument <code>method</code> accepts any value supported by <code>trans_norm$norm</code> (e.g. <code>"clr"</code>, <code>"rclr"</code>, <code>"css"</code>, <code>"tss"</code>, <code>"log"</code>).
+For <code>filter_freq &lt; 1</code>, the threshold is computed as <code>round(n_samples * filter_freq)</code> (here <code>0.2 * 60 = 12</code>); features observed in fewer samples than this threshold are removed.
+Pass an integer &gt;= 1 if you prefer an absolute count threshold.
+<code>filter_thres</code> adds a relative abundance threshold on the same call.
+Setting <code>filter_freq = 1</code> and <code>filter_thres = NULL</code> keeps all features.</p>
+</div>
+<div id="set-the-design-matrix" class="section level3 hasAnchor" number="9.1.5">
+<h3><span class="header-section-number">9.1.5</span> Set the design matrix<a href="trans_multiomics-and-trans_mst-class.html#set-the-design-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The design matrix specifies how strongly two blocks should be correlated.
+A small off-diagonal weight (e.g. <code>0.1</code>) tends to favour classification accuracy, whereas <code>1</code> maximises the covariance between blocks and is more useful for exploratory association analysis <span class="citation">(<a href="#ref-Singh_DIABLO_2019">Singh et al. 2019</a>)</span>.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="trans_multiomics-and-trans_mst-class.html#cb326-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_design</span>(<span class="at">weight =</span> <span class="fl">0.1</span>)</span>
+<span id="cb326-2"><a href="trans_multiomics-and-trans_mst-class.html#cb326-2" tabindex="-1"></a>t1<span class="sc">$</span>design</span></code></pre></div>
+<pre><code>       microb metab
+microb    0.0   0.1
+metab     0.1   0.0</code></pre>
+<p>You can also supply a full design matrix manually:</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="trans_multiomics-and-trans_mst-class.html#cb328-1" tabindex="-1"></a>design_full <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb328-2"><a href="trans_multiomics-and-trans_mst-class.html#cb328-2" tabindex="-1"></a>  <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;microb&quot;</span>, <span class="st">&quot;metab&quot;</span>), <span class="fu">c</span>(<span class="st">&quot;microb&quot;</span>, <span class="st">&quot;metab&quot;</span>)))</span>
+<span id="cb328-3"><a href="trans_multiomics-and-trans_mst-class.html#cb328-3" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_design</span>(<span class="at">design =</span> design_full)</span>
+<span id="cb328-4"><a href="trans_multiomics-and-trans_mst-class.html#cb328-4" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">set_design</span>(<span class="at">weight =</span> <span class="fl">0.1</span>)  <span class="co"># reset to the default</span></span></code></pre></div>
+</div>
+<div id="supervised-integration-block.splsda" class="section level3 hasAnchor" number="9.1.6">
+<h3><span class="header-section-number">9.1.6</span> Supervised integration (block.splsda)<a href="trans_multiomics-and-trans_mst-class.html#supervised-integration-block.splsda" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>DIABLO <span class="citation">(<a href="#ref-Singh_DIABLO_2019">Singh et al. 2019</a>)</span> extends sparse PLS-DA to multiple data sets and selects correlated features across blocks that best discriminate the groups in <code>Y</code>.</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="trans_multiomics-and-trans_mst-class.html#cb329-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">run_diablo</span>(</span>
+<span id="cb329-2"><a href="trans_multiomics-and-trans_mst-class.html#cb329-2" tabindex="-1"></a>  <span class="at">ncomp  =</span> <span class="dv">2</span>,</span>
+<span id="cb329-3"><a href="trans_multiomics-and-trans_mst-class.html#cb329-3" tabindex="-1"></a>  <span class="at">keepX  =</span> <span class="fu">list</span>(<span class="at">microb =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>), <span class="at">metab =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">15</span>))</span>
+<span id="cb329-4"><a href="trans_multiomics-and-trans_mst-class.html#cb329-4" tabindex="-1"></a>)</span></code></pre></div>
+<p>The fitted model is stored in <code>t1$model</code>.
+Its class is <code>block.splsda</code> and the latent components live on <code>comp1</code> and <code>comp2</code>.
+Choosing <code>keepX</code> requires balancing interpretability (small <code>keepX</code> -&gt; sparse biomarker panels) and classification performance (larger <code>keepX</code> retains more signal).
+The rule of thumb “5-20 features per block per component” works well for tens of samples per group.
+The tuning section below shows how to choose <code>keepX</code> automatically.</p>
+</div>
+<div id="performance-evaluation" class="section level3 hasAnchor" number="9.1.7">
+<h3><span class="header-section-number">9.1.7</span> Performance evaluation<a href="trans_multiomics-and-trans_mst-class.html#performance-evaluation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>eval_performance</code> runs <code>mixOmics::perf</code> to estimate the classification error rate via cross-validation.
+<code>perf</code> aggregates the per-block predictions with four strategies: <code>AveragedPredict</code> and <code>WeightedPredict</code> average the predicted classes over the blocks, while <code>MajorityVote</code> and <code>WeightedVote</code> take the majority (or weighted majority) class over the blocks.
+The error rate of the two voting strategies is computed for each of the three distance metrics (<code>max.dist</code>, <code>centroids.dist</code>, <code>mahalanobis.dist</code>), so <code>MajorityVote.error.rate</code> and <code>WeightedVote.error.rate</code> are lists containing one matrix per distance metric, whereas <code>AveragedPredict.error.rate</code> and <code>WeightedPredict.error.rate</code> are single matrices (no distance is involved).
+Every one of those matrices has one row per predicted class plus an <code>Overall.ER</code> and an <code>Overall.BER</code> row, and one column per component.</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="trans_multiomics-and-trans_mst-class.html#cb330-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">eval_performance</span>(<span class="at">method =</span> <span class="st">&quot;Mfold&quot;</span>, <span class="at">folds =</span> <span class="dv">5</span>, <span class="at">nrepeat =</span> <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb330-2"><a href="trans_multiomics-and-trans_mst-class.html#cb330-2" tabindex="-1"></a><span class="co"># overall balanced error rate (BER) across prediction strategies</span></span>
+<span id="cb330-3"><a href="trans_multiomics-and-trans_mst-class.html#cb330-3" tabindex="-1"></a>t1<span class="sc">$</span>perf_result<span class="sc">$</span>MajorityVote.error.rate<span class="sc">$</span>centroids.dist[<span class="st">&quot;Overall.BER&quot;</span>, ]</span>
+<span id="cb330-4"><a href="trans_multiomics-and-trans_mst-class.html#cb330-4" tabindex="-1"></a>t1<span class="sc">$</span>perf_result<span class="sc">$</span>WeightedVote.error.rate<span class="sc">$</span>centroids.dist[<span class="st">&quot;Overall.BER&quot;</span>, ]</span>
+<span id="cb330-5"><a href="trans_multiomics-and-trans_mst-class.html#cb330-5" tabindex="-1"></a><span class="co"># per-block error rate (which block is more informative?)</span></span>
+<span id="cb330-6"><a href="trans_multiomics-and-trans_mst-class.html#cb330-6" tabindex="-1"></a>t1<span class="sc">$</span>perf_result<span class="sc">$</span>error.rate<span class="sc">$</span>microb</span>
+<span id="cb330-7"><a href="trans_multiomics-and-trans_mst-class.html#cb330-7" tabindex="-1"></a>t1<span class="sc">$</span>perf_result<span class="sc">$</span>error.rate<span class="sc">$</span>metab</span></code></pre></div>
+<p>With our example data (<code>folds = 5, nrepeat = 1, seed = 123</code>) the WeightedVote BER drops from <code>0.533</code> (comp1) to <code>0.400</code> (comp2, centroids.dist) and further to <code>0.333</code> (mahalanobis.dist), while MajorityVote remains high because the majority vote is conservative on a six-class problem.
+BER values are cross-validated estimates, so they change with <code>folds</code>, <code>nrepeat</code> and <code>seed</code>; interpret the trend rather than the exact numbers.
+In practice, <strong>WeightedVote or AveragedPredict</strong> are usually more informative than MajorityVote when the class sizes are balanced.</p>
+<p><code>error.rate</code> is a list with one matrix per block, each giving the error rate of that single block (rows: components, columns: distance metrics).
+It complements the four aggregated strategies above and helps to decide which block carries the classification signal.
+The cross-validation takes about 20 s for <code>folds = 5, nrepeat = 10</code> on 60 samples.</p>
+<p>Always set <code>seed</code> for reproducible cross-validation; the value is forwarded to <code>mixOmics</code> when supported (&gt;= 6.3.2) and otherwise applied via <code>set.seed()</code>.</p>
+</div>
+<div id="feature-selection-stability" class="section level3 hasAnchor" number="9.1.8">
+<h3><span class="header-section-number">9.1.8</span> Feature selection stability<a href="trans_multiomics-and-trans_mst-class.html#feature-selection-stability" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The features selected by a single DIABLO fit are subject to sampling noise.
+<code>get_stability</code> averages the selection frequency across all folds and repeats of the cross-validation performed by <code>eval_performance</code>, returning a tidy <code>data.frame</code> with columns <code>Feature</code>, <code>Block</code>, <code>Comp</code>, and <code>Stability</code> in <code>[0, 1]</code>.
+A stability close to <code>1</code> means the feature is robust across resamples; low stability suggests the feature may be an artefact of a particular data split <span class="citation">(<a href="#ref-Liquet_stability_2012">Liquet et al. 2012</a>)</span>.</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="trans_multiomics-and-trans_mst-class.html#cb331-1" tabindex="-1"></a><span class="co"># eval_performance must be called first with folds/nrepeat &gt; 1 for a meaningful stability</span></span>
+<span id="cb331-2"><a href="trans_multiomics-and-trans_mst-class.html#cb331-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">eval_performance</span>(<span class="at">folds =</span> <span class="dv">5</span>, <span class="at">nrepeat =</span> <span class="dv">10</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb331-3"><a href="trans_multiomics-and-trans_mst-class.html#cb331-3" tabindex="-1"></a>stab <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_stability</span>()</span>
+<span id="cb331-4"><a href="trans_multiomics-and-trans_mst-class.html#cb331-4" tabindex="-1"></a><span class="fu">head</span>(stab, <span class="dv">10</span>)</span>
+<span id="cb331-5"><a href="trans_multiomics-and-trans_mst-class.html#cb331-5" tabindex="-1"></a><span class="co"># robust biomarker candidates on the first component</span></span>
+<span id="cb331-6"><a href="trans_multiomics-and-trans_mst-class.html#cb331-6" tabindex="-1"></a><span class="fu">subset</span>(stab, Comp <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> Stability <span class="sc">&gt;=</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<p>Typical output (truncated):</p>
+<pre><code>                            Feature  Block Comp Stability
+2  7acd7a55f455134030d80f19811abf4c microb    1      1.00
+3  9a39a41375516bcc9c073e73b57a86df microb    1      1.00
+91                     Elaidic acid  metab    1      1.00
+93                 arachidonic acid  metab    1      1.00
+94                       oleic acid  metab    1      1.00
+95                 palmitoleic acid  metab    1      1.00
+97                           ribose  metab    1      1.00
+5  dcebcca13a3e634371704c988df13605 microb    1      0.98
+96                        phosphate  metab    1      0.98
+1  15068cd31c9596bb39a69d9a28ba9bac microb    1      0.96</code></pre>
+<p>The leading integers are the internal row indices of the assembled table and carry no meaning.</p>
+<p>With this example (<code>folds = 5, nrepeat = 10, seed = 123</code>), the subset on <code>Comp == 1 &amp; Stability &gt;= 0.8</code> keeps 15 features on comp1.
+Increase <code>nrepeat</code> (e.g. <code>50</code>) for publication-grade stability; <code>nrepeat = 1</code> only shows whether the feature survives all folds of a single split.</p>
+<p>Note that <code>get_stability</code> needs the selection frequency table that <code>perf</code> stores in <code>perf_result$features$stable</code>, so it requires a sparse model fitted with <code>keepX</code> and evaluated with <code>eval_performance()</code>.</p>
+</div>
+<div id="hyperparameter-tuning-keepx" class="section level3 hasAnchor" number="9.1.9">
+<h3><span class="header-section-number">9.1.9</span> Hyperparameter tuning (keepX)<a href="trans_multiomics-and-trans_mst-class.html#hyperparameter-tuning-keepx" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>mixOmics::tune.block.splsda</code> searches an optimal <code>keepX</code> per block per component via cross-validation.
+The class provides a thin wrapper <code>tune_model</code>.
+When <code>test_keepX</code> is not supplied, an adaptive grid of 5%, 10% and 20% of the number of features per block is used.</p>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="trans_multiomics-and-trans_mst-class.html#cb333-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">tune_model</span>(</span>
+<span id="cb333-2"><a href="trans_multiomics-and-trans_mst-class.html#cb333-2" tabindex="-1"></a>  <span class="at">ncomp       =</span> <span class="dv">2</span>,</span>
+<span id="cb333-3"><a href="trans_multiomics-and-trans_mst-class.html#cb333-3" tabindex="-1"></a>  <span class="at">test_keepX  =</span> <span class="fu">list</span>(<span class="at">microb =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>), <span class="at">metab =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)),</span>
+<span id="cb333-4"><a href="trans_multiomics-and-trans_mst-class.html#cb333-4" tabindex="-1"></a>  <span class="at">folds       =</span> <span class="dv">5</span>,</span>
+<span id="cb333-5"><a href="trans_multiomics-and-trans_mst-class.html#cb333-5" tabindex="-1"></a>  <span class="at">nrepeat     =</span> <span class="dv">1</span>,</span>
+<span id="cb333-6"><a href="trans_multiomics-and-trans_mst-class.html#cb333-6" tabindex="-1"></a>  <span class="at">seed        =</span> <span class="dv">123</span></span>
+<span id="cb333-7"><a href="trans_multiomics-and-trans_mst-class.html#cb333-7" tabindex="-1"></a>)</span>
+<span id="cb333-8"><a href="trans_multiomics-and-trans_mst-class.html#cb333-8" tabindex="-1"></a>t1<span class="sc">$</span>best_keepX</span></code></pre></div>
+<pre><code>$microb
+[1] 20 20
+
+$metab
+[1] 20  5</code></pre>
+<p>The optimal <code>keepX</code> is stored in <code>t1$best_keepX</code> and can be reused to refit the model.
+As a refit replaces every panel computed from the object, the refitted model is built in a separate copy here, so that the results in the following sections remain reproducible with the initial <code>keepX</code> of the supervised integration section.</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="trans_multiomics-and-trans_mst-class.html#cb335-1" tabindex="-1"></a><span class="co"># refit with the tuned keepX in a copy of the object</span></span>
+<span id="cb335-2"><a href="trans_multiomics-and-trans_mst-class.html#cb335-2" tabindex="-1"></a>t1_tuned <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">clone</span>(<span class="at">deep =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb335-3"><a href="trans_multiomics-and-trans_mst-class.html#cb335-3" tabindex="-1"></a>t1_tuned<span class="sc">$</span><span class="fu">run_diablo</span>(<span class="at">ncomp =</span> <span class="dv">2</span>, <span class="at">keepX =</span> t1<span class="sc">$</span>best_keepX)</span>
+<span id="cb335-4"><a href="trans_multiomics-and-trans_mst-class.html#cb335-4" tabindex="-1"></a>t1_tuned<span class="sc">$</span><span class="fu">get_features</span>(<span class="at">comp =</span> <span class="dv">1</span>)   <span class="co"># 40 features on comp1 (20 + 20) instead of 25</span></span></code></pre></div>
+<p>Run the same refit directly on <code>t1</code> (i.e. without the copy) if you want the tuned model to become the working model; the feature panels and the correlation matrix shown below will then change accordingly.</p>
+<p>Notes and pitfalls:</p>
+<ul>
+<li><code>mixOmics</code> does not provide a tune function for the unsupervised <code>block.spls</code>, so <code>method</code> must be <code>"block.splsda"</code> (which requires <code>Y</code>).</li>
+<li><code>folds</code> must not exceed the smallest class size; with ten samples per group <code>folds &lt;= 10</code>.</li>
+<li>The grid search cost grows multiplicatively with the number of candidate values per block.
+A 3 x 3 grid with <code>folds = 5</code>, <code>nrepeat = 1</code> and 60 samples takes ~10 s on a laptop; increase <code>nrepeat</code> only when you really need it.</li>
+</ul>
+</div>
+<div id="feature-extraction-and-cross-block-correlation" class="section level3 hasAnchor" number="9.1.10">
+<h3><span class="header-section-number">9.1.10</span> Feature extraction and cross-block correlation<a href="trans_multiomics-and-trans_mst-class.html#feature-extraction-and-cross-block-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>After a DIABLO fit, <code>get_features</code> extracts the selected variables on each component and returns a tidy <code>data.frame</code> sorted by the absolute loading.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="trans_multiomics-and-trans_mst-class.html#cb336-1" tabindex="-1"></a>features <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_features</span>(<span class="at">comp =</span> <span class="dv">1</span>)</span>
+<span id="cb336-2"><a href="trans_multiomics-and-trans_mst-class.html#cb336-2" tabindex="-1"></a><span class="fu">head</span>(features)</span>
+<span id="cb336-3"><a href="trans_multiomics-and-trans_mst-class.html#cb336-3" tabindex="-1"></a><span class="fu">table</span>(features<span class="sc">$</span>Block)</span>
+<span id="cb336-4"><a href="trans_multiomics-and-trans_mst-class.html#cb336-4" tabindex="-1"></a><span class="co"># comp = 2</span></span>
+<span id="cb336-5"><a href="trans_multiomics-and-trans_mst-class.html#cb336-5" tabindex="-1"></a>features2 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_features</span>(<span class="at">comp =</span> <span class="dv">2</span>)</span>
+<span id="cb336-6"><a href="trans_multiomics-and-trans_mst-class.html#cb336-6" tabindex="-1"></a><span class="fu">head</span>(features2, <span class="dv">6</span>)</span></code></pre></div>
+<p>Typical output:</p>
+<pre><code>                           Feature  Block Comp Loading_value
+11                palmitoleic acid  metab    1     0.6524757
+1  9a39a41375516bcc9c073e73b57a86df microb    1    -0.6001810
+2  dcebcca13a3e634371704c988df13605 microb    1    -0.4671889
+...</code></pre>
+<p>Again the leading integers are the internal row indices of the table.</p>
+<p><code>get_correlation</code> returns the cross-block similarity matrix of the selected features on a component, thresholded by an absolute cutoff.
+The result is stored in <code>t1$res_correlation</code> and can be exported for downstream network or pathway analyses.</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="trans_multiomics-and-trans_mst-class.html#cb338-1" tabindex="-1"></a>cm <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_correlation</span>(<span class="at">comp =</span> <span class="dv">1</span>, <span class="at">cutoff =</span> <span class="fl">0.7</span>)</span>
+<span id="cb338-2"><a href="trans_multiomics-and-trans_mst-class.html#cb338-2" tabindex="-1"></a><span class="fu">dim</span>(cm)   <span class="co"># 10 rows x 15 cols in this example (microb x metab)</span></span>
+<span id="cb338-3"><a href="trans_multiomics-and-trans_mst-class.html#cb338-3" tabindex="-1"></a><span class="fu">range</span>(cm)</span></code></pre></div>
+<p>Note: in <code>mixOmics</code> &gt;= 6.x the returned similarity matrix has <code>colnames</code> but <code>rownames</code> may be <code>NULL</code>; the rows correspond to the selected features of the first block and the order follows <code>mixOmics::selectVar</code>.
+The column names carry the block name as a suffix (e.g. <code>palmitoleic acid_metab</code>), because <code>mixOmics::network</code> labels the variables by block.
+Restore the names manually if you need them:</p>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="trans_multiomics-and-trans_mst-class.html#cb339-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">rownames</span>(cm))) {</span>
+<span id="cb339-2"><a href="trans_multiomics-and-trans_mst-class.html#cb339-2" tabindex="-1"></a>  sel <span class="ot">&lt;-</span> mixOmics<span class="sc">::</span><span class="fu">selectVar</span>(t1<span class="sc">$</span>model, <span class="at">comp =</span> <span class="dv">1</span>, <span class="at">block =</span> <span class="st">&quot;microb&quot;</span>)</span>
+<span id="cb339-3"><a href="trans_multiomics-and-trans_mst-class.html#cb339-3" tabindex="-1"></a>  <span class="fu">rownames</span>(cm) <span class="ot">&lt;-</span> sel<span class="sc">$</span>microb<span class="sc">$</span>name</span>
+<span id="cb339-4"><a href="trans_multiomics-and-trans_mst-class.html#cb339-4" tabindex="-1"></a>}</span>
+<span id="cb339-5"><a href="trans_multiomics-and-trans_mst-class.html#cb339-5" tabindex="-1"></a><span class="co"># remove the &quot;_&lt;block&gt;&quot; suffix from the column names</span></span>
+<span id="cb339-6"><a href="trans_multiomics-and-trans_mst-class.html#cb339-6" tabindex="-1"></a><span class="fu">colnames</span>(cm) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;_metab$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(cm))</span></code></pre></div>
+<p><code>mixOmics::network</code> opens a graphics device internally even though no plot is requested, so a stray <code>Rplots.pdf</code> may appear in the working directory; it can simply be deleted.</p>
+</div>
+<div id="visualizations" class="section level3 hasAnchor" number="9.1.11">
+<h3><span class="header-section-number">9.1.11</span> Visualizations<a href="trans_multiomics-and-trans_mst-class.html#visualizations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="sample-projection" class="section level4 hasAnchor" number="9.1.11.1">
+<h4><span class="header-section-number">9.1.11.1</span> Sample projection<a href="trans_multiomics-and-trans_mst-class.html#sample-projection" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>plot_samples</code> calls <code>mixOmics::plotIndiv</code> with <code>style = "ggplot2"</code> and returns a <code>ggplot</code> object that can be customised with <code>+ theme_xx()</code>.</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="trans_multiomics-and-trans_mst-class.html#cb340-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_samples</span>(<span class="at">comp =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">blocks =</span> <span class="st">&quot;average&quot;</span>, <span class="at">ellipse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb340-2"><a href="trans_multiomics-and-trans_mst-class.html#cb340-2" tabindex="-1"></a>p1</span>
+<span id="cb340-3"><a href="trans_multiomics-and-trans_mst-class.html#cb340-3" tabindex="-1"></a>p1b <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_samples</span>(<span class="at">comp =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">blocks =</span> <span class="st">&quot;microb&quot;</span>, <span class="at">ellipse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb340-4"><a href="trans_multiomics-and-trans_mst-class.html#cb340-4" tabindex="-1"></a>p1b</span></code></pre></div>
+<p><code>blocks = "average"</code> plots the consensus components (weighted average across all blocks), which is the standard view to check whether the blocks separate the groups jointly.
+Pick a single block name/index to inspect the within-block projection.</p>
+<p><img src="Images/tmo_plot_samples.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/tmo_plot_samples_microb.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="variable-loadings" class="section level4 hasAnchor" number="9.1.11.2">
+<h4><span class="header-section-number">9.1.11.2</span> Variable loadings<a href="trans_multiomics-and-trans_mst-class.html#variable-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>plot_loadings</code> calls <code>mixOmics::plotLoadings</code> and draws a bar plot of the loadings on the current graphics device.
+The function returns the loading values as a <code>list</code> (one element per block, each a <code>data.frame</code> with the columns <code>importance</code> and <code>names</code>), <strong>not</strong> a <code>ggplot</code> object, so use it directly without <code>ggsave()</code>:</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="trans_multiomics-and-trans_mst-class.html#cb341-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_loadings</span>(<span class="at">comp =</span> <span class="dv">1</span>, <span class="at">block =</span> <span class="st">&quot;microb&quot;</span>)</span>
+<span id="cb341-2"><a href="trans_multiomics-and-trans_mst-class.html#cb341-2" tabindex="-1"></a>loadings <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_loadings</span>(<span class="at">comp =</span> <span class="dv">1</span>, <span class="at">block =</span> <span class="st">&quot;metab&quot;</span>)</span>
+<span id="cb341-3"><a href="trans_multiomics-and-trans_mst-class.html#cb341-3" tabindex="-1"></a><span class="fu">head</span>(loadings<span class="sc">$</span>metab)  <span class="co"># the loading values</span></span></code></pre></div>
+<p>The <code>block</code> argument must always be given for the multi-block models; the default <code>NULL</code> is not resolved to the first block and raises an error.</p>
+<p><img src="Images/tmo_plot_loadings.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="diablo-diagnostic-plot" class="section level4 hasAnchor" number="9.1.11.3">
+<h4><span class="header-section-number">9.1.11.3</span> DIABLO diagnostic plot<a href="trans_multiomics-and-trans_mst-class.html#diablo-diagnostic-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>plot_diablo</code> shows the correlation between the latent components of each block on the specified <code>ncomp</code>.
+The lower panel gives the Pearson correlation coefficient and the upper panel the corresponding scatter plot, so the plot is used to check whether DIABLO succeeded in maximising the correlation between the components of the different blocks <span class="citation">(<a href="#ref-Singh_DIABLO_2019">Singh et al. 2019</a>)</span>.
+Note that the design weight is a link weight and not the expected correlation value: the paired components of the two blocks are correlated by <code>0.75</code> and <code>0.61</code> here with <code>weight = 0.1</code>, i.e. well above the design value.
+Raising the weight to <code>1</code> enforces the link more strongly and usually increases the correlation of the paired components.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="trans_multiomics-and-trans_mst-class.html#cb342-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_diablo</span>(<span class="at">ncomp =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Images/tmo_plot_diablo.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="relevance-network-and-circos-plot" class="section level4 hasAnchor" number="9.1.11.4">
+<h4><span class="header-section-number">9.1.11.4</span> Relevance network and circos plot<a href="trans_multiomics-and-trans_mst-class.html#relevance-network-and-circos-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>plot_cor_network</code> displays the cross-block correlation network of the selected features, thresholded by <code>cutoff</code>.
+<code>plot_circos</code> shows the same information in a circos layout.
+Both rely on the underlying <code>mixOmics::network</code> and <code>mixOmics::circosPlot</code>; pass additional arguments through <code>...</code> when needed.</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="trans_multiomics-and-trans_mst-class.html#cb343-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_cor_network</span>(<span class="at">comp =</span> <span class="dv">1</span>, <span class="at">cutoff =</span> <span class="fl">0.7</span>)</span>
+<span id="cb343-2"><a href="trans_multiomics-and-trans_mst-class.html#cb343-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_circos</span>(<span class="at">comp =</span> <span class="dv">1</span>, <span class="at">cutoff =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<p>The default <code>cutoff = 0.7</code> requires that at least some of the selected features are correlated above <code>0.7</code>; <code>mixOmics</code> stops when the cutoff exceeds the largest value of the similarity matrix.
+Check <code>range(t1$get_correlation(comp = 1))</code> (here <code>-0.85</code> to <code>0.78</code>) and lower the cutoff when the panel is only weakly correlated.</p>
+<p><img src="Images/tmo_plot_cor_network.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+<p><img src="Images/tmo_plot_circos.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="clustered-image-map" class="section level4 hasAnchor" number="9.1.11.5">
+<h4><span class="header-section-number">9.1.11.5</span> Clustered image map<a href="trans_multiomics-and-trans_mst-class.html#clustered-image-map" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>plot_heatmap</code> calls <code>mixOmics::cimDiablo</code> to draw a clustered image map (CIM) of the selected features across samples.</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="trans_multiomics-and-trans_mst-class.html#cb344-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_heatmap</span>(<span class="at">comp =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Images/tmo_plot_heatmap.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="per-class-auc" class="section level4 hasAnchor" number="9.1.11.6">
+<h4><span class="header-section-number">9.1.11.6</span> Per-class AUC<a href="trans_multiomics-and-trans_mst-class.html#per-class-auc" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>cal_auroc</code> runs <code>mixOmics::auroc</code> for each block and each component, returning per-class AUCs and a <code>ggplot</code> ROC plot.
+The function detects the correct <code>roc.comp</code> vs <code>comp</code> argument name across <code>mixOmics</code> versions, so it is safe to use with both 6.3.x and 6.4.x.</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="trans_multiomics-and-trans_mst-class.html#cb345-1" tabindex="-1"></a>au <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">cal_auroc</span>(<span class="at">comp =</span> <span class="dv">1</span>)</span>
+<span id="cb345-2"><a href="trans_multiomics-and-trans_mst-class.html#cb345-2" tabindex="-1"></a>au<span class="sc">$</span>metab  <span class="co"># AUC for the metabolome block on each class (vs all others)</span></span></code></pre></div>
+<pre><code>$comp1
+                      AUC   p-value
+CC-CK vs Other(s)   0.712 3.550e-02
+CC-NPK vs Other(s)  0.644 1.532e-01
+CC-NPKS vs Other(s) 0.624 2.188e-01
+RC-CK vs Other(s)   0.932 1.832e-05   # RC-CK is best separated by metabolites
+RC-NPK vs Other(s)  0.706 4.105e-02
+RC-NPKS vs Other(s) 0.670 9.179e-02</code></pre>
+<p>The AUC tables of all blocks are the list elements named after the blocks (<code>au$microb</code>, <code>au$metab</code>), one table per component.
+The ROC plot is stored separately as <code>au$graph.&lt;block&gt;</code> (a list with one <code>ggplot</code> per component).
+<code>mixOmics::auroc</code> only builds the plot of the first block by default, so use <code>au$graph.microb</code>; pass <code>roc.block = 2</code> to <code>cal_auroc</code> to get the plot of the second block instead.</p>
+</div>
+</div>
+<div id="unsupervised-alternatives" class="section level3 hasAnchor" number="9.1.12">
+<h3><span class="header-section-number">9.1.12</span> Unsupervised alternatives<a href="trans_multiomics-and-trans_mst-class.html#unsupervised-alternatives" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When no grouping is available, or when the goal is to explore the covariance structure between two data sets rather than to classify samples, use the unsupervised <code>block.spls</code> or <code>spls</code> engines.</p>
+<p><code>run_spls</code> performs multi-block sparse PLS.
+Because <code>mixOmics::block.spls</code> requires a numeric response matrix, one block must be designated as the response via <code>Y_block</code> (passed internally as <code>indY</code>).
+In that case <code>keepX</code> must be supplied for <strong>all</strong> blocks (including the response block) because <code>mixOmics</code> ignores <code>keepY</code> when <code>indY</code> is used.</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="trans_multiomics-and-trans_mst-class.html#cb347-1" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> trans_multiomics<span class="sc">$</span><span class="fu">new</span>(</span>
+<span id="cb347-2"><a href="trans_multiomics-and-trans_mst-class.html#cb347-2" tabindex="-1"></a>  <span class="at">microtables =</span> <span class="fu">list</span>(<span class="at">microb =</span> soil_microb, <span class="at">metab =</span> soil_metab),</span>
+<span id="cb347-3"><a href="trans_multiomics-and-trans_mst-class.html#cb347-3" tabindex="-1"></a>  <span class="at">group       =</span> <span class="cn">NULL</span>,</span>
+<span id="cb347-4"><a href="trans_multiomics-and-trans_mst-class.html#cb347-4" tabindex="-1"></a>  <span class="at">group_col   =</span> <span class="cn">NULL</span></span>
+<span id="cb347-5"><a href="trans_multiomics-and-trans_mst-class.html#cb347-5" tabindex="-1"></a>)</span>
+<span id="cb347-6"><a href="trans_multiomics-and-trans_mst-class.html#cb347-6" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">preprocess_data</span>(<span class="at">method =</span> <span class="st">&quot;clr&quot;</span>, <span class="at">filter_freq =</span> <span class="fl">0.2</span>)</span>
+<span id="cb347-7"><a href="trans_multiomics-and-trans_mst-class.html#cb347-7" tabindex="-1"></a>t2<span class="sc">$</span><span class="fu">run_spls</span>(</span>
+<span id="cb347-8"><a href="trans_multiomics-and-trans_mst-class.html#cb347-8" tabindex="-1"></a>  <span class="at">ncomp   =</span> <span class="dv">2</span>,</span>
+<span id="cb347-9"><a href="trans_multiomics-and-trans_mst-class.html#cb347-9" tabindex="-1"></a>  <span class="at">Y_block =</span> <span class="st">&quot;metab&quot;</span>,</span>
+<span id="cb347-10"><a href="trans_multiomics-and-trans_mst-class.html#cb347-10" tabindex="-1"></a>  <span class="at">mode    =</span> <span class="st">&quot;regression&quot;</span>,</span>
+<span id="cb347-11"><a href="trans_multiomics-and-trans_mst-class.html#cb347-11" tabindex="-1"></a>  <span class="at">keepX   =</span> <span class="fu">list</span>(<span class="at">microb =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>), <span class="at">metab =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb347-12"><a href="trans_multiomics-and-trans_mst-class.html#cb347-12" tabindex="-1"></a>)</span>
+<span id="cb347-13"><a href="trans_multiomics-and-trans_mst-class.html#cb347-13" tabindex="-1"></a>p <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_samples</span>(<span class="at">comp =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  <span class="co"># blocks = &quot;average&quot; may fall back to a single block on block.spls</span></span>
+<span id="cb347-14"><a href="trans_multiomics-and-trans_mst-class.html#cb347-14" tabindex="-1"></a><span class="fu">print</span>(p)</span></code></pre></div>
+<p><img src="Images/tmo_plot_samples_spls.png" alt="" width="650px" style="display: block; margin: auto;" /></p>
+<p>For a strictly two-block association, use <code>run_spls_single</code> which wraps <code>mixOmics::spls</code>:</p>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="trans_multiomics-and-trans_mst-class.html#cb348-1" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> trans_multiomics<span class="sc">$</span><span class="fu">new</span>(</span>
+<span id="cb348-2"><a href="trans_multiomics-and-trans_mst-class.html#cb348-2" tabindex="-1"></a>  <span class="at">microtables =</span> <span class="fu">list</span>(<span class="at">microb =</span> soil_microb, <span class="at">metab =</span> soil_metab),</span>
+<span id="cb348-3"><a href="trans_multiomics-and-trans_mst-class.html#cb348-3" tabindex="-1"></a>  <span class="at">group_col   =</span> <span class="st">&quot;Group&quot;</span></span>
+<span id="cb348-4"><a href="trans_multiomics-and-trans_mst-class.html#cb348-4" tabindex="-1"></a>)</span>
+<span id="cb348-5"><a href="trans_multiomics-and-trans_mst-class.html#cb348-5" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">preprocess_data</span>(<span class="at">method =</span> <span class="st">&quot;clr&quot;</span>, <span class="at">filter_freq =</span> <span class="fl">0.2</span>)</span>
+<span id="cb348-6"><a href="trans_multiomics-and-trans_mst-class.html#cb348-6" tabindex="-1"></a>t3<span class="sc">$</span><span class="fu">run_spls_single</span>(</span>
+<span id="cb348-7"><a href="trans_multiomics-and-trans_mst-class.html#cb348-7" tabindex="-1"></a>  <span class="at">X_block =</span> <span class="st">&quot;microb&quot;</span>, <span class="at">Y_block =</span> <span class="st">&quot;metab&quot;</span>,</span>
+<span id="cb348-8"><a href="trans_multiomics-and-trans_mst-class.html#cb348-8" tabindex="-1"></a>  <span class="at">ncomp   =</span> <span class="dv">2</span>,</span>
+<span id="cb348-9"><a href="trans_multiomics-and-trans_mst-class.html#cb348-9" tabindex="-1"></a>  <span class="at">keepX   =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>), <span class="at">keepY =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb348-10"><a href="trans_multiomics-and-trans_mst-class.html#cb348-10" tabindex="-1"></a>)</span></code></pre></div>
+<p>On these unsupervised models, <code>get_features</code>, <code>get_correlation</code>, <code>plot_samples</code> and <code>plot_cor_network</code> work as described above (on the two-block <code>spls</code> model, <code>plot_samples</code> warns that <code>blocks</code> is ignored because the model is not multiblock).
+<code>plot_loadings</code> also works: on a <code>block.spls</code> object use the original block names (<code>microb</code>, <code>metab</code>), but on the two-block <code>spls</code> model <code>mixOmics</code> internally renames the blocks to <code>X</code> and <code>Y</code>, so you must pass <code>block = "X"</code> or <code>block = "Y"</code>.
+However, <code>plot_circos</code>, <code>plot_heatmap</code> and <code>plot_diablo</code> only support the supervised <code>block.splsda</code> model: their underlying <code>mixOmics</code> functions (<code>circosPlot</code>, <code>cimDiablo</code>, <code>plotDiablo</code>) expect a supervised object and fail on unsupervised models.</p>
+</div>
+<div id="trans-kingdom-network-tkna" class="section level3 hasAnchor" number="9.1.13">
+<h3><span class="header-section-number">9.1.13</span> Trans-kingdom network (TkNA)<a href="trans_multiomics-and-trans_mst-class.html#trans-kingdom-network-tkna" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Beyond block-level integration, <code>trans_multiomics</code> can build a <strong>bipartite</strong> cross-omics association network following the Transkingdom Network Analysis (TkNA) framework.
+The pipeline has three steps <span class="citation">(<a href="#ref-Newman_TkNA_2024">Newman et al. 2024</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Differential feature filtering</strong> within each block (optional).
+Features whose adjusted p-value is above <code>diff_p</code> (Kruskal-Wallis, ANOVA or Wilcoxon, depending on <code>diff_test</code>) are dropped.
+This step removes uninformative background noise before computing associations.</li>
+<li><strong>Cross-block correlation</strong> between every remaining feature of one block and every remaining feature of the other block(s).
+Spearman is recommended for CLR-transformed compositional data.
+Pearson is also available.
+A <code>covariates</code> <code>data.frame</code> (with rownames matching the sample names) is regressed out from every feature before the correlation, mirroring the MaAsLin2 confounder handling <span class="citation">(<a href="#ref-Mallick_MaAsLin2_2021">Mallick et al. 2021</a>)</span>.</li>
+<li><strong>Bipartite Betweenness Centrality (BiBC)</strong> quantifies how often a node lies on the shortest path between two nodes of different blocks.
+Features with high BiBC are flagged as <strong>cross-omics hubs</strong> (top <code>hub_quantile</code> among nodes with BiBC &gt; 0).</li>
+</ol>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="trans_multiomics-and-trans_mst-class.html#cb349-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_transkingdom</span>(</span>
+<span id="cb349-2"><a href="trans_multiomics-and-trans_mst-class.html#cb349-2" tabindex="-1"></a>  <span class="at">corr_method =</span> <span class="st">&quot;spearman&quot;</span>,</span>
+<span id="cb349-3"><a href="trans_multiomics-and-trans_mst-class.html#cb349-3" tabindex="-1"></a>  <span class="at">corr_thres  =</span> <span class="fl">0.6</span>,</span>
+<span id="cb349-4"><a href="trans_multiomics-and-trans_mst-class.html#cb349-4" tabindex="-1"></a>  <span class="at">p_thres     =</span> <span class="fl">0.05</span>,</span>
+<span id="cb349-5"><a href="trans_multiomics-and-trans_mst-class.html#cb349-5" tabindex="-1"></a>  <span class="at">p_adjust    =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb349-6"><a href="trans_multiomics-and-trans_mst-class.html#cb349-6" tabindex="-1"></a>  <span class="at">diff_test   =</span> <span class="st">&quot;kruskal&quot;</span>,</span>
+<span id="cb349-7"><a href="trans_multiomics-and-trans_mst-class.html#cb349-7" tabindex="-1"></a>  <span class="at">diff_p      =</span> <span class="fl">0.05</span></span>
+<span id="cb349-8"><a href="trans_multiomics-and-trans_mst-class.html#cb349-8" tabindex="-1"></a>)</span>
+<span id="cb349-9"><a href="trans_multiomics-and-trans_mst-class.html#cb349-9" tabindex="-1"></a><span class="co"># node table: Feature, Block, Diff_p, BiBC, Hub</span></span>
+<span id="cb349-10"><a href="trans_multiomics-and-trans_mst-class.html#cb349-10" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_transkingdom<span class="sc">$</span>nodes)</span>
+<span id="cb349-11"><a href="trans_multiomics-and-trans_mst-class.html#cb349-11" tabindex="-1"></a><span class="co"># edge table: From, To, Corr, P, P_adj, weight</span></span>
+<span id="cb349-12"><a href="trans_multiomics-and-trans_mst-class.html#cb349-12" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_transkingdom<span class="sc">$</span>edges)</span>
+<span id="cb349-13"><a href="trans_multiomics-and-trans_mst-class.html#cb349-13" tabindex="-1"></a><span class="co"># cross-omics hub candidates</span></span>
+<span id="cb349-14"><a href="trans_multiomics-and-trans_mst-class.html#cb349-14" tabindex="-1"></a><span class="fu">subset</span>(t1<span class="sc">$</span>res_transkingdom<span class="sc">$</span>nodes, Hub)</span></code></pre></div>
+<p>Typical output (truncated):</p>
+<pre><code>Differential filtering (kruskal, BH-adjusted p &lt;= 0.05) retained 798/1385 features ...
+Cross-block correlation (spearman, BH-adjusted p &lt;= 0.05, |corr| &gt;= 0.6) retained 13/2385 candidate edges ...
+Trans-kingdom network built: 798 nodes, 13 edges, 2 hub(s) ...</code></pre>
+<pre><code>             Feature Block      Diff_p BiBC  Hub
+796 palmitoleic acid  metab 0.009163057    6 TRUE
+797 arachidonic acid   metab 0.026647565    4 TRUE</code></pre>
+<p>The <code>weight</code> column of the edge table is the distance-like weight <code>1 - |Corr|</code> used internally for the shortest paths of the BiBC computation; it is not the association strength (use <code>Corr</code> for that).</p>
+<p><code>plot_transkingdom</code> draws the bipartite network with <code>ggplot2</code> (Fruchterman-Reingold layout weighted by <code>|correlation|</code>, or a circle layout):</p>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="trans_multiomics-and-trans_mst-class.html#cb352-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_transkingdom</span>(<span class="at">label =</span> <span class="st">&quot;hub&quot;</span>)         <span class="co"># only label hubs</span></span>
+<span id="cb352-2"><a href="trans_multiomics-and-trans_mst-class.html#cb352-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_transkingdom</span>(<span class="at">label =</span> <span class="st">&quot;all&quot;</span>, <span class="at">layout =</span> <span class="st">&quot;circle&quot;</span>)</span></code></pre></div>
+<p><img src="Images/tmo_transkingdom.png" alt="" width="700px" style="display: block; margin: auto;" /></p>
+<p>Regressing out confounders (e.g. sequencing batch, host age) reduces spurious cross-layer edges.
+The <code>covariates</code> argument must be a <code>data.frame</code> whose rownames match the sample names:</p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="trans_multiomics-and-trans_mst-class.html#cb353-1" tabindex="-1"></a>cov_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb353-2"><a href="trans_multiomics-and-trans_mst-class.html#cb353-2" tabindex="-1"></a>  <span class="at">batch =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;B1&quot;</span>, <span class="st">&quot;B2&quot;</span>), <span class="at">length.out =</span> <span class="fu">nrow</span>(t1<span class="sc">$</span>data_list<span class="sc">$</span>microb))),</span>
+<span id="cb353-3"><a href="trans_multiomics-and-trans_mst-class.html#cb353-3" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">rownames</span>(t1<span class="sc">$</span>data_list<span class="sc">$</span>microb)</span>
+<span id="cb353-4"><a href="trans_multiomics-and-trans_mst-class.html#cb353-4" tabindex="-1"></a>)</span>
+<span id="cb353-5"><a href="trans_multiomics-and-trans_mst-class.html#cb353-5" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_transkingdom</span>(<span class="at">covariates =</span> cov_df, <span class="at">corr_thres =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p>Caveats:</p>
+<ul>
+<li>The network is a <strong>data-driven association network</strong>, not a causal network.
+Prioritised hubs/edges should be validated with independent cohorts or perturbation experiments.</li>
+<li>If <code>diff_test</code> removes <strong>all</strong> features from a block, the block is automatically retained with a warning.
+Lower <code>diff_p</code> or change the test to keep enough candidates.</li>
+<li>If no edge passes the <code>corr_thres</code> / <code>p_thres</code> thresholds, a warning is issued and an empty graph is returned.</li>
+<li><code>diff_test = "wilcox"</code> requires exactly two groups in <code>Y</code>; use <code>"kruskal"</code> or <code>"aov"</code> for multi-group data.</li>
+</ul>
+</div>
+<div id="bridge-to-the-trans_network-class" class="section level3 hasAnchor" number="9.1.14">
+<h3><span class="header-section-number">9.1.14</span> Bridge to the trans_network class<a href="trans_multiomics-and-trans_mst-class.html#bridge-to-the-trans_network-class" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>convert_transkingdom</code> converts the trans-kingdom network into a <code>trans_network</code> object, so that the whole downstream network toolkit of the trans_network class becomes available: module detection (<code>cal_module</code>), node/edge property tables (<code>get_node_table</code> / <code>get_edge_table</code>), network topological attributes (<code>cal_network_attr</code>), sub-network extraction (<code>subset_network</code>), eigengene analysis (<code>cal_eigen</code>), random network comparison (<code>random_network</code>) and network visualization (<code>plot_network</code>).</p>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="trans_multiomics-and-trans_mst-class.html#cb354-1" tabindex="-1"></a>net1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">convert_transkingdom</span>()</span>
+<span id="cb354-2"><a href="trans_multiomics-and-trans_mst-class.html#cb354-2" tabindex="-1"></a>net1<span class="sc">$</span><span class="fu">cal_module</span>()</span>
+<span id="cb354-3"><a href="trans_multiomics-and-trans_mst-class.html#cb354-3" tabindex="-1"></a>net1<span class="sc">$</span><span class="fu">get_node_table</span>(<span class="at">node_roles =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb354-4"><a href="trans_multiomics-and-trans_mst-class.html#cb354-4" tabindex="-1"></a><span class="fu">head</span>(net1<span class="sc">$</span>res_node_table)</span></code></pre></div>
+<p>The conversion follows the conventions of the correlation networks created by <code>trans_network$cal_network</code>: the edge weight is re-defined as the absolute correlation and the edge label as the correlation sign (“+”/“-”), while the node attributes <code>Block</code>, <code>Diff_p</code>, <code>BiBC</code> and <code>Hub</code> are kept, so they appear in the node table together with the usual network attributes (degree, betweenness, module, z, p, …).
+The original (non-transformed) abundances of the network features are taken from <code>dataset_list</code> to fill <code>data_abund</code>, <code>data_relabund</code> and <code>sample_table</code>, and the <code>tax_table</code> slots of all blocks are merged, which is convenient for a microbe-metabolite network.
+The returned object can then be plotted with the trans_network visualizations, for example:</p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="trans_multiomics-and-trans_mst-class.html#cb355-1" tabindex="-1"></a>net1<span class="sc">$</span><span class="fu">cal_network_attr</span>()</span>
+<span id="cb355-2"><a href="trans_multiomics-and-trans_mst-class.html#cb355-2" tabindex="-1"></a>net1<span class="sc">$</span>res_network_attr</span>
+<span id="cb355-3"><a href="trans_multiomics-and-trans_mst-class.html#cb355-3" tabindex="-1"></a>net1<span class="sc">$</span><span class="fu">plot_network</span>(<span class="at">method =</span> <span class="st">&quot;ggraph&quot;</span>, <span class="at">node_color =</span> <span class="st">&quot;module&quot;</span>)</span></code></pre></div>
+<p>Note that the taxonomy-dependent functions of <code>trans_network</code>, e.g. <code>cal_sum_links</code> and <code>plot_sum_links</code>, need a taxonomic column shared by all the involved blocks; for a bipartite cross-omics network (e.g. microbe vs metabolite) such a column usually does not exist, so those functions are not applicable unless the blocks use the same feature annotation.
+Feature names must be unique across the blocks; duplicated names are reported with an error and should be renamed before the conversion.</p>
+</div>
+<div id="mediation-analysis-multimedia-bridge" class="section level3 hasAnchor" number="9.1.15">
+<h3><span class="header-section-number">9.1.15</span> Mediation analysis (multimedia bridge)<a href="trans_multiomics-and-trans_mst-class.html#mediation-analysis-multimedia-bridge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>High-dimensional mediation analysis asks whether the effect of an <strong>exposure</strong> on an <strong>outcome</strong> is transmitted through a set of <strong>mediators</strong>.
+The <code>multimedia</code> package implements a sparse, high-dimensional mediation workflow <span class="citation">(<a href="#ref-Jiang_multimedia_2024">Jiang et al. 2024</a>)</span> that fits naturally on top of <code>trans_multiomics</code>.
+A typical microbiome question is “do specific metabolites mediate the effect of a microbial community on a host phenotype?”.</p>
+<p>The <code>run_mediation</code> method:</p>
+<ul>
+<li>takes the exposure, mediator and outcome as either <code>microtable</code> blocks (named in <code>data_list_names</code>) or low-dimensional named vectors/factors,</li>
+<li>reuses the CLR-transformed matrices from <code>t1$data_list</code>,</li>
+<li>optionally restricts the analysis to features previously selected by <code>get_features</code> via <code>features</code>,</li>
+<li>caps the number of features per block with <code>max_features</code> to keep the regression tractable,</li>
+<li>supports three model engines: <code>"glmnet"</code> (default, recommended for high-dimensional blocks), <code>"lm"</code> (low-dimensional exposure only) and <code>"rf"</code>.</li>
+</ul>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="trans_multiomics-and-trans_mst-class.html#cb356-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;multimedia&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb356-2"><a href="trans_multiomics-and-trans_mst-class.html#cb356-2" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;multimedia&quot;</span>)</span>
+<span id="cb356-3"><a href="trans_multiomics-and-trans_mst-class.html#cb356-3" tabindex="-1"></a>}</span>
+<span id="cb356-4"><a href="trans_multiomics-and-trans_mst-class.html#cb356-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb356-5"><a href="trans_multiomics-and-trans_mst-class.html#cb356-5" tabindex="-1"></a><span class="co"># simulate a continuous phenotype (replace with your real phenotype vector)</span></span>
+<span id="cb356-6"><a href="trans_multiomics-and-trans_mst-class.html#cb356-6" tabindex="-1"></a>pheno <span class="ot">&lt;-</span> t1<span class="sc">$</span>data_list<span class="sc">$</span>metab[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(t1<span class="sc">$</span>data_list<span class="sc">$</span>metab), <span class="at">sd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb356-7"><a href="trans_multiomics-and-trans_mst-class.html#cb356-7" tabindex="-1"></a><span class="fu">names</span>(pheno) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(t1<span class="sc">$</span>data_list<span class="sc">$</span>metab)</span>
+<span id="cb356-8"><a href="trans_multiomics-and-trans_mst-class.html#cb356-8" tabindex="-1"></a></span>
+<span id="cb356-9"><a href="trans_multiomics-and-trans_mst-class.html#cb356-9" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">run_mediation</span>(</span>
+<span id="cb356-10"><a href="trans_multiomics-and-trans_mst-class.html#cb356-10" tabindex="-1"></a>  <span class="at">exposure     =</span> <span class="st">&quot;microb&quot;</span>,        <span class="co"># microbial block (high-dimensional)</span></span>
+<span id="cb356-11"><a href="trans_multiomics-and-trans_mst-class.html#cb356-11" tabindex="-1"></a>  <span class="at">mediator     =</span> <span class="st">&quot;metab&quot;</span>,         <span class="co"># metabolite block</span></span>
+<span id="cb356-12"><a href="trans_multiomics-and-trans_mst-class.html#cb356-12" tabindex="-1"></a>  <span class="at">outcome      =</span> pheno,           <span class="co"># named vector matching the samples</span></span>
+<span id="cb356-13"><a href="trans_multiomics-and-trans_mst-class.html#cb356-13" tabindex="-1"></a>  <span class="at">model        =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb356-14"><a href="trans_multiomics-and-trans_mst-class.html#cb356-14" tabindex="-1"></a>  <span class="at">max_features =</span> <span class="dv">50</span>,             <span class="co"># cap each block at the top 50 most variable features</span></span>
+<span id="cb356-15"><a href="trans_multiomics-and-trans_mst-class.html#cb356-15" tabindex="-1"></a>  <span class="at">n_boot       =</span> <span class="dv">0</span>               <span class="co"># 0 = skip bootstrap (use 1000 for final results)</span></span>
+<span id="cb356-16"><a href="trans_multiomics-and-trans_mst-class.html#cb356-16" tabindex="-1"></a>)</span>
+<span id="cb356-17"><a href="trans_multiomics-and-trans_mst-class.html#cb356-17" tabindex="-1"></a><span class="co"># total effect decomposed</span></span>
+<span id="cb356-18"><a href="trans_multiomics-and-trans_mst-class.html#cb356-18" tabindex="-1"></a>t1<span class="sc">$</span>res_mediation<span class="sc">$</span>direct_effect       <span class="co"># exposure -&gt; outcome bypassing the mediator</span></span>
+<span id="cb356-19"><a href="trans_multiomics-and-trans_mst-class.html#cb356-19" tabindex="-1"></a>t1<span class="sc">$</span>res_mediation<span class="sc">$</span>indirect_overall    <span class="co"># total indirect effect through mediators</span></span>
+<span id="cb356-20"><a href="trans_multiomics-and-trans_mst-class.html#cb356-20" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_mediation<span class="sc">$</span>indirect_pathwise)  <span class="co"># per-mediator pathway effect</span></span></code></pre></div>
+<p>To focus the analysis on DIABLO-prioritised features, pass them via <code>features</code>:</p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="trans_multiomics-and-trans_mst-class.html#cb357-1" tabindex="-1"></a>features <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_features</span>(<span class="at">comp =</span> <span class="dv">1</span>)</span>
+<span id="cb357-2"><a href="trans_multiomics-and-trans_mst-class.html#cb357-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">run_mediation</span>(</span>
+<span id="cb357-3"><a href="trans_multiomics-and-trans_mst-class.html#cb357-3" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">&quot;microb&quot;</span>, <span class="at">mediator =</span> <span class="st">&quot;metab&quot;</span>, <span class="at">outcome =</span> pheno,</span>
+<span id="cb357-4"><a href="trans_multiomics-and-trans_mst-class.html#cb357-4" tabindex="-1"></a>  <span class="at">features =</span> <span class="fu">list</span>(</span>
+<span id="cb357-5"><a href="trans_multiomics-and-trans_mst-class.html#cb357-5" tabindex="-1"></a>    <span class="at">microb =</span> <span class="fu">unique</span>(features<span class="sc">$</span>Feature[features<span class="sc">$</span>Block <span class="sc">==</span> <span class="st">&quot;microb&quot;</span>]),</span>
+<span id="cb357-6"><a href="trans_multiomics-and-trans_mst-class.html#cb357-6" tabindex="-1"></a>    <span class="at">metab  =</span> <span class="fu">unique</span>(features<span class="sc">$</span>Feature[features<span class="sc">$</span>Block  <span class="sc">==</span> <span class="st">&quot;metab&quot;</span>])</span>
+<span id="cb357-7"><a href="trans_multiomics-and-trans_mst-class.html#cb357-7" tabindex="-1"></a>  )</span>
+<span id="cb357-8"><a href="trans_multiomics-and-trans_mst-class.html#cb357-8" tabindex="-1"></a>)</span></code></pre></div>
+<p>Implementation notes:</p>
+<ul>
+<li><code>multimedia</code> builds R formulas from the variable names, so metabolite names like <code>"trehalose+d-Glucoheptose 1"</code> would crash the formula parser.
+<code>run_mediation</code> transparently replaces the names with syntactically valid synthetic names (<code>V1</code>, <code>V2</code>, …) and restores the original names in the returned effect tables.
+The mapping is preserved in <code>t1$res_mediation$name_map</code>.</li>
+<li>The engine chosen by <code>model</code> is passed to <code>multimedia</code> as the <strong>outcome</strong> estimator; the mediator model keeps the default <code>lm_model()</code> of <code>multimedia</code>, i.e. a plain linear model of each mediator on the exposure variables.
+Keep <code>max_features</code> (or <code>features</code>) small when the exposure is high-dimensional, otherwise that inner model becomes over-parameterised.</li>
+<li><code>n_boot &gt; 0</code> adds <code>res_mediation$bootstrap</code> with the bootstrap distributions of the direct, overall indirect and pathwise indirect effects.</li>
+<li>The “causal” interpretation of the indirect effects still relies on the assumed chain ordering and on the strong ignorability assumption; longitudinal or perturbation data are needed for causal claims.</li>
+<li>For binary factors in <code>exposure</code> or <code>outcome</code>, pass a 2-level factor or a 0/1 numeric vector.</li>
+</ul>
+</div>
+<div id="export-feature-tables-for-knowledge-tools" class="section level3 hasAnchor" number="9.1.16">
+<h3><span class="header-section-number">9.1.16</span> Export feature tables for knowledge tools<a href="trans_multiomics-and-trans_mst-class.html#export-feature-tables-for-knowledge-tools" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>DIABLO and TkNA produce data-driven candidate associations, but they say nothing about the <strong>biochemical plausibility</strong> of a microbe -&gt; metabolite link.
+Knowledge-driven tools fill this gap by constraining associations to known reactions.
+<code>export_bridge</code> writes the abundance tables of two blocks into the input formats expected by three popular tools:</p>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="92%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Target</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mimosa2</code></td>
+<td>two tab-separated abundance tables (<code>&lt;file&gt;_ko.txt</code>, <code>&lt;file&gt;_metabolites.txt</code>), features as rows and samples as columns</td>
+</tr>
+<tr class="even">
+<td><code>amon</code></td>
+<td>two plain-text ID lists (<code>&lt;file&gt;_ko_ids.txt</code>, <code>&lt;file&gt;_metabolite_ids.txt</code>), one KEGG ID per line</td>
+</tr>
+<tr class="odd">
+<td><code>anansi</code></td>
+<td>the same two tab-separated tables as <code>mimosa2</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="trans_multiomics-and-trans_mst-class.html#cb358-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">export_bridge</span>(</span>
+<span id="cb358-2"><a href="trans_multiomics-and-trans_mst-class.html#cb358-2" tabindex="-1"></a>  <span class="at">target      =</span> <span class="st">&quot;mimosa2&quot;</span>,</span>
+<span id="cb358-3"><a href="trans_multiomics-and-trans_mst-class.html#cb358-3" tabindex="-1"></a>  <span class="at">file        =</span> <span class="st">&quot;./bridge/mimosa_input&quot;</span>,</span>
+<span id="cb358-4"><a href="trans_multiomics-and-trans_mst-class.html#cb358-4" tabindex="-1"></a>  <span class="at">ko_block    =</span> <span class="st">&quot;microb&quot;</span>,</span>
+<span id="cb358-5"><a href="trans_multiomics-and-trans_mst-class.html#cb358-5" tabindex="-1"></a>  <span class="at">metab_block =</span> <span class="st">&quot;metab&quot;</span></span>
+<span id="cb358-6"><a href="trans_multiomics-and-trans_mst-class.html#cb358-6" tabindex="-1"></a>)</span>
+<span id="cb358-7"><a href="trans_multiomics-and-trans_mst-class.html#cb358-7" tabindex="-1"></a><span class="co"># export only the DIABLO-prioritised features</span></span>
+<span id="cb358-8"><a href="trans_multiomics-and-trans_mst-class.html#cb358-8" tabindex="-1"></a>features <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">get_features</span>(<span class="at">comp =</span> <span class="dv">1</span>)</span>
+<span id="cb358-9"><a href="trans_multiomics-and-trans_mst-class.html#cb358-9" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">export_bridge</span>(</span>
+<span id="cb358-10"><a href="trans_multiomics-and-trans_mst-class.html#cb358-10" tabindex="-1"></a>  <span class="at">target      =</span> <span class="st">&quot;mimosa2&quot;</span>,</span>
+<span id="cb358-11"><a href="trans_multiomics-and-trans_mst-class.html#cb358-11" tabindex="-1"></a>  <span class="at">file        =</span> <span class="st">&quot;./bridge/mimosa_selected&quot;</span>,</span>
+<span id="cb358-12"><a href="trans_multiomics-and-trans_mst-class.html#cb358-12" tabindex="-1"></a>  <span class="at">ko_block    =</span> <span class="st">&quot;microb&quot;</span>,</span>
+<span id="cb358-13"><a href="trans_multiomics-and-trans_mst-class.html#cb358-13" tabindex="-1"></a>  <span class="at">metab_block =</span> <span class="st">&quot;metab&quot;</span>,</span>
+<span id="cb358-14"><a href="trans_multiomics-and-trans_mst-class.html#cb358-14" tabindex="-1"></a>  <span class="at">features    =</span> <span class="fu">list</span>(</span>
+<span id="cb358-15"><a href="trans_multiomics-and-trans_mst-class.html#cb358-15" tabindex="-1"></a>    <span class="at">microb =</span> <span class="fu">unique</span>(features<span class="sc">$</span>Feature[features<span class="sc">$</span>Block <span class="sc">==</span> <span class="st">&quot;microb&quot;</span>]),</span>
+<span id="cb358-16"><a href="trans_multiomics-and-trans_mst-class.html#cb358-16" tabindex="-1"></a>    <span class="at">metab  =</span> <span class="fu">unique</span>(features<span class="sc">$</span>Feature[features<span class="sc">$</span>Block  <span class="sc">==</span> <span class="st">&quot;metab&quot;</span>])</span>
+<span id="cb358-17"><a href="trans_multiomics-and-trans_mst-class.html#cb358-17" tabindex="-1"></a>  )</span>
+<span id="cb358-18"><a href="trans_multiomics-and-trans_mst-class.html#cb358-18" tabindex="-1"></a>)</span></code></pre></div>
+<p>For the metabolite names, <code>metab_id_table</code> (a two-column <code>data.frame</code>: original name + KEGG ID) converts them to KEGG compound IDs, which is what all three tools expect.
+Without it, the original names are kept and a message reminds you that KEGG IDs are expected.
+When <code>ko_block</code> / <code>metab_block</code> are not given, the first block and the block whose name contains “metab” are used.</p>
+<p>Note that the exported tables come from <code>t1$dataset_list</code> (the <strong>original</strong> abundances), not from the CLR-transformed <code>t1$data_list</code>, because these tools expect raw counts or relative abundances.</p>
+</div>
+<div id="suggested-workflow" class="section level3 hasAnchor" number="9.1.17">
+<h3><span class="header-section-number">9.1.17</span> Suggested workflow<a href="trans_multiomics-and-trans_mst-class.html#suggested-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A practical ladder from data to mechanism for a typical microbe + metabolite study:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Load and align</strong> (<code>trans_multiomics$new</code>): make sure each <code>microtable</code> carries the same sample IDs and a clean grouping column.</li>
+<li><strong>Preprocess</strong> with <code>preprocess_data(method = "clr", filter_freq = 0.2)</code> for compositional blocks; consider additional <code>filter_thres</code> for very sparse features.</li>
+<li><strong>Run DIABLO</strong> with a small initial <code>keepX</code> (e.g. <code>c(10, 10)</code> per block per component) to get a first sanity-check plot (<code>plot_samples</code>).</li>
+<li><strong>Evaluate performance</strong> with <code>eval_performance(folds = 5, nrepeat = 10, seed = ...)</code>; compare WeightedVote vs AveragedPredict to choose the best <code>ncomp</code>.</li>
+<li><strong>Tune</strong> <code>keepX</code> with <code>tune_model</code> (start with a coarse grid; refine around the optimum).</li>
+<li><strong>Refit</strong> with <code>run_diablo(keepX = t1$best_keepX)</code> and extract the final <code>get_features</code> panel.</li>
+<li><strong>Stability-check</strong> with <code>get_stability</code> and keep only the features with <code>Stability &gt;= 0.8</code> for downstream interpretation.</li>
+<li><strong>Visualise</strong> with <code>plot_samples</code>, <code>plot_loadings</code>, <code>plot_diablo</code>, <code>plot_circos</code> (or <code>plot_cor_network</code> for an explicit graph).</li>
+<li><strong>Cross-omics associations</strong> with <code>cal_transkingdom</code>; explore with <code>plot_transkingdom</code> and follow up on the <code>Hub</code> features, then hand the network over to the trans_network class with <code>convert_transkingdom</code>.</li>
+<li><strong>Mediation</strong> with <code>run_mediation</code> (requires <code>multimedia</code>) to quantify exposure -&gt; mediator -&gt; outcome pathways, optionally restricted to the DIABLO / TkNA-prioritised features.</li>
+<li><strong>Mechanism filtering</strong> with <code>export_bridge</code> to feed the candidates into MIMOSA2 / AMON / anansi and retain only biochemically plausible links.</li>
+</ol>
+</div>
+<div id="key-points-12" class="section level3 hasAnchor" number="9.1.18">
+<h3><span class="header-section-number">9.1.18</span> Key points<a href="trans_multiomics-and-trans_mst-class.html#key-points-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Block sizes:</strong> <code>mixOmics::block.splsda</code> requires at least 2 levels of <code>Y</code>; <code>block.spls</code> does not use <code>Y</code> and needs <code>indY</code> (handled by <code>Y_block</code> in <code>run_spls</code>).</li>
+<li><strong>Small class sizes:</strong> <code>folds</code> in <code>eval_performance</code> and <code>tune_model</code> must not exceed the smallest class size in <code>Y</code>.
+With 10 samples per group use <code>folds &lt;= 10</code>.</li>
+<li><strong>Reproducibility:</strong> always pass <code>seed</code> to <code>tune_model</code> and <code>eval_performance</code>.
+The seed is forwarded to <code>mixOmics</code> when supported, otherwise applied via <code>set.seed</code>.</li>
+<li><strong>Plot types:</strong> <code>plot_samples</code> returns a <code>ggplot</code>; <code>plot_loadings</code> draws on the current device and returns a <code>list</code> of loading <code>data.frame</code>s, <strong>not</strong> a <code>ggplot</code> – do not pipe it to <code>ggsave()</code>.</li>
+<li><strong><code>plot_loadings</code> block argument:</strong> it must be supplied explicitly for multi-block models; for the two-block <code>spls</code> model use <code>block = "X"</code> or <code>"Y"</code>.</li>
+<li><strong><code>get_correlation</code> names:</strong> in <code>mixOmics</code> &gt;= 6.x the returned similarity matrix has column names with a <code>_&lt;block&gt;</code> suffix, while the row names may be <code>NULL</code>; restore the rows from <code>mixOmics::selectVar</code> if needed.</li>
+<li><strong><code>cutoff</code> of the correlation network:</strong> <code>mixOmics</code> stops when <code>cutoff</code> exceeds the largest value of the similarity matrix, so lower it for weakly correlated blocks (check <code>range(t1$get_correlation(comp = 1))</code>).</li>
+<li><strong>More than two blocks:</strong> <code>mixOmics::network</code> returns one similarity matrix per block pair, so <code>get_correlation</code> needs exactly two blocks selected via <code>block = c(...)</code> (or a model with two blocks).</li>
+<li><strong>Large feature panels:</strong> DIABLO with thousands of features per block is slow.
+Apply <code>filter_freq</code> and/or <code>filter_thres</code> in <code>preprocess_data</code> before the tuning step.</li>
+<li><strong>Refitting:</strong> a new <code>run_diablo</code> replaces the model and invalidates the panels and tables computed from the previous one; refit a copy of the object (<code>t1$clone(deep = TRUE)</code>) if both models must be kept.</li>
+<li><strong>Unsupervised models:</strong> <code>plot_circos</code>, <code>plot_heatmap</code> and <code>plot_diablo</code> only work on the supervised <code>block.splsda</code> model.</li>
+</ul>
+</div>
+</div>
+<div id="trans_mst-class" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> trans_mst class<a href="trans_multiomics-and-trans_mst-class.html#trans_mst-class" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Microbial source tracking (MST) <span class="citation">(<a href="#ref-Shenhav_FEAST_2019">Shenhav et al. 2019</a>)</span> is used to answer a simple but important question:
+for a given community, where do its members come from?
+In such an analysis, the community of interest is called the <strong>sink</strong>,
+and the candidate communities that may contribute to it are called <strong>sources</strong>.
+The output is usually a set of proportions, i.e., how much of the sink can be attributed
+to each source plus an unknown (unassigned) fraction.
+Typical applications include tracing the transmission of microbes along the soil-plant continuum
+(e.g., bulk soil -&gt; rhizosphere soil -&gt; root endophyte), detecting contamination in low-biomass samples,
+and tracking the formation of developing microbial communities.</p>
+<p>Starting from version 2.4.0, the microeco package provides the <code>trans_mst</code> class for microbial source tracking.
+It is a wrapper of <strong>FEAST</strong> (Fast Expectation-maximization for microbial Source Tracking) <span class="citation">(<a href="#ref-Shenhav_FEAST_2019">Shenhav et al. 2019</a>)</span>,
+a scalable expectation-maximization framework that can estimate the contribution of thousands of
+potential source environments simultaneously.
+The advantage of integrating FEAST into microeco is that the whole analysis can be performed
+directly on a <code>microtable</code> object, so that the preprocessing power of the microeco package
+(e.g., taxonomic filtering, sample subsetting and data transformation) is fully reused.</p>
+<p>The main functions of the <code>trans_mst</code> class are:</p>
+<ul>
+<li><code>trans_mst$new</code>: create the object from a microtable object.</li>
+<li><code>cal_mst</code>: run the source tracking for one transmission step.</li>
+<li><code>cal_mst_chain</code>: run a chain of transmission steps in one call.</li>
+<li><code>plot_mst</code>: plot the contribution proportions as a stacked barplot with ggplot2.</li>
+</ul>
+<p>Please install the FEAST package first, as it is not on CRAN but on GitHub.</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="trans_multiomics-and-trans_mst-class.html#cb359-1" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb359-2"><a href="trans_multiomics-and-trans_mst-class.html#cb359-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;cozygene/FEAST&quot;</span>)</span>
+<span id="cb359-3"><a href="trans_multiomics-and-trans_mst-class.html#cb359-3" tabindex="-1"></a></span>
+<span id="cb359-4"><a href="trans_multiomics-and-trans_mst-class.html#cb359-4" tabindex="-1"></a><span class="fu">library</span>(microeco)</span>
+<span id="cb359-5"><a href="trans_multiomics-and-trans_mst-class.html#cb359-5" tabindex="-1"></a><span class="co"># for the pipe operator %&gt;%</span></span>
+<span id="cb359-6"><a href="trans_multiomics-and-trans_mst-class.html#cb359-6" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb359-7"><a href="trans_multiomics-and-trans_mst-class.html#cb359-7" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div id="prepare-the-example-data-2" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Prepare the example data<a href="trans_multiomics-and-trans_mst-class.html#prepare-the-example-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The example data is <code>soil_microb</code>, a microtable object of prokaryotic amplicon sequencing data
+from an agricultural field experiment with crop rotation and fertilization treatments.
+The <code>Compartment</code> column in <code>sample_table</code> represents the sampling compartments,
+i.e., ‘Bulk soil’, ‘Rhizosphere’ and ‘Endophyte’ (root endophyte), with 30 samples for each compartment.
+The <code>Plant_ID</code> column denotes the unique plant individual that each sample belongs to,
+so that the three samples sharing the same <code>Plant_ID</code> are from the same plant
+and can be treated as a paired source-sink set.
+The <code>Cropping</code> and <code>Fertilization</code> columns are the two experimental factors and
+the <code>Group</code> column is the combination of them.</p>
+<p>Note that FEAST requires <strong>raw counts (integers)</strong>, not a relative abundance or rarefied table,
+because the estimation relies on the multinomial sampling of reads.
+If non-integer values are detected in the <code>otu_table</code>, they are automatically converted by <code>ceiling()</code> with a message.</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="trans_multiomics-and-trans_mst-class.html#cb360-1" tabindex="-1"></a><span class="fu">data</span>(soil_microb)</span>
+<span id="cb360-2"><a href="trans_multiomics-and-trans_mst-class.html#cb360-2" tabindex="-1"></a>soil_microb</span>
+<span id="cb360-3"><a href="trans_multiomics-and-trans_mst-class.html#cb360-3" tabindex="-1"></a><span class="co"># number of samples in each compartment</span></span>
+<span id="cb360-4"><a href="trans_multiomics-and-trans_mst-class.html#cb360-4" tabindex="-1"></a><span class="fu">table</span>(soil_microb<span class="sc">$</span>sample_table<span class="sc">$</span>Compartment)</span>
+<span id="cb360-5"><a href="trans_multiomics-and-trans_mst-class.html#cb360-5" tabindex="-1"></a><span class="co"># check that samples with the same Plant_ID form a paired set across compartments</span></span>
+<span id="cb360-6"><a href="trans_multiomics-and-trans_mst-class.html#cb360-6" tabindex="-1"></a><span class="fu">table</span>(soil_microb<span class="sc">$</span>sample_table<span class="sc">$</span>Plant_ID, soil_microb<span class="sc">$</span>sample_table<span class="sc">$</span>Compartment)</span></code></pre></div>
+</div>
+<div id="create-the-object" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Create the object<a href="trans_multiomics-and-trans_mst-class.html#create-the-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are three parameters that can be used when creating a <code>trans_mst</code> object:
+<code>dataset</code> is the microtable object;
+<code>env_col</code> is a column name in <code>sample_table</code> used to describe the environment of each sample,
+i.e., the ‘Env’ information required by FEAST;
+<code>filter_thres</code> is the relative abundance threshold used to filter low-abundance taxa
+(delegated to the <code>filter_taxa</code> function of the microtable class;
+taxa with a total relative abundance lower than the threshold across all samples are removed).
+Filtering the very low-abundance taxa is often useful to reduce the noise and speed up the estimation.</p>
+<p>It should be noted that the input microtable object is deep-copied inside the object,
+so all subsequent operations concerning the data filtering will not change the original microtable object.</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="trans_multiomics-and-trans_mst-class.html#cb361-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_mst<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> soil_microb, <span class="at">env_col =</span> <span class="st">&quot;Compartment&quot;</span>, <span class="at">filter_thres =</span> <span class="dv">0</span>)</span>
+<span id="cb361-2"><a href="trans_multiomics-and-trans_mst-class.html#cb361-2" tabindex="-1"></a>t1</span></code></pre></div>
+</div>
+<div id="source-tracking-with-a-shared-source-pool" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> Source tracking with a shared source pool<a href="trans_multiomics-and-trans_mst-class.html#source-tracking-with-a-shared-source-pool" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The most simple case is that all sink samples share one source pool.
+For example, all the rhizosphere soil samples (sinks) may receive microbes from the whole bulk soil pool (sources).
+Let’s use the <code>sources</code> and <code>sinks</code> parameters to assign the environments,
+which are matched against the <code>env_col</code> column of <code>sample_table</code>.
+The results are always stored in the object, so multiple runs can be performed with the same object by
+assigning a different <code>label</code> to each run.</p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="trans_multiomics-and-trans_mst-class.html#cb362-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_mst</span>(<span class="at">sources =</span> <span class="st">&quot;Bulk soil&quot;</span>, <span class="at">sinks =</span> <span class="st">&quot;Rhizosphere&quot;</span>, <span class="at">EM_iterations =</span> <span class="dv">1000</span>, <span class="at">label =</span> <span class="st">&quot;bulk2rhizo&quot;</span>)</span></code></pre></div>
+<p>Two key parameters of the FEAST algorithm deserve attention.
+<code>EM_iterations</code> is the number of expectation-maximization iterations.
+The default is 1000, which is enough for most cases; a smaller value (e.g., 100) can largely reduce the running time for a quick try.
+The running time mainly depends on the number of sink samples, as the contribution is estimated sink by sink,
+and also on the number of source samples in the shared-source-pool mode.
+<code>COVERAGE</code> is the rarefaction depth used internally by FEAST.
+By default (NULL), it is set to the minimum sequencing depth across all involved source and sink samples,
+so that the samples with a larger sequencing depth are randomly downsampled to this depth
+(samples already below or equal to it are kept unchanged).
+Please note all the involved samples should have a sequencing depth larger than 0,
+otherwise the function stops with an error message.
+As the rarefaction is performed by randomly sampling reads, repeated runs may give slightly different results.</p>
+<p>Three results are stored for each run:</p>
+<ul>
+<li><code>res_mst[[label]]</code>: Sink x Source matrix at the <strong>sample level</strong>. Each row sums to 1.</li>
+<li><code>res_mst_env[[label]]</code>: Sink x Source matrix at the <strong>environment (source pooled) level</strong>. Each row sums to 1.</li>
+<li><code>res_mst_param[[label]]</code>: the input parameters and the involved sample information of the run.</li>
+</ul>
+<p>The column ‘Unknown’ in the result matrices denotes the proportion of the sink that cannot be attributed to any known source.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="trans_multiomics-and-trans_mst-class.html#cb363-1" tabindex="-1"></a><span class="co"># sample level result: rows are sinks, columns are sources</span></span>
+<span id="cb363-2"><a href="trans_multiomics-and-trans_mst-class.html#cb363-2" tabindex="-1"></a>t1<span class="sc">$</span>res_mst[[<span class="st">&quot;bulk2rhizo&quot;</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb363-3"><a href="trans_multiomics-and-trans_mst-class.html#cb363-3" tabindex="-1"></a><span class="co"># environment level result: contributions of the source environments</span></span>
+<span id="cb363-4"><a href="trans_multiomics-and-trans_mst-class.html#cb363-4" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;bulk2rhizo&quot;</span>]])</span>
+<span id="cb363-5"><a href="trans_multiomics-and-trans_mst-class.html#cb363-5" tabindex="-1"></a><span class="co"># check the row sum</span></span>
+<span id="cb363-6"><a href="trans_multiomics-and-trans_mst-class.html#cb363-6" tabindex="-1"></a><span class="fu">rowSums</span>(t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;bulk2rhizo&quot;</span>]])</span>
+<span id="cb363-7"><a href="trans_multiomics-and-trans_mst-class.html#cb363-7" tabindex="-1"></a><span class="co"># mean contribution of each source environment</span></span>
+<span id="cb363-8"><a href="trans_multiomics-and-trans_mst-class.html#cb363-8" tabindex="-1"></a><span class="fu">colMeans</span>(t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;bulk2rhizo&quot;</span>]])</span>
+<span id="cb363-9"><a href="trans_multiomics-and-trans_mst-class.html#cb363-9" tabindex="-1"></a><span class="co"># parameters and sample information of the run</span></span>
+<span id="cb363-10"><a href="trans_multiomics-and-trans_mst-class.html#cb363-10" tabindex="-1"></a>t1<span class="sc">$</span>res_mst_param[[<span class="st">&quot;bulk2rhizo&quot;</span>]]</span></code></pre></div>
+</div>
+<div id="source-tracking-with-different-source-sets" class="section level3 hasAnchor" number="9.2.4">
+<h3><span class="header-section-number">9.2.4</span> Source tracking with different source sets<a href="trans_multiomics-and-trans_mst-class.html#source-tracking-with-different-source-sets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In many experimental designs, each sink has its own source set.
+For instance, a root endophyte sample should be traced back to the bulk soil and rhizosphere soil of
+<strong>the same plant individual</strong>, instead of a general pool containing all the plants.
+This is realized by <code>different_sources_flag = 1</code> together with the <code>id_col</code> parameter.
+Samples sharing the same value of <code>id_col</code> (here <code>Plant_ID</code>) are considered as one paired group,
+and only the source samples within the same group are used for the sink of that group.
+Therefore, each pairing group can contain at most one sink sample
+(a group with multiple sinks stops with an error),
+and each sink must have at least one source sample in the same group;
+the source samples without any paired sink are excluded automatically with a message.</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="trans_multiomics-and-trans_mst-class.html#cb364-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_mst</span>(<span class="at">sources =</span> <span class="fu">c</span>(<span class="st">&quot;Bulk soil&quot;</span>, <span class="st">&quot;Rhizosphere&quot;</span>), <span class="at">sinks =</span> <span class="st">&quot;Endophyte&quot;</span>,</span>
+<span id="cb364-2"><a href="trans_multiomics-and-trans_mst-class.html#cb364-2" tabindex="-1"></a>    <span class="at">different_sources_flag =</span> <span class="dv">1</span>, <span class="at">id_col =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">EM_iterations =</span> <span class="dv">1000</span>, <span class="at">label =</span> <span class="st">&quot;soil2root&quot;</span>)</span>
+<span id="cb364-3"><a href="trans_multiomics-and-trans_mst-class.html#cb364-3" tabindex="-1"></a><span class="co"># now there are two runs stored in the object</span></span>
+<span id="cb364-4"><a href="trans_multiomics-and-trans_mst-class.html#cb364-4" tabindex="-1"></a>t1</span>
+<span id="cb364-5"><a href="trans_multiomics-and-trans_mst-class.html#cb364-5" tabindex="-1"></a><span class="fu">head</span>(t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;soil2root&quot;</span>]])</span></code></pre></div>
+<p>In the different-sources mode, the sources that do not belong to the source set of a given sink are <code>NA</code> in <code>res_mst</code>.
+These <code>NA</code> values are automatically removed in the plot, and they are also skipped when aggregating
+the contributions by source environment in <code>res_mst_env</code>.
+For each sink, the non-<code>NA</code> contributions (including ‘Unknown’) still sum to 1.</p>
+</div>
+<div id="run-sequential-steps-in-one-call" class="section level3 hasAnchor" number="9.2.5">
+<h3><span class="header-section-number">9.2.5</span> Run sequential steps in one call<a href="trans_multiomics-and-trans_mst-class.html#run-sequential-steps-in-one-call" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The transmission of microbes is often a chain rather than a single step.
+The <code>cal_mst_chain</code> function is a convenient wrapper of <code>cal_mst</code>,
+where each element of the <code>steps</code> argument is a list of the parameters passed to <code>cal_mst</code>.
+The results are stored with the labels ‘step1’, ‘step2’, … unless a custom <code>label</code> is provided.</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="trans_multiomics-and-trans_mst-class.html#cb365-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> trans_mst<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> soil_microb, <span class="at">env_col =</span> <span class="st">&quot;Compartment&quot;</span>)</span>
+<span id="cb365-2"><a href="trans_multiomics-and-trans_mst-class.html#cb365-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_mst_chain</span>(<span class="at">steps =</span> <span class="fu">list</span>(</span>
+<span id="cb365-3"><a href="trans_multiomics-and-trans_mst-class.html#cb365-3" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">sources =</span> <span class="st">&quot;Bulk soil&quot;</span>, <span class="at">sinks =</span> <span class="st">&quot;Rhizosphere&quot;</span>, <span class="at">EM_iterations =</span> <span class="dv">1000</span>, <span class="at">label =</span> <span class="st">&quot;bulk2rhizo&quot;</span>),</span>
+<span id="cb365-4"><a href="trans_multiomics-and-trans_mst-class.html#cb365-4" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">sources =</span> <span class="fu">c</span>(<span class="st">&quot;Bulk soil&quot;</span>, <span class="st">&quot;Rhizosphere&quot;</span>), <span class="at">sinks =</span> <span class="st">&quot;Endophyte&quot;</span>,</span>
+<span id="cb365-5"><a href="trans_multiomics-and-trans_mst-class.html#cb365-5" tabindex="-1"></a>        <span class="at">different_sources_flag =</span> <span class="dv">1</span>, <span class="at">id_col =</span> <span class="st">&quot;Plant_ID&quot;</span>, <span class="at">EM_iterations =</span> <span class="dv">1000</span>, <span class="at">label =</span> <span class="st">&quot;soil2root&quot;</span>)</span>
+<span id="cb365-6"><a href="trans_multiomics-and-trans_mst-class.html#cb365-6" tabindex="-1"></a>))</span>
+<span id="cb365-7"><a href="trans_multiomics-and-trans_mst-class.html#cb365-7" tabindex="-1"></a><span class="co"># all the stored runs</span></span>
+<span id="cb365-8"><a href="trans_multiomics-and-trans_mst-class.html#cb365-8" tabindex="-1"></a><span class="fu">names</span>(t1<span class="sc">$</span>res_mst)</span></code></pre></div>
+</div>
+<div id="specify-sources-and-sinks-by-sample-names" class="section level3 hasAnchor" number="9.2.6">
+<h3><span class="header-section-number">9.2.6</span> Specify sources and sinks by sample names<a href="trans_multiomics-and-trans_mst-class.html#specify-sources-and-sinks-by-sample-names" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Instead of using environment values, the sources and sinks can also be assigned by explicit sample names
+with the <code>source_samples</code> and <code>sink_samples</code> parameters.
+This is useful when the source/sink assignment has no correspondence with any existing column of <code>sample_table</code>.
+Note that <code>sources</code> and <code>source_samples</code> cannot be provided at the same time (the same for <code>sinks</code> and <code>sink_samples</code>),
+and no sample can be assigned to both sources and sinks.</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="trans_multiomics-and-trans_mst-class.html#cb366-1" tabindex="-1"></a><span class="co"># pick some bulk soil samples as sources and some rhizosphere samples as sinks</span></span>
+<span id="cb366-2"><a href="trans_multiomics-and-trans_mst-class.html#cb366-2" tabindex="-1"></a>st_tmp <span class="ot">&lt;-</span> soil_microb<span class="sc">$</span>sample_table</span>
+<span id="cb366-3"><a href="trans_multiomics-and-trans_mst-class.html#cb366-3" tabindex="-1"></a>source_samples <span class="ot">&lt;-</span> <span class="fu">rownames</span>(st_tmp)[st_tmp<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">&quot;Bulk soil&quot;</span>][<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb366-4"><a href="trans_multiomics-and-trans_mst-class.html#cb366-4" tabindex="-1"></a>sink_samples <span class="ot">&lt;-</span> <span class="fu">rownames</span>(st_tmp)[st_tmp<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">&quot;Rhizosphere&quot;</span>][<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb366-5"><a href="trans_multiomics-and-trans_mst-class.html#cb366-5" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">cal_mst</span>(<span class="at">source_samples =</span> source_samples, <span class="at">sink_samples =</span> sink_samples, <span class="at">EM_iterations =</span> <span class="dv">1000</span>, <span class="at">label =</span> <span class="st">&quot;custom&quot;</span>)</span></code></pre></div>
+</div>
+<div id="visualization" class="section level3 hasAnchor" number="9.2.7">
+<h3><span class="header-section-number">9.2.7</span> Visualization<a href="trans_multiomics-and-trans_mst-class.html#visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>plot_mst</code> function returns a ggplot2 object, so that it can be further modified before saving.
+By default, the environment-level result (<code>res_mst_env</code>) of the first run is plotted.
+The <code>group_sink</code> parameter is used to group (and facet) the sinks according to a column of <code>sample_table</code>,
+which is very useful to compare the contribution patterns among treatments.</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="trans_multiomics-and-trans_mst-class.html#cb367-1" tabindex="-1"></a><span class="co"># the first run with the environment-level result</span></span>
+<span id="cb367-2"><a href="trans_multiomics-and-trans_mst-class.html#cb367-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_mst</span>(<span class="at">use_run =</span> <span class="st">&quot;bulk2rhizo&quot;</span>, <span class="at">group_sink =</span> <span class="st">&quot;Group&quot;</span>)</span></code></pre></div>
+<p><img src="Images/trans_mst_bulk2rhizo.png" alt="" width="900px" style="display: block; margin: auto;" /></p>
+<p>In this example, the bulk soil explains most of the rhizosphere soil communities
+(around 60% - 80% for individual samples),
+and the remaining part is assigned to the unknown sources.</p>
+<p>The second step of the transmission is shown below, in which each root endophyte sample uses
+the bulk soil and rhizosphere soil of the same plant individual as sources.
+Please note that the running time of this step is much shorter than the first one,
+as only two paired source samples are used for each sink in the different-sources mode.</p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="trans_multiomics-and-trans_mst-class.html#cb368-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_mst</span>(<span class="at">use_run =</span> <span class="st">&quot;soil2root&quot;</span>, <span class="at">group_sink =</span> <span class="st">&quot;Cropping&quot;</span>)</span></code></pre></div>
+<p><img src="Images/trans_mst_soil2root.png" alt="" width="900px" style="display: block; margin: auto;" /></p>
+<p>Consistent with the ecological expectation, the rhizosphere soil contributes more to the root endophyte
+communities than the bulk soil, indicating the directional transfer of microbes along the soil-plant continuum.</p>
+<p>The <code>use_env = FALSE</code> parameter switches to the sample-level result (<code>res_mst</code>),
+where each source sample is shown separately.
+It is helpful to check whether particular source samples dominate the contribution.
+Please note that a large number of source samples can make the legend too crowded,
+so this option is more suitable for a small source set, such as the small example above.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="trans_multiomics-and-trans_mst-class.html#cb369-1" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_mst</span>(<span class="at">use_run =</span> <span class="st">&quot;custom&quot;</span>, <span class="at">use_env =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Images/trans_mst_sample_level.png" alt="" width="900px" style="display: block; margin: auto;" /></p>
+<p>More parameters are available for the details of the plot, e.g., <code>show_unknown</code> (whether to show the ‘Unknown’ proportion),
+<code>colors</code>, <code>unknown_color</code>, <code>bar_width</code>, <code>xtext_size</code>, <code>xtext_angle</code>,
+<code>legend_title</code> (the legend title) and <code>facet_scales</code> (the scales argument of <code>facet_wrap</code>).
+Filling each bar with the same order in all facets is controlled by the levels of the Source factor,
+which follows the column order of the result matrix.</p>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="trans_multiomics-and-trans_mst-class.html#cb370-1" tabindex="-1"></a><span class="co"># hide the Unknown proportion and customize the colors</span></span>
+<span id="cb370-2"><a href="trans_multiomics-and-trans_mst-class.html#cb370-2" tabindex="-1"></a>t1<span class="sc">$</span><span class="fu">plot_mst</span>(<span class="at">use_run =</span> <span class="st">&quot;soil2root&quot;</span>, <span class="at">group_sink =</span> <span class="st">&quot;Cropping&quot;</span>, <span class="at">show_unknown =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb370-3"><a href="trans_multiomics-and-trans_mst-class.html#cb370-3" tabindex="-1"></a>    <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;#E64B35FF&quot;</span>, <span class="st">&quot;#4DBBD5FF&quot;</span>), <span class="at">xtext_size =</span> <span class="dv">8</span>, <span class="at">xtext_angle =</span> <span class="dv">90</span>)</span>
+<span id="cb370-4"><a href="trans_multiomics-and-trans_mst-class.html#cb370-4" tabindex="-1"></a><span class="co"># save the plot</span></span>
+<span id="cb370-5"><a href="trans_multiomics-and-trans_mst-class.html#cb370-5" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;MST_soil2root.pdf&quot;</span>, t1<span class="sc">$</span><span class="fu">plot_mst</span>(<span class="at">use_run =</span> <span class="st">&quot;soil2root&quot;</span>, <span class="at">group_sink =</span> <span class="st">&quot;Cropping&quot;</span>), <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+</div>
+<div id="downstream-analysis-of-the-results" class="section level3 hasAnchor" number="9.2.8">
+<h3><span class="header-section-number">9.2.8</span> Downstream analysis of the results<a href="trans_multiomics-and-trans_mst-class.html#downstream-analysis-of-the-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As the results are stored as plain matrices, they can be easily combined with the other classes of microeco
+for further analysis. For instance, the contribution proportions can be compared among the fertilization treatments.</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="trans_multiomics-and-trans_mst-class.html#cb371-1" tabindex="-1"></a><span class="co"># take the environment-level result of the soil -&gt; root step</span></span>
+<span id="cb371-2"><a href="trans_multiomics-and-trans_mst-class.html#cb371-2" tabindex="-1"></a>contrib <span class="ot">&lt;-</span> t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;soil2root&quot;</span>]]</span>
+<span id="cb371-3"><a href="trans_multiomics-and-trans_mst-class.html#cb371-3" tabindex="-1"></a><span class="co"># add the group information of the sinks</span></span>
+<span id="cb371-4"><a href="trans_multiomics-and-trans_mst-class.html#cb371-4" tabindex="-1"></a>contrib_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">SampleID =</span> <span class="fu">rownames</span>(contrib), contrib, <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb371-5"><a href="trans_multiomics-and-trans_mst-class.html#cb371-5" tabindex="-1"></a>contrib_df<span class="sc">$</span>Fertilization <span class="ot">&lt;-</span> soil_microb<span class="sc">$</span>sample_table[contrib_df<span class="sc">$</span>SampleID, <span class="st">&quot;Fertilization&quot;</span>]</span>
+<span id="cb371-6"><a href="trans_multiomics-and-trans_mst-class.html#cb371-6" tabindex="-1"></a><span class="co"># make a long table for plotting</span></span>
+<span id="cb371-7"><a href="trans_multiomics-and-trans_mst-class.html#cb371-7" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">melt</span>(contrib_df, <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">&quot;Bulk soil&quot;</span>, <span class="st">&quot;Rhizosphere&quot;</span>, <span class="st">&quot;Unknown&quot;</span>),</span>
+<span id="cb371-8"><a href="trans_multiomics-and-trans_mst-class.html#cb371-8" tabindex="-1"></a>    <span class="at">variable.name =</span> <span class="st">&quot;Source&quot;</span>, <span class="at">value.name =</span> <span class="st">&quot;Contribution&quot;</span>)</span>
+<span id="cb371-9"><a href="trans_multiomics-and-trans_mst-class.html#cb371-9" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> Fertilization, <span class="at">y =</span> Contribution, <span class="at">fill =</span> Source)) <span class="sc">+</span></span>
+<span id="cb371-10"><a href="trans_multiomics-and-trans_mst-class.html#cb371-10" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">outlier.alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb371-11"><a href="trans_multiomics-and-trans_mst-class.html#cb371-11" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.6</span>)) <span class="sc">+</span></span>
+<span id="cb371-12"><a href="trans_multiomics-and-trans_mst-class.html#cb371-12" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>))) <span class="sc">+</span></span>
+<span id="cb371-13"><a href="trans_multiomics-and-trans_mst-class.html#cb371-13" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Contribution proportion&quot;</span>) <span class="sc">+</span></span>
+<span id="cb371-14"><a href="trans_multiomics-and-trans_mst-class.html#cb371-14" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
+<span id="cb371-15"><a href="trans_multiomics-and-trans_mst-class.html#cb371-15" tabindex="-1"></a><span class="co"># save the tables for further use</span></span>
+<span id="cb371-16"><a href="trans_multiomics-and-trans_mst-class.html#cb371-16" tabindex="-1"></a><span class="fu">write.csv</span>(t1<span class="sc">$</span>res_mst[[<span class="st">&quot;soil2root&quot;</span>]], <span class="st">&quot;MST_soil2root_sample_level.csv&quot;</span>)</span>
+<span id="cb371-17"><a href="trans_multiomics-and-trans_mst-class.html#cb371-17" tabindex="-1"></a><span class="fu">write.csv</span>(t1<span class="sc">$</span>res_mst_env[[<span class="st">&quot;soil2root&quot;</span>]], <span class="st">&quot;MST_soil2root_env_level.csv&quot;</span>)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Jiang_multimedia_2024" class="csl-entry">
+Jiang, Hanying, Xinran Miao, Margaret W. Thairu, et al. 2024. <span>“<span class="nocase">Multimedia: Multimodal Mediation Analysis of Microbiome Data</span>.”</span> <em>Microbiology Spectrum</em> 13 (2): e01131–24. <a href="https://doi.org/10.1128/spectrum.01131-24">https://doi.org/10.1128/spectrum.01131-24</a>.
+</div>
+<div id="ref-Liquet_stability_2012" class="csl-entry">
+Liquet, Benoit, Kim-Anh Lê Cao, Hakim Hocini, and Rodolphe Thiébaut. 2012. <span>“<span class="nocase">A novel approach for biomarker selection and the integration of repeated measures experiments from two assays</span>.”</span> <em>BMC Bioinformatics</em> 13: 325. <a href="https://doi.org/10.1186/1471-2105-13-325">https://doi.org/10.1186/1471-2105-13-325</a>.
+</div>
+<div id="ref-Liu_microeco_2021" class="csl-entry">
+Liu, Chi, Yaoming Cui, Xiangzhen Li, and Minjie Yao. 2021. <span>“<span class="nocase">microeco: An R package for data mining in microbial community ecology</span>.”</span> Journal Article. <em>FEMS Microbiology Ecology</em> 97 (2): fiaa255. <a href="https://doi.org/10.1093/femsec/fiaa255">https://doi.org/10.1093/femsec/fiaa255</a>.
+</div>
+<div id="ref-Liu_workflow_2026" class="csl-entry">
+Liu, Chi, Felipe R. P. Mansoldo, Hankang Li, et al. 2026. <span>“<span class="nocase">A workflow for statistical analysis and visualization of microbiome omics data using the R microeco package</span>.”</span> Journal Article. <em>Nature Protocols</em> 21 (4): 1300–1324. <a href="https://doi.org/10.1038/s41596-025-01239-4">https://doi.org/10.1038/s41596-025-01239-4</a>.
+</div>
+<div id="ref-Mallick_MaAsLin2_2021" class="csl-entry">
+Mallick, Himel, Ali Rahnavard, Lauren J. McIver, et al. 2021. <span>“<span class="nocase">Multivariable association discovery in population-scale meta-omics studies</span>.”</span> <em>PLoS Computational Biology</em> 17 (11): e1009442. <a href="https://doi.org/10.1371/journal.pcbi.1009442">https://doi.org/10.1371/journal.pcbi.1009442</a>.
+</div>
+<div id="ref-Newman_TkNA_2024" class="csl-entry">
+Newman, Nolan K., Matthew S. Macovsky, Richard R. Rodrigues, et al. 2024. <span>“<span class="nocase">Transkingdom Network Analysis (TkNA): a systems framework for inferring causal factors underlying host–microbiota and other multi-omic interactions</span>.”</span> <em>Nature Protocols</em> 19 (6): 1750–78. <a href="https://doi.org/10.1038/s41596-024-00960-w">https://doi.org/10.1038/s41596-024-00960-w</a>.
+</div>
+<div id="ref-Rohart_mixOmics_2017" class="csl-entry">
+Rohart, Florian, Benoit Gautier, Amrit Singh, and Kim-Anh Lê Cao. 2017. <span>“<span class="nocase">mixOmics: An R package for ’omics feature selection and multiple data integration</span>.”</span> <em>PLoS Computational Biology</em> 13 (11): e1005752. <a href="https://doi.org/10.1371/journal.pcbi.1005752">https://doi.org/10.1371/journal.pcbi.1005752</a>.
+</div>
+<div id="ref-Shenhav_FEAST_2019" class="csl-entry">
+Shenhav, Liat, Mike Thompson, Tyler A. Joseph, et al. 2019. <span>“<span class="nocase">FEAST: fast expectation-maximization for microbial source tracking</span>.”</span> <em>Nature Methods</em> 16 (7): 627–32. <a href="https://doi.org/10.1038/s41592-019-0431-x">https://doi.org/10.1038/s41592-019-0431-x</a>.
+</div>
+<div id="ref-Singh_DIABLO_2019" class="csl-entry">
+Singh, Amrit, Casey P. Shannon, Benoit Gautier, et al. 2019. <span>“<span class="nocase">DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays</span>.”</span> <em>Bioinformatics</em> 35 (17): 3055–62. <a href="https://doi.org/10.1093/bioinformatics/bty1054">https://doi.org/10.1093/bioinformatics/bty1054</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="trans_niche-and-trans_phylo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="file2meco-package.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/07-2.Multiomics_MST.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["microeco-tutorial.pdf", "microeco-tutorial.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -125,7 +125,7 @@
 
 \title{Tutorial for R microeco package (v2.3.0)}
 \author{}
-\date{\vspace{-2.5em}2026-07-15}
+\date{\vspace{-2.5em}2026-09-24}
 
 \begin{document}
 \maketitle
@@ -2889,6 +2889,277 @@ For the explanation of statistical methods in microbial ecology, please read the
   plot\_group\_distance(): manipulating \texttt{object\$res\_group\_distance\_diff} can control what statistical results are presented in the plot.
 \end{itemize}
 
+\section{trans\_rarefy class}\label{trans_rarefy-class}
+
+The class trans\_rarefy can be used for the rarefaction and the following plotting to see whether
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+Rarefying a community means to repeatedly subsample a fixed number of reads from each sample, so that
+all the samples become comparable in sequencing depth, and the alpha diversity is recalculated after
+each rarefying.
+The resulting curve, i.e.~the rarefaction curve, usually rises steeply in the low-depth region and then
+flattens out once the sequencing depth is enough to cover most of the species in the community.
+The class is a wrapper of two other classes: the rarefying is performed by the \texttt{norm} function of the
+\texttt{trans\_norm} class, and the alpha diversity is calculated by the \texttt{cal\_alphadiv} function of the
+\texttt{microtable} class, in which the measurements are computed by the vegan package \citep{Jari_vegan_2019}.
+All the results shown in this section were checked with microeco v2.4.0.
+
+\subsection{Example}\label{example-4}
+
+The \texttt{alphadiv} parameter accepts one or more alpha diversity measurements, and \texttt{"Observed"} means the
+observed species number, i.e.~the richness.
+The \texttt{depth} parameter determines at which sequencing depths the data are rarefied.
+The rarefying and the calculation of the alpha diversity are run once per depth.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{data}\NormalTok{(sample\_info\_16S)}
+\FunctionTok{data}\NormalTok{(otu\_table\_16S)}
+\CommentTok{\# set.seed is used to fix the random number generation to make the results repeatable}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{tmp }\OtherTok{\textless{}{-}}\NormalTok{ microtable}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{sample\_table =}\NormalTok{ sample\_info\_16S, }\AttributeTok{otu\_table =}\NormalTok{ otu\_table\_16S)}
+\NormalTok{tmp}\SpecialCharTok{$}\FunctionTok{tidy\_dataset}\NormalTok{()}
+\CommentTok{\# trans\_rarefy class: rarefy the data at the provided depths and calculate the alpha diversity}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{10000}\NormalTok{, }\DecValTok{15000}\NormalTok{, }\DecValTok{20000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+As the \texttt{norm} function removes the features and the samples that do not survive the random subsampling,
+several messages are printed for each depth.
+The expected messages are (truncated):
+
+\begin{verbatim}
+Rarefy data at depth 10 ...
+12915 features are removed because they are no longer present in any sample after random subsampling ...
+12915 taxa with 0 abundance are removed from the otu_table ...
+Rarefy data at depth 50 ...
+11235 features are removed because they are no longer present in any sample after random subsampling ...
+11235 taxa with 0 abundance are removed from the otu_table ...
+...
+Rarefy data at depth 15000 ...
+36 samples are removed because of fewer reads than input sample.size ...
+246 taxa with 0 abundance are removed from the otu_table ...
+246 features with 0 abundance are removed after filtering samples ...
+569 features are removed because they are no longer present in any sample after random subsampling ...
+569 taxa with 0 abundance are removed from the otu_table ...
+Rarefy data at depth 20000 ...
+65 samples are removed because of fewer reads than input sample.size ...
+...
+The rarefied data is stored in object$res_rarefy ...
+\end{verbatim}
+
+The result is a data.frame stored in \texttt{t1\$res\_rarefy}, and the measurements and depths used are also
+saved in the object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# return t1$res\_rarefy; SampleID: sample name, seqnum: rarefying depth}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_rarefy)}
+\CommentTok{\# the measurements and depths used}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{measure}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{depth}
+\CommentTok{\# the print method of the class}
+\NormalTok{t1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  SampleID seqnum Observed
+1       S1      0        0
+2       S2      0        0
+3       S3      0        0
+4       S4      0        0
+5       S5      0        0
+6       S6      0        0
+[1] "Observed"
+[1]     0    10    50   500  2000  6000 10000 15000 20000
+trans_rarefy class:
+The measures used: Observed 
+res_rarefy have been calculated at depths: 0, 10, 50, 500, 2000, 6000, 10000, 15000, 20000 
+\end{verbatim}
+
+Some important details:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{depth\ =\ 0} is a special value: the data are not rarefied and all the diversity values are directly set
+  to 0, so it works as the common starting point of the curve.
+\item
+  The sample sums of the example data range from 10364 to 37374, so all the depths used here are available
+  for every sample.
+\item
+  For a sample whose sequencing depth is smaller than the rarefying depth, the sample is removed by the
+  \texttt{norm} function, so it is absent at this depth and its curve stops earlier.
+  In this example the numbers of retained samples are 90 at the depths 0-10000, 54 at 15000 and 25 at
+  20000, so \texttt{t1\$res\_rarefy} has 709 rows in total.
+\item
+  The rarefying is a random subsampling, but the results are repeatable, as the \texttt{norm} function fixes the
+  random seed (\texttt{rngseed\ =\ 123} by default); see the following More options section.
+\end{itemize}
+
+Then the rarefaction curve can be plotted directly with the \texttt{plot\_rarefy} function, which returns a
+ggplot object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the color parameter can be any column name of the sample\_table}
+\NormalTok{p1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{p1}
+\CommentTok{\# use a fitted curve instead of the points and lines}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{p2}
+\CommentTok{\# show the sample names at the end of the curves}
+\NormalTok{p3 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{show\_samplename =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color\_values =} \FunctionTok{rep}\NormalTok{(}\StringTok{"grey70"}\NormalTok{, }\DecValTok{100}\NormalTok{), }\AttributeTok{show\_legend =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{p3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=600px]{Images/tcr_plot_rarefy_group} \end{center}
+
+\begin{center}\includegraphics[width=600px]{Images/tcr_plot_rarefy_fitting} \end{center}
+
+\begin{center}\includegraphics[width=600px]{Images/tcr_plot_rarefy_samplename} \end{center}
+
+\texttt{color} defaults to \texttt{"SampleID"}; \texttt{"Group"} is used in the first two plots just to keep the legend
+readable.
+In the third plot all the curves are drawn in grey and each sample is labelled at its own last available
+depth.
+As the label colours are taken from \texttt{color\_values}, don't forget to provide enough colours; if the colours
+provided are fewer than the groups, the class prints a message and expands them automatically by colour
+interpolation.
+
+\subsection{More options}\label{more-options}
+
+\subsubsection{Multiple measurements at the same time}\label{multiple-measurements-at-the-same-time}
+
+One or more measurements can be calculated in the same rarefying process, so that they share the same
+rarefied data and no extra random subsampling is needed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \FunctionTok{c}\NormalTok{(}\StringTok{"Observed"}\NormalTok{, }\StringTok{"Shannon"}\NormalTok{), }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{2000}\NormalTok{, }\DecValTok{6000}\NormalTok{, }\DecValTok{10000}\NormalTok{, }\DecValTok{15000}\NormalTok{))}
+\CommentTok{\# the plot is faceted by the measurements when more than one measurement is used}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{)}
+\CommentTok{\# only one of the measurements can be shown with the measure parameter}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{measure =} \StringTok{"Shannon"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/tcr_plot_rarefy_measures} \end{center}
+
+When multiple measurements are used, each measurement is shown in its own panel with a free y axis
+(\texttt{facet\_wrap(\textasciitilde{}\ measure,\ scales\ =\ "free\_y")}) and the y axis title defaults to \texttt{"Value"}.
+The names of the measurements are case-insensitive, and both the long names and the short names used in
+the vegan package are accepted, e.g.~\texttt{"Observed"}/\texttt{"s.obs"}, \texttt{"Chao1"}/\texttt{"s.chao1"}, \texttt{"ACE"}/\texttt{"s.ace"}.
+The available measurements are Observed, Coverage, Chao1, ACE, Shannon, Simpson, InvSimpson, Fisher,
+Pielou and PD.
+
+\subsubsection{Automatic generation of the depths}\label{automatic-generation-of-the-depths}
+
+When \texttt{depth} is not provided, a sequence of 10 depths ranging from 0 to the maximum of the sample sums is
+generated automatically with a quadratic spacing.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the depth is generated automatically when it is not provided}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{depth}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+The parameter depth is not provided! Use the automatically generated depths: 0, 461, 1846, 4153, 7383, 11535, 16611, 22609, 29530, 37374 ...
+[1]     0   461  1846  4153  7383 11535 16611 22609 29530 37374
+\end{verbatim}
+
+The depths are calculated as \texttt{round(max(sample\_sums)\ *\ seq(0,\ 1,\ length.out\ =\ 10)\^{}2)}, i.e.~the intervals
+become larger and larger.
+Such a spacing puts more depths in the low-depth region, where the curve rises steeply, and fewer in the
+high-depth region, where the curve has already become flat.
+The default measurement is \texttt{"Shannon"} when \texttt{alphadiv} is not provided.
+
+\subsubsection{Alternative rarefying method}\label{alternative-rarefying-method}
+
+The \texttt{method} and \texttt{rngseed} parameters are passed to the \texttt{norm} function of the \texttt{trans\_norm} class.
+Besides the default \texttt{"rarefy"}, the \texttt{"SRS"} method (scaling with ranked subsampling) is available and can
+be used to avoid the information loss of the classic rarefaction \citep{Beule_normalization_2020}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# "SRS" is the scaling with ranked subsampling method}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2000}\NormalTok{), }\AttributeTok{method =} \StringTok{"SRS"}\NormalTok{)}
+\CommentTok{\# change the random seed used by the subsampling; the rarefying is repeatable for a fixed seed}
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_rarefy}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(tmp, }\AttributeTok{alphadiv =} \StringTok{"Observed"}\NormalTok{, }\AttributeTok{depth =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2000}\NormalTok{), }\AttributeTok{rngseed =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that \texttt{sample.size} in \texttt{...} is ignored, as the library size is controlled by the \texttt{depth} parameter;
+a message is printed when it is provided.
+
+\subsubsection{Plot adjustments}\label{plot-adjustments}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# axes titles, legend and the size and transparency of the points}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{x\_axis\_title =} \StringTok{"Sequencing depth"}\NormalTok{, }\AttributeTok{y\_axis\_title =} \StringTok{"Observed richness"}\NormalTok{,}
+  \AttributeTok{show\_point =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{point\_size =}\NormalTok{ .}\DecValTok{5}\NormalTok{, }\AttributeTok{point\_alpha =}\NormalTok{ .}\DecValTok{8}\NormalTok{)}
+\CommentTok{\# the parameters in ... are passed to geom\_line (add\_fitting = FALSE) or geom\_smooth (add\_fitting = TRUE)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{, }\AttributeTok{alpha =}\NormalTok{ .}\DecValTok{5}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{, }\AttributeTok{show\_point =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add\_fitting =} \ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{fitting\_method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{fitting\_formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x)}
+\CommentTok{\# the returned object is a ggplot, so it can be further customized}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_rarefy}\NormalTok{(}\AttributeTok{color =} \StringTok{"Group"}\NormalTok{) }\SpecialCharTok{+}\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{add\_fitting\ =\ TRUE} fits the curve with \texttt{ggplot2::geom\_smooth}; the default \texttt{fitting\_method\ =\ "lm"} and
+\texttt{fitting\_formula\ =\ y\ \textasciitilde{}\ log(x\ +\ 1)} avoid the warnings of the default \texttt{"loess"} method, as there are
+usually only a few depths for each sample.
+Note that \texttt{x\ +\ 1} is used instead of \texttt{x} in the default formula, because the depth 0 makes \texttt{log(x)}
+invalid.
+The \texttt{se} argument of \texttt{geom\_smooth} is fixed to \texttt{FALSE} inside the class, so passing \texttt{se} in \texttt{...} raises
+an error when \texttt{add\_fitting\ =\ TRUE}.
+
+\subsection{Key points}\label{key-points-5}
+
+\begin{itemize}
+\tightlist
+\item
+  The class is a wrapper: the rarefying comes from \texttt{trans\_norm\$norm} and the alpha diversity from
+  \texttt{microtable\$cal\_alphadiv}; one rarefied \texttt{microtable} object is rebuilt from the original data at each
+  depth, so the rarefying at different depths is independent.
+\item
+  \texttt{depth\ =\ 0} is kept as an artificial starting point of the curve, where all the diversity values are 0
+  rather than the real values of the original data.
+\item
+  The \texttt{depth} values must be non-negative integers and not larger than \texttt{max(dataset\$sample\_sums())};
+  duplicated values are removed and the depths are sorted internally.
+\item
+  Samples are removed at the depths larger than their own sequencing depth, so the curves are interrupted
+  and the number of rows per depth decreases; the total number of rows of \texttt{res\_rarefy} is therefore
+  smaller than \texttt{length(depth)\ *\ n\_samples}.
+\item
+  Rarefying is random but repeatable: \texttt{rngseed\ =\ 123} by default, and the results are identical for the
+  same seed.
+\item
+  Very low depths should be used with care: the \texttt{"Fisher"} measurement may be unavailable, and \texttt{"Pielou"}
+  returns \texttt{NaN} when only one species is present at a depth. The class prints a message listing the
+  measurements and the number of rows with missing values, e.g.~\texttt{Pielou\ (90\ rows)} at depth 1 for the
+  example data.
+\item
+  \texttt{alphadiv} is case-insensitive; the available measurements are Observed, Coverage, Chao1, ACE, Shannon,
+  Simpson, InvSimpson, Fisher, Pielou and PD.
+\item
+  Parameters in \texttt{...} of \texttt{new} are passed to the \texttt{norm} function, such as \texttt{method}, \texttt{rngseed} and
+  \texttt{replace}, except \texttt{sample.size}, which is controlled by \texttt{depth}.
+\item
+  \texttt{color} of \texttt{plot\_rarefy} can be any column of \texttt{sample\_table} and defaults to \texttt{"SampleID"};
+  \texttt{color\_values} are expanded automatically when they are not enough.
+\item
+  \texttt{plot\_rarefy} returns a ggplot object, so the plot can be further customized with the ggplot2 syntax.
+\end{itemize}
+
 \chapter{Model-based class}\label{model-based-class}
 
 All the classes with complex models are grouped into this section.
@@ -2915,7 +3186,7 @@ it is feasible to compare the results from different approaches and extract a pa
 Note: The methods for invoking \texttt{otu\_table} are primarily designed for differential abundance analysis of ASVs/OTUs (or Genes).
 These methods for invoking \texttt{taxa\_abund} list are recommended for analyses at higher taxonomic levels (such as Genus or Phylum).
 
-\subsection{Example}\label{example-4}
+\subsection{Example}\label{example-5}
 
 All the differential test result is stored in the \texttt{object\$res\_diff}.
 LEfSe combines the non-parametric test and linear discriminant analysis \citep{Segata_Metagenomic_2011}.
@@ -3172,7 +3443,7 @@ The method \texttt{linda} \citep{LinDA_Zhou_2022} depends on the MicrobiomeStat 
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{More options}\label{more-options}
+\subsection{More options}\label{more-options-1}
 
 The dependence packages in the following examples are not mentioned in the previous package dependence part (\url{https://chiliubio.github.io/microeco_tutorial/intro.html\#dependence}).
 The methods \texttt{DESeq2} and \texttt{edgeR} are also supported in the trans\_diff class and no longer demonstrated here.
@@ -3217,7 +3488,7 @@ Let's run two-way anova for more usages of heatmap.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Key points}\label{key-points-5}
+\subsection{Key points}\label{key-points-6}
 
 \begin{itemize}
 \tightlist
@@ -3251,7 +3522,7 @@ In this part, we describe part of the implemented methods in the trans\_network 
 The objects inside the rectangle with full line represent functions.
 The dashed line denotes the key objects (input or output). The \texttt{res\_network} inside the ellipse with dashed line means it is a hub object for other analysis.
 
-\subsection{Example}\label{example-5}
+\subsection{Example}\label{example-6}
 
 The correlation-based network is selected to show the main operations.
 This is only intended to show some operations conveniently.
@@ -3644,7 +3915,7 @@ Please see \url{https://github.com/CSB5/BEEM-static} for installing the R beemSt
 To compare different networks from trans\_network class,
 please see the meconetcomp package chapter (\url{https://chiliubio.github.io/microeco_tutorial/meconetcomp-package.html}).
 
-\subsection{Key points}\label{key-points-6}
+\subsection{Key points}\label{key-points-7}
 
 \begin{itemize}
 \tightlist
@@ -3679,7 +3950,7 @@ in which the change of phylogenetic signal is intuitional and clear compared to 
 The combinations between RCbray and betaNTI can be used to infer the strength of each ecological process dominating the community assembly
 under the specific hypothesis \citep{Stegen_Quantifying_2013}.
 
-\subsection{Example}\label{example-6}
+\subsection{Example}\label{example-7}
 
 We first check the phylogenetic signal.
 
@@ -3892,7 +4163,7 @@ including `tNST' and `pNST' methods.
 \end{verbatim}
 
 \begin{verbatim}
-## Now randomizing by parallel computing. Begin at Wed Jul 15 14:19:32 2026. Please wait...
+## Now randomizing by parallel computing. Begin at Thu Sep 24 15:12:16 2026. Please wait...
 \end{verbatim}
 
 \begin{verbatim}
@@ -3925,9 +4196,9 @@ SES.i.bray
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-IW & 435 & 0.555 & 0.29 & 0.3007 & 19.9 \\
-CW & 435 & 0.5887 & 0.3136 & 0.318 & 24.28 \\
-TW & 435 & 0.5827 & 0.3602 & 0.3671 & 17.18 \\
+IW & 435 & 0.5551 & 0.2906 & 0.3008 & 19.99 \\
+CW & 435 & 0.5885 & 0.3134 & 0.3177 & 24.61 \\
+TW & 435 & 0.5825 & 0.3601 & 0.367 & 17.27 \\
 \end{longtable}
 }
 
@@ -3963,7 +4234,7 @@ For nearest Taxon Index (NTI) and nearest Relative Index (NRI), please use cal\_
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Key points}\label{key-points-7}
+\subsection{Key points}\label{key-points-8}
 
 \begin{itemize}
 \tightlist
@@ -4197,7 +4468,7 @@ The regression is also supported.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Key points}\label{key-points-8}
+\subsection{Key points}\label{key-points-9}
 
 \begin{itemize}
 \tightlist
@@ -4225,7 +4496,7 @@ as environmental factors, microbial functions and metabolites can be generally a
 There may be some NA (missing value) in the user's env data.
 If so, please add \texttt{complete\_na\ =\ TRUE} for the interpolation when creating a trans\_env object.
 
-\subsection{Example}\label{example-7}
+\subsection{Example}\label{example-8}
 
 Creating trans\_env object has at least two ways.
 The following is using additional environmental data which is not in the microtable object.
@@ -4288,6 +4559,11 @@ The \texttt{cal\_diff} function is used to test the significance of variables ac
 \end{Shaded}
 
 \begin{verbatim}
+## Warning: NaNs produced
+## Warning: NaNs produced
+\end{verbatim}
+
+\begin{verbatim}
 ## The result is stored in object$res_diff ...
 \end{verbatim}
 
@@ -4297,7 +4573,7 @@ The \texttt{cal\_diff} function is used to test the significance of variables ac
   >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2222}}
   >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1111}}
   >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}
-  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2083}}@{}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2361}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
 Comparison
@@ -4308,19 +4584,19 @@ Group
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 P.adj
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Significance
+log2FoldChange
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-IW - CW & Temperature & CW & 3.283e-10 & *** \\
-IW - TW & Temperature & TW & 0.0001958 & *** \\
-CW - TW & Temperature & CW & 3.283e-10 & *** \\
-IW - CW & Precipitation & CW & 5.239e-09 & *** \\
-IW - TW & Precipitation & IW & 0.07758 & ns \\
-CW - TW & Precipitation & CW & 4.002e-07 & *** \\
-IW - CW & TOC & IW & 0.4687 & ns \\
+IW - CW & Temperature & CW & 3.283e-10 & NA \\
+IW - TW & Temperature & TW & 0.0001958 & NA \\
+CW - TW & Temperature & CW & 3.283e-10 & 2.712 \\
+IW - CW & Precipitation & CW & 5.239e-09 & -1.491 \\
+IW - TW & Precipitation & IW & 0.07758 & 0.2278 \\
+CW - TW & Precipitation & CW & 4.002e-07 & 1.719 \\
+IW - CW & TOC & IW & 0.4687 & 0.6371 \\
 \end{longtable}
 }
 
@@ -4693,7 +4969,7 @@ Other examples:
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Key points}\label{key-points-9}
+\subsection{Key points}\label{key-points-10}
 
 \begin{itemize}
 \tightlist
@@ -4725,7 +5001,7 @@ The NJC19 database \citep{Lim_Large_2020} is also available for animal-associate
 We also implement the FUNGuild \citep{Nguyen_FUNGuild_2016} and FungalTraits \citep{Polme_FungalTraits_2020} databases to predict the fungal traits.
 The idea identifying prokaryotic traits and functional redundancy was initially inspired by our another study \citep{Liu_Microbial_2022}.
 
-\subsection{Example}\label{example-8}
+\subsection{Example}\label{example-9}
 
 We first identify/predict traits of taxa with the prokaryotic example data.
 
@@ -4970,7 +5246,7 @@ The main difference on operations between these two methods lies in the file rea
 PICRUSt2 requires reading the preliminary analysis result files.
 We have placed PICRUSt2 examples in the file2meco package section (\url{https://chiliubio.github.io/microeco_tutorial/file2meco-package.html\#picrust2}).
 
-\subsection{Key points}\label{key-points-10}
+\subsection{Key points}\label{key-points-11}
 
 \begin{itemize}
 \tightlist
@@ -5366,6 +5642,1148 @@ Demonstrations are provided using sample datasets herein.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=800px]{Images/Phylotree_addringbatch} \end{center}
+
+\chapter{trans\_multiomics and trans\_mst class}\label{trans_multiomics-and-trans_mst-class}
+
+\section{trans\_multiomics class}\label{trans_multiomics-class}
+
+The \texttt{trans\_multiomics} class integrates two or more omics data sets (typically a microbiome \texttt{microtable} plus one or more other \texttt{microtable} objects such as metabolome or transcriptome) and provides a complete supervised/unsupervised multi-block workflow powered by the \texttt{mixOmics} package \citep{Rohart_mixOmics_2017}.
+It wraps the most common \texttt{mixOmics} models (\texttt{block.splsda}, \texttt{block.spls}, \texttt{spls}) and adds several analysis layers that are useful in microbiome studies: cross-omics feature extraction and stability, a trans-kingdom correlation network (TkNA-style) with a bridge to the \texttt{trans\_network} class, mediation analysis (bridging to the \texttt{multimedia} package), and exporters for knowledge-driven mechanism tools (MIMOSA2 / AMON / anansi).
+
+\begin{center}\includegraphics[width=750px]{Images/trans_multiomics_overview} \end{center}
+
+As with the other classes of \texttt{microeco}, each method returns the object itself (invisibly), so the steps can be chained with \texttt{\$}, and every intermediate result is kept in the object, for example \texttt{data\_list}, \texttt{model}, \texttt{perf\_result}, \texttt{res\_features}, \texttt{res\_stability}, \texttt{res\_transkingdom} and \texttt{res\_mediation}.
+The example below follows the whole pipeline on the two omics data sets shipped with \texttt{microeco}: prokaryotic amplicon sequencing and untargeted metabolomics from the same agricultural field experiment.
+All the results shown in this section were checked with microeco 2.4.0 and mixOmics 6.36.0.
+
+\subsection{Prerequisites}\label{prerequisites}
+
+Install the required packages first.
+\texttt{mixOmics} is on Bioconductor; \texttt{multimedia} is only needed for the mediation analysis section and can be skipped if you do not use it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"microeco"}\NormalTok{)}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"mixOmics"}\NormalTok{)}
+\CommentTok{\# optional, only for mediation analysis}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"multimedia"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Prepare the example data}\label{prepare-the-example-data-1}
+
+The example uses two data sets shipped with \texttt{microeco}: \texttt{soil\_microb} (prokaryotic amplicon sequencing, 1245 taxa x 90 samples) and \texttt{soil\_metab} (untargeted metabolomics, 160 metabolites x 60 samples).
+Both come from the same agricultural field experiment with crop rotation and fertilization treatments and share 60 samples across six treatment groups \citep{Liu_microeco_2021, Liu_workflow_2026}.
+
+Each omics layer must be a \texttt{microtable} object.
+The \texttt{sample\_table} must contain a grouping column (e.g.~\texttt{Group}) that will be used as the supervised response \texttt{Y} in DIABLO.
+The names of the list become the block names in \texttt{mixOmics}.
+For your own data, create one \texttt{microtable} per omics layer (see the microtable class section) and pass them as a named list.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(microeco)}
+\FunctionTok{library}\NormalTok{(mixOmics)}
+\FunctionTok{data}\NormalTok{(soil\_microb)}
+\FunctionTok{data}\NormalTok{(soil\_metab)}
+\CommentTok{\# soil\_microb: 1245 taxa x 90 samples; soil\_metab: 160 metabolites x 60 samples}
+\CommentTok{\# both share 60 samples from the same field experiment}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Create the trans\_multiomics object}\label{create-the-trans_multiomics-object}
+
+\texttt{trans\_multiomics\$new} takes a named list of \texttt{microtable} objects, aligns samples by intersection, and extracts the response \texttt{Y} from \texttt{group\_col} of the first \texttt{sample\_table}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_multiomics}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}
+  \AttributeTok{microtables =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =}\NormalTok{ soil\_microb, }\AttributeTok{metab =}\NormalTok{ soil\_metab),}
+  \AttributeTok{group\_col   =} \StringTok{"Group"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Expected messages:
+
+\begin{verbatim}
+30 sample(s) removed to align samples across all blocks (intersection) ...
+Multi-omics data loaded with 60 samples and 2 blocks: microb, metab ...
+\end{verbatim}
+
+Important details:
+
+\begin{itemize}
+\tightlist
+\item
+  Samples are aligned by \textbf{intersection} across all blocks.
+  The number in the message is the total number of sample rows dropped over all blocks, so here it is 30: the 30 samples occurring only in \texttt{soil\_microb} are removed while \texttt{soil\_metab} keeps its 60 samples.
+\item
+  \texttt{Y} must contain at least two levels.
+  You can also pass a named factor/character vector via the \texttt{group} argument to override \texttt{group\_col}.
+  A named vector is matched by sample name (a warning is issued if the names are missing and the samples are then matched by order).
+\item
+  The original \texttt{microtable} objects are deep-cloned inside the class so later changes to the user's data do not affect the model.
+  All preprocessing therefore happens on the cloned data.
+\end{itemize}
+
+\subsection{Preprocess the data}\label{preprocess-the-data}
+
+\texttt{preprocess\_data} reuses the \texttt{trans\_norm} machinery to apply a normalization method to each block.
+For compositional microbiome/metabolome data, \textbf{CLR (centered log-ratio) is recommended} because it removes the compositional constraint and produces values whose sum is zero within each sample.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{preprocess\_data}\NormalTok{(}
+  \AttributeTok{method      =} \StringTok{"clr"}\NormalTok{,      }\CommentTok{\# CLR transformation}
+  \AttributeTok{pseudocount =} \DecValTok{1}\NormalTok{,          }\CommentTok{\# added before log for zero values}
+  \AttributeTok{filter\_freq =} \FloatTok{0.2}         \CommentTok{\# keep features present in at least 20\% of samples}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The feature filtering is delegated to \texttt{microtable\$filter\_taxa}, so the usual filtering messages of the microtable class are printed first.
+Expected output (truncated):
+
+\begin{verbatim}
+Filter features for otu_table in the object ...
+Use converted freq integer: 12 for the following filtering ...
+Block 'microb': 60 samples x 1241 features after preprocessing ...
+Block 'metab': 60 samples x 144 features after preprocessing ...
+\end{verbatim}
+
+The processed matrices (rows are samples, columns are features) are stored in \texttt{t1\$data\_list} and will be passed to \texttt{mixOmics}.
+
+The argument \texttt{method} accepts any value supported by \texttt{trans\_norm\$norm} (e.g.~\texttt{"clr"}, \texttt{"rclr"}, \texttt{"css"}, \texttt{"tss"}, \texttt{"log"}).
+For \texttt{filter\_freq\ \textless{}\ 1}, the threshold is computed as \texttt{round(n\_samples\ *\ filter\_freq)} (here \texttt{0.2\ *\ 60\ =\ 12}); features observed in fewer samples than this threshold are removed.
+Pass an integer \textgreater= 1 if you prefer an absolute count threshold.
+\texttt{filter\_thres} adds a relative abundance threshold on the same call.
+Setting \texttt{filter\_freq\ =\ 1} and \texttt{filter\_thres\ =\ NULL} keeps all features.
+
+\subsection{Set the design matrix}\label{set-the-design-matrix}
+
+The design matrix specifies how strongly two blocks should be correlated.
+A small off-diagonal weight (e.g.~\texttt{0.1}) tends to favour classification accuracy, whereas \texttt{1} maximises the covariance between blocks and is more useful for exploratory association analysis \citep{Singh_DIABLO_2019}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_design}\NormalTok{(}\AttributeTok{weight =} \FloatTok{0.1}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{design}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+       microb metab
+microb    0.0   0.1
+metab     0.1   0.0
+\end{verbatim}
+
+You can also supply a full design matrix manually:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{design\_full }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{), }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{dimnames =} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"microb"}\NormalTok{, }\StringTok{"metab"}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\StringTok{"microb"}\NormalTok{, }\StringTok{"metab"}\NormalTok{)))}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_design}\NormalTok{(}\AttributeTok{design =}\NormalTok{ design\_full)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{set\_design}\NormalTok{(}\AttributeTok{weight =} \FloatTok{0.1}\NormalTok{)  }\CommentTok{\# reset to the default}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Supervised integration (block.splsda)}\label{supervised-integration-block.splsda}
+
+DIABLO \citep{Singh_DIABLO_2019} extends sparse PLS-DA to multiple data sets and selects correlated features across blocks that best discriminate the groups in \texttt{Y}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{run\_diablo}\NormalTok{(}
+  \AttributeTok{ncomp  =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{keepX  =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{), }\AttributeTok{metab =} \FunctionTok{c}\NormalTok{(}\DecValTok{15}\NormalTok{, }\DecValTok{15}\NormalTok{))}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The fitted model is stored in \texttt{t1\$model}.
+Its class is \texttt{block.splsda} and the latent components live on \texttt{comp1} and \texttt{comp2}.
+Choosing \texttt{keepX} requires balancing interpretability (small \texttt{keepX} -\textgreater{} sparse biomarker panels) and classification performance (larger \texttt{keepX} retains more signal).
+The rule of thumb ``5-20 features per block per component'' works well for tens of samples per group.
+The tuning section below shows how to choose \texttt{keepX} automatically.
+
+\subsection{Performance evaluation}\label{performance-evaluation}
+
+\texttt{eval\_performance} runs \texttt{mixOmics::perf} to estimate the classification error rate via cross-validation.
+\texttt{perf} aggregates the per-block predictions with four strategies: \texttt{AveragedPredict} and \texttt{WeightedPredict} average the predicted classes over the blocks, while \texttt{MajorityVote} and \texttt{WeightedVote} take the majority (or weighted majority) class over the blocks.
+The error rate of the two voting strategies is computed for each of the three distance metrics (\texttt{max.dist}, \texttt{centroids.dist}, \texttt{mahalanobis.dist}), so \texttt{MajorityVote.error.rate} and \texttt{WeightedVote.error.rate} are lists containing one matrix per distance metric, whereas \texttt{AveragedPredict.error.rate} and \texttt{WeightedPredict.error.rate} are single matrices (no distance is involved).
+Every one of those matrices has one row per predicted class plus an \texttt{Overall.ER} and an \texttt{Overall.BER} row, and one column per component.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{eval\_performance}\NormalTok{(}\AttributeTok{method =} \StringTok{"Mfold"}\NormalTok{, }\AttributeTok{folds =} \DecValTok{5}\NormalTok{, }\AttributeTok{nrepeat =} \DecValTok{1}\NormalTok{, }\AttributeTok{seed =} \DecValTok{123}\NormalTok{)}
+\CommentTok{\# overall balanced error rate (BER) across prediction strategies}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{perf\_result}\SpecialCharTok{$}\NormalTok{MajorityVote.error.rate}\SpecialCharTok{$}\NormalTok{centroids.dist[}\StringTok{"Overall.BER"}\NormalTok{, ]}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{perf\_result}\SpecialCharTok{$}\NormalTok{WeightedVote.error.rate}\SpecialCharTok{$}\NormalTok{centroids.dist[}\StringTok{"Overall.BER"}\NormalTok{, ]}
+\CommentTok{\# per{-}block error rate (which block is more informative?)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{perf\_result}\SpecialCharTok{$}\NormalTok{error.rate}\SpecialCharTok{$}\NormalTok{microb}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{perf\_result}\SpecialCharTok{$}\NormalTok{error.rate}\SpecialCharTok{$}\NormalTok{metab}
+\end{Highlighting}
+\end{Shaded}
+
+With our example data (\texttt{folds\ =\ 5,\ nrepeat\ =\ 1,\ seed\ =\ 123}) the WeightedVote BER drops from \texttt{0.533} (comp1) to \texttt{0.400} (comp2, centroids.dist) and further to \texttt{0.333} (mahalanobis.dist), while MajorityVote remains high because the majority vote is conservative on a six-class problem.
+BER values are cross-validated estimates, so they change with \texttt{folds}, \texttt{nrepeat} and \texttt{seed}; interpret the trend rather than the exact numbers.
+In practice, \textbf{WeightedVote or AveragedPredict} are usually more informative than MajorityVote when the class sizes are balanced.
+
+\texttt{error.rate} is a list with one matrix per block, each giving the error rate of that single block (rows: components, columns: distance metrics).
+It complements the four aggregated strategies above and helps to decide which block carries the classification signal.
+The cross-validation takes about 20 s for \texttt{folds\ =\ 5,\ nrepeat\ =\ 10} on 60 samples.
+
+Always set \texttt{seed} for reproducible cross-validation; the value is forwarded to \texttt{mixOmics} when supported (\textgreater= 6.3.2) and otherwise applied via \texttt{set.seed()}.
+
+\subsection{Feature selection stability}\label{feature-selection-stability}
+
+The features selected by a single DIABLO fit are subject to sampling noise.
+\texttt{get\_stability} averages the selection frequency across all folds and repeats of the cross-validation performed by \texttt{eval\_performance}, returning a tidy \texttt{data.frame} with columns \texttt{Feature}, \texttt{Block}, \texttt{Comp}, and \texttt{Stability} in \texttt{{[}0,\ 1{]}}.
+A stability close to \texttt{1} means the feature is robust across resamples; low stability suggests the feature may be an artefact of a particular data split \citep{Liquet_stability_2012}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# eval\_performance must be called first with folds/nrepeat \textgreater{} 1 for a meaningful stability}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{eval\_performance}\NormalTok{(}\AttributeTok{folds =} \DecValTok{5}\NormalTok{, }\AttributeTok{nrepeat =} \DecValTok{10}\NormalTok{, }\AttributeTok{seed =} \DecValTok{123}\NormalTok{)}
+\NormalTok{stab }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_stability}\NormalTok{()}
+\FunctionTok{head}\NormalTok{(stab, }\DecValTok{10}\NormalTok{)}
+\CommentTok{\# robust biomarker candidates on the first component}
+\FunctionTok{subset}\NormalTok{(stab, Comp }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ Stability }\SpecialCharTok{\textgreater{}=} \FloatTok{0.8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Typical output (truncated):
+
+\begin{verbatim}
+                            Feature  Block Comp Stability
+2  7acd7a55f455134030d80f19811abf4c microb    1      1.00
+3  9a39a41375516bcc9c073e73b57a86df microb    1      1.00
+91                     Elaidic acid  metab    1      1.00
+93                 arachidonic acid  metab    1      1.00
+94                       oleic acid  metab    1      1.00
+95                 palmitoleic acid  metab    1      1.00
+97                           ribose  metab    1      1.00
+5  dcebcca13a3e634371704c988df13605 microb    1      0.98
+96                        phosphate  metab    1      0.98
+1  15068cd31c9596bb39a69d9a28ba9bac microb    1      0.96
+\end{verbatim}
+
+The leading integers are the internal row indices of the assembled table and carry no meaning.
+
+With this example (\texttt{folds\ =\ 5,\ nrepeat\ =\ 10,\ seed\ =\ 123}), the subset on \texttt{Comp\ ==\ 1\ \&\ Stability\ \textgreater{}=\ 0.8} keeps 15 features on comp1.
+Increase \texttt{nrepeat} (e.g.~\texttt{50}) for publication-grade stability; \texttt{nrepeat\ =\ 1} only shows whether the feature survives all folds of a single split.
+
+Note that \texttt{get\_stability} needs the selection frequency table that \texttt{perf} stores in \texttt{perf\_result\$features\$stable}, so it requires a sparse model fitted with \texttt{keepX} and evaluated with \texttt{eval\_performance()}.
+
+\subsection{Hyperparameter tuning (keepX)}\label{hyperparameter-tuning-keepx}
+
+\texttt{mixOmics::tune.block.splsda} searches an optimal \texttt{keepX} per block per component via cross-validation.
+The class provides a thin wrapper \texttt{tune\_model}.
+When \texttt{test\_keepX} is not supplied, an adaptive grid of 5\%, 10\% and 20\% of the number of features per block is used.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{tune\_model}\NormalTok{(}
+  \AttributeTok{ncomp       =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{test\_keepX  =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{), }\AttributeTok{metab =} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{)),}
+  \AttributeTok{folds       =} \DecValTok{5}\NormalTok{,}
+  \AttributeTok{nrepeat     =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{seed        =} \DecValTok{123}
+\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{best\_keepX}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+$microb
+[1] 20 20
+
+$metab
+[1] 20  5
+\end{verbatim}
+
+The optimal \texttt{keepX} is stored in \texttt{t1\$best\_keepX} and can be reused to refit the model.
+As a refit replaces every panel computed from the object, the refitted model is built in a separate copy here, so that the results in the following sections remain reproducible with the initial \texttt{keepX} of the supervised integration section.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# refit with the tuned keepX in a copy of the object}
+\NormalTok{t1\_tuned }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{clone}\NormalTok{(}\AttributeTok{deep =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{t1\_tuned}\SpecialCharTok{$}\FunctionTok{run\_diablo}\NormalTok{(}\AttributeTok{ncomp =} \DecValTok{2}\NormalTok{, }\AttributeTok{keepX =}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{best\_keepX)}
+\NormalTok{t1\_tuned}\SpecialCharTok{$}\FunctionTok{get\_features}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)   }\CommentTok{\# 40 features on comp1 (20 + 20) instead of 25}
+\end{Highlighting}
+\end{Shaded}
+
+Run the same refit directly on \texttt{t1} (i.e.~without the copy) if you want the tuned model to become the working model; the feature panels and the correlation matrix shown below will then change accordingly.
+
+Notes and pitfalls:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{mixOmics} does not provide a tune function for the unsupervised \texttt{block.spls}, so \texttt{method} must be \texttt{"block.splsda"} (which requires \texttt{Y}).
+\item
+  \texttt{folds} must not exceed the smallest class size; with ten samples per group \texttt{folds\ \textless{}=\ 10}.
+\item
+  The grid search cost grows multiplicatively with the number of candidate values per block.
+  A 3 x 3 grid with \texttt{folds\ =\ 5}, \texttt{nrepeat\ =\ 1} and 60 samples takes \textasciitilde10 s on a laptop; increase \texttt{nrepeat} only when you really need it.
+\end{itemize}
+
+\subsection{Feature extraction and cross-block correlation}\label{feature-extraction-and-cross-block-correlation}
+
+After a DIABLO fit, \texttt{get\_features} extracts the selected variables on each component and returns a tidy \texttt{data.frame} sorted by the absolute loading.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{features }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_features}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(features)}
+\FunctionTok{table}\NormalTok{(features}\SpecialCharTok{$}\NormalTok{Block)}
+\CommentTok{\# comp = 2}
+\NormalTok{features2 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_features}\NormalTok{(}\AttributeTok{comp =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(features2, }\DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Typical output:
+
+\begin{verbatim}
+                           Feature  Block Comp Loading_value
+11                palmitoleic acid  metab    1     0.6524757
+1  9a39a41375516bcc9c073e73b57a86df microb    1    -0.6001810
+2  dcebcca13a3e634371704c988df13605 microb    1    -0.4671889
+...
+\end{verbatim}
+
+Again the leading integers are the internal row indices of the table.
+
+\texttt{get\_correlation} returns the cross-block similarity matrix of the selected features on a component, thresholded by an absolute cutoff.
+The result is stored in \texttt{t1\$res\_correlation} and can be exported for downstream network or pathway analyses.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cm }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_correlation}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{cutoff =} \FloatTok{0.7}\NormalTok{)}
+\FunctionTok{dim}\NormalTok{(cm)   }\CommentTok{\# 10 rows x 15 cols in this example (microb x metab)}
+\FunctionTok{range}\NormalTok{(cm)}
+\end{Highlighting}
+\end{Shaded}
+
+Note: in \texttt{mixOmics} \textgreater= 6.x the returned similarity matrix has \texttt{colnames} but \texttt{rownames} may be \texttt{NULL}; the rows correspond to the selected features of the first block and the order follows \texttt{mixOmics::selectVar}.
+The column names carry the block name as a suffix (e.g.~\texttt{palmitoleic\ acid\_metab}), because \texttt{mixOmics::network} labels the variables by block.
+Restore the names manually if you need them:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.null}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(cm))) \{}
+\NormalTok{  sel }\OtherTok{\textless{}{-}}\NormalTok{ mixOmics}\SpecialCharTok{::}\FunctionTok{selectVar}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{model, }\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{block =} \StringTok{"microb"}\NormalTok{)}
+  \FunctionTok{rownames}\NormalTok{(cm) }\OtherTok{\textless{}{-}}\NormalTok{ sel}\SpecialCharTok{$}\NormalTok{microb}\SpecialCharTok{$}\NormalTok{name}
+\NormalTok{\}}
+\CommentTok{\# remove the "\_\textless{}block\textgreater{}" suffix from the column names}
+\FunctionTok{colnames}\NormalTok{(cm) }\OtherTok{\textless{}{-}} \FunctionTok{sub}\NormalTok{(}\StringTok{"\_metab$"}\NormalTok{, }\StringTok{""}\NormalTok{, }\FunctionTok{colnames}\NormalTok{(cm))}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{mixOmics::network} opens a graphics device internally even though no plot is requested, so a stray \texttt{Rplots.pdf} may appear in the working directory; it can simply be deleted.
+
+\subsection{Visualizations}\label{visualizations}
+
+\subsubsection{Sample projection}\label{sample-projection}
+
+\texttt{plot\_samples} calls \texttt{mixOmics::plotIndiv} with \texttt{style\ =\ "ggplot2"} and returns a \texttt{ggplot} object that can be customised with \texttt{+\ theme\_xx()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_samples}\NormalTok{(}\AttributeTok{comp =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }\AttributeTok{blocks =} \StringTok{"average"}\NormalTok{, }\AttributeTok{ellipse =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{p1}
+\NormalTok{p1b }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_samples}\NormalTok{(}\AttributeTok{comp =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }\AttributeTok{blocks =} \StringTok{"microb"}\NormalTok{, }\AttributeTok{ellipse =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{p1b}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{blocks\ =\ "average"} plots the consensus components (weighted average across all blocks), which is the standard view to check whether the blocks separate the groups jointly.
+Pick a single block name/index to inspect the within-block projection.
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_samples} \end{center}
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_samples_microb} \end{center}
+
+\subsubsection{Variable loadings}\label{variable-loadings}
+
+\texttt{plot\_loadings} calls \texttt{mixOmics::plotLoadings} and draws a bar plot of the loadings on the current graphics device.
+The function returns the loading values as a \texttt{list} (one element per block, each a \texttt{data.frame} with the columns \texttt{importance} and \texttt{names}), \textbf{not} a \texttt{ggplot} object, so use it directly without \texttt{ggsave()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_loadings}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{block =} \StringTok{"microb"}\NormalTok{)}
+\NormalTok{loadings }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{plot\_loadings}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{block =} \StringTok{"metab"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(loadings}\SpecialCharTok{$}\NormalTok{metab)  }\CommentTok{\# the loading values}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{block} argument must always be given for the multi-block models; the default \texttt{NULL} is not resolved to the first block and raises an error.
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_loadings} \end{center}
+
+\subsubsection{DIABLO diagnostic plot}\label{diablo-diagnostic-plot}
+
+\texttt{plot\_diablo} shows the correlation between the latent components of each block on the specified \texttt{ncomp}.
+The lower panel gives the Pearson correlation coefficient and the upper panel the corresponding scatter plot, so the plot is used to check whether DIABLO succeeded in maximising the correlation between the components of the different blocks \citep{Singh_DIABLO_2019}.
+Note that the design weight is a link weight and not the expected correlation value: the paired components of the two blocks are correlated by \texttt{0.75} and \texttt{0.61} here with \texttt{weight\ =\ 0.1}, i.e.~well above the design value.
+Raising the weight to \texttt{1} enforces the link more strongly and usually increases the correlation of the paired components.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_diablo}\NormalTok{(}\AttributeTok{ncomp =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_diablo} \end{center}
+
+\subsubsection{Relevance network and circos plot}\label{relevance-network-and-circos-plot}
+
+\texttt{plot\_cor\_network} displays the cross-block correlation network of the selected features, thresholded by \texttt{cutoff}.
+\texttt{plot\_circos} shows the same information in a circos layout.
+Both rely on the underlying \texttt{mixOmics::network} and \texttt{mixOmics::circosPlot}; pass additional arguments through \texttt{...} when needed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_cor\_network}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{cutoff =} \FloatTok{0.7}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_circos}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{, }\AttributeTok{cutoff =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The default \texttt{cutoff\ =\ 0.7} requires that at least some of the selected features are correlated above \texttt{0.7}; \texttt{mixOmics} stops when the cutoff exceeds the largest value of the similarity matrix.
+Check \texttt{range(t1\$get\_correlation(comp\ =\ 1))} (here \texttt{-0.85} to \texttt{0.78}) and lower the cutoff when the panel is only weakly correlated.
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_cor_network} \end{center}
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_circos} \end{center}
+
+\subsubsection{Clustered image map}\label{clustered-image-map}
+
+\texttt{plot\_heatmap} calls \texttt{mixOmics::cimDiablo} to draw a clustered image map (CIM) of the selected features across samples.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_heatmap}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_heatmap} \end{center}
+
+\subsubsection{Per-class AUC}\label{per-class-auc}
+
+\texttt{cal\_auroc} runs \texttt{mixOmics::auroc} for each block and each component, returning per-class AUCs and a \texttt{ggplot} ROC plot.
+The function detects the correct \texttt{roc.comp} vs \texttt{comp} argument name across \texttt{mixOmics} versions, so it is safe to use with both 6.3.x and 6.4.x.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{au }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{cal\_auroc}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)}
+\NormalTok{au}\SpecialCharTok{$}\NormalTok{metab  }\CommentTok{\# AUC for the metabolome block on each class (vs all others)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+$comp1
+                      AUC   p-value
+CC-CK vs Other(s)   0.712 3.550e-02
+CC-NPK vs Other(s)  0.644 1.532e-01
+CC-NPKS vs Other(s) 0.624 2.188e-01
+RC-CK vs Other(s)   0.932 1.832e-05   # RC-CK is best separated by metabolites
+RC-NPK vs Other(s)  0.706 4.105e-02
+RC-NPKS vs Other(s) 0.670 9.179e-02
+\end{verbatim}
+
+The AUC tables of all blocks are the list elements named after the blocks (\texttt{au\$microb}, \texttt{au\$metab}), one table per component.
+The ROC plot is stored separately as \texttt{au\$graph.\textless{}block\textgreater{}} (a list with one \texttt{ggplot} per component).
+\texttt{mixOmics::auroc} only builds the plot of the first block by default, so use \texttt{au\$graph.microb}; pass \texttt{roc.block\ =\ 2} to \texttt{cal\_auroc} to get the plot of the second block instead.
+
+\subsection{Unsupervised alternatives}\label{unsupervised-alternatives}
+
+When no grouping is available, or when the goal is to explore the covariance structure between two data sets rather than to classify samples, use the unsupervised \texttt{block.spls} or \texttt{spls} engines.
+
+\texttt{run\_spls} performs multi-block sparse PLS.
+Because \texttt{mixOmics::block.spls} requires a numeric response matrix, one block must be designated as the response via \texttt{Y\_block} (passed internally as \texttt{indY}).
+In that case \texttt{keepX} must be supplied for \textbf{all} blocks (including the response block) because \texttt{mixOmics} ignores \texttt{keepY} when \texttt{indY} is used.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t2 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_multiomics}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}
+  \AttributeTok{microtables =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =}\NormalTok{ soil\_microb, }\AttributeTok{metab =}\NormalTok{ soil\_metab),}
+  \AttributeTok{group       =} \ConstantTok{NULL}\NormalTok{,}
+  \AttributeTok{group\_col   =} \ConstantTok{NULL}
+\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{preprocess\_data}\NormalTok{(}\AttributeTok{method =} \StringTok{"clr"}\NormalTok{, }\AttributeTok{filter\_freq =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{t2}\SpecialCharTok{$}\FunctionTok{run\_spls}\NormalTok{(}
+  \AttributeTok{ncomp   =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{Y\_block =} \StringTok{"metab"}\NormalTok{,}
+  \AttributeTok{mode    =} \StringTok{"regression"}\NormalTok{,}
+  \AttributeTok{keepX   =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{), }\AttributeTok{metab =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+\NormalTok{)}
+\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ t2}\SpecialCharTok{$}\FunctionTok{plot\_samples}\NormalTok{(}\AttributeTok{comp =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))  }\CommentTok{\# blocks = "average" may fall back to a single block on block.spls}
+\FunctionTok{print}\NormalTok{(p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=650px]{Images/tmo_plot_samples_spls} \end{center}
+
+For a strictly two-block association, use \texttt{run\_spls\_single} which wraps \texttt{mixOmics::spls}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t3 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_multiomics}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}
+  \AttributeTok{microtables =} \FunctionTok{list}\NormalTok{(}\AttributeTok{microb =}\NormalTok{ soil\_microb, }\AttributeTok{metab =}\NormalTok{ soil\_metab),}
+  \AttributeTok{group\_col   =} \StringTok{"Group"}
+\NormalTok{)}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{preprocess\_data}\NormalTok{(}\AttributeTok{method =} \StringTok{"clr"}\NormalTok{, }\AttributeTok{filter\_freq =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{t3}\SpecialCharTok{$}\FunctionTok{run\_spls\_single}\NormalTok{(}
+  \AttributeTok{X\_block =} \StringTok{"microb"}\NormalTok{, }\AttributeTok{Y\_block =} \StringTok{"metab"}\NormalTok{,}
+  \AttributeTok{ncomp   =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{keepX   =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{), }\AttributeTok{keepY =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+On these unsupervised models, \texttt{get\_features}, \texttt{get\_correlation}, \texttt{plot\_samples} and \texttt{plot\_cor\_network} work as described above (on the two-block \texttt{spls} model, \texttt{plot\_samples} warns that \texttt{blocks} is ignored because the model is not multiblock).
+\texttt{plot\_loadings} also works: on a \texttt{block.spls} object use the original block names (\texttt{microb}, \texttt{metab}), but on the two-block \texttt{spls} model \texttt{mixOmics} internally renames the blocks to \texttt{X} and \texttt{Y}, so you must pass \texttt{block\ =\ "X"} or \texttt{block\ =\ "Y"}.
+However, \texttt{plot\_circos}, \texttt{plot\_heatmap} and \texttt{plot\_diablo} only support the supervised \texttt{block.splsda} model: their underlying \texttt{mixOmics} functions (\texttt{circosPlot}, \texttt{cimDiablo}, \texttt{plotDiablo}) expect a supervised object and fail on unsupervised models.
+
+\subsection{Trans-kingdom network (TkNA)}\label{trans-kingdom-network-tkna}
+
+Beyond block-level integration, \texttt{trans\_multiomics} can build a \textbf{bipartite} cross-omics association network following the Transkingdom Network Analysis (TkNA) framework.
+The pipeline has three steps \citep{Newman_TkNA_2024}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Differential feature filtering} within each block (optional).
+  Features whose adjusted p-value is above \texttt{diff\_p} (Kruskal-Wallis, ANOVA or Wilcoxon, depending on \texttt{diff\_test}) are dropped.
+  This step removes uninformative background noise before computing associations.
+\item
+  \textbf{Cross-block correlation} between every remaining feature of one block and every remaining feature of the other block(s).
+  Spearman is recommended for CLR-transformed compositional data.
+  Pearson is also available.
+  A \texttt{covariates} \texttt{data.frame} (with rownames matching the sample names) is regressed out from every feature before the correlation, mirroring the MaAsLin2 confounder handling \citep{Mallick_MaAsLin2_2021}.
+\item
+  \textbf{Bipartite Betweenness Centrality (BiBC)} quantifies how often a node lies on the shortest path between two nodes of different blocks.
+  Features with high BiBC are flagged as \textbf{cross-omics hubs} (top \texttt{hub\_quantile} among nodes with BiBC \textgreater{} 0).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_transkingdom}\NormalTok{(}
+  \AttributeTok{corr\_method =} \StringTok{"spearman"}\NormalTok{,}
+  \AttributeTok{corr\_thres  =} \FloatTok{0.6}\NormalTok{,}
+  \AttributeTok{p\_thres     =} \FloatTok{0.05}\NormalTok{,}
+  \AttributeTok{p\_adjust    =} \StringTok{"BH"}\NormalTok{,}
+  \AttributeTok{diff\_test   =} \StringTok{"kruskal"}\NormalTok{,}
+  \AttributeTok{diff\_p      =} \FloatTok{0.05}
+\NormalTok{)}
+\CommentTok{\# node table: Feature, Block, Diff\_p, BiBC, Hub}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_transkingdom}\SpecialCharTok{$}\NormalTok{nodes)}
+\CommentTok{\# edge table: From, To, Corr, P, P\_adj, weight}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_transkingdom}\SpecialCharTok{$}\NormalTok{edges)}
+\CommentTok{\# cross{-}omics hub candidates}
+\FunctionTok{subset}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_transkingdom}\SpecialCharTok{$}\NormalTok{nodes, Hub)}
+\end{Highlighting}
+\end{Shaded}
+
+Typical output (truncated):
+
+\begin{verbatim}
+Differential filtering (kruskal, BH-adjusted p <= 0.05) retained 798/1385 features ...
+Cross-block correlation (spearman, BH-adjusted p <= 0.05, |corr| >= 0.6) retained 13/2385 candidate edges ...
+Trans-kingdom network built: 798 nodes, 13 edges, 2 hub(s) ...
+\end{verbatim}
+
+\begin{verbatim}
+             Feature Block      Diff_p BiBC  Hub
+796 palmitoleic acid  metab 0.009163057    6 TRUE
+797 arachidonic acid   metab 0.026647565    4 TRUE
+\end{verbatim}
+
+The \texttt{weight} column of the edge table is the distance-like weight \texttt{1\ -\ \textbar{}Corr\textbar{}} used internally for the shortest paths of the BiBC computation; it is not the association strength (use \texttt{Corr} for that).
+
+\texttt{plot\_transkingdom} draws the bipartite network with \texttt{ggplot2} (Fruchterman-Reingold layout weighted by \texttt{\textbar{}correlation\textbar{}}, or a circle layout):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_transkingdom}\NormalTok{(}\AttributeTok{label =} \StringTok{"hub"}\NormalTok{)         }\CommentTok{\# only label hubs}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_transkingdom}\NormalTok{(}\AttributeTok{label =} \StringTok{"all"}\NormalTok{, }\AttributeTok{layout =} \StringTok{"circle"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=700px]{Images/tmo_transkingdom} \end{center}
+
+Regressing out confounders (e.g.~sequencing batch, host age) reduces spurious cross-layer edges.
+The \texttt{covariates} argument must be a \texttt{data.frame} whose rownames match the sample names:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cov\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{batch =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"B1"}\NormalTok{, }\StringTok{"B2"}\NormalTok{), }\AttributeTok{length.out =} \FunctionTok{nrow}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_list}\SpecialCharTok{$}\NormalTok{microb))),}
+  \AttributeTok{row.names =} \FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_list}\SpecialCharTok{$}\NormalTok{microb)}
+\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_transkingdom}\NormalTok{(}\AttributeTok{covariates =}\NormalTok{ cov\_df, }\AttributeTok{corr\_thres =} \FloatTok{0.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Caveats:
+
+\begin{itemize}
+\tightlist
+\item
+  The network is a \textbf{data-driven association network}, not a causal network.
+  Prioritised hubs/edges should be validated with independent cohorts or perturbation experiments.
+\item
+  If \texttt{diff\_test} removes \textbf{all} features from a block, the block is automatically retained with a warning.
+  Lower \texttt{diff\_p} or change the test to keep enough candidates.
+\item
+  If no edge passes the \texttt{corr\_thres} / \texttt{p\_thres} thresholds, a warning is issued and an empty graph is returned.
+\item
+  \texttt{diff\_test\ =\ "wilcox"} requires exactly two groups in \texttt{Y}; use \texttt{"kruskal"} or \texttt{"aov"} for multi-group data.
+\end{itemize}
+
+\subsection{Bridge to the trans\_network class}\label{bridge-to-the-trans_network-class}
+
+\texttt{convert\_transkingdom} converts the trans-kingdom network into a \texttt{trans\_network} object, so that the whole downstream network toolkit of the trans\_network class becomes available: module detection (\texttt{cal\_module}), node/edge property tables (\texttt{get\_node\_table} / \texttt{get\_edge\_table}), network topological attributes (\texttt{cal\_network\_attr}), sub-network extraction (\texttt{subset\_network}), eigengene analysis (\texttt{cal\_eigen}), random network comparison (\texttt{random\_network}) and network visualization (\texttt{plot\_network}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{net1 }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{convert\_transkingdom}\NormalTok{()}
+\NormalTok{net1}\SpecialCharTok{$}\FunctionTok{cal\_module}\NormalTok{()}
+\NormalTok{net1}\SpecialCharTok{$}\FunctionTok{get\_node\_table}\NormalTok{(}\AttributeTok{node\_roles =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(net1}\SpecialCharTok{$}\NormalTok{res\_node\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+The conversion follows the conventions of the correlation networks created by \texttt{trans\_network\$cal\_network}: the edge weight is re-defined as the absolute correlation and the edge label as the correlation sign (``+''/``-''), while the node attributes \texttt{Block}, \texttt{Diff\_p}, \texttt{BiBC} and \texttt{Hub} are kept, so they appear in the node table together with the usual network attributes (degree, betweenness, module, z, p, \ldots).
+The original (non-transformed) abundances of the network features are taken from \texttt{dataset\_list} to fill \texttt{data\_abund}, \texttt{data\_relabund} and \texttt{sample\_table}, and the \texttt{tax\_table} slots of all blocks are merged, which is convenient for a microbe-metabolite network.
+The returned object can then be plotted with the trans\_network visualizations, for example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{net1}\SpecialCharTok{$}\FunctionTok{cal\_network\_attr}\NormalTok{()}
+\NormalTok{net1}\SpecialCharTok{$}\NormalTok{res\_network\_attr}
+\NormalTok{net1}\SpecialCharTok{$}\FunctionTok{plot\_network}\NormalTok{(}\AttributeTok{method =} \StringTok{"ggraph"}\NormalTok{, }\AttributeTok{node\_color =} \StringTok{"module"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that the taxonomy-dependent functions of \texttt{trans\_network}, e.g.~\texttt{cal\_sum\_links} and \texttt{plot\_sum\_links}, need a taxonomic column shared by all the involved blocks; for a bipartite cross-omics network (e.g.~microbe vs metabolite) such a column usually does not exist, so those functions are not applicable unless the blocks use the same feature annotation.
+Feature names must be unique across the blocks; duplicated names are reported with an error and should be renamed before the conversion.
+
+\subsection{Mediation analysis (multimedia bridge)}\label{mediation-analysis-multimedia-bridge}
+
+High-dimensional mediation analysis asks whether the effect of an \textbf{exposure} on an \textbf{outcome} is transmitted through a set of \textbf{mediators}.
+The \texttt{multimedia} package implements a sparse, high-dimensional mediation workflow \citep{Jiang_multimedia_2024} that fits naturally on top of \texttt{trans\_multiomics}.
+A typical microbiome question is ``do specific metabolites mediate the effect of a microbial community on a host phenotype?''.
+
+The \texttt{run\_mediation} method:
+
+\begin{itemize}
+\tightlist
+\item
+  takes the exposure, mediator and outcome as either \texttt{microtable} blocks (named in \texttt{data\_list\_names}) or low-dimensional named vectors/factors,
+\item
+  reuses the CLR-transformed matrices from \texttt{t1\$data\_list},
+\item
+  optionally restricts the analysis to features previously selected by \texttt{get\_features} via \texttt{features},
+\item
+  caps the number of features per block with \texttt{max\_features} to keep the regression tractable,
+\item
+  supports three model engines: \texttt{"glmnet"} (default, recommended for high-dimensional blocks), \texttt{"lm"} (low-dimensional exposure only) and \texttt{"rf"}.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"multimedia"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}
+  \FunctionTok{install.packages}\NormalTok{(}\StringTok{"multimedia"}\NormalTok{)}
+\NormalTok{\}}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\CommentTok{\# simulate a continuous phenotype (replace with your real phenotype vector)}
+\NormalTok{pheno }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{data\_list}\SpecialCharTok{$}\NormalTok{metab[, }\DecValTok{1}\NormalTok{] }\SpecialCharTok{+} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_list}\SpecialCharTok{$}\NormalTok{metab), }\AttributeTok{sd =} \FloatTok{0.5}\NormalTok{)}
+\FunctionTok{names}\NormalTok{(pheno) }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{data\_list}\SpecialCharTok{$}\NormalTok{metab)}
+
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{run\_mediation}\NormalTok{(}
+  \AttributeTok{exposure     =} \StringTok{"microb"}\NormalTok{,        }\CommentTok{\# microbial block (high{-}dimensional)}
+  \AttributeTok{mediator     =} \StringTok{"metab"}\NormalTok{,         }\CommentTok{\# metabolite block}
+  \AttributeTok{outcome      =}\NormalTok{ pheno,           }\CommentTok{\# named vector matching the samples}
+  \AttributeTok{model        =} \StringTok{"glmnet"}\NormalTok{,}
+  \AttributeTok{max\_features =} \DecValTok{50}\NormalTok{,             }\CommentTok{\# cap each block at the top 50 most variable features}
+  \AttributeTok{n\_boot       =} \DecValTok{0}               \CommentTok{\# 0 = skip bootstrap (use 1000 for final results)}
+\NormalTok{)}
+\CommentTok{\# total effect decomposed}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mediation}\SpecialCharTok{$}\NormalTok{direct\_effect       }\CommentTok{\# exposure {-}\textgreater{} outcome bypassing the mediator}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mediation}\SpecialCharTok{$}\NormalTok{indirect\_overall    }\CommentTok{\# total indirect effect through mediators}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mediation}\SpecialCharTok{$}\NormalTok{indirect\_pathwise)  }\CommentTok{\# per{-}mediator pathway effect}
+\end{Highlighting}
+\end{Shaded}
+
+To focus the analysis on DIABLO-prioritised features, pass them via \texttt{features}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{features }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_features}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{run\_mediation}\NormalTok{(}
+  \AttributeTok{exposure =} \StringTok{"microb"}\NormalTok{, }\AttributeTok{mediator =} \StringTok{"metab"}\NormalTok{, }\AttributeTok{outcome =}\NormalTok{ pheno,}
+  \AttributeTok{features =} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{microb =} \FunctionTok{unique}\NormalTok{(features}\SpecialCharTok{$}\NormalTok{Feature[features}\SpecialCharTok{$}\NormalTok{Block }\SpecialCharTok{==} \StringTok{"microb"}\NormalTok{]),}
+    \AttributeTok{metab  =} \FunctionTok{unique}\NormalTok{(features}\SpecialCharTok{$}\NormalTok{Feature[features}\SpecialCharTok{$}\NormalTok{Block  }\SpecialCharTok{==} \StringTok{"metab"}\NormalTok{])}
+\NormalTok{  )}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Implementation notes:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{multimedia} builds R formulas from the variable names, so metabolite names like \texttt{"trehalose+d-Glucoheptose\ 1"} would crash the formula parser.
+  \texttt{run\_mediation} transparently replaces the names with syntactically valid synthetic names (\texttt{V1}, \texttt{V2}, \ldots) and restores the original names in the returned effect tables.
+  The mapping is preserved in \texttt{t1\$res\_mediation\$name\_map}.
+\item
+  The engine chosen by \texttt{model} is passed to \texttt{multimedia} as the \textbf{outcome} estimator; the mediator model keeps the default \texttt{lm\_model()} of \texttt{multimedia}, i.e.~a plain linear model of each mediator on the exposure variables.
+  Keep \texttt{max\_features} (or \texttt{features}) small when the exposure is high-dimensional, otherwise that inner model becomes over-parameterised.
+\item
+  \texttt{n\_boot\ \textgreater{}\ 0} adds \texttt{res\_mediation\$bootstrap} with the bootstrap distributions of the direct, overall indirect and pathwise indirect effects.
+\item
+  The ``causal'' interpretation of the indirect effects still relies on the assumed chain ordering and on the strong ignorability assumption; longitudinal or perturbation data are needed for causal claims.
+\item
+  For binary factors in \texttt{exposure} or \texttt{outcome}, pass a 2-level factor or a 0/1 numeric vector.
+\end{itemize}
+
+\subsection{Export feature tables for knowledge tools}\label{export-feature-tables-for-knowledge-tools}
+
+DIABLO and TkNA produce data-driven candidate associations, but they say nothing about the \textbf{biochemical plausibility} of a microbe -\textgreater{} metabolite link.
+Knowledge-driven tools fill this gap by constraining associations to known reactions.
+\texttt{export\_bridge} writes the abundance tables of two blocks into the input formats expected by three popular tools:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.0710}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.9290}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Target
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Output
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{mimosa2} & two tab-separated abundance tables (\texttt{\textless{}file\textgreater{}\_ko.txt}, \texttt{\textless{}file\textgreater{}\_metabolites.txt}), features as rows and samples as columns \\
+\texttt{amon} & two plain-text ID lists (\texttt{\textless{}file\textgreater{}\_ko\_ids.txt}, \texttt{\textless{}file\textgreater{}\_metabolite\_ids.txt}), one KEGG ID per line \\
+\texttt{anansi} & the same two tab-separated tables as \texttt{mimosa2} \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{export\_bridge}\NormalTok{(}
+  \AttributeTok{target      =} \StringTok{"mimosa2"}\NormalTok{,}
+  \AttributeTok{file        =} \StringTok{"./bridge/mimosa\_input"}\NormalTok{,}
+  \AttributeTok{ko\_block    =} \StringTok{"microb"}\NormalTok{,}
+  \AttributeTok{metab\_block =} \StringTok{"metab"}
+\NormalTok{)}
+\CommentTok{\# export only the DIABLO{-}prioritised features}
+\NormalTok{features }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\FunctionTok{get\_features}\NormalTok{(}\AttributeTok{comp =} \DecValTok{1}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{export\_bridge}\NormalTok{(}
+  \AttributeTok{target      =} \StringTok{"mimosa2"}\NormalTok{,}
+  \AttributeTok{file        =} \StringTok{"./bridge/mimosa\_selected"}\NormalTok{,}
+  \AttributeTok{ko\_block    =} \StringTok{"microb"}\NormalTok{,}
+  \AttributeTok{metab\_block =} \StringTok{"metab"}\NormalTok{,}
+  \AttributeTok{features    =} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{microb =} \FunctionTok{unique}\NormalTok{(features}\SpecialCharTok{$}\NormalTok{Feature[features}\SpecialCharTok{$}\NormalTok{Block }\SpecialCharTok{==} \StringTok{"microb"}\NormalTok{]),}
+    \AttributeTok{metab  =} \FunctionTok{unique}\NormalTok{(features}\SpecialCharTok{$}\NormalTok{Feature[features}\SpecialCharTok{$}\NormalTok{Block  }\SpecialCharTok{==} \StringTok{"metab"}\NormalTok{])}
+\NormalTok{  )}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+For the metabolite names, \texttt{metab\_id\_table} (a two-column \texttt{data.frame}: original name + KEGG ID) converts them to KEGG compound IDs, which is what all three tools expect.
+Without it, the original names are kept and a message reminds you that KEGG IDs are expected.
+When \texttt{ko\_block} / \texttt{metab\_block} are not given, the first block and the block whose name contains ``metab'' are used.
+
+Note that the exported tables come from \texttt{t1\$dataset\_list} (the \textbf{original} abundances), not from the CLR-transformed \texttt{t1\$data\_list}, because these tools expect raw counts or relative abundances.
+
+\subsection{Suggested workflow}\label{suggested-workflow}
+
+A practical ladder from data to mechanism for a typical microbe + metabolite study:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Load and align} (\texttt{trans\_multiomics\$new}): make sure each \texttt{microtable} carries the same sample IDs and a clean grouping column.
+\item
+  \textbf{Preprocess} with \texttt{preprocess\_data(method\ =\ "clr",\ filter\_freq\ =\ 0.2)} for compositional blocks; consider additional \texttt{filter\_thres} for very sparse features.
+\item
+  \textbf{Run DIABLO} with a small initial \texttt{keepX} (e.g.~\texttt{c(10,\ 10)} per block per component) to get a first sanity-check plot (\texttt{plot\_samples}).
+\item
+  \textbf{Evaluate performance} with \texttt{eval\_performance(folds\ =\ 5,\ nrepeat\ =\ 10,\ seed\ =\ ...)}; compare WeightedVote vs AveragedPredict to choose the best \texttt{ncomp}.
+\item
+  \textbf{Tune} \texttt{keepX} with \texttt{tune\_model} (start with a coarse grid; refine around the optimum).
+\item
+  \textbf{Refit} with \texttt{run\_diablo(keepX\ =\ t1\$best\_keepX)} and extract the final \texttt{get\_features} panel.
+\item
+  \textbf{Stability-check} with \texttt{get\_stability} and keep only the features with \texttt{Stability\ \textgreater{}=\ 0.8} for downstream interpretation.
+\item
+  \textbf{Visualise} with \texttt{plot\_samples}, \texttt{plot\_loadings}, \texttt{plot\_diablo}, \texttt{plot\_circos} (or \texttt{plot\_cor\_network} for an explicit graph).
+\item
+  \textbf{Cross-omics associations} with \texttt{cal\_transkingdom}; explore with \texttt{plot\_transkingdom} and follow up on the \texttt{Hub} features, then hand the network over to the trans\_network class with \texttt{convert\_transkingdom}.
+\item
+  \textbf{Mediation} with \texttt{run\_mediation} (requires \texttt{multimedia}) to quantify exposure -\textgreater{} mediator -\textgreater{} outcome pathways, optionally restricted to the DIABLO / TkNA-prioritised features.
+\item
+  \textbf{Mechanism filtering} with \texttt{export\_bridge} to feed the candidates into MIMOSA2 / AMON / anansi and retain only biochemically plausible links.
+\end{enumerate}
+
+\subsection{Key points}\label{key-points-12}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Block sizes:} \texttt{mixOmics::block.splsda} requires at least 2 levels of \texttt{Y}; \texttt{block.spls} does not use \texttt{Y} and needs \texttt{indY} (handled by \texttt{Y\_block} in \texttt{run\_spls}).
+\item
+  \textbf{Small class sizes:} \texttt{folds} in \texttt{eval\_performance} and \texttt{tune\_model} must not exceed the smallest class size in \texttt{Y}.
+  With 10 samples per group use \texttt{folds\ \textless{}=\ 10}.
+\item
+  \textbf{Reproducibility:} always pass \texttt{seed} to \texttt{tune\_model} and \texttt{eval\_performance}.
+  The seed is forwarded to \texttt{mixOmics} when supported, otherwise applied via \texttt{set.seed}.
+\item
+  \textbf{Plot types:} \texttt{plot\_samples} returns a \texttt{ggplot}; \texttt{plot\_loadings} draws on the current device and returns a \texttt{list} of loading \texttt{data.frame}s, \textbf{not} a \texttt{ggplot} -- do not pipe it to \texttt{ggsave()}.
+\item
+  \textbf{\texttt{plot\_loadings} block argument:} it must be supplied explicitly for multi-block models; for the two-block \texttt{spls} model use \texttt{block\ =\ "X"} or \texttt{"Y"}.
+\item
+  \textbf{\texttt{get\_correlation} names:} in \texttt{mixOmics} \textgreater= 6.x the returned similarity matrix has column names with a \texttt{\_\textless{}block\textgreater{}} suffix, while the row names may be \texttt{NULL}; restore the rows from \texttt{mixOmics::selectVar} if needed.
+\item
+  \textbf{\texttt{cutoff} of the correlation network:} \texttt{mixOmics} stops when \texttt{cutoff} exceeds the largest value of the similarity matrix, so lower it for weakly correlated blocks (check \texttt{range(t1\$get\_correlation(comp\ =\ 1))}).
+\item
+  \textbf{More than two blocks:} \texttt{mixOmics::network} returns one similarity matrix per block pair, so \texttt{get\_correlation} needs exactly two blocks selected via \texttt{block\ =\ c(...)} (or a model with two blocks).
+\item
+  \textbf{Large feature panels:} DIABLO with thousands of features per block is slow.
+  Apply \texttt{filter\_freq} and/or \texttt{filter\_thres} in \texttt{preprocess\_data} before the tuning step.
+\item
+  \textbf{Refitting:} a new \texttt{run\_diablo} replaces the model and invalidates the panels and tables computed from the previous one; refit a copy of the object (\texttt{t1\$clone(deep\ =\ TRUE)}) if both models must be kept.
+\item
+  \textbf{Unsupervised models:} \texttt{plot\_circos}, \texttt{plot\_heatmap} and \texttt{plot\_diablo} only work on the supervised \texttt{block.splsda} model.
+\end{itemize}
+
+\section{trans\_mst class}\label{trans_mst-class}
+
+Microbial source tracking (MST) \citep{Shenhav_FEAST_2019} is used to answer a simple but important question:
+for a given community, where do its members come from?
+In such an analysis, the community of interest is called the \textbf{sink},
+and the candidate communities that may contribute to it are called \textbf{sources}.
+The output is usually a set of proportions, i.e., how much of the sink can be attributed
+to each source plus an unknown (unassigned) fraction.
+Typical applications include tracing the transmission of microbes along the soil-plant continuum
+(e.g., bulk soil -\textgreater{} rhizosphere soil -\textgreater{} root endophyte), detecting contamination in low-biomass samples,
+and tracking the formation of developing microbial communities.
+
+Starting from version 2.4.0, the microeco package provides the \texttt{trans\_mst} class for microbial source tracking.
+It is a wrapper of \textbf{FEAST} (Fast Expectation-maximization for microbial Source Tracking) \citep{Shenhav_FEAST_2019},
+a scalable expectation-maximization framework that can estimate the contribution of thousands of
+potential source environments simultaneously.
+The advantage of integrating FEAST into microeco is that the whole analysis can be performed
+directly on a \texttt{microtable} object, so that the preprocessing power of the microeco package
+(e.g., taxonomic filtering, sample subsetting and data transformation) is fully reused.
+
+The main functions of the \texttt{trans\_mst} class are:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{trans\_mst\$new}: create the object from a microtable object.
+\item
+  \texttt{cal\_mst}: run the source tracking for one transmission step.
+\item
+  \texttt{cal\_mst\_chain}: run a chain of transmission steps in one call.
+\item
+  \texttt{plot\_mst}: plot the contribution proportions as a stacked barplot with ggplot2.
+\end{itemize}
+
+Please install the FEAST package first, as it is not on CRAN but on GitHub.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("remotes")}
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"cozygene/FEAST"}\NormalTok{)}
+
+\FunctionTok{library}\NormalTok{(microeco)}
+\CommentTok{\# for the pipe operator \%\textgreater{}\%}
+\FunctionTok{library}\NormalTok{(magrittr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Prepare the example data}\label{prepare-the-example-data-2}
+
+The example data is \texttt{soil\_microb}, a microtable object of prokaryotic amplicon sequencing data
+from an agricultural field experiment with crop rotation and fertilization treatments.
+The \texttt{Compartment} column in \texttt{sample\_table} represents the sampling compartments,
+i.e., `Bulk soil', `Rhizosphere' and `Endophyte' (root endophyte), with 30 samples for each compartment.
+The \texttt{Plant\_ID} column denotes the unique plant individual that each sample belongs to,
+so that the three samples sharing the same \texttt{Plant\_ID} are from the same plant
+and can be treated as a paired source-sink set.
+The \texttt{Cropping} and \texttt{Fertilization} columns are the two experimental factors and
+the \texttt{Group} column is the combination of them.
+
+Note that FEAST requires \textbf{raw counts (integers)}, not a relative abundance or rarefied table,
+because the estimation relies on the multinomial sampling of reads.
+If non-integer values are detected in the \texttt{otu\_table}, they are automatically converted by \texttt{ceiling()} with a message.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(soil\_microb)}
+\NormalTok{soil\_microb}
+\CommentTok{\# number of samples in each compartment}
+\FunctionTok{table}\NormalTok{(soil\_microb}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Compartment)}
+\CommentTok{\# check that samples with the same Plant\_ID form a paired set across compartments}
+\FunctionTok{table}\NormalTok{(soil\_microb}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Plant\_ID, soil\_microb}\SpecialCharTok{$}\NormalTok{sample\_table}\SpecialCharTok{$}\NormalTok{Compartment)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Create the object}\label{create-the-object}
+
+There are three parameters that can be used when creating a \texttt{trans\_mst} object:
+\texttt{dataset} is the microtable object;
+\texttt{env\_col} is a column name in \texttt{sample\_table} used to describe the environment of each sample,
+i.e., the `Env' information required by FEAST;
+\texttt{filter\_thres} is the relative abundance threshold used to filter low-abundance taxa
+(delegated to the \texttt{filter\_taxa} function of the microtable class;
+taxa with a total relative abundance lower than the threshold across all samples are removed).
+Filtering the very low-abundance taxa is often useful to reduce the noise and speed up the estimation.
+
+It should be noted that the input microtable object is deep-copied inside the object,
+so all subsequent operations concerning the data filtering will not change the original microtable object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_mst}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ soil\_microb, }\AttributeTok{env\_col =} \StringTok{"Compartment"}\NormalTok{, }\AttributeTok{filter\_thres =} \DecValTok{0}\NormalTok{)}
+\NormalTok{t1}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Source tracking with a shared source pool}\label{source-tracking-with-a-shared-source-pool}
+
+The most simple case is that all sink samples share one source pool.
+For example, all the rhizosphere soil samples (sinks) may receive microbes from the whole bulk soil pool (sources).
+Let's use the \texttt{sources} and \texttt{sinks} parameters to assign the environments,
+which are matched against the \texttt{env\_col} column of \texttt{sample\_table}.
+The results are always stored in the object, so multiple runs can be performed with the same object by
+assigning a different \texttt{label} to each run.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mst}\NormalTok{(}\AttributeTok{sources =} \StringTok{"Bulk soil"}\NormalTok{, }\AttributeTok{sinks =} \StringTok{"Rhizosphere"}\NormalTok{, }\AttributeTok{EM\_iterations =} \DecValTok{1000}\NormalTok{, }\AttributeTok{label =} \StringTok{"bulk2rhizo"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Two key parameters of the FEAST algorithm deserve attention.
+\texttt{EM\_iterations} is the number of expectation-maximization iterations.
+The default is 1000, which is enough for most cases; a smaller value (e.g., 100) can largely reduce the running time for a quick try.
+The running time mainly depends on the number of sink samples, as the contribution is estimated sink by sink,
+and also on the number of source samples in the shared-source-pool mode.
+\texttt{COVERAGE} is the rarefaction depth used internally by FEAST.
+By default (NULL), it is set to the minimum sequencing depth across all involved source and sink samples,
+so that the samples with a larger sequencing depth are randomly downsampled to this depth
+(samples already below or equal to it are kept unchanged).
+Please note all the involved samples should have a sequencing depth larger than 0,
+otherwise the function stops with an error message.
+As the rarefaction is performed by randomly sampling reads, repeated runs may give slightly different results.
+
+Three results are stored for each run:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{res\_mst{[}{[}label{]}{]}}: Sink x Source matrix at the \textbf{sample level}. Each row sums to 1.
+\item
+  \texttt{res\_mst\_env{[}{[}label{]}{]}}: Sink x Source matrix at the \textbf{environment (source pooled) level}. Each row sums to 1.
+\item
+  \texttt{res\_mst\_param{[}{[}label{]}{]}}: the input parameters and the involved sample information of the run.
+\end{itemize}
+
+The column `Unknown' in the result matrices denotes the proportion of the sink that cannot be attributed to any known source.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# sample level result: rows are sinks, columns are sources}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mst[[}\StringTok{"bulk2rhizo"}\NormalTok{]][}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\CommentTok{\# environment level result: contributions of the source environments}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"bulk2rhizo"}\NormalTok{]])}
+\CommentTok{\# check the row sum}
+\FunctionTok{rowSums}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"bulk2rhizo"}\NormalTok{]])}
+\CommentTok{\# mean contribution of each source environment}
+\FunctionTok{colMeans}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"bulk2rhizo"}\NormalTok{]])}
+\CommentTok{\# parameters and sample information of the run}
+\NormalTok{t1}\SpecialCharTok{$}\NormalTok{res\_mst\_param[[}\StringTok{"bulk2rhizo"}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Source tracking with different source sets}\label{source-tracking-with-different-source-sets}
+
+In many experimental designs, each sink has its own source set.
+For instance, a root endophyte sample should be traced back to the bulk soil and rhizosphere soil of
+\textbf{the same plant individual}, instead of a general pool containing all the plants.
+This is realized by \texttt{different\_sources\_flag\ =\ 1} together with the \texttt{id\_col} parameter.
+Samples sharing the same value of \texttt{id\_col} (here \texttt{Plant\_ID}) are considered as one paired group,
+and only the source samples within the same group are used for the sink of that group.
+Therefore, each pairing group can contain at most one sink sample
+(a group with multiple sinks stops with an error),
+and each sink must have at least one source sample in the same group;
+the source samples without any paired sink are excluded automatically with a message.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mst}\NormalTok{(}\AttributeTok{sources =} \FunctionTok{c}\NormalTok{(}\StringTok{"Bulk soil"}\NormalTok{, }\StringTok{"Rhizosphere"}\NormalTok{), }\AttributeTok{sinks =} \StringTok{"Endophyte"}\NormalTok{,}
+    \AttributeTok{different\_sources\_flag =} \DecValTok{1}\NormalTok{, }\AttributeTok{id\_col =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{EM\_iterations =} \DecValTok{1000}\NormalTok{, }\AttributeTok{label =} \StringTok{"soil2root"}\NormalTok{)}
+\CommentTok{\# now there are two runs stored in the object}
+\NormalTok{t1}
+\FunctionTok{head}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"soil2root"}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+In the different-sources mode, the sources that do not belong to the source set of a given sink are \texttt{NA} in \texttt{res\_mst}.
+These \texttt{NA} values are automatically removed in the plot, and they are also skipped when aggregating
+the contributions by source environment in \texttt{res\_mst\_env}.
+For each sink, the non-\texttt{NA} contributions (including `Unknown') still sum to 1.
+
+\subsection{Run sequential steps in one call}\label{run-sequential-steps-in-one-call}
+
+The transmission of microbes is often a chain rather than a single step.
+The \texttt{cal\_mst\_chain} function is a convenient wrapper of \texttt{cal\_mst},
+where each element of the \texttt{steps} argument is a list of the parameters passed to \texttt{cal\_mst}.
+The results are stored with the labels `step1', `step2', \ldots{} unless a custom \texttt{label} is provided.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1 }\OtherTok{\textless{}{-}}\NormalTok{ trans\_mst}\SpecialCharTok{$}\FunctionTok{new}\NormalTok{(}\AttributeTok{dataset =}\NormalTok{ soil\_microb, }\AttributeTok{env\_col =} \StringTok{"Compartment"}\NormalTok{)}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mst\_chain}\NormalTok{(}\AttributeTok{steps =} \FunctionTok{list}\NormalTok{(}
+    \FunctionTok{list}\NormalTok{(}\AttributeTok{sources =} \StringTok{"Bulk soil"}\NormalTok{, }\AttributeTok{sinks =} \StringTok{"Rhizosphere"}\NormalTok{, }\AttributeTok{EM\_iterations =} \DecValTok{1000}\NormalTok{, }\AttributeTok{label =} \StringTok{"bulk2rhizo"}\NormalTok{),}
+    \FunctionTok{list}\NormalTok{(}\AttributeTok{sources =} \FunctionTok{c}\NormalTok{(}\StringTok{"Bulk soil"}\NormalTok{, }\StringTok{"Rhizosphere"}\NormalTok{), }\AttributeTok{sinks =} \StringTok{"Endophyte"}\NormalTok{,}
+        \AttributeTok{different\_sources\_flag =} \DecValTok{1}\NormalTok{, }\AttributeTok{id\_col =} \StringTok{"Plant\_ID"}\NormalTok{, }\AttributeTok{EM\_iterations =} \DecValTok{1000}\NormalTok{, }\AttributeTok{label =} \StringTok{"soil2root"}\NormalTok{)}
+\NormalTok{))}
+\CommentTok{\# all the stored runs}
+\FunctionTok{names}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Specify sources and sinks by sample names}\label{specify-sources-and-sinks-by-sample-names}
+
+Instead of using environment values, the sources and sinks can also be assigned by explicit sample names
+with the \texttt{source\_samples} and \texttt{sink\_samples} parameters.
+This is useful when the source/sink assignment has no correspondence with any existing column of \texttt{sample\_table}.
+Note that \texttt{sources} and \texttt{source\_samples} cannot be provided at the same time (the same for \texttt{sinks} and \texttt{sink\_samples}),
+and no sample can be assigned to both sources and sinks.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# pick some bulk soil samples as sources and some rhizosphere samples as sinks}
+\NormalTok{st\_tmp }\OtherTok{\textless{}{-}}\NormalTok{ soil\_microb}\SpecialCharTok{$}\NormalTok{sample\_table}
+\NormalTok{source\_samples }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(st\_tmp)[st\_tmp}\SpecialCharTok{$}\NormalTok{Compartment }\SpecialCharTok{==} \StringTok{"Bulk soil"}\NormalTok{][}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]}
+\NormalTok{sink\_samples }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(st\_tmp)[st\_tmp}\SpecialCharTok{$}\NormalTok{Compartment }\SpecialCharTok{==} \StringTok{"Rhizosphere"}\NormalTok{][}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{cal\_mst}\NormalTok{(}\AttributeTok{source\_samples =}\NormalTok{ source\_samples, }\AttributeTok{sink\_samples =}\NormalTok{ sink\_samples, }\AttributeTok{EM\_iterations =} \DecValTok{1000}\NormalTok{, }\AttributeTok{label =} \StringTok{"custom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Visualization}\label{visualization}
+
+The \texttt{plot\_mst} function returns a ggplot2 object, so that it can be further modified before saving.
+By default, the environment-level result (\texttt{res\_mst\_env}) of the first run is plotted.
+The \texttt{group\_sink} parameter is used to group (and facet) the sinks according to a column of \texttt{sample\_table},
+which is very useful to compare the contribution patterns among treatments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the first run with the environment{-}level result}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_mst}\NormalTok{(}\AttributeTok{use\_run =} \StringTok{"bulk2rhizo"}\NormalTok{, }\AttributeTok{group\_sink =} \StringTok{"Group"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=900px]{Images/trans_mst_bulk2rhizo} \end{center}
+
+In this example, the bulk soil explains most of the rhizosphere soil communities
+(around 60\% - 80\% for individual samples),
+and the remaining part is assigned to the unknown sources.
+
+The second step of the transmission is shown below, in which each root endophyte sample uses
+the bulk soil and rhizosphere soil of the same plant individual as sources.
+Please note that the running time of this step is much shorter than the first one,
+as only two paired source samples are used for each sink in the different-sources mode.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_mst}\NormalTok{(}\AttributeTok{use\_run =} \StringTok{"soil2root"}\NormalTok{, }\AttributeTok{group\_sink =} \StringTok{"Cropping"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=900px]{Images/trans_mst_soil2root} \end{center}
+
+Consistent with the ecological expectation, the rhizosphere soil contributes more to the root endophyte
+communities than the bulk soil, indicating the directional transfer of microbes along the soil-plant continuum.
+
+The \texttt{use\_env\ =\ FALSE} parameter switches to the sample-level result (\texttt{res\_mst}),
+where each source sample is shown separately.
+It is helpful to check whether particular source samples dominate the contribution.
+Please note that a large number of source samples can make the legend too crowded,
+so this option is more suitable for a small source set, such as the small example above.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_mst}\NormalTok{(}\AttributeTok{use\_run =} \StringTok{"custom"}\NormalTok{, }\AttributeTok{use\_env =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=900px]{Images/trans_mst_sample_level} \end{center}
+
+More parameters are available for the details of the plot, e.g., \texttt{show\_unknown} (whether to show the `Unknown' proportion),
+\texttt{colors}, \texttt{unknown\_color}, \texttt{bar\_width}, \texttt{xtext\_size}, \texttt{xtext\_angle},
+\texttt{legend\_title} (the legend title) and \texttt{facet\_scales} (the scales argument of \texttt{facet\_wrap}).
+Filling each bar with the same order in all facets is controlled by the levels of the Source factor,
+which follows the column order of the result matrix.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# hide the Unknown proportion and customize the colors}
+\NormalTok{t1}\SpecialCharTok{$}\FunctionTok{plot\_mst}\NormalTok{(}\AttributeTok{use\_run =} \StringTok{"soil2root"}\NormalTok{, }\AttributeTok{group\_sink =} \StringTok{"Cropping"}\NormalTok{, }\AttributeTok{show\_unknown =} \ConstantTok{FALSE}\NormalTok{,}
+    \AttributeTok{colors =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#E64B35FF"}\NormalTok{, }\StringTok{"\#4DBBD5FF"}\NormalTok{), }\AttributeTok{xtext\_size =} \DecValTok{8}\NormalTok{, }\AttributeTok{xtext\_angle =} \DecValTok{90}\NormalTok{)}
+\CommentTok{\# save the plot}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"MST\_soil2root.pdf"}\NormalTok{, t1}\SpecialCharTok{$}\FunctionTok{plot\_mst}\NormalTok{(}\AttributeTok{use\_run =} \StringTok{"soil2root"}\NormalTok{, }\AttributeTok{group\_sink =} \StringTok{"Cropping"}\NormalTok{), }\AttributeTok{width =} \DecValTok{8}\NormalTok{, }\AttributeTok{height =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Downstream analysis of the results}\label{downstream-analysis-of-the-results}
+
+As the results are stored as plain matrices, they can be easily combined with the other classes of microeco
+for further analysis. For instance, the contribution proportions can be compared among the fertilization treatments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# take the environment{-}level result of the soil {-}\textgreater{} root step}
+\NormalTok{contrib }\OtherTok{\textless{}{-}}\NormalTok{ t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"soil2root"}\NormalTok{]]}
+\CommentTok{\# add the group information of the sinks}
+\NormalTok{contrib\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{SampleID =} \FunctionTok{rownames}\NormalTok{(contrib), contrib, }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{contrib\_df}\SpecialCharTok{$}\NormalTok{Fertilization }\OtherTok{\textless{}{-}}\NormalTok{ soil\_microb}\SpecialCharTok{$}\NormalTok{sample\_table[contrib\_df}\SpecialCharTok{$}\NormalTok{SampleID, }\StringTok{"Fertilization"}\NormalTok{]}
+\CommentTok{\# make a long table for plotting}
+\NormalTok{plot\_df }\OtherTok{\textless{}{-}}\NormalTok{ reshape2}\SpecialCharTok{::}\FunctionTok{melt}\NormalTok{(contrib\_df, }\AttributeTok{measure.vars =} \FunctionTok{c}\NormalTok{(}\StringTok{"Bulk soil"}\NormalTok{, }\StringTok{"Rhizosphere"}\NormalTok{, }\StringTok{"Unknown"}\NormalTok{),}
+    \AttributeTok{variable.name =} \StringTok{"Source"}\NormalTok{, }\AttributeTok{value.name =} \StringTok{"Contribution"}\NormalTok{)}
+\FunctionTok{ggplot}\NormalTok{(plot\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Fertilization, }\AttributeTok{y =}\NormalTok{ Contribution, }\AttributeTok{fill =}\NormalTok{ Source)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{outlier.alpha =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{stat\_summary}\NormalTok{(}\AttributeTok{fun =}\NormalTok{ mean, }\AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.6}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{expand =} \FunctionTok{expansion}\NormalTok{(}\AttributeTok{mult =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.05}\NormalTok{))) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \StringTok{"Contribution proportion"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_bw}\NormalTok{()}
+\CommentTok{\# save the tables for further use}
+\FunctionTok{write.csv}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst[[}\StringTok{"soil2root"}\NormalTok{]], }\StringTok{"MST\_soil2root\_sample\_level.csv"}\NormalTok{)}
+\FunctionTok{write.csv}\NormalTok{(t1}\SpecialCharTok{$}\NormalTok{res\_mst\_env[[}\StringTok{"soil2root"}\NormalTok{]], }\StringTok{"MST\_soil2root\_env\_level.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \chapter{file2meco package}\label{file2meco-package}
 

@@ -240,6 +240,7 @@ t1$plot_alpha(color_values = c("#053061", "white", "#A50026"), trans = "log10", 
   + plot_alpha: the significance label comes from the results in `object$res_diff`
 
 
+
 ## trans_beta class
 
 　The trans_beta class is specifically designed for the beta diversity analysis, i.e. the dissimilarities among samples.
@@ -441,4 +442,251 @@ For the explanation of statistical methods in microbial ecology, please read the
 
 
 
+## trans_rarefy class
+
+The class trans_rarefy can be used for the rarefaction and the following plotting to see whether 
+the sequencing depth is enough to cover all the so-called species in the microbial community.
+Rarefying a community means to repeatedly subsample a fixed number of reads from each sample, so that 
+all the samples become comparable in sequencing depth, and the alpha diversity is recalculated after 
+each rarefying.
+The resulting curve, i.e. the rarefaction curve, usually rises steeply in the low-depth region and then 
+flattens out once the sequencing depth is enough to cover most of the species in the community.
+The class is a wrapper of two other classes: the rarefying is performed by the `norm` function of the 
+`trans_norm` class, and the alpha diversity is calculated by the `cal_alphadiv` function of the 
+`microtable` class, in which the measurements are computed by the vegan package [@Jari_vegan_2019].
+All the results shown in this section were checked with microeco v2.4.0.
+
+
+### Example
+
+The `alphadiv` parameter accepts one or more alpha diversity measurements, and `"Observed"` means the 
+observed species number, i.e. the richness.
+The `depth` parameter determines at which sequencing depths the data are rarefied.
+The rarefying and the calculation of the alpha diversity are run once per depth.
+
+```{r, echo = TRUE, eval = FALSE}
+library(microeco)
+data(sample_info_16S)
+data(otu_table_16S)
+# set.seed is used to fix the random number generation to make the results repeatable
+set.seed(123)
+tmp <- microtable$new(sample_table = sample_info_16S, otu_table = otu_table_16S)
+tmp$tidy_dataset()
+# trans_rarefy class: rarefy the data at the provided depths and calculate the alpha diversity
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed", depth = c(0, 10, 50, 500, 2000, 6000, 10000, 15000, 20000))
+```
+
+As the `norm` function removes the features and the samples that do not survive the random subsampling, 
+several messages are printed for each depth.
+The expected messages are (truncated):
+
+```
+Rarefy data at depth 10 ...
+12915 features are removed because they are no longer present in any sample after random subsampling ...
+12915 taxa with 0 abundance are removed from the otu_table ...
+Rarefy data at depth 50 ...
+11235 features are removed because they are no longer present in any sample after random subsampling ...
+11235 taxa with 0 abundance are removed from the otu_table ...
+...
+Rarefy data at depth 15000 ...
+36 samples are removed because of fewer reads than input sample.size ...
+246 taxa with 0 abundance are removed from the otu_table ...
+246 features with 0 abundance are removed after filtering samples ...
+569 features are removed because they are no longer present in any sample after random subsampling ...
+569 taxa with 0 abundance are removed from the otu_table ...
+Rarefy data at depth 20000 ...
+65 samples are removed because of fewer reads than input sample.size ...
+...
+The rarefied data is stored in object$res_rarefy ...
+```
+
+The result is a data.frame stored in `t1$res_rarefy`, and the measurements and depths used are also 
+saved in the object.
+
+```{r, echo = TRUE, eval = FALSE}
+# return t1$res_rarefy; SampleID: sample name, seqnum: rarefying depth
+head(t1$res_rarefy)
+# the measurements and depths used
+t1$measure
+t1$depth
+# the print method of the class
+t1
+```
+
+```
+  SampleID seqnum Observed
+1       S1      0        0
+2       S2      0        0
+3       S3      0        0
+4       S4      0        0
+5       S5      0        0
+6       S6      0        0
+[1] "Observed"
+[1]     0    10    50   500  2000  6000 10000 15000 20000
+trans_rarefy class:
+The measures used: Observed 
+res_rarefy have been calculated at depths: 0, 10, 50, 500, 2000, 6000, 10000, 15000, 20000 
+```
+
+Some important details:
+
+* `depth = 0` is a special value: the data are not rarefied and all the diversity values are directly set 
+  to 0, so it works as the common starting point of the curve.
+* The sample sums of the example data range from 10364 to 37374, so all the depths used here are available 
+  for every sample.
+* For a sample whose sequencing depth is smaller than the rarefying depth, the sample is removed by the 
+  `norm` function, so it is absent at this depth and its curve stops earlier.
+  In this example the numbers of retained samples are 90 at the depths 0-10000, 54 at 15000 and 25 at 
+  20000, so `t1$res_rarefy` has 709 rows in total.
+* The rarefying is a random subsampling, but the results are repeatable, as the `norm` function fixes the 
+  random seed (`rngseed = 123` by default); see the following More options section.
+
+Then the rarefaction curve can be plotted directly with the `plot_rarefy` function, which returns a 
+ggplot object.
+
+```{r, echo = TRUE, eval = FALSE}
+# the color parameter can be any column name of the sample_table
+p1 <- t1$plot_rarefy(color = "Group", show_point = TRUE, add_fitting = FALSE)
+p1
+# use a fitted curve instead of the points and lines
+p2 <- t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE)
+p2
+# show the sample names at the end of the curves
+p3 <- t1$plot_rarefy(show_samplename = TRUE, color_values = rep("grey70", 100), show_legend = FALSE)
+p3
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/tcr_plot_rarefy_group.png")
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/tcr_plot_rarefy_fitting.png")
+```
+
+```{r, out.width = "600px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/tcr_plot_rarefy_samplename.png")
+```
+
+`color` defaults to `"SampleID"`; `"Group"` is used in the first two plots just to keep the legend 
+readable.
+In the third plot all the curves are drawn in grey and each sample is labelled at its own last available 
+depth.
+As the label colours are taken from `color_values`, don't forget to provide enough colours; if the colours 
+provided are fewer than the groups, the class prints a message and expands them automatically by colour 
+interpolation.
+
+
+### More options
+
+#### Multiple measurements at the same time
+
+One or more measurements can be calculated in the same rarefying process, so that they share the same 
+rarefied data and no extra random subsampling is needed.
+
+```{r, echo = TRUE, eval = FALSE}
+t1 <- trans_rarefy$new(tmp, alphadiv = c("Observed", "Shannon"), depth = c(0, 50, 500, 2000, 6000, 10000, 15000))
+# the plot is faceted by the measurements when more than one measurement is used
+t1$plot_rarefy(color = "Group")
+# only one of the measurements can be shown with the measure parameter
+t1$plot_rarefy(color = "Group", measure = "Shannon")
+```
+
+```{r, out.width = "700px", fig.align="center", echo = FALSE}
+knitr::include_graphics("Images/tcr_plot_rarefy_measures.png")
+```
+
+When multiple measurements are used, each measurement is shown in its own panel with a free y axis 
+(`facet_wrap(~ measure, scales = "free_y")`) and the y axis title defaults to `"Value"`.
+The names of the measurements are case-insensitive, and both the long names and the short names used in 
+the vegan package are accepted, e.g. `"Observed"`/`"s.obs"`, `"Chao1"`/`"s.chao1"`, `"ACE"`/`"s.ace"`.
+The available measurements are Observed, Coverage, Chao1, ACE, Shannon, Simpson, InvSimpson, Fisher, 
+Pielou and PD.
+
+#### Automatic generation of the depths
+
+When `depth` is not provided, a sequence of 10 depths ranging from 0 to the maximum of the sample sums is 
+generated automatically with a quadratic spacing.
+
+```{r, echo = TRUE, eval = FALSE}
+# the depth is generated automatically when it is not provided
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed")
+t1$depth
+```
+
+```
+The parameter depth is not provided! Use the automatically generated depths: 0, 461, 1846, 4153, 7383, 11535, 16611, 22609, 29530, 37374 ...
+[1]     0   461  1846  4153  7383 11535 16611 22609 29530 37374
+```
+
+The depths are calculated as `round(max(sample_sums) * seq(0, 1, length.out = 10)^2)`, i.e. the intervals 
+become larger and larger.
+Such a spacing puts more depths in the low-depth region, where the curve rises steeply, and fewer in the 
+high-depth region, where the curve has already become flat.
+The default measurement is `"Shannon"` when `alphadiv` is not provided.
+
+#### Alternative rarefying method
+
+The `method` and `rngseed` parameters are passed to the `norm` function of the `trans_norm` class.
+Besides the default `"rarefy"`, the `"SRS"` method (scaling with ranked subsampling) is available and can 
+be used to avoid the information loss of the classic rarefaction [@Beule_normalization_2020].
+
+```{r, echo = TRUE, eval = FALSE}
+# "SRS" is the scaling with ranked subsampling method
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed", depth = c(0, 2000), method = "SRS")
+# change the random seed used by the subsampling; the rarefying is repeatable for a fixed seed
+t1 <- trans_rarefy$new(tmp, alphadiv = "Observed", depth = c(0, 2000), rngseed = 1)
+```
+
+Note that `sample.size` in `...` is ignored, as the library size is controlled by the `depth` parameter; 
+a message is printed when it is provided.
+
+#### Plot adjustments
+
+```{r, echo = TRUE, eval = FALSE}
+# axes titles, legend and the size and transparency of the points
+t1$plot_rarefy(color = "Group", x_axis_title = "Sequencing depth", y_axis_title = "Observed richness",
+  show_point = TRUE, point_size = .5, point_alpha = .8)
+# the parameters in ... are passed to geom_line (add_fitting = FALSE) or geom_smooth (add_fitting = TRUE)
+t1$plot_rarefy(linewidth = 1, alpha = .5)
+t1$plot_rarefy(color = "Group", show_point = FALSE, add_fitting = TRUE,
+  fitting_method = "lm", fitting_formula = y ~ x)
+# the returned object is a ggplot, so it can be further customized
+t1$plot_rarefy(color = "Group") + ggplot2::theme_classic()
+```
+
+`add_fitting = TRUE` fits the curve with `ggplot2::geom_smooth`; the default `fitting_method = "lm"` and 
+`fitting_formula = y ~ log(x + 1)` avoid the warnings of the default `"loess"` method, as there are 
+usually only a few depths for each sample.
+Note that `x + 1` is used instead of `x` in the default formula, because the depth 0 makes `log(x)` 
+invalid.
+The `se` argument of `geom_smooth` is fixed to `FALSE` inside the class, so passing `se` in `...` raises 
+an error when `add_fitting = TRUE`.
+
+
+### Key points
+
+* The class is a wrapper: the rarefying comes from `trans_norm$norm` and the alpha diversity from 
+  `microtable$cal_alphadiv`; one rarefied `microtable` object is rebuilt from the original data at each 
+  depth, so the rarefying at different depths is independent.
+* `depth = 0` is kept as an artificial starting point of the curve, where all the diversity values are 0 
+  rather than the real values of the original data.
+* The `depth` values must be non-negative integers and not larger than `max(dataset$sample_sums())`; 
+  duplicated values are removed and the depths are sorted internally.
+* Samples are removed at the depths larger than their own sequencing depth, so the curves are interrupted 
+  and the number of rows per depth decreases; the total number of rows of `res_rarefy` is therefore 
+  smaller than `length(depth) * n_samples`.
+* Rarefying is random but repeatable: `rngseed = 123` by default, and the results are identical for the 
+  same seed.
+* Very low depths should be used with care: the `"Fisher"` measurement may be unavailable, and `"Pielou"` 
+  returns `NaN` when only one species is present at a depth. The class prints a message listing the 
+  measurements and the number of rows with missing values, e.g. `Pielou (90 rows)` at depth 1 for the 
+  example data.
+* `alphadiv` is case-insensitive; the available measurements are Observed, Coverage, Chao1, ACE, Shannon, 
+  Simpson, InvSimpson, Fisher, Pielou and PD.
+* Parameters in `...` of `new` are passed to the `norm` function, such as `method`, `rngseed` and 
+  `replace`, except `sample.size`, which is controlled by `depth`.
+* `color` of `plot_rarefy` can be any column of `sample_table` and defaults to `"SampleID"`; 
+  `color_values` are expanded automatically when they are not enough.
+* `plot_rarefy` returns a ggplot object, so the plot can be further customized with the ggplot2 syntax.
 
